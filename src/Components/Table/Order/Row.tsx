@@ -2,14 +2,17 @@ import React, { useState } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
-import { AddProductOrderModal } from '../Modal/Order'
+import { AddProductOrderModal, EditOrderModal } from '../Modal/Order'
 import './styles.css'
 
 export default function Row() {
-    const [showOrderModal, setShowOrderModal] = useState(false)
+    const [showOrderModal, setShowOrderModal] = useState<boolean>(false)
+    const [showEditModal, setShowEditModal] = useState<boolean>(false)
+
     return (
         <tr className='tr-custum'>
-            <AddProductOrderModal showModal={showOrderModal} setShowModal={setShowOrderModal} />
+            {showOrderModal && <AddProductOrderModal showModal={showOrderModal} setShowModal={setShowOrderModal} />}
+            {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} />}
 
             <td></td>
             
@@ -77,6 +80,7 @@ export default function Row() {
             <td>
                 <div className="d-flex">
                     <a
+                        onClick={() => setShowEditModal(true)}
                         href="#"
                         className="btn btn-primary shadow btn-xs sharp me-1"
                     >

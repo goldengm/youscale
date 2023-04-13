@@ -6,15 +6,32 @@ interface ModalWrapperProps {
     children: JSX.Element | JSX.Element[],
     id: string
 }
-export default function ModalWrapper({showModal, setShowModal, children, id}:ModalWrapperProps) : JSX.Element {
+export default function ModalWrapper({ showModal, setShowModal, children, id }: ModalWrapperProps): JSX.Element {
+    
+    const handleCloseModal = () => {
+        var body = document.querySelector<HTMLBodyElement>('body');
+
+        if (body) {
+            body.classList.remove('modal-open');
+            body.style.overflow = '';
+            body.style.paddingRight = '';
+
+            var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
+        
+            if (existingBackdrop) existingBackdrop.forEach(it=> it.remove());
+
+            setShowModal(false)
+        }
+    }
+
     return (
-        <div className={showModal ? "modal fade show" : "modal fade"} id={id}>
+        <div style={{display: 'block'}} className={"modal fade show"} id={id}>
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Add Order</h5>
                         <button
-                            onClick={() => setShowModal(false)}
+                            onClick={handleCloseModal}
                             type="button"
                             className="btn-close"
                             data-bs-dismiss="modal"
@@ -25,7 +42,7 @@ export default function ModalWrapper({showModal, setShowModal, children, id}:Mod
                     </div>
                     <div className="modal-footer">
                         <button
-                            onClick={() => setShowModal(false)}
+                            onClick={handleCloseModal}
                             type="button"
                             className="btn btn-danger light"
                             data-bs-dismiss="modal"

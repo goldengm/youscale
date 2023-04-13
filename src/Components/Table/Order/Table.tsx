@@ -9,7 +9,7 @@ export default function Table() {
     return (
         <div className="col-12">
 
-            <AddOrderModal showModal={showOrderModal} setShowModal={setShowOrderModal} />
+            {showOrderModal && <AddOrderModal showModal={showOrderModal} setShowModal={setShowOrderModal} />}
 
             <div className="card">
                 <TableHeader setShowModal={setShowOrderModal} />
