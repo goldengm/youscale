@@ -1,0 +1,89 @@
+import React, { useEffect } from 'react'
+import { CustumInput, CustumTextArea, CustumSelectForm } from '../../../Forms'
+import { ProductOrderCard } from './Card'
+import ModalWrapper from '../ModalWrapper'
+
+interface Props {
+  showModal: boolean,
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+export default function AddOrderModal({ showModal, setShowModal }: Props) {
+
+  function handleModalStyles(showModal: boolean) {
+    var body = document.querySelector<HTMLBodyElement>('body');
+    var modalBackdrop = document.createElement('div');
+    modalBackdrop.className = 'modal-backdrop fade show';
+
+    if (showModal && body) {
+      body.classList.add('modal-open');
+      body.style.overflow = 'hidden';
+      body.style.paddingRight = '17px';
+
+      body.appendChild(modalBackdrop);
+    } else if (body) {
+      body.classList.remove('modal-open');
+      body.style.overflow = '';
+      body.style.paddingRight = '';
+
+      var existingBackdrop = document.querySelector('.modal-backdrop.fade.show');
+      if (existingBackdrop) existingBackdrop.remove();
+    }
+
+  }
+
+  function handleModalDisplay(showModal: boolean) {
+    var modal = document.getElementById('AddOrderModal');
+
+    if (showModal && modal) {
+      modal.style.display = 'block';
+    } else if (modal) {
+      modal.style.display = '';
+    }
+  }
+
+  useEffect(() => {
+    handleModalStyles(showModal)
+    handleModalDisplay(showModal)
+  }, [showModal])
+
+  return (
+    <ModalWrapper showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
+      <FormBody />
+    </ModalWrapper>
+  )
+}
+
+const FormBody = () => {
+  return (
+    <div className="card-body">
+      <div className="basic-form">
+        <form>
+          <div className="row">
+            <CustumInput type={'text'} label={"Destinataire"} placeholder={'Patrick Doe'} />
+            <CustumInput type={'text'} label={"Telephone"} placeholder={'778143610'} />
+            <CustumInput type={'text'} label={"Prix"} placeholder={'36540'} />
+            <CustumInput type={'text'} label={"Adresse"} placeholder={'Bl 4 st.Jean'} />
+            <CustumTextArea label={"Commentaire"} />
+          </div>
+
+          <div className="row">
+            <CustumSelectForm label={"Ville"} name={'city'} />
+            <CustumSelectForm label={"Status"} name={'status'} />
+            <CustumSelectForm label={"Source"} name={'source'} />
+            <CustumSelectForm label={"Up/Downsell"} name={'updownsell'} />
+            <CustumSelectForm label={"Changer"} name={'changer'} />
+            <CustumSelectForm label={"Ouvrir"} name={'ouvrir'} />
+          </div>
+
+          <div className="row">
+            <ProductOrderCard title={'Produit 1'} />
+          </div>
+
+          <button type="submit" className="btn btn-primary">
+            Ajouter
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
