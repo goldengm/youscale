@@ -14,7 +14,7 @@ const mock_status : OptionsType[] = [
     {label: 'Expedie', value: 'Expedie'}
 ]
 
-export default function Row() {
+export default function Row(): JSX.Element {
     const [showOrderModal, setShowOrderModal] = useState<boolean>(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false)

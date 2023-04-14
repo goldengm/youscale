@@ -3,7 +3,7 @@ import React from 'react'
 interface Props {
   name: string
 }
-export default function DisplaySource({ name }: Props) {
+export default function DisplaySource({ name }: Props): JSX.Element {
   return (
     <select
       className="select-custum"

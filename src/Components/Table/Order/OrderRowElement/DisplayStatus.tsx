@@ -6,7 +6,7 @@ interface Props {
     options: OptionsType[],
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => any
 }
-export default function DisplayStatus({ name, options, onChange }: Props) {
+export default function DisplayStatus({ name, options, onChange }: Props): JSX.Element {
     return (
         <select
             onChange={onChange}

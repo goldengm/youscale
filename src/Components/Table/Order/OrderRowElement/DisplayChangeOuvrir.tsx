@@ -4,7 +4,7 @@ import './style.css'
 interface Props {
   name: string
 }
-export default function DisplayChangeOuvrir({ name }: Props) {
+export default function DisplayChangeOuvrir({ name }: Props): JSX.Element {
   return (
     <select
       className="select-custum"

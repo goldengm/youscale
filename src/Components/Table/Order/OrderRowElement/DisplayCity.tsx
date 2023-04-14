@@ -4,7 +4,7 @@ import './style.css'
 interface Props {
   name: string
 }
-export default function DisplayCity({ name }: Props) {
+export default function DisplayCity({ name }: Props): JSX.Element {
   return (
     <select
       className="select-custum"

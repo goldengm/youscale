@@ -1,52 +1,25 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Row from './Row'
 import { AddOrderModal } from '../Modal/Order'
+import TableWrapper from './TableWrapper'
 import './styles.css'
 
-export default function Table() {
+const mock_column : string[] = ['Order Id', 'Date', 'Produit', 'Nom', 'Telephone', 'Ville', 'Prix', 'Status', 'Message', 'Adresse', 'Source', 'Agent', 'Last Action', 'Up/Downsell', 'Changer', 'Ouvrir', 'history']
+
+export default function Table(): JSX.Element {
     const [showOrderModal, setShowOrderModal] = React.useState(false)
 
     return (
         <div className="col-12">
-
             {showOrderModal && <AddOrderModal showModal={showOrderModal} setShowModal={setShowOrderModal} />}
 
             <div className="card">
                 <TableHeader setShowModal={setShowOrderModal} />
-                <div className="card-body">
-                    <div className="table-responsive">
-                        <table id="example3" className="display table-custum">
-                            <thead>
-                                <tr>
-                                    <th />
-                                    <th>Order Id</th>
-                                    <th>Date</th>
-                                    <th>Produit</th>
-                                    <th>Nom</th>
-                                    <th>Telephone</th>
-                                    <th>Ville</th>
-                                    <th>Prix</th>
-                                    <th>Status</th>
-                                    <th>Message</th>
-                                    <th>Adresse</th>
-                                    <th>Source</th>
-                                    <th>Agent</th>
-                                    <th>Last Action</th>
-                                    <th>Up/Downsell</th>
-                                    <th>Changer</th>
-                                    <th>Ouvrir</th>
-                                    <th>history</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <Row />
-                                <Row />
-                                <Row />
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <TableWrapper column={mock_column}>
+                    <Row />
+                    <Row />
+                    <Row />
+                </TableWrapper>
             </div>
         </div>
     )

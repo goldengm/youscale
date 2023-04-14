@@ -3,7 +3,7 @@ import React from 'react'
 interface Props {
   name: string
 }
-export default function DisplayUpDown({ name }: Props) {
+export default function DisplayUpDown({ name }: Props): JSX.Element {
   return (
     <select
     className="select-custum"
