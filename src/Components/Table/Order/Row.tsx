@@ -2,17 +2,19 @@ import React, { useState } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
-import { AddProductOrderModal, EditOrderModal } from '../Modal/Order'
+import { AddProductOrderModal, EditOrderModal, HistoryOrderModal } from '../Modal/Order'
 import './styles.css'
 
 export default function Row() {
     const [showOrderModal, setShowOrderModal] = useState<boolean>(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
+    const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false)
 
     return (
         <tr className='tr-custum'>
             {showOrderModal && <AddProductOrderModal showModal={showOrderModal} setShowModal={setShowOrderModal} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} />}
+            {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} />}
 
             <td></td>
             
@@ -73,7 +75,10 @@ export default function Row() {
                 <DisplayChangeOuvrir name='Oui' />
             </td>
             <td>
-                <a href="javascript:void(0);">
+                <a 
+                    onClick={() => setShowHistoryModal(true)}
+                    href="javascript:void(0);"
+                >
                     <strong>View</strong>
                 </a>
             </td>
