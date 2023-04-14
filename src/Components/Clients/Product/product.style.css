@@ -1,0 +1,9 @@
+.display-product-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.product-table{
+    width: auto !important;
+}

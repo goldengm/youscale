@@ -21,7 +21,7 @@ const MenuNav = [
   },
   {
     title: 'Produit',
-    path: '/produit',
+    path: '/product',
     icon: <MdProductionQuantityLimits size={35} color={'gray'} />,
     cName: 'nav-text',
   },
