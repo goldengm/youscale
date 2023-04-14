@@ -1,17 +1,19 @@
 import React from 'react'
+import { OptionsType } from '../../../../models'
 
 interface Props {
-    name: string
+    name: string,
+    options: OptionsType[],
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => any
 }
-export default function DisplayStatus({ name }: Props) {
+export default function DisplayStatus({ name, options, onChange }: Props) {
     return (
         <select
+            onChange={onChange}
             className="select-custum"
         >
             <option selected={true}>{name}</option>
-            <option value={1}>One</option>
-            <option value={2}>Two</option>
-            <option value={3}>Three</option>
+            { options.map((opn: OptionsType) => <option value={opn.value}>{opn.label}</option> ) }
         </select>
     )
 }

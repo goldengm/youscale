@@ -2,19 +2,36 @@ import React, { useState } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
-import { AddProductOrderModal, EditOrderModal, HistoryOrderModal } from '../Modal/Order'
+import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal } from '../Modal/Order'
+import { OptionsType } from '../../../models'
 import './styles.css'
+
+const mock_status : OptionsType[] = [
+    {label: 'Nouveau', value: 'Nouveau'},
+    {label: 'Delete', value: 'Delete'},
+    {label: 'Confirme', value: 'Confirme'},
+    {label: 'Reporte', value: 'Reporte'},
+    {label: 'Expedie', value: 'Expedie'}
+]
 
 export default function Row() {
     const [showOrderModal, setShowOrderModal] = useState<boolean>(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false)
+    const [showReportModal, setShowReportModal] = useState<boolean>(false)
+
+    const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const { value } = e.target 
+        
+        if(value === 'Reporte') setShowReportModal(true)
+    }
 
     return (
         <tr className='tr-custum'>
             {showOrderModal && <AddProductOrderModal showModal={showOrderModal} setShowModal={setShowOrderModal} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} />}
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} />}
+            {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} />}
 
             <td></td>
             
@@ -41,7 +58,11 @@ export default function Row() {
             </td>
             <td>1000</td>
             <td>
-                <DisplayStatus name='Status' />
+                <DisplayStatus 
+                    onChange={handleChangeStatus}
+                    options={mock_status}
+                    name='Status' 
+                />
             </td>
             <td>
                 <div className="bootstrap-popover d-inline-block">
