@@ -6,7 +6,7 @@ interface Props {
   showModal: boolean,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function HistoryOrderModal({ showModal, setShowModal }: Props) {
+export default function HistoryOrderModal({ showModal, setShowModal }: Props): JSX.Element {
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');

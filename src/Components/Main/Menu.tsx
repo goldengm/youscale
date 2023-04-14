@@ -45,7 +45,7 @@ const MenuNav = [
   },
 ]
 
-export default function Menu() {
+export default function Menu(): JSX.Element {
   return (
     <div className="dlabnav">
       <div className="dlabnav-scroll">

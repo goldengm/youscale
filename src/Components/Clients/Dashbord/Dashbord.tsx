@@ -9,7 +9,7 @@ import { BsFillPatchCheckFill } from 'react-icons/bs'
 import { ORDER_STATS_DATA, DATA_LINE } from '../../../services/mocks/mock-youscale-dashbord'
 import { CustomPie, CustomLine } from '../../Chart'
 
-export default function Dashbord() {
+export default function Dashbord(): JSX.Element {
     return (
         <Main name={'Dashbord'}>
             <div className="content-body">

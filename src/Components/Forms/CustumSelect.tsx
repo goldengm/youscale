@@ -3,7 +3,7 @@ import React from 'react'
 interface Props {
     name: string
 }
-export default function CustumSelect({ name }: Props) {
+export default function CustumSelect({ name }: Props): JSX.Element {
     return (
         <div className="col-auto my-1">
             <select

@@ -4,7 +4,7 @@ interface Props {
     label: string,
     name: string
 }
-export default function CustumSelectForm({ label, name }: Props) {
+export default function CustumSelectForm({ label, name }: Props): JSX.Element {
     return (
         <div className="mb-3 col-md-4">
             <label className="form-label">{label}</label>

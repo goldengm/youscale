@@ -7,7 +7,7 @@ interface Props {
   showModal: boolean,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function AddProductOrderModal({ showModal, setShowModal }: Props) {
+export default function AddProductOrderModal({ showModal, setShowModal }: Props): JSX.Element {
   const [selected, setSelected] = useState<[]>([]);
 
   const options = [

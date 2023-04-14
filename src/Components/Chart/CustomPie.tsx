@@ -9,7 +9,7 @@ interface ChartProps {
     options : any
 }
 
-export default function CustomPie(props: ChartProps) {
+export default function CustomPie(props: ChartProps): JSX.Element {
     const { data, options } = props
     return (
         <Pie data={data} options={options} />

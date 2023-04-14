@@ -3,7 +3,7 @@ import React from 'react'
 interface Props {
     label: string,
 }
-export default function CustumTextArea({ label }: Props) {
+export default function CustumTextArea({ label }: Props): JSX.Element {
   return (
     <div>
         <label className="form-label">{label}</label>

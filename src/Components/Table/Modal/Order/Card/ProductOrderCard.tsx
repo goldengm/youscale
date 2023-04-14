@@ -4,7 +4,7 @@ import { MultiSelectElement } from '../../../../Input'
 interface Props {
     title: string
 }
-export default function ProductOrderCard({ title }: Props) {
+export default function ProductOrderCard({ title }: Props): JSX.Element {
     const [selected, setSelected] = useState<[]>([]);
 
     const options = [

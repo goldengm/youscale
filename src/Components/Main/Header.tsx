@@ -4,7 +4,7 @@ import { CustumSelect } from '../Forms'
 interface Props {
   name: string
 }
-export default function Header({ name }: Props) {
+export default function Header({ name }: Props): JSX.Element {
   return (
     <>
       <div className="nav-header">

@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { DashbordPage, OrderPage } from '../Pages/Clients';
 
-const Routing = () => {
+const Routing = (): JSX.Element => {
 
     return (
         <Routes>

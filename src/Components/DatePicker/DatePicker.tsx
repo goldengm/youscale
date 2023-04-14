@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { DateRangePicker } from "mui-daterange-picker";
 
-export default function DatePicker() {
+export default function DatePicker(): JSX.Element {
     const [open, setOpen] = useState(true);
     const [dateRange, setDateRange] = useState({});
 
@@ -19,5 +19,3 @@ export default function DatePicker() {
         </div>
     )
 }
-
-// npm i @mui/material date-fns @mui/icons-material/ArrowRightAlt @mui/icons-material/ChevronLeft @mui/icons-material/ChevronRight

@@ -6,7 +6,7 @@ interface MultiSelectElementProps {
     selected: [],
     onChange: React.Dispatch<any>
 }
-export default function MultiSelectElement({ options, selected, onChange }: MultiSelectElementProps) {
+export default function MultiSelectElement({ options, selected, onChange }: MultiSelectElementProps): JSX.Element {
     return (
         <MultiSelect
             options={options}

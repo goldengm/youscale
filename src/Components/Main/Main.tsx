@@ -7,7 +7,7 @@ interface Props {
     children: React.ReactNode,
     name: string
 }
-export default function Main( { children, name }: Props ) {
+export default function Main( { children, name }: Props ): JSX.Element {
   return (
     <div id="main-wrapper">
         <Header name={name} />

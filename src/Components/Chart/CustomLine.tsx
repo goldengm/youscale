@@ -9,7 +9,7 @@ interface CustomLineProps{
     options: any
 }
 
-export default function CustomLine({ data, options }: CustomLineProps) {
+export default function CustomLine({ data, options }: CustomLineProps): JSX.Element {
     return (
         <Line style={{width:'80px',height:'80px'}} data={data} options={options} />
     );
