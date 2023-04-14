@@ -6,11 +6,11 @@ interface Props {
   showModal: boolean,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function EditOrderModal({ showModal, setShowModal }: Props): JSX.Element {
+export default function EditStockModal({ showModal, setShowModal }: Props): JSX.Element {
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
-    
+
     var modalBackdrop = document.createElement('div');
     modalBackdrop.className = 'modal-backdrop fade show';
 
@@ -24,7 +24,7 @@ export default function EditOrderModal({ showModal, setShowModal }: Props): JSX.
   }, [])
 
   return (
-    <ModalWrapper showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
+    <ModalWrapper showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
       <FormBody />
     </ModalWrapper>
   )
@@ -36,20 +36,14 @@ const FormBody = () => {
       <div className="basic-form">
         <form>
           <div className="row">
-            <CustumInput type={'text'} label={"Destinataire"} placeholder={'Patrick Doe'} />
-            <CustumInput type={'text'} label={"Telephone"} placeholder={'778143610'} />
-            <CustumInput type={'text'} label={"Prix"} placeholder={'36540'} />
-            <CustumInput type={'text'} label={"Adresse"} placeholder={'Bl 4 st.Jean'} />
-            <CustumTextArea label={"Commentaire"} />
+            <CustumInput type={'text'} label={"Quantité"} placeholder={'12'} />
           </div>
 
           <div className="row">
-            <CustumSelectForm label={"Status"} name={'status'} />
-            <CustumSelectForm label={"Source"} name={'source'} />
-            <CustumSelectForm label={"Up/Downsell"} name={'updownsell'} />
-            <CustumSelectForm label={"Changer"} name={'changer'} />
-            <CustumSelectForm label={"Ouvrir"} name={'ouvrir'} />
+            <CustumSelectForm label={"Ville"} name={'city'} />
+            <CustumSelectForm label={"Produit"} name={'product'} />
           </div>
+
           <button type="submit" className="btn btn-primary">
             Modifier
           </button>

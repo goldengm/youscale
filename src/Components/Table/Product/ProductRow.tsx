@@ -1,6 +1,9 @@
 import React from 'react'
 
-export default function ProductRow(): JSX.Element {
+interface Props{
+    setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>   
+}
+export default function ProductRow({ setShowEditModal }:Props): JSX.Element {
     return (
         <tr>
             <th>1</th>
@@ -9,7 +12,7 @@ export default function ProductRow(): JSX.Element {
             <td>
                 <div className="d-flex">
                     <a
-                        //onClick={() => setShowEditModal(true)}
+                        onClick={() => setShowEditModal(true)}
                         href="#"
                         className="btn btn-primary shadow btn-xs sharp me-1"
                     >
