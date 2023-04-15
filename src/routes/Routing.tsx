@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { DashbordPage, OrderPage, ProductPage } from '../Pages/Clients';
+import { DashbordPage, OrderPage, ProductPage, TeamPage } from '../Pages/Clients';
 
 const Routing = (): JSX.Element => {
 
@@ -16,6 +16,10 @@ const Routing = (): JSX.Element => {
 
             <Route path="/product" element={
                 <ProductPage />
+            } />
+
+            <Route path="/team" element={
+                <TeamPage />
             } />
         </Routes>
     )

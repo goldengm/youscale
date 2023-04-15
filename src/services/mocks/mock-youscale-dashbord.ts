@@ -15,50 +15,93 @@ export const ORDER_STATS_DATA = {
 };
 
 export const PERFORMANCE_STATS_DATA = {
-    labels: [
+    "labels": [
+        "deleted",
         "Errone",
+        "Nouveau",
+        "delete",
         "Confirme",
+        "Expedie",
         "Injoignable",
-        "Annule",
-        "Refuse",
         "Reporte",
         "Livre",
-        "Expedie"
+        "zakaria214",
+        "zakaria",
+        "zakaria56",
+        "oumar13",
+        "Zakariaoio",
+        "zakari56",
+        "R->nouveau",
+        "hors zone"
     ],
-    datasets: [
+    "datasets": [
         {
-            label: "Aicha",
-            data: [2, 77, 95, 26, 73, 25, 63, 65, 73],
-            fill: true,
-            backgroundColor: ["rgb(91,155,213)"],
+            "label": "Performance",
+            "data": [
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "fill": true,
+            "backgroundColor": [
+                "rgb(91,155,213)"
+            ]
         }
-    ],
-};
+    ]
+}
 
 export const EARNING_STATS_DATA = {
-    labels: [
-        "Janvier",
-        "Février",
-        "Mars",
-        "Avril",
-        "Main",
-        "Juin",
-        "Juillet",
-        "Aout",
-        "Septembre",
-        "Octobre",
-        "Novembre",
-        "Décembre"
+    "labels": [
+        "2023-01-01",
+        "2023-02-01",
+        "2023-03-01",
+        "2023-04-01",
+        "2023-05-01",
+        "2023-06-01",
+        "2023-07-01",
+        "2023-08-01",
+        "2023-09-01",
+        "2023-10-01",
+        "2023-11-01",
+        "2023-12-01"
     ],
-    datasets: [
+    "datasets": [
         {
-            label: "Aicha",
-            data: [2, 77, 60, 26, 73, 25, 63, 65, 73, 20, 18, 13],
-            fill: true,
-            backgroundColor: ["#DC6232"],
+            "label": "Earning",
+            "data": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "fill": false,
+            "borderColor": "rgb(75, 192, 192)",
+            "tension": 0.1
         }
-    ],
-};
+    ]
+}
 
 export const DATA_LINE = {
     labels: ["03/01", "04/01", "05/01", "06/01", "07/01", "08/01", "09/01", "10/01", "11/01", "12/01"],
