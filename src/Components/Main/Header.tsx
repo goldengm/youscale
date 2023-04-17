@@ -2,9 +2,11 @@ import React from 'react'
 import { CustumSelect } from '../Forms'
 
 interface Props {
-  name: string
+  name: string,
+  showMenu: boolean,
+  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function Header({ name }: Props): JSX.Element {
+export default function Header({ name, showMenu, setShowMenu }: Props): JSX.Element {
   return (
     <>
       <div className="nav-header">
@@ -38,8 +40,11 @@ export default function Header({ name }: Props): JSX.Element {
             />
           </svg>
         </a>
-        <div className="nav-control">
-          <div className="hamburger">
+        <div 
+          onClick={()=> setShowMenu(!showMenu)}
+          className="nav-control"
+        >
+          <div className={showMenu ? "hamburger is-active": "hamburger"}>
             <span className="line" />
             <span className="line" />
             <span className="line" />
