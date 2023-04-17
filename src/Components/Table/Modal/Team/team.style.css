@@ -1,0 +1,14 @@
+.column-access-row{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 7px;
+}
+
+.custom-checkbox {
+    margin-bottom: 0px !important;
+}
+
+.lg-mse{
+    width: 50%;
+}

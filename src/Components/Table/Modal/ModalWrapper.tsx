@@ -4,9 +4,10 @@ interface ModalWrapperProps {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
     children: JSX.Element | JSX.Element[],
+    title: string,
     id: string
 }
-export default function ModalWrapper({ showModal, setShowModal, children, id }: ModalWrapperProps): JSX.Element {
+export default function ModalWrapper({ showModal, setShowModal, children, id, title }: ModalWrapperProps): JSX.Element {
     
     const handleCloseModal = () => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -29,7 +30,7 @@ export default function ModalWrapper({ showModal, setShowModal, children, id }: 
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Add Order</h5>
+                        <h5 className="modal-title">{title}</h5>
                         <button
                             onClick={handleCloseModal}
                             type="button"

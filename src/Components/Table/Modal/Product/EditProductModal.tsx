@@ -26,7 +26,7 @@ export default function EditProductModal({ showModal, setShowModal }: Props): JS
     }, [])
 
     return (
-        <ModalWrapper showModal={showModal} setShowModal={setShowModal} id='AddProductModal'>
+        <ModalWrapper title={'Edit product'} showModal={showModal} setShowModal={setShowModal} id='AddProductModal'>
             <FormBody />
         </ModalWrapper>
     )

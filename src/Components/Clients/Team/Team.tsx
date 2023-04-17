@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Main from '../../Main'
 import { FaPen } from 'react-icons/fa'
 import { PERFORMANCE_STATS_DATA, EARNING_STATS_DATA } from '../../../services/mocks/mock-youscale-dashbord'
 import PerformanceCard from './PerformanceCard'
 import EarningCard from './EarningCard'
 import { CustomHist } from '../../Chart'
+import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
 import './team.style.css'
 
 export default function Team(): JSX.Element {
+
+    const [showAddTeamModal, setShowAddTeamModal] = useState<boolean>(false)
+    const [showEditTeamModal, setShowEditTeamModal] = useState<boolean>(false)
 
     let option = {
         responsive: true,
@@ -21,10 +25,12 @@ export default function Team(): JSX.Element {
 
     return (
         <Main name={'Team'}>
+            { showAddTeamModal && <AddTeamModal showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} /> }
+            { showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} /> }
             <div className="content-body">
                 <div className="container-fluid">
                     <div className="team-header">
-                        <BestSellingProduct />
+                        <TeamCard setShowAddTeamModal={setShowAddTeamModal} setShowEditTeamModal={setShowEditTeamModal} />
                         <PerformanceCard>
                             <CustomHist data={PERFORMANCE_STATS_DATA} options={option} />
                         </PerformanceCard>
@@ -38,7 +44,11 @@ export default function Team(): JSX.Element {
     )
 }
 
-const BestSellingProduct = (): JSX.Element => {
+interface PropsTeamCard {
+    setShowAddTeamModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setShowEditTeamModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal }:PropsTeamCard): JSX.Element => {
     return (
         <div className="col-xl-3 col-xxl-5 col-xl-custum">
             <div className="card">
@@ -46,19 +56,28 @@ const BestSellingProduct = (): JSX.Element => {
                     <div>
                         <h4 className="card-title mb-2">Team</h4>
                     </div>
+                    <a 
+                        onClick={()=> setShowAddTeamModal(true)}
+                        type="button" 
+                        className="btn btn-primary mb-2">
+                            Add team
+                    </a>
                 </div>
                 <div className="card-body">
-                    <BestSellingCard />
-                    <BestSellingCard />
-                    <BestSellingCard />
-                    <BestSellingCard />
+                    <TeamRow setShowEditTeamModal={setShowEditTeamModal} />
+                    <TeamRow setShowEditTeamModal={setShowEditTeamModal} />
+                    <TeamRow setShowEditTeamModal={setShowEditTeamModal} />
+                    <TeamRow setShowEditTeamModal={setShowEditTeamModal} />
                 </div>
             </div>
         </div>
     )
 }
 
-const BestSellingCard = (): JSX.Element => {
+interface PropsTeamRow {
+    setShowEditTeamModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+const TeamRow = ({ setShowEditTeamModal }:PropsTeamRow): JSX.Element => {
     return (
         <div className="d-flex align-items-end mt-2 pb-3 justify-content-between">
             <div className="fs-18 card-info">
@@ -68,6 +87,7 @@ const BestSellingCard = (): JSX.Element => {
 
             <div className="fs-18 card-edit">
                 <FaPen
+                    onClick={()=> setShowEditTeamModal(true)}
                     className='edit-team-pencil'
                     style={{ marginRight: 12 }}
                 />

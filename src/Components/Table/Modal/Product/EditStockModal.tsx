@@ -24,7 +24,7 @@ export default function EditStockModal({ showModal, setShowModal }: Props): JSX.
   }, [])
 
   return (
-    <ModalWrapper showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
+    <ModalWrapper title={'Edit stock'} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
       <FormBody />
     </ModalWrapper>
   )

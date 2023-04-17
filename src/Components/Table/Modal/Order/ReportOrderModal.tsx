@@ -24,7 +24,7 @@ export default function ReportOrderModal({ showModal, setShowModal }: Props): JS
   }, [])
 
   return (
-    <ModalWrapper showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
+    <ModalWrapper title={'Report'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
       <FormBody />
     </ModalWrapper>
   )

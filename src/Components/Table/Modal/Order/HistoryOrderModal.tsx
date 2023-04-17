@@ -24,7 +24,7 @@ export default function HistoryOrderModal({ showModal, setShowModal }: Props): J
   }, [])
 
   return (
-    <ModalWrapper showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
+    <ModalWrapper title={'History'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
       <FormBody />
     </ModalWrapper>
   )

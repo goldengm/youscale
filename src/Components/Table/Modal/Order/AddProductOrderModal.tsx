@@ -32,7 +32,7 @@ export default function AddProductOrderModal({ showModal, setShowModal }: Props)
   }, [])
 
   return (
-    <ModalWrapper showModal={showModal} setShowModal={setShowModal} id='addProductToOrder'>
+    <ModalWrapper showModal={showModal} title={'Add product to order'} setShowModal={setShowModal} id='addProductToOrder'>
       <MultiSelectElement options={options} selected={selected} onChange={setSelected}/>
       <ProductOrderCard title={'Product Name'} />
       <SendButton value='Valider' onClick={()=> console.log('example')} />
