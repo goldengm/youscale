@@ -3,11 +3,13 @@ import OrderPage from "./OrderPage";
 import ProductPage from "./ProductPage";
 import TeamPage from "./TeamPage";
 import PaiementPage from "./PaiementPage";
+import SettingPage from "./SettingPage";
 
 export { 
     DashbordPage,
     OrderPage,
     ProductPage,
     TeamPage,
-    PaiementPage
+    PaiementPage,
+    SettingPage
  };
