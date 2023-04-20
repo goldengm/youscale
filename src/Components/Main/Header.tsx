@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link, Navigate } from 'react-router-dom'
 import { CustumSelect } from '../Forms'
 
 interface Props {
@@ -40,11 +41,11 @@ export default function Header({ name, showMenu, setShowMenu }: Props): JSX.Elem
             />
           </svg>
         </a>
-        <div 
-          onClick={()=> setShowMenu(!showMenu)}
+        <div
+          onClick={() => setShowMenu(!showMenu)}
           className="nav-control"
         >
-          <div className={showMenu ? "hamburger is-active": "hamburger"}>
+          <div className={showMenu ? "hamburger is-active" : "hamburger"}>
             <span className="line" />
             <span className="line" />
             <span className="line" />
@@ -61,18 +62,21 @@ export default function Header({ name, showMenu, setShowMenu }: Props): JSX.Elem
               </div>
               <ul className="navbar-nav header-right">
                 <li className="nav-item">
-                      <CustumSelect name='Product' />
+                  <CustumSelect name='Product' />
                 </li>
 
                 <li className="nav-item">
-                      <CustumSelect name='Team member' />
+                  <CustumSelect name='Team member' />
                 </li>
-                
+
                 <li className="nav-item">
-                  <a
+                  <Link
+                    to={'/pack'}
                     className="nav-link"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
+                    onClick={(e) => {
+                      Navigate({ to: '/pack' })
+                      e.preventDefault()
+                    }}
                   >
                     <svg
                       width={28}
@@ -87,7 +91,7 @@ export default function Header({ name, showMenu, setShowMenu }: Props): JSX.Elem
                         fill="#4f7086"
                       />
                     </svg>
-                  </a>
+                  </Link>
                 </li>
 
               </ul>

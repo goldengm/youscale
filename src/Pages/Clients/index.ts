@@ -4,6 +4,7 @@ import ProductPage from "./ProductPage";
 import TeamPage from "./TeamPage";
 import PaiementPage from "./PaiementPage";
 import SettingPage from "./SettingPage";
+import PackPage from "./PackPage";
 
 export { 
     DashbordPage,
@@ -11,5 +12,6 @@ export {
     ProductPage,
     TeamPage,
     PaiementPage,
-    SettingPage
+    SettingPage,
+    PackPage
  };
