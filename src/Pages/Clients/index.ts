@@ -5,6 +5,8 @@ import TeamPage from "./TeamPage";
 import PaiementPage from "./PaiementPage";
 import SettingPage from "./SettingPage";
 import PackPage from "./PackPage";
+import LoginPage from "./LoginPage";
+import RegisterPage from "./RegisterPage";
 
 export { 
     DashbordPage,
@@ -13,5 +15,7 @@ export {
     TeamPage,
     PaiementPage,
     SettingPage,
-    PackPage
+    PackPage,
+    LoginPage,
+    RegisterPage
  };

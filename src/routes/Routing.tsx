@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage } from '../Pages/Clients';
+import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage, LoginPage, RegisterPage } from '../Pages/Clients';
 
 const Routing = (): JSX.Element => {
 
@@ -32,6 +32,14 @@ const Routing = (): JSX.Element => {
 
             <Route path="/pack" element={
                 <PackPage />
+            } />
+
+            <Route path="/login" element={
+                <LoginPage />
+            } />
+
+            <Route path="/register" element={
+                <RegisterPage />
             } />
         </Routes>
     )
