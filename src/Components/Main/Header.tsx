@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { CustumSelect } from '../Forms'
+import CustumDateRangePicker from './CustumDateRangePicker'
 
 interface Props {
   name: string,
@@ -8,7 +9,11 @@ interface Props {
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>
 }
 export default function Header({ name, showMenu, setShowMenu }: Props): JSX.Element {
-  return (
+
+  const [date, setDate] = useState<string[]>([])
+  const [usingDate, setUsingDate] = useState<boolean>(false)
+
+  return (  
     <>
       <div className="nav-header">
         <a href="index.html" className="brand-logo">
@@ -67,6 +72,10 @@ export default function Header({ name, showMenu, setShowMenu }: Props): JSX.Elem
 
                 <li className="nav-item">
                   <CustumSelect name='Team member' />
+                </li>
+
+                <li className="nav-item">
+                  <CustumDateRangePicker setDate={setDate} setUsingDate={setUsingDate} />
                 </li>
 
                 <li className="nav-item">

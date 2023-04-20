@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@wojtekmaj/react-daterange-picker": "^5.0.2",
     "chart.js": "^4.2.1",
     "i": "^0.3.7",
     "install": "^0.13.0",
