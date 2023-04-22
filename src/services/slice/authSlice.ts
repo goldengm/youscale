@@ -21,7 +21,7 @@ const pendingReducer = (state:any, action:any) => {
 }
 
 const fulfilledReducer = (state:any, action:any) => {
-    const verified = action.payload.client.active
+    const verified = action.payload.client?.active || action.payload.teamUser?.active
     state.isLoading = false;
     state.isAuthenticated = verified;
     state.isVerified = verified;

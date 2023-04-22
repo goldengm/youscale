@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import './styles.css'
-import { Navigate } from 'react-router-dom'
 import { SetRole, GetRole } from '../../services/storageFunc'
 import { selectAuth } from '../../services/slice/authSlice'
-import { clientLoginThunk, clientOTPVerifyThunk, clientTeamLoginThunk } from '../../services/thunks/authThunks';
+import { clientLoginThunk, clientTeamLoginThunk } from '../../services/thunks/authThunks';
 import { useDispatch, useSelector } from "react-redux";
-import { ClientLoginModel } from '../../models';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -49,11 +47,13 @@ export default function LoginPage() {
     useEffect(() => {
         if (isAuthenticated) {
             if (GetRole() === 'CLIENT') window.location.href = '/'
-            if (GetRole() === 'TEAM') window.location.href = '/order-client-team'
+            if (GetRole() === 'TEAM') window.location.href = '/'
         }
 
-        const telephone = JSON.parse(localStorage.getItem('telephone') || '')
-        if (isVerified === false) window.location.href = `/opt-verification?telephone=${telephone}`
+        if (isVerified === false) {
+            const telephone = JSON.parse(localStorage.getItem('telephone') || '')
+            window.location.href = `/opt-verification?telephone=${telephone}`
+        }
     }, [isAuthenticated, isVerified])
 
     const handleSend = (data: Inputs) =>{

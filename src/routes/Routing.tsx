@@ -25,7 +25,7 @@ const AuthComponent = ({ Component, pageAccess, name }: WithAuthTeamProps) => {
 };
 
 const Routing = (): JSX.Element => {
-    const { data, isSuccess } = useGetClientTeamMemberPageQuery();
+    const { data } = useGetClientTeamMemberPageQuery();
 
     return (
         <Routes>
