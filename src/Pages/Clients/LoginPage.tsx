@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import './styles.css'
 import { Navigate } from 'react-router-dom'
 import { SetRole, GetRole } from '../../services/storageFunc'
-import { RotatingLines } from 'react-loader-spinner'
 import { selectAuth } from '../../services/slice/authSlice'
 import { clientLoginThunk, clientOTPVerifyThunk, clientTeamLoginThunk } from '../../services/thunks/authThunks';
 import { useDispatch, useSelector } from "react-redux";
@@ -53,7 +52,8 @@ export default function LoginPage() {
             if (GetRole() === 'TEAM') window.location.href = '/order-client-team'
         }
 
-        if (isVerified === false) Navigate({to: '/opt-verification?+2210798227737'})
+        const telephone = JSON.parse(localStorage.getItem('telephone') || '')
+        if (isVerified === false) window.location.href = `/opt-verification?telephone=${telephone}`
     }, [isAuthenticated, isVerified])
 
     const handleSend = (data: Inputs) =>{
