@@ -11,3 +11,10 @@
     color: red;
     margin: 10px;
 }
+
+.global-loader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
