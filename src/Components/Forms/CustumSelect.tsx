@@ -1,19 +1,31 @@
 import React from 'react'
 
+type dataType ={
+    label: string;
+    value: string;
+}[]
+
+const DEFAULT_VALUE: dataType = [
+    {label: 'One', value: '1'},
+    {label: 'Two', value: '2'},
+    {label: 'Three', value: '3'}
+]
+
 interface Props {
-    name: string
+    name: string,
+    data?: dataType,
+    onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }
-export default function CustumSelect({ name }: Props): JSX.Element {
+export default function CustumSelect({ name, onChange, data = DEFAULT_VALUE }: Props): JSX.Element {
     return (
         <div className="col-auto my-1">
             <select
-                className="me-sm-2 default-select form-control wide"
+                className="me-sm-2 form-control wide"
                 id="inlineFormCustomSelect"
+                onChange={onChange}
             >
                 <option selected={true}>{name}</option>
-                <option value={1}>One</option>
-                <option value={2}>Two</option>
-                <option value={3}>Three</option>
+                { data.map((dt,index)=> <option key={index} value={dt.value}>{dt.label}</option> ) }
             </select>
         </div>
     )

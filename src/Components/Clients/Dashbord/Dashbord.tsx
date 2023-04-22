@@ -9,9 +9,19 @@ import { BsFillPatchCheckFill } from 'react-icons/bs'
 import { ORDER_STATS_DATA, DATA_LINE } from '../../../services/mocks/mock-youscale-dashbord'
 import { CustomPie, CustomLine } from '../../Chart'
 
-export default function Dashbord(): JSX.Element {
+interface Props {
+    setDate: React.Dispatch<React.SetStateAction<string[]>>,
+    setUsingDate: React.Dispatch<React.SetStateAction<boolean>>,
+    setIdTeam: React.Dispatch<React.SetStateAction<number>>,
+    setProduct: React.Dispatch<React.SetStateAction<string>>,
+    showDateFilter: boolean,
+    showProductFilter: boolean,
+    usingDate: boolean,
+    showTeamFilter: boolean
+}
+export default function Dashbord({ setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, usingDate }:Props): JSX.Element {
     return (
-        <Main name={'Dashbord'}>
+        <Main name={'Dashbord'} showTeamFilter={showTeamFilter} setIdTeam={setIdTeam} setProduct={setProduct} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate} showProductFilter={showProductFilter} showDateFilter={showDateFilter}>
             <div className="content-body">
                 <div className="container-fluid">
                     <DisplayCard />

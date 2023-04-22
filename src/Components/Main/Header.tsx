@@ -2,18 +2,75 @@ import React, { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { CustumSelect } from '../Forms'
 import CustumDateRangePicker from './CustumDateRangePicker'
+import { useGetProductQuery } from '../../services/api/ClientApi/ClientProductApi'
+import { useGetTeamMemberQuery } from '../../services/api/ClientApi/ClientTeamMemberApi'
+import { useGetAnnoucementQuery } from '../../services/api/ClientApi/ClientAnnoucementApi'
+import { GetProductModel, GetTeamMemberModel } from '../../models'
 
 interface Props {
-  name: string,
+  setDate?: React.Dispatch<React.SetStateAction<string[]>>,
+  setProduct?: React.Dispatch<React.SetStateAction<string>>,
+  setUsingDate?: React.Dispatch<React.SetStateAction<boolean>>,
+  showDateFilter?: boolean,
+  setIdTeam?: React.Dispatch<React.SetStateAction<number>>,
+  showTeamFilter?: boolean,
+  showProductFilter?: boolean,
   showMenu: boolean,
-  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>
+  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>,
+  name: string
 }
-export default function Header({ name, showMenu, setShowMenu }: Props): JSX.Element {
 
-  const [date, setDate] = useState<string[]>([])
-  const [usingDate, setUsingDate] = useState<boolean>(false)
+type dataType = {
+  label: string;
+  value: string;
+}[]
 
-  return (  
+const convertProduct = (data: GetProductModel[] | undefined): dataType => {
+
+  if (!data) return []
+
+  var out: dataType = []
+
+  data.map(dt => {
+    out.push({ label: dt.name, value: String(dt.id) })
+  })
+
+  return out
+}
+
+const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => {
+
+  if (!data) return []
+
+  var out: dataType = []
+
+  data.map(dt => {
+    out.push({ label: dt.name ?? '', value: String(dt.id) })
+  })
+
+  return out
+
+}
+
+export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu }: Props): JSX.Element {
+
+  const { data: productData, isSuccess: isProductSuccess } = useGetProductQuery()
+  const { data: teamData, isSuccess: isTeamSuccess } = useGetTeamMemberQuery()
+  const { data, isSuccess } = useGetAnnoucementQuery()
+
+  const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target
+
+    console.log(value)
+  }
+
+  const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target
+
+    console.log(value)
+  }
+
+  return (
     <>
       <div className="nav-header">
         <a href="index.html" className="brand-logo">
@@ -67,15 +124,15 @@ export default function Header({ name, showMenu, setShowMenu }: Props): JSX.Elem
               </div>
               <ul className="navbar-nav header-right">
                 <li className="nav-item">
-                  <CustumSelect name='Product' />
+                  {showProductFilter && <CustumSelect name='Product' data={convertProduct(productData?.data)} onChange={handleProductChange} />}
                 </li>
 
                 <li className="nav-item">
-                  <CustumSelect name='Team member' />
+                  {showTeamFilter && <CustumSelect name='Team member' data={convertTeamMember(teamData?.data)} onChange={handleTeamChange} />}
                 </li>
 
                 <li className="nav-item">
-                  <CustumDateRangePicker setDate={setDate} setUsingDate={setUsingDate} />
+                  {showDateFilter && <CustumDateRangePicker setDate={setDate} setUsingDate={setUsingDate} />}
                 </li>
 
                 <li className="nav-item">
