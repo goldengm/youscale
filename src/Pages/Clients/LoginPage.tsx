@@ -1,7 +1,26 @@
 import React from 'react'
 import './styles.css'
+import { SetRole, GetRole } from '../../services/storageFunc'
 
 export default function LoginPage() {
+
+    const handleChangeRole = (role: 'CLIENT' | 'TEAM'): any =>{
+        SetRole(role)
+        window.location.reload()
+    }
+
+    const activeBtn = (button: 'CLIENT' | 'TEAM') : string =>{
+       
+        if(button === 'CLIENT') {
+            if (GetRole() === 'TEAM') return 'btn-outline-dark'
+            else if (GetRole() === 'CLIENT') return 'btn-dark'
+        }
+
+        if (GetRole() === 'TEAM') return 'btn-dark'
+
+        return ''        
+    }
+
     return (
         <div className="authincation h-100">
             <div className="container h-100">
@@ -19,10 +38,18 @@ export default function LoginPage() {
                                         <h4 className="text-center mb-4">Se connecter</h4>
 
                                         <div className="btn-group btn-login-switch">
-                                            <button type="button" className="btn btn-outline-dark">
+                                            <button 
+                                                onClick={()=> handleChangeRole('CLIENT')}
+                                                type="button" 
+                                                className={`btn ${activeBtn('CLIENT')}`}
+                                            >
                                                 Client
                                             </button>
-                                            <button type="button" className="btn btn-dark">
+                                            <button 
+                                                onClick={()=> handleChangeRole('TEAM')}
+                                                type="button" 
+                                                className={`btn ${activeBtn('TEAM')}`}
+                                            >
                                                 Team
                                             </button>
                                         </div>
