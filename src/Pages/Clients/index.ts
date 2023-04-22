@@ -7,6 +7,7 @@ import SettingPage from "./SettingPage";
 import PackPage from "./PackPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
+import OPTVerificationPage from "./OPTVerificationPage";
 
 export { 
     DashbordPage,
@@ -17,5 +18,6 @@ export {
     SettingPage,
     PackPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    OPTVerificationPage
  };

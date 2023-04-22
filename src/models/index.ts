@@ -16,8 +16,7 @@ export interface AdminRegisterModel {
 
 export interface ClientLoginModel {
     email: string,
-    password: string,
-    code_auth: string
+    password: string
 }
 
 

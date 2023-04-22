@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import './styles.css'
+import { Navigate } from 'react-router-dom'
 import { SetRole, GetRole } from '../../services/storageFunc'
 import { RotatingLines } from 'react-loader-spinner'
 import { selectAuth } from '../../services/slice/authSlice'
-import { clientLoginThunk, clientOTPVerifyThunk } from '../../services/thunks/authThunks';
+import { clientLoginThunk, clientOTPVerifyThunk, clientTeamLoginThunk } from '../../services/thunks/authThunks';
 import { useDispatch, useSelector } from "react-redux";
 import { ClientLoginModel } from '../../models';
 import { useForm } from 'react-hook-form';
@@ -46,6 +47,20 @@ export default function LoginPage() {
         resolver: yupResolver(schema),
     });
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            if (GetRole() === 'CLIENT') window.location.href = '/'
+            if (GetRole() === 'TEAM') window.location.href = '/order-client-team'
+        }
+
+        if (isVerified === false) Navigate({to: '/opt-verification?+2210798227737'})
+    }, [isAuthenticated, isVerified])
+
+    const handleSend = (data: Inputs) =>{
+        if (GetRole() === 'CLIENT') dispatch(clientLoginThunk(data))
+        if (GetRole() === 'TEAM') dispatch(clientTeamLoginThunk(data))
+    }
+
     return (
         <div className="authincation h-100">
             <div className="container h-100">
@@ -61,7 +76,7 @@ export default function LoginPage() {
                                             </a>
                                         </div>
                                         <h4 className="text-center mb-4">Se connecter</h4>
-
+                                        
                                         <div className="btn-group btn-login-switch">
                                             <button
                                                 onClick={() => handleChangeRole('CLIENT')}
@@ -79,7 +94,8 @@ export default function LoginPage() {
                                             </button>
                                         </div>
 
-                                        <form onSubmit={handleSubmit(d => console.log(d))}>
+                                        {isError && <span className="auth-error">{message}</span>}
+                                        <form onSubmit={handleSubmit(handleSend)}>
                                             <div className="mb-3">
                                                 <label className="mb-1">
                                                     <strong>Email</strong>
