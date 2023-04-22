@@ -2,3 +2,7 @@
     width: 100%;
     margin-bottom: 20px;
 }
+
+.error{
+    color: red;
+}
