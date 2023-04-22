@@ -6,7 +6,7 @@ import { GetRole } from '../../services/storageFunc';
 import { clientOTPVerifyThunk } from '../../services/thunks/authThunks';
 import { RotatingLines } from 'react-loader-spinner'
 
-const ParseTel=(contact: string): string => '+' + contact.trim()
+const ParseTel = (contact: string): string => '+' + contact.trim()
 
 export default function OPTVerificationPage(): JSX.Element {
 
