@@ -1,20 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
 import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal } from '../Modal/Order'
-import { CityModel, ColumnModel, GetClientOrderModel, OptionsType, ProductOrder } from '../../../models'
+import { CityModel, ColumnModel, GetClientOrderModel, OptionsType, ProductOrder, StatusModel } from '../../../models'
 import './styles.css'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi'
-
-const mock_status: OptionsType[] = [
-    { label: 'Nouveau', value: 'Nouveau' },
-    { label: 'Delete', value: 'Delete' },
-    { label: 'Confirme', value: 'Confirme' },
-    { label: 'Reporte', value: 'Reporte' },
-    { label: 'Expedie', value: 'Expedie' }
-]
+import { useGetStatusQuery } from '../../../services/api/ClientApi/ClientStatusApi'
+import { usePatchClientOrderMutation } from '../../../services/api/ClientApi/ClientOrderApi'
+import { useGetTeamMemberQuery } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 
 interface RowProps {
     row: GetClientOrderModel,
@@ -24,8 +19,17 @@ interface RowProps {
 }
 export default function Row({ row, order, refetch, column }: RowProps): JSX.Element {
 
+    const [patchOrder] = usePatchClientOrderMutation()
+
     const { data: dataSetting } = useGetSettingQuery()
     const { data: dataCity } = useGetCityQuery()
+    const { data: dataStatus, refetch: RefetchStatus } = useGetStatusQuery()
+    const { data: dataTeamMember } = useGetTeamMemberQuery()
+
+    useEffect(() => {
+        RefetchStatus()
+    }, [])
+
     const [message] = useState(dataSetting?.data.automated_msg || '');
 
     const [showOrderModal, setShowOrderModal] = useState<boolean>(false)
@@ -36,7 +40,45 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
     const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
+        patchOrder({ id: order?.id, status: value }).unwrap().then(() => refetch && refetch())
+
         if (value === 'Reporte') setShowReportModal(true)
+    }
+
+    const handleChangeSource = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const { value } = e.target
+
+        patchOrder({ id: order?.id, source: value }).then(() => refetch())
+    }
+
+    const handleChangeTeam = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const { value } = e.target
+
+        patchOrder({ id: order?.id, id_team: Number(value), prev_id_team: order ? order.id_team : 0 }).unwrap().then(() => refetch && refetch()).catch((err) => { alert(err.data.message); refetch && refetch() })
+    }
+
+    const handleChangeOuvrir = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const { value } = e.target
+
+        patchOrder({ id: order?.id, ouvrir: value }).unwrap().then(() => refetch && refetch())
+    }
+
+    const handleChangeChanger = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const { value } = e.target
+
+        patchOrder({ id: order?.id, changer: value }).unwrap().then(() => refetch && refetch())
+    }
+
+    const handleChangeUpDown = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const { value } = e.target
+
+        patchOrder({ id: order?.id, updownsell: value }).unwrap().then(() => refetch && refetch())
+    }
+
+    const FilterStatusData = (data: StatusModel[] | undefined) => {
+        if (!data) return []
+        var newArr = data.filter((dt: StatusModel) => dt.checked === true)
+        return newArr
     }
 
     const GetCityWhosFromSheet = (data: CityModel[] | undefined): CityModel[] => {
@@ -89,7 +131,11 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Agent') {
                             return (
                                 <td>
-                                    <DisplayTeamMember name='Malick Lafia' />
+                                    <DisplayTeamMember 
+                                        onChange={handleChangeTeam}
+                                        data={dataTeamMember?.data} 
+                                        order={order}
+                                    />
                                 </td>
                             )
                         }
@@ -97,7 +143,10 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Up/Downsell') {
                             return (
                                 <td>
-                                    <DisplayUpDown name='Downsell' />
+                                    <DisplayUpDown 
+                                        onChange={handleChangeUpDown}
+                                        currentData={row}
+                                    />
                                 </td>
                             )
                         }
@@ -105,7 +154,10 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Source') {
                             return (
                                 <td>
-                                    <DisplaySource name='Facebook' />
+                                    <DisplaySource 
+                                        onChange={handleChangeSource}  
+                                        currentData={row}
+                                    />
                                 </td>
                             )
                         }
@@ -113,7 +165,11 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Changer') {
                             return (
                                 <td>
-                                    <DisplayChangeOuvrir name='Oui' />
+                                    <DisplayChangeOuvrir 
+                                        name='changer' 
+                                        onChange={handleChangeChanger}
+                                        currentData={row}
+                                    />
                                 </td>
                             )
                         }
@@ -121,7 +177,11 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Ouvrir') {
                             return (
                                 <td>
-                                    <DisplayChangeOuvrir name='Non' />
+                                    <DisplayChangeOuvrir 
+                                        name='ouvrir' 
+                                        onChange={handleChangeOuvrir}
+                                        currentData={row}
+                                    />
                                 </td>
                             )
                         }
@@ -138,8 +198,9 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                             return (
                                 <td>
                                     <DisplayStatus
+                                        currentData={row}
+                                        statusData={FilterStatusData(dataStatus?.data)}
                                         onChange={handleChangeStatus}
-                                        options={mock_status}
                                         name='Status'
                                     />
                                 </td>

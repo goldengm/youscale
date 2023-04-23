@@ -1,17 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { GetClientOrderModel, ProductOrder } from '../../../../models'
 
 interface Props {
-  name: string
+  currentData: GetClientOrderModel,
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => any,
 }
-export default function DisplaySource({ name }: Props): JSX.Element {
+export default function DisplaySource({ currentData, onChange }: Props): JSX.Element {
+  const [sourceData] = useState<string[]>([
+    'Facebook',
+    'WhatsApp',
+    'YouTube',
+    'TikTok',
+    'Snapchat',
+    'Google'
+  ])
+
   return (
     <select
+      onChange={onChange}
       className="select-custum"
     >
-      <option selected={true}>{name}</option>
-      <option value={1}>One</option>
-      <option value={2}>Two</option>
-      <option value={3}>Three</option>
+      <option value={0}>Aucun</option>
+      {sourceData.map((dt) => (<option selected={dt === currentData.Source} value={dt}>{dt}</option>))}
     </select>
   )
 }

@@ -1,19 +1,23 @@
 import React from 'react'
-import { OptionsType } from '../../../../models'
+import { GetClientOrderModel, StatusModel } from '../../../../models'
 
 interface Props {
+    statusData?: StatusModel[],
     name: string,
-    options: OptionsType[],
-    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => any
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => any,
+    currentData: GetClientOrderModel,
 }
-export default function DisplayStatus({ name, options, onChange }: Props): JSX.Element {
+export default function DisplayStatus( { name, onChange, statusData, currentData }: Props): JSX.Element {
     return (
         <select
             onChange={onChange}
             className="select-custum"
         >
             <option selected={true}>{name}</option>
-            { options.map((opn: OptionsType) => <option value={opn.value}>{opn.label}</option> ) }
+            {
+                statusData && statusData.map(
+                    (dt) => ( <option selected={dt.name === currentData.Status} value={dt.name}>{dt.name}</option> ))
+            }
         </select>
     )
 }

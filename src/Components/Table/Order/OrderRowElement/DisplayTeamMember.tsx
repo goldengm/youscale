@@ -1,17 +1,26 @@
 import React from 'react'
+import { GetTeamMemberModel } from '../../../../models'
 
 interface Props {
-  name: string
+  data?: GetTeamMemberModel[],
+  order: { id: number, id_city: number, id_team: number, createdAt: Date } | undefined,
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => any
 }
-export default function DisplayTeamMember({ name }: Props): JSX.Element {
+export default function DisplayTeamMember({ data, order, onChange }: Props): JSX.Element {
   return (
     <select
+      onChange={onChange}
       className="select-custum"
     >
-      <option selected={true}>{name}</option>
-      <option value={1}>One</option>
-      <option value={2}>Two</option>
-      <option value={3}>Three</option>
+      {
+        (data && order) &&
+        data.map(
+          (dt: any) => {
+            if (!dt.active && order.createdAt > dt.updatedAt) return
+            return <option selected={dt.id === order.id_team} className='form-select-option' value={dt.id}>{dt.name}</option>
+          }
+        )
+      }
     </select>
   )
 }

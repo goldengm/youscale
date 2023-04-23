@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { GetClientOrderModel, ProductOrder } from '../../../../models'
 
 interface Props {
-  name: string
+  currentData: GetClientOrderModel,
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => any
 }
-export default function DisplayUpDown({ name }: Props): JSX.Element {
+export default function DisplayUpDown({ onChange, currentData }: Props): JSX.Element {
+
+  const [Data] = useState<string[]>([
+    'UpSell',
+    'DownSell',
+  ])
+
   return (
     <select
-    className="select-custum"
+      onChange={onChange}
+      className="select-custum"
     >
-      <option selected={true}>{name}</option>
-      <option value={1}>One</option>
-      <option value={2}>Two</option>
-      <option value={3}>Three</option>
+
+      <option value={0}>Aucun</option>
+      {Data.map((dt) => (<option selected={dt === currentData['Up/Downsell']} value={dt}>{dt}</option>))}
     </select>
   )
 }
