@@ -10,3 +10,7 @@
 .search-bar-custum{
     width: 20rem;
 }
+
+.io-logo:hover{
+    cursor: pointer;
+}

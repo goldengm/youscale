@@ -3,8 +3,10 @@ import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
 import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal } from '../Modal/Order'
-import { ColumnModel, GetClientOrderModel, OptionsType, ProductOrder } from '../../../models'
+import { CityModel, ColumnModel, GetClientOrderModel, OptionsType, ProductOrder } from '../../../models'
 import './styles.css'
+import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
+import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi'
 
 const mock_status: OptionsType[] = [
     { label: 'Nouveau', value: 'Nouveau' },
@@ -22,6 +24,10 @@ interface RowProps {
 }
 export default function Row({ row, order, refetch, column }: RowProps): JSX.Element {
 
+    const { data: dataSetting } = useGetSettingQuery()
+    const { data: dataCity } = useGetCityQuery()
+    const [message] = useState(dataSetting?.data.automated_msg || '');
+
     const [showOrderModal, setShowOrderModal] = useState<boolean>(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false)
@@ -32,6 +38,24 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
 
         if (value === 'Reporte') setShowReportModal(true)
     }
+
+    const GetCityWhosFromSheet = (data: CityModel[] | undefined): CityModel[] => {
+        if (!data) return []
+
+        var newArr: CityModel[] = []
+
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].isFromSheet === true) {
+                newArr.push(data[i])
+            }
+        }
+
+        return newArr
+    }
+
+    const handleClick = (phone_number: string) => {
+        window.open(`https://wa.me/${phone_number}?text=${encodeURI(message)}`, "_blank");
+    };
 
     return (
         <tr className='tr-custum'>
@@ -54,8 +78,8 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Telephone') {
                             return (
                                 <td>
-                                    <IoLogoWhatsapp size={25} color={'green'} />
-                                    <a data-bs-toggle="modal" data-bs-target="#basicModal" href="javascript:void(0);">
+                                    <IoLogoWhatsapp className='io-logo' onClick={() => handleClick('+212' + row[formatDtName])} size={25} color={'green'} />
+                                    <a data-bs-toggle="modal" data-bs-target="#basicModal" href={`tel:+212${row[formatDtName]}`}>
                                         <strong>{row[formatDtName]}</strong>
                                     </a>
                                 </td>
@@ -105,7 +129,7 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Ville') {
                             return (
                                 <td>
-                                    <DisplayCity name='City' />
+                                    <DisplayCity refetch={refetch} name='id_city' data={order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : []} order={order && order}  />
                                 </td>
                             )
                         }
