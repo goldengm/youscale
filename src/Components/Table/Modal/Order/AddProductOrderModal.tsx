@@ -58,6 +58,22 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
     }
   }, [])
 
+  const handleCloseModal = () => {
+    var body = document.querySelector<HTMLBodyElement>('body');
+
+    if (body) {
+        body.classList.remove('modal-open');
+        body.style.overflow = '';
+        body.style.paddingRight = '';
+
+        var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
+    
+        if (existingBackdrop) existingBackdrop.forEach(it=> it.remove());
+
+        setShowModal(false)
+    }
+}
+
   const onSubmit = () => {
     if (selectedProduct.length === 0) {
       alert('Please select at least one product')
@@ -70,9 +86,8 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
 
     patchOrder({ ...data, id }).unwrap()
       .then(res => {
-        console.log(res)
         refetch()
-        setShowModal(false)
+        handleCloseModal()
       })
       .catch(err => alert(err.data.message))
   }
