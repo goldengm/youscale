@@ -3,7 +3,7 @@ import React from 'react'
 interface ModalWrapperProps {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-    children: JSX.Element | JSX.Element[],
+    children: JSX.Element | JSX.Element[] | any,
     title: string,
     id: string
 }

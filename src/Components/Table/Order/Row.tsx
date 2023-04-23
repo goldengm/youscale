@@ -35,7 +35,7 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
 
     return (
         <tr className='tr-custum'>
-            {showOrderModal && <AddProductOrderModal showModal={showOrderModal} setShowModal={setShowOrderModal} />}
+            {showOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} />}
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} />}
             {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} />}
@@ -173,7 +173,7 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                     <strong>View</strong>
                 </a>
             </td>
-            
+
             <td>
                 <div className="d-flex">
                     <a
