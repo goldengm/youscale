@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
 import './style.css'
 import { MdAttachMoney } from 'react-icons/md'
@@ -6,11 +6,8 @@ import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
 import { TbTruckDelivery } from 'react-icons/tb'
 import { BsFillPatchCheckFill } from 'react-icons/bs'
-import { ORDER_STATS_DATA, DATA_LINE } from '../../../services/mocks/mock-youscale-dashbord'
 import { CustomPie, CustomLine } from '../../Chart'
-import { DashbordModel, orderStatistic } from '../../../models'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity } from '../../../models'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
 
 interface Props {
@@ -35,9 +32,9 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                     />
                     <div className="row">
                         <Ads data={data.orderStatistic} />
-                        <Report />
-                        <BestSellingProduct />
-                        <BestCity />
+                        <Report dataOrder={data.orderReport} dataEarningNet={data.reportEarningNet} dataCost={data.costReport} dataRate={data.rateReport} />
+                        <BestSellingProductCard data={data.bestSellingProduct} />
+                        <BestCityCardComponent data={data.bestCity} />
                     </div>
                 </div>
             </div>
@@ -120,7 +117,7 @@ const Ads = ({ data }: AdsProps): JSX.Element => {
                         <p>Ads</p>
                         <div className="col-xl-6">
                             <div className="card-bx bg-blue ads-card">
-                                { (isSuccess && AdsData.data) && <img className="pattern-img" src={`data:image/jpeg;base64,${AdsData.data.image}`} alt="ads" /> }
+                                {(isSuccess && AdsData.data) && <img className="pattern-img" src={`data:image/jpeg;base64,${AdsData.data.image}`} alt="ads" />}
                             </div>
                         </div>
                         <div className="col-xl-6">
@@ -158,7 +155,13 @@ const Ads = ({ data }: AdsProps): JSX.Element => {
     )
 }
 
-const Report = (): JSX.Element => {
+interface ReportProps {
+    dataOrder: OrderReport,
+    dataCost: CostReport,
+    dataRate: RateReport,
+    dataEarningNet: reportEarningNet
+}
+const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps): JSX.Element => {
     let option = {
         responsive: true,
         plugins: {
@@ -168,6 +171,16 @@ const Report = (): JSX.Element => {
             }
         }
     }
+
+    const [dataChart, setDataChart] = useState<any>(dataOrder)
+    const [modeChart, setModeChart] = useState<string>('order')
+
+    useEffect(() => {
+        if (modeChart === 'order') setDataChart(dataOrder)
+        else if (modeChart === 'cost') setDataChart(dataCost)
+        else if (modeChart === 'earning') setDataChart(dataEarningNet)
+        else setDataChart(dataRate)
+    })
 
     return (
         <div className="col-xl-6 col-xxl-12">
@@ -180,6 +193,10 @@ const Report = (): JSX.Element => {
                         <ul className="nav nav-tabs" role="tablist">
                             <li className="nav-item">
                                 <a
+                                    onClick={() => {
+                                        setModeChart('order')
+                                        setDataChart(dataOrder)
+                                    }}
                                     className="nav-link active"
                                     data-bs-toggle="tab"
                                     href="#Order"
@@ -190,6 +207,10 @@ const Report = (): JSX.Element => {
                             </li>
                             <li className="nav-item">
                                 <a
+                                    onClick={() => {
+                                        setModeChart('earning')
+                                        setDataChart(dataEarningNet)
+                                    }}
                                     className="nav-link"
                                     data-bs-toggle="tab"
                                     href="#Earning"
@@ -200,6 +221,10 @@ const Report = (): JSX.Element => {
                             </li>
                             <li className="nav-item">
                                 <a
+                                    onClick={() => {
+                                        setModeChart('rate')
+                                        setDataChart(dataRate)
+                                    }}
                                     className="nav-link"
                                     data-bs-toggle="tab"
                                     href="#Rate"
@@ -210,6 +235,10 @@ const Report = (): JSX.Element => {
                             </li>
                             <li className="nav-item">
                                 <a
+                                    onClick={() => {
+                                        setModeChart('cost')
+                                        setDataChart(dataCost)
+                                    }}
                                     className="nav-link"
                                     data-bs-toggle="tab"
                                     href="#Cost"
@@ -222,7 +251,7 @@ const Report = (): JSX.Element => {
                     </div>
                 </div>
                 <div className="card-body tab-content">
-                    <CustomLine data={DATA_LINE} options={option} />
+                    <CustomLine data={dataChart} options={option} />
                 </div>
             </div>
         </div>
@@ -230,7 +259,10 @@ const Report = (): JSX.Element => {
     )
 }
 
-const BestSellingProduct = (): JSX.Element => {
+interface BestSellingProductProps {
+    data: BestSellingProduct[]
+}
+const BestSellingProductCard = ({ data }: BestSellingProductProps): JSX.Element => {
     return (
         <div className="col-xl-3 col-xxl-5">
             <div className="card">
@@ -240,28 +272,34 @@ const BestSellingProduct = (): JSX.Element => {
                     </div>
                 </div>
                 <div className="card-body">
-                    <BestSellingCard />
-                    <BestSellingCard />
-                    <BestSellingCard />
-                    <BestSellingCard />
+                    { data && data.map((product, index) => <BestSellingCard key={index} price={product.price} count={product.count} price_product={product.price_product} name={product.name} /> ) }
                 </div>
             </div>
         </div>
     )
 }
 
-const BestSellingCard = (): JSX.Element => {
+interface BestSellingCardProps {
+    name: string,
+    price: number,
+    count: number,
+    price_product: number
+}
+const BestSellingCard = ({ name, price, count, price_product }: BestSellingCardProps): JSX.Element => {
     return (
         <div className="d-flex align-items-end mt-2 pb-3 justify-content-between">
-            <span>IPhone 14</span>
+            <span>{name}</span>
             <span className="fs-18">
-                <span className="text-black pe-2">1500dhs/order </span>- 1 orders
+                <span className="text-black pe-2">{price_product}dhs/order </span>- {count} orders
             </span>
         </div>
     )
 }
 
-const BestCity = (): JSX.Element => {
+interface BestCityCardProps {
+    data: BestCity[]
+}
+const BestCityCardComponent = ({ data }:BestCityCardProps): JSX.Element => {
     return (
         <div className="col-xl-3 col-xxl-5">
             <div className="card">
@@ -271,22 +309,23 @@ const BestCity = (): JSX.Element => {
                     </div>
                 </div>
                 <div className="card-body">
-                    <BestCityCard />
-                    <BestCityCard />
-                    <BestCityCard />
-                    <BestCityCard />
+                    { data && data.map((city, index)=> <BestCityCard key={index} city={city.City_User.name} order={city.count} /> ) }
                 </div>
             </div>
         </div>
     )
 }
 
-const BestCityCard = (): JSX.Element => {
+interface BestCitiesProps{
+    city: string,
+    order: number
+}
+const BestCityCard = ({city, order}:BestCitiesProps): JSX.Element => {
     return (
         <div className="d-flex align-items-end mt-2 pb-3 justify-content-between">
-            <span>Dakar</span>
+            <span>{city}</span>
             <span className="fs-18">
-                <span className="text-black pe-2">1 order</span>
+                <span className="text-black pe-2">{order} order</span>
             </span>
         </div>
     )

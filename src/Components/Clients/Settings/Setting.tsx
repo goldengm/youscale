@@ -6,7 +6,7 @@ import './setting.style.css'
 
 export default function Setting() {
     return (
-        <Main name='Setting'>
+        <Main name='Setting' showDateFilter={false} showProductFilter={false} showTeamFilter={false}>
             <div className="content-body">
                 <div className="container-fluid">
                     <API />

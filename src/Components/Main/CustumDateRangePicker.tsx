@@ -8,7 +8,7 @@ interface CustomDateRangePickerProps {
     setDate?: React.Dispatch<React.SetStateAction<string[]>>,
     setUsingDate?: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function CustumDateRangePicker({}:CustomDateRangePickerProps) {
+export default function CustumDateRangePicker({ setDate, setUsingDate }: CustomDateRangePickerProps) {
     const [value, setValue] = useState<any>([new Date(), new Date()]);
 
     return (
@@ -16,8 +16,16 @@ export default function CustumDateRangePicker({}:CustomDateRangePickerProps) {
             closeCalendar={true}
             format={'dd-MM-y'}
             className={'calendar-custom'}
+            onChange={(val: any) => {
+                if (val === null) window.location.reload()
 
-            value={value} 
+                var dateFrom = val[0].toISOString().slice(0, 10)
+                var dateTo = val[1].toISOString().slice(0, 10)
+                setDate && setDate([dateFrom, dateTo])
+                setValue(val)
+                setUsingDate && setUsingDate(true)
+            }}
+            value={value}
         />
     )
 }
