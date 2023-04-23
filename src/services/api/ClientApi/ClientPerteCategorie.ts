@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { PerteCategorieModel } from '../../../models/models'
+import { PerteCategorieModel } from '../../../models'
 import { CLIENT_PERTECATEGORIE_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

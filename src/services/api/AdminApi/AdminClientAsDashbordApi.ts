@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ClientAsDashbordModel } from '../../../models/models'
+import { ClientAsDashbordModel } from '../../../models'
 import { ADMIN_CLIENT_AS_DASHBORD_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

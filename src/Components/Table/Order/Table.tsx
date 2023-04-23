@@ -3,11 +3,37 @@ import Row from './Row'
 import { AddOrderModal } from '../Modal/Order'
 import TableWrapper from './TableWrapper'
 import './styles.css'
+import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
+import { ColumnModel, GetClientOrderModel, ProductOrder } from '../../../models'
 
-const mock_column : string[] = ['Order Id', 'Date', 'Produit', 'Nom', 'Telephone', 'Ville', 'Prix', 'Status', 'Message', 'Adresse', 'Source', 'Agent', 'Last Action', 'Up/Downsell', 'Changer', 'Ouvrir', 'history']
+type Order = {
+    code: Number;
+    data: GetClientOrderModel[];
+    order: {
+        id: number;
+        id_city: number;
+        id_team: number;
+        Product_Orders: ProductOrder[];
+        createdAt: Date;
+    }[];
+} | undefined
 
-export default function Table(): JSX.Element {
+const GetColumn = (col: ColumnModel[] | undefined) : string[] =>{
+    if(!col) return []
+
+    var column : string[] = []
+
+    col.map(dt => dt.active && column.push(dt.name))
+
+    return [...column, 'history']
+}
+
+interface TableProps{
+    data: Order
+}
+export default function Table({ data }:TableProps): JSX.Element {
     const [showOrderModal, setShowOrderModal] = React.useState(false)
+    const { data: ColumnData , isSuccess } = useGetColumnQuery()
 
     return (
         <div className="col-12">
@@ -15,7 +41,7 @@ export default function Table(): JSX.Element {
 
             <div className="card">
                 <TableHeader setShowModal={setShowOrderModal} />
-                <TableWrapper column={mock_column}>
+                <TableWrapper column={GetColumn(ColumnData?.data)}>
                     <Row />
                     <Row />
                     <Row />

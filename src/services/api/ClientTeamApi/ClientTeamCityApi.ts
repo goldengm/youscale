@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CityModel } from '../../../models/models'
+import { CityModel } from '../../../models'
 import { CLIENT_TEAM_CITY_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

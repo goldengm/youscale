@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ResetPasswordModel } from '../../../models/models'
+import { ResetPasswordModel } from '../../../models'
 import { CLIENT_PASSWORD_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

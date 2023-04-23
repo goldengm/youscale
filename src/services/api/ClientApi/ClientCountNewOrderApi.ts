@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CountOrderModel } from '../../../models/models'
+import { CountOrderModel } from '../../../models'
 import { CLIENT_ORDER_NEW_COUNT_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

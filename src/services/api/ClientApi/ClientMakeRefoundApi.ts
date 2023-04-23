@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ClientMakeRefundModel } from '../../../models/models'
+import { ClientMakeRefundModel } from '../../../models'
 import { CLIENT_MAKEREFOUND_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

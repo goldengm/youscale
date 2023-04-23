@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { AdminReferenceModel } from '../../../models/models'
+import { AdminReferenceModel } from '../../../models'
 import { ADMIN_RELOADCLIENTACCOUNT_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

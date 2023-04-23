@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ClientLastPaymentModel } from '../../../models/models'
+import { ClientLastPaymentModel } from '../../../models'
 import { CLIENT_LASTPAYMENT_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

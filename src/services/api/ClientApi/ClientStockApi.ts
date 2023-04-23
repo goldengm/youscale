@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { StockModel, GetStockModel } from '../../../models/models'
+import { StockModel, GetStockModel } from '../../../models'
 import { CLIENT_STOCK_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

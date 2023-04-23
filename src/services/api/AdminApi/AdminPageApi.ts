@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { PageModel } from '../../../models/models'
+import { PageModel } from '../../../models'
 import { ADMIN_PAGE_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

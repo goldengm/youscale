@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ChangeSubscriptionModel } from '../../../models/models'
+import { ChangeSubscriptionModel } from '../../../models'
 import { CLIENT_SUBSCRIPTION_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

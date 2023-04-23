@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ColumnModel, ColumnPatchModel } from '../../../models/models'
+import { ColumnModel, ColumnPatchModel } from '../../../models'
 import { CLIENT_COLUMN_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

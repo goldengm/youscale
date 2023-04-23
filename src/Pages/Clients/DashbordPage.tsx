@@ -25,7 +25,7 @@ export default function DashbordPage(): JSX.Element {
   }, [product])
 
   useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam })
+    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam !==0 ? idTeam : undefined })
     refetch()
   }, [idTeam])
 

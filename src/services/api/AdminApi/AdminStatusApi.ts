@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { StatusModel, StatusPatchModel } from '../../../models/models'
+import { StatusModel, StatusPatchModel } from '../../../models'
 import { ADMIN_STATUS_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

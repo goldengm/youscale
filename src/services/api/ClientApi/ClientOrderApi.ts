@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ClientOrderModel, GetClientOrderModel, PatchClientOrderModel, ProductOrder, OrderQueryModel } from '../../../models/models'
+import { ClientOrderModel, GetClientOrderModel, PatchClientOrderModel, ProductOrder, OrderQueryModel } from '../../../models'
 import { CLIENT_ORDER_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ClientAccountModel } from '../../../models/models'
+import { ClientAccountModel } from '../../../models'
 import { CLIENT_ACCOUNT_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

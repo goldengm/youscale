@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { GetTeamMemberAsDashbordModel } from '../../../models/models'
+import { GetTeamMemberAsDashbordModel } from '../../../models'
 import { ADMIN_TEAMMEMBERASDAH_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

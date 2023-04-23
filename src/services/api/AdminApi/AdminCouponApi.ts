@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { AdminCouponModel } from '../../../models/models'
+import { AdminCouponModel } from '../../../models'
 import { ADMIN_COUPON_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

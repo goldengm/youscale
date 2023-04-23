@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { AdminBankInformationModel } from '../../../models/models'
+import { AdminBankInformationModel } from '../../../models'
 import { ADMIN_BANKINFORMATION_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

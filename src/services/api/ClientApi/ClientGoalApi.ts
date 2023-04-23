@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { GoalModel, addGoalModel } from '../../../models/models'
+import { GoalModel, addGoalModel } from '../../../models'
 import { CLIENT_GOAL_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

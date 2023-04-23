@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { AddAdminPerteModel } from '../../../models/models'
+import { AddAdminPerteModel } from '../../../models'
 import { ADMIN_PERTE_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

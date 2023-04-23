@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { AdminAnnoucementModel } from '../../../models/models'
+import { AdminAnnoucementModel } from '../../../models'
 import { CLIENT_ANNOUCEMENT_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

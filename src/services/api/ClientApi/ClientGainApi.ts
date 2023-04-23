@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { AddGainModel } from '../../../models/models'
+import { AddGainModel } from '../../../models'
 import { CLIENT_GAIN_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')

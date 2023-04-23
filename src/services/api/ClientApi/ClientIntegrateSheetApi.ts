@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { SheetIntegrationModel, GetSheetIntegrationModel } from '../../../models/models'
+import { SheetIntegrationModel, GetSheetIntegrationModel } from '../../../models'
 import { CLIENT_SHEET_INTEGRATION_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')
