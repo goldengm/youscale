@@ -36,7 +36,7 @@ export default function Order(): JSX.Element{
     }, [product])
   
     useEffect(() => {
-      setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined })
+      setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam !==0 ? idTeam : undefined })
       RefetchOrderClient()
     }, [idTeam])
 
@@ -44,7 +44,7 @@ export default function Order(): JSX.Element{
         <Main name={'Order'} showTeamFilter={true} setIdTeam={setIdTeam} setProduct={setProduct} usingDate={usingDate} showProductFilter={true} setDate={setDate} setUsingDate={setUsingDate} showDateFilter={true}>
             <div className="content-body">
                 <div className="container-fluid">
-                   <Table data={OrderClient} />
+                   <Table data={OrderClient} refetch={RefetchOrderClient} />
                 </div>
             </div>
         </Main>

@@ -533,7 +533,7 @@ export interface ClientOrderModel {
 
 export interface GetClientOrderModel {
     Order_id: number,
-    Date: Date,
+    Date: string,
     Produit: string,
     Nom: string,
     Telephone: string,
@@ -552,7 +552,8 @@ export interface GetClientOrderModel {
     Ouvrir: string,
     'Up/Downsell': string,
     createdAt?: Date,
-    updatedAt?: Date
+    updatedAt?: Date,
+    [key: string]: any;
 }
 
 export interface PatchClientOrderModel {

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Row from './Row'
 import { AddOrderModal } from '../Modal/Order'
 import TableWrapper from './TableWrapper'
 import './styles.css'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
 import { ColumnModel, GetClientOrderModel, ProductOrder } from '../../../models'
+import { RotatingLines } from 'react-loader-spinner'
 
 type Order = {
     code: Number;
@@ -12,28 +13,34 @@ type Order = {
     order: {
         id: number;
         id_city: number;
+        SheetId: string;
         id_team: number;
         Product_Orders: ProductOrder[];
+        reportedDate: string;
         createdAt: Date;
     }[];
 } | undefined
 
-const GetColumn = (col: ColumnModel[] | undefined) : string[] =>{
-    if(!col) return []
+const GetColumn = (col: ColumnModel[] | undefined): string[] => {
+    if (!col) return []
 
-    var column : string[] = []
+    var column: string[] = []
 
     col.map(dt => dt.active && column.push(dt.name))
 
     return [...column, 'history']
 }
 
-interface TableProps{
-    data: Order
+interface TableProps {
+    data: Order,
+    refetch: () => any
 }
-export default function Table({ data }:TableProps): JSX.Element {
+export default function Table({ data, refetch }: TableProps): JSX.Element {
     const [showOrderModal, setShowOrderModal] = React.useState(false)
-    const { data: ColumnData , isSuccess } = useGetColumnQuery()
+    const { data: ColumnData } = useGetColumnQuery()
+
+
+    const [id_orders, setIdOrders] = useState<number[]>()
 
     return (
         <div className="col-12">
@@ -42,9 +49,16 @@ export default function Table({ data }:TableProps): JSX.Element {
             <div className="card">
                 <TableHeader setShowModal={setShowOrderModal} />
                 <TableWrapper column={GetColumn(ColumnData?.data)}>
-                    <Row />
-                    <Row />
-                    <Row />
+                    {
+                        data ? data.data.map((dt, index) => <Row row={dt} refetch={refetch} order={data.order[index]} column={ColumnData?.data} />) :
+                            <RotatingLines
+                                strokeColor="grey"
+                                strokeWidth="3"
+                                animationDuration="0.75"
+                                width="50"
+                                visible={true}
+                            />
+                    }
                 </TableWrapper>
             </div>
         </div>
@@ -54,7 +68,7 @@ export default function Table({ data }:TableProps): JSX.Element {
 interface TableHeaderProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const TableHeader = ({setShowModal}: TableHeaderProps): JSX.Element => {
+const TableHeader = ({ setShowModal }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
             <AddOrderBtn setShowModal={setShowModal} />
@@ -68,13 +82,13 @@ const TableHeader = ({setShowModal}: TableHeaderProps): JSX.Element => {
 interface AddOrderBtnProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const AddOrderBtn = ( { setShowModal }: AddOrderBtnProps ): JSX.Element => {
+const AddOrderBtn = ({ setShowModal }: AddOrderBtnProps): JSX.Element => {
     return (
-        <a 
-            onClick={ () => setShowModal(true) }
-            type="button" 
-            className="btn btn-primary mb-2" 
-            >Add order
+        <a
+            onClick={() => setShowModal(true)}
+            type="button"
+            className="btn btn-primary mb-2"
+        >Add order
         </a>
     )
 }

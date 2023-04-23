@@ -8,7 +8,7 @@ export const ClientOrderApi = createApi({
     reducerPath: 'ClientOrderApi',
     baseQuery: fetchBaseQuery({baseUrl: CLIENT_ORDER_URL}),
     endpoints: (builder) =>({
-        getClientOrder : builder.query<{code: Number, data:GetClientOrderModel[], order: {id: number, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date}[]}, OrderQueryModel>({
+        getClientOrder : builder.query<{code: Number, data:GetClientOrderModel[], order: {id: number, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, SheetId: string, reportedDate: string}[]}, OrderQueryModel>({
             query:(arg) => ({
                 method: 'GET',
                 url: '/',
