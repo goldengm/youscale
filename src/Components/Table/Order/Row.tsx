@@ -3,7 +3,7 @@ import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
 import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal } from '../Modal/Order'
-import { CityModel, ColumnModel, GetClientOrderModel, OptionsType, ProductOrder, StatusModel } from '../../../models'
+import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel } from '../../../models'
 import './styles.css'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi'
@@ -104,7 +104,7 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
             {showOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} />}
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} />}
-            {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} />}
+            {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal}  refetch={refetch} item={row} />}
 
             <td></td>
 
@@ -197,6 +197,7 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Status') {
                             return (
                                 <td>
+                                    {order?.reportedDate && <span className="badge badge-pill badge-info">{order?.reportedDate}</span>}
                                     <DisplayStatus
                                         currentData={row}
                                         statusData={FilterStatusData(dataStatus?.data)}
