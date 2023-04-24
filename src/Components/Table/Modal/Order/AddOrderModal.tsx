@@ -8,6 +8,9 @@ import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityAp
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi'
 import { useGetStatusQuery } from '../../../../services/api/ClientApi/ClientStatusApi'
 import { MultiSelectElement } from '../../../Input'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 
 const GetCityWhosNotFromSheet = (data: CityModel[] | undefined): CityModel[] => {
   if (!data) return []
@@ -22,6 +25,34 @@ const GetCityWhosNotFromSheet = (data: CityModel[] | undefined): CityModel[] => 
 
   return newArr
 }
+
+type Inputs = {
+  destinataire: string,
+  telephone: string,
+  prix: string,
+  adresse: string,
+  commentaire: string,
+  ville: string,
+  status: string,
+  source: string,
+  up_downsell: string,
+  changer: string,
+  ouvrir: string
+};
+
+const schema = yup.object().shape({
+  destinataire: yup.string().required('Ce champ est obligatoire'),
+  telephone: yup.string().required('Ce champ est obligatoire'),
+  prix: yup.string().required('Ce champ est obligatoire'),
+  adresse: yup.string().required('Ce champ est obligatoire'),
+  commentaire: yup.string().required('Ce champ est obligatoire'),
+  ville: yup.string().required('Ce champ est obligatoire'),
+  status: yup.string().required('Ce champ est obligatoire'),
+  source: yup.string().required('Ce champ est obligatoire'),
+  up_downsell: yup.string().required('Ce champ est obligatoire'),
+  changer: yup.string().required('Ce champ est obligatoire'),
+  ouvrir: yup.string().required('Ce champ est obligatoire'),
+}).required();
 
 interface Props {
   showModal: boolean,
@@ -60,6 +91,10 @@ const FormBody = () => {
   const { data: CityData, isSuccess: CitySuccess } = useGetCityQuery()
   const { data: ProductData, isSuccess: ProductSuccess } = useGetProductQuery()
   const { data: StatusData, isSuccess: StatusSuccess, refetch: RefetchStatus } = useGetStatusQuery()
+
+  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    resolver: yupResolver(schema),
+  });
 
   useEffect(() => {
     RefetchStatus()
@@ -106,7 +141,15 @@ const FormBody = () => {
     return objArr
   }
 
-  const onSubmit = () => {
+  const FilterStatusData = (data: StatusModel[] | undefined) => {
+    if (!data) return []
+    var newArr = data.filter((dt: StatusModel) => dt.checked === true)
+    return newArr
+  }
+
+  const onSubmit = (values: Inputs) => {
+    console.log(values)
+
     if (selectedProduct.length === 0) {
       alert('Please select at least one product')
       return
@@ -118,31 +161,98 @@ const FormBody = () => {
 
   }
 
-  const FilterStatusData = (data: StatusModel[] | undefined) => {
-    if (!data) return []
-    var newArr = data.filter((dt: StatusModel) => dt.checked === true)
-    return newArr
-  }
-
   return (
     <div className="card-body">
       <div className="basic-form">
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-            <CustumInput type={'text'} label={"Destinataire"} placeholder={'Patrick Doe'} />
-            <CustumInput type={'text'} label={"Telephone"} placeholder={'778143610'} />
-            <CustumInput type={'text'} label={"Prix"} placeholder={'36540'} />
-            <CustumInput type={'text'} label={"Adresse"} placeholder={'Bl 4 st.Jean'} />
-            <CustumTextArea label={"Commentaire"} />
+            <CustumInput
+              register={register}
+              name={'destinataire'}
+              error={errors.destinataire}
+              type={'text'}
+              label={"Destinataire"}
+              placeholder={'Patrick Doe'}
+            />
+
+            <CustumInput
+              register={register}
+              name={'telephone'}
+              error={errors.telephone}
+              type={'text'}
+              label={"Telephone"}
+              placeholder={'778143610'}
+            />
+
+            <CustumInput
+              register={register}
+              name={'prix'}
+              error={errors.prix}
+              type={'text'}
+              label={"Prix"}
+              placeholder={'36540'}
+            />
+
+            <CustumInput
+              register={register}
+              name={'adresse'}
+              error={errors.adresse}
+              type={'text'}
+              label={"Adresse"}
+              placeholder={'Bl 4 st.Jean'}
+            />
+
+            <CustumTextArea
+              register={register}
+              name={'commentaire'}
+              error={errors.commentaire}
+              label={"Commentaire"}
+            />
           </div>
 
           <div className="row">
-            <CustumSelectForm label={"Ville"} name={'city'} />
-            <CustumSelectForm label={"Status"} name={'status'} />
-            <CustumSelectForm label={"Source"} name={'source'} />
-            <CustumSelectForm label={"Up/Downsell"} name={'updownsell'} />
-            <CustumSelectForm label={"Changer"} name={'changer'} />
-            <CustumSelectForm label={"Ouvrir"} name={'ouvrir'} />
+            <CustumSelectForm
+              register={register}
+              error={errors.ville}
+              label={"Ville"}
+              name={'ville'}
+            />
+
+            <CustumSelectForm
+              register={register}
+              error={errors.status}
+              label={"Status"}
+              name={'status'}
+            />
+
+            <CustumSelectForm
+              register={register}
+              error={errors.source}
+              label={"Source"}
+              name={'source'}
+            />
+
+            <CustumSelectForm
+              register={register}
+              error={errors.up_downsell}
+              label={"Up/Downsell"}
+              name={'up_downsell'}
+            />
+
+            <CustumSelectForm
+              register={register}
+              error={errors.changer}
+              label={"Changer"}
+              name={'changer'}
+            />
+
+            <CustumSelectForm
+              register={register}
+              error={errors.ouvrir}
+              label={"Ouvrir"}
+              name={'ouvrir'}
+            />
+
           </div>
 
           <div className="row">
