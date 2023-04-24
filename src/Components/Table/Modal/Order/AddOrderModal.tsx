@@ -35,29 +35,29 @@ const GetCityWhosNotFromSheet = (data: CityModel[] | undefined): SelectType[] =>
 }
 
 type Inputs = {
-  destinataire: string,
+  nom: string,
   telephone: string,
   prix: string,
   adresse: string,
-  commentaire: string,
-  ville: string,
+  message: string,
+  id_city: string,
   status: string,
   source: string,
-  up_downsell: string,
+  updownsell: string,
   changer: string,
   ouvrir: string
 };
 
 const schema = yup.object().shape({
-  destinataire: yup.string().required('Ce champ est obligatoire'),
+  nom: yup.string().required('Ce champ est obligatoire'),
   telephone: yup.string().required('Ce champ est obligatoire'),
   prix: yup.string().required('Ce champ est obligatoire'),
   adresse: yup.string().required('Ce champ est obligatoire'),
-  commentaire: yup.string().notRequired(),
-  ville: yup.string().required('Ce champ est obligatoire'),
+  message: yup.string().notRequired(),
+  id_city: yup.string().required('Ce champ est obligatoire'),
   status: yup.string().required('Ce champ est obligatoire'),
   source: yup.string().required('Ce champ est obligatoire'),
-  up_downsell: yup.string().required('Ce champ est obligatoire'),
+  updownsell: yup.string().required('Ce champ est obligatoire'),
   changer: yup.string().required('Ce champ est obligatoire'),
   ouvrir: yup.string().required('Ce champ est obligatoire'),
 }).required();
@@ -67,7 +67,7 @@ interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
   refetch: () => any
 }
-export default function AddOrderModal({ showModal, setShowModal }: Props): JSX.Element {
+export default function AddOrderModal({ showModal, setShowModal, refetch }: Props): JSX.Element {
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
@@ -84,21 +84,41 @@ export default function AddOrderModal({ showModal, setShowModal }: Props): JSX.E
     }
   }, [])
 
+  const handleCloseModal = () => {
+    var body = document.querySelector<HTMLBodyElement>('body');
+
+    if (body) {
+      body.classList.remove('modal-open');
+      body.style.overflow = '';
+      body.style.paddingRight = '';
+
+      var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
+
+      if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
+
+      setShowModal(false)
+    }
+  }
+
   return (
     <ModalWrapper showModal={showModal} title={'Add order'} setShowModal={setShowModal} id='AddOrderModal'>
-      <FormBody />
+      <FormBody refetch={refetch} handleCloseModal={handleCloseModal} />
     </ModalWrapper>
   )
 }
 
-const FormBody = () => {
+interface FormBodyProps{
+  refetch: () => any,
+  handleCloseModal: () => void
+}
+const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
   const [addOrder] = useAddClientOrderMutation()
 
   const [selectedProduct, setSelectedProduct] = useState<{ label: string, value: number | undefined, quantity: number, variant: string[], allVariant: string[] | undefined }[]>([]);
 
-  const { data: CityData, isSuccess: CitySuccess } = useGetCityQuery()
+  const { data: CityData } = useGetCityQuery()
   const { data: ProductData, isSuccess: ProductSuccess } = useGetProductQuery()
-  const { data: StatusData, isSuccess: StatusSuccess, refetch: RefetchStatus } = useGetStatusQuery()
+  const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
 
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
     resolver: yupResolver(schema),
@@ -165,7 +185,6 @@ const FormBody = () => {
   }
 
   const onSubmit = (values: Inputs) => {
-    console.log(values)
 
     if (selectedProduct.length === 0) {
       alert('Please select at least one product')
@@ -173,8 +192,17 @@ const FormBody = () => {
     }
 
     const data = {
+      ...values,
       id_product_array: FormatAccessArray(selectedProduct)
     }
+
+    addOrder(data).unwrap()
+      .then(res => {
+        console.log(res)
+        refetch()
+        handleCloseModal()
+      })
+      .catch(err => alert(err.data.message))
 
   }
 
@@ -185,8 +213,8 @@ const FormBody = () => {
           <div className="row">
             <CustumInput
               register={register}
-              name={'destinataire'}
-              error={errors.destinataire}
+              name={'nom'}
+              error={errors.nom}
               type={'text'}
               label={"Destinataire"}
               placeholder={'Patrick Doe'}
@@ -221,9 +249,9 @@ const FormBody = () => {
 
             <CustumTextArea
               register={register}
-              name={'commentaire'}
-              error={errors.commentaire}
-              label={"Commentaire"}
+              name={'message'}
+              error={errors.message}
+              label={"Message"}
             />
           </div>
 
@@ -231,9 +259,9 @@ const FormBody = () => {
             <CustumSelectForm
               data={GetCityWhosNotFromSheet(CityData?.data)}
               register={register}
-              error={errors.ville}
+              error={errors.id_city}
               label={"Ville"}
-              name={'ville'}
+              name={'id_city'}
             />
 
             <CustumSelectForm
@@ -255,9 +283,9 @@ const FormBody = () => {
             <CustumSelectForm
               data={upDownData}
               register={register}
-              error={errors.up_downsell}
+              error={errors.updownsell}
               label={"Up/Downsell"}
-              name={'up_downsell'}
+              name={'updownsell'}
             />
 
             <CustumSelectForm
