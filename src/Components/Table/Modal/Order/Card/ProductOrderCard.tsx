@@ -4,13 +4,16 @@ import { MultiSelectElement } from '../../../../Input'
 interface Props {
     title: string,
     index: number,
-    setSelectedProduct: React.Dispatch<React.SetStateAction<{
+    setSelectedProduct: 
+    
+    React.Dispatch<React.SetStateAction<{
         label: string;
         value: number | undefined;
         quantity: number;
         variant: string[];
         allVariant: string[] | undefined;
-    }[]>>,
+    }[]>>
+    ,
     selectedProduct: {
         label: string;
         value: number | undefined;

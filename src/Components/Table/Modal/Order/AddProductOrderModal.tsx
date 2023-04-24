@@ -62,17 +62,17 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
     var body = document.querySelector<HTMLBodyElement>('body');
 
     if (body) {
-        body.classList.remove('modal-open');
-        body.style.overflow = '';
-        body.style.paddingRight = '';
+      body.classList.remove('modal-open');
+      body.style.overflow = '';
+      body.style.paddingRight = '';
 
-        var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
-    
-        if (existingBackdrop) existingBackdrop.forEach(it=> it.remove());
+      var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
 
-        setShowModal(false)
+      if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
+
+      setShowModal(false)
     }
-}
+  }
 
   const onSubmit = () => {
     if (selectedProduct.length === 0) {
@@ -96,7 +96,16 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
     <ModalWrapper showModal={showModal} title={'Add product to order'} setShowModal={setShowModal} id='addProductToOrder'>
       {isSuccess ? <MultiSelectElement options={FormatDataOption(ProductData?.data)} selected={selectedProduct} onChange={setSelectedProduct} /> : <></>}
 
-      {selectedProduct.map((dt, index) => <ProductOrderCard key={index} dt={dt} index={index} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} title={dt.label} />)}
+      {selectedProduct.map((dt, index) =>
+        <ProductOrderCard
+          key={index}
+          dt={dt}
+          index={index}
+          selectedProduct={selectedProduct}
+          setSelectedProduct={setSelectedProduct}
+          title={dt.label}
+        />
+      )}
 
       <SendButton value='Valider' onClick={onSubmit} />
     </ModalWrapper>

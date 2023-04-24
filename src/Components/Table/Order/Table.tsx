@@ -44,7 +44,7 @@ export default function Table({ data, refetch }: TableProps): JSX.Element {
 
     return (
         <div className="col-12">
-            {showOrderModal && <AddOrderModal showModal={showOrderModal} setShowModal={setShowOrderModal} />}
+            {showOrderModal && <AddOrderModal refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
 
             <div className="card">
                 <TableHeader setShowModal={setShowOrderModal} />
