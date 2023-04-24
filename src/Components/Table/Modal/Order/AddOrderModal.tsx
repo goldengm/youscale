@@ -12,14 +12,22 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
-const GetCityWhosNotFromSheet = (data: CityModel[] | undefined): CityModel[] => {
+type SelectType = {
+  label: string,
+  value: string | number
+}
+
+const GetCityWhosNotFromSheet = (data: CityModel[] | undefined): SelectType[] => {
   if (!data) return []
 
-  var newArr: CityModel[] = []
+  var newArr: SelectType[] = [{ label: 'none', value: 'none' }]
 
   for (let i = 0; i < data.length; i++) {
     if (data[i].isFromSheet === false) {
-      newArr.push(data[i])
+      newArr.push({
+        value: data[i].id ?? 0,
+        label: data[i].name
+      })
     }
   }
 
@@ -45,7 +53,7 @@ const schema = yup.object().shape({
   telephone: yup.string().required('Ce champ est obligatoire'),
   prix: yup.string().required('Ce champ est obligatoire'),
   adresse: yup.string().required('Ce champ est obligatoire'),
-  commentaire: yup.string().required('Ce champ est obligatoire'),
+  commentaire: yup.string().notRequired(),
   ville: yup.string().required('Ce champ est obligatoire'),
   status: yup.string().required('Ce champ est obligatoire'),
   source: yup.string().required('Ce champ est obligatoire'),
@@ -100,24 +108,27 @@ const FormBody = () => {
     RefetchStatus()
   }, [])
 
-  const [sourceData] = useState<{ name: string }[]>([
-    { name: 'Facebook' },
-    { name: 'WhatsApp' },
-    { name: 'YouTube' },
-    { name: 'TikTok' },
-    { name: 'Snapchat' },
-    { name: 'Google' }
+  const [sourceData] = useState<SelectType[]>([
+    { label: 'none', value: 'none' },
+    { label: 'Facebook', value: 'Facebook' },
+    { label: 'WhatsApp', value: 'WhatsApp' },
+    { label: 'YouTube', value: 'YouTube' },
+    { label: 'TikTok', value: 'TikTok' },
+    { label: 'Snapchat', value: 'Snapchat' },
+    { label: 'Google', value: 'Google' }
   ])
 
-  const [upDownData] = useState<{ name: string }[]>([
-    { name: 'UpSell' },
-    { name: 'DownSell' },
-    { name: 'CrossSell' }
+  const [upDownData] = useState<SelectType[]>([
+    { label: 'none', value: 'none' },
+    { label: 'UpSell', value: 'UpSell' },
+    { label: 'DownSell', value: 'UpSell' },
+    { label: 'CrossSell', value: 'UpSell' }
   ])
 
-  const changerOuvrirData = [
-    { name: 'Oui' },
-    { name: 'Non' }
+  const changerOuvrirData: SelectType[] = [
+    { label: 'none', value: 'none' },
+    { label: 'Oui', value: 'Oui' },
+    { label: 'Non', value: 'Non' }
   ]
 
   const FormatDataOption = (data: any) => {
@@ -141,9 +152,15 @@ const FormBody = () => {
     return objArr
   }
 
-  const FilterStatusData = (data: StatusModel[] | undefined) => {
+  const FilterStatusData = (data: StatusModel[] | undefined): SelectType[] => {
     if (!data) return []
-    var newArr = data.filter((dt: StatusModel) => dt.checked === true)
+
+    var newArr: SelectType[] = [{ label: 'none', value: 'none' }]
+
+    data.filter((dt: StatusModel) => {
+      if (dt.checked === true) newArr.push({ label: dt.name, value: dt.id ?? '' })
+    })
+
     return newArr
   }
 
@@ -212,6 +229,7 @@ const FormBody = () => {
 
           <div className="row">
             <CustumSelectForm
+              data={GetCityWhosNotFromSheet(CityData?.data)}
               register={register}
               error={errors.ville}
               label={"Ville"}
@@ -219,6 +237,7 @@ const FormBody = () => {
             />
 
             <CustumSelectForm
+              data={FilterStatusData(StatusData?.data)}
               register={register}
               error={errors.status}
               label={"Status"}
@@ -226,6 +245,7 @@ const FormBody = () => {
             />
 
             <CustumSelectForm
+              data={sourceData}
               register={register}
               error={errors.source}
               label={"Source"}
@@ -233,6 +253,7 @@ const FormBody = () => {
             />
 
             <CustumSelectForm
+              data={upDownData}
               register={register}
               error={errors.up_downsell}
               label={"Up/Downsell"}
@@ -240,6 +261,7 @@ const FormBody = () => {
             />
 
             <CustumSelectForm
+              data={changerOuvrirData}
               register={register}
               error={errors.changer}
               label={"Changer"}
@@ -247,6 +269,7 @@ const FormBody = () => {
             />
 
             <CustumSelectForm
+              data={changerOuvrirData}
               register={register}
               error={errors.ouvrir}
               label={"Ouvrir"}
