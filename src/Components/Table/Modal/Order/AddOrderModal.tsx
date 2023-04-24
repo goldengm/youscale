@@ -175,10 +175,10 @@ const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
   const FilterStatusData = (data: StatusModel[] | undefined): SelectType[] => {
     if (!data) return []
 
-    var newArr: SelectType[] = [{ label: 'none', value: 'none' }]
+    var newArr: SelectType[] = []
 
     data.filter((dt: StatusModel) => {
-      if (dt.checked === true) newArr.push({ label: dt.name, value: dt.id ?? '' })
+      if (dt.checked === true) newArr.push({ label: dt.name, value: dt.name })
     })
 
     return newArr
