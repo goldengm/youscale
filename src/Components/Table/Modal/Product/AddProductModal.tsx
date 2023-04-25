@@ -2,13 +2,41 @@ import React, { useEffect, useState } from 'react'
 import { CustumInput } from '../../../Forms'
 import { MultiSelectElement } from '../../../Input'
 import ModalWrapper from '../ModalWrapper'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 import './product.style.css'
+import { VariantModel } from '../../../../models';
+import { useAddVariantMutation, useGetVariantQuery } from '../../../../services/api/ClientApi/ClientVariantApi';
+import { useAddProductMutation } from '../../../../services/api/ClientApi/ClientProductApi';
+
+type Inputs = {
+    name: string,
+    price_selling: string
+};
+
+const schema = yup.object().shape({
+    name: yup.string().required('Ce champ est obligatoire'),
+    price_selling: yup.string().required('Ce champ est obligatoire')
+}).required();
+
+const clearVariant = (variants: { label: string, value: string }[]) => {
+    const filterVariants = variants.map(vr => vr.value)
+    return filterVariants
+}
+
+const FormatVariant = (variants: VariantModel[] | undefined) => {
+    if (!variants) return []
+    const formatVariants = variants.map(vr => ({ label: vr.name, value: vr.name }))
+    return formatVariants
+}
 
 interface Props {
     showModal: boolean,
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+    refetch: () => any
 }
-export default function AddProductModal({ showModal, setShowModal }: Props): JSX.Element {
+export default function AddProductModal({ showModal, setShowModal, refetch }: Props): JSX.Element {
 
     useEffect(() => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -25,33 +53,89 @@ export default function AddProductModal({ showModal, setShowModal }: Props): JSX
         }
     }, [])
 
+    const handleCloseModal = () => {
+        var body = document.querySelector<HTMLBodyElement>('body');
+
+        if (body) {
+            body.classList.remove('modal-open');
+            body.style.overflow = '';
+            body.style.paddingRight = '';
+
+            var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
+
+            if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
+
+            setShowModal(false)
+        }
+    }
+
     return (
         <ModalWrapper title={'Add Product'} showModal={showModal} setShowModal={setShowModal} id='AddProductModal'>
-            <FormBody />
+            <FormBody handleCloseModal={handleCloseModal} refetch={refetch} setShowModal={setShowModal} />
         </ModalWrapper>
     )
 }
 
-const FormBody = () => {
+interface FormBodyProps{
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+    refetch: () => any,
+    handleCloseModal: () => any
+}
+const FormBody = ({setShowModal, refetch, handleCloseModal}: FormBodyProps) => {
     const [selected, setSelected] = useState<[]>([]);
 
-    const options = [
-        { label: "Grapes", value: "grapes" },
-        { label: "Mango", value: "mango" },
-        { label: "Strawberry", value: "strawberry", disabled: true },
-    ];
+    const [addProd] = useAddProductMutation()
+    const { data: variantData, refetch: refetchVariant } = useGetVariantQuery()
+
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        resolver: yupResolver(schema),
+    });
+
+    const onSubmit = (values: Inputs) => {
+        const data = {
+            ...values,
+            variant: clearVariant(selected),
+        }
+
+        addProd(data).unwrap()
+            .then(res => {
+                console.log(res)
+                refetch()
+                handleCloseModal()
+            })
+            .catch(err => alert(err.data.message))
+    }
 
     return (
         <div className="card-body">
             <div className="basic-form">
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
-                        <CustumInput type={'text'} label={"Name"} placeholder={'Nivea'} />
-                        <CustumInput type={'text'} label={"Price of buying"} placeholder={'12.55'} />
+                        <CustumInput
+                            register={register}
+                            name={'name'}
+                            error={errors.name}
+                            type={'text'}
+                            label={"Name"}
+                            placeholder={'Nivea'}
+                        />
+
+                        <CustumInput
+                            register={register}
+                            name={'price_selling'}
+                            error={errors.price_selling}
+                            type={'text'}
+                            label={"Price of buying"}
+                            placeholder={'12.55'}
+                        />
                     </div>
-                    <AddVariant />
+                    <AddVariant refetchVariant={refetchVariant} />
                     <div className="row">
-                        <MultiSelectElement options={options} selected={selected} onChange={setSelected} />
+                        <MultiSelectElement
+                            options={FormatVariant(variantData?.data)}
+                            selected={selected}
+                            onChange={setSelected}
+                        />
                     </div>
 
                     <button type="submit" className="btn btn-primary add-btn">
@@ -63,11 +147,48 @@ const FormBody = () => {
     )
 }
 
-const AddVariant = (): JSX.Element => {
+interface AddVariantProps {
+    refetchVariant: () => any
+}
+const AddVariant = ({ refetchVariant }: AddVariantProps): JSX.Element => {
+
+    const [addVariant] = useAddVariantMutation()
+    const [variant, setVariant] = useState<string>('')
+
+    const handleChangeVariant = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+        setVariant(value)
+    }
+
+    const handleAddVariant = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
+
+        if (variant === '') return
+        addVariant({ name: variant }).unwrap()
+            .then((res: any) => {
+                refetchVariant()
+                setVariant('')
+            })
+            .catch((err: any) => alert(err.data.message))
+
+    }
+
     return (
         <div className="row variant-row">
-            <CustumInput type={'text'} label={"Variant"} placeholder={'Mountain'} />
-            <button type="button" className="btn btn-outline-primary btn-xs add-variant-btn">
+            <CustumInput
+                onChange={handleChangeVariant}
+                name={'variant'}
+                error={undefined}
+                register={() => console.log('nothing')}
+                type={'text'}
+                label={"Variant"}
+                placeholder={'Mountain'}
+            />
+            <button
+                onClick={handleAddVariant}
+                type="button"
+                className="btn btn-outline-primary btn-xs add-variant-btn"
+            >
                 Add
             </button>
         </div>

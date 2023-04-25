@@ -1,14 +1,16 @@
 import React from 'react'
+import { GetProductModel } from '../../../models'
 
 interface Props{
-    setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>   
+    setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>,
+    data: GetProductModel | undefined
 }
-export default function ProductRow({ setShowEditModal }:Props): JSX.Element {
+export default function ProductRow({ setShowEditModal, data }:Props): JSX.Element {
     return (
         <tr>
-            <th>1</th>
-            <td>Kolor Tea Shirt For Man</td>
-            <td>1200 dhs</td>
+            <th>{data?.id}</th>
+            <td>{data?.name}</td>
+            <td>{data?.price_selling} dhs</td>
             <td>
                 <div className="d-flex">
                     <a
@@ -18,6 +20,7 @@ export default function ProductRow({ setShowEditModal }:Props): JSX.Element {
                     >
                         <i className="fas fa-pencil-alt" />
                     </a>
+
                     <a href="#" className="btn btn-danger shadow btn-xs sharp">
                         <i className="fa fa-trash" />
                     </a>

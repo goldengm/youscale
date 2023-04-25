@@ -2,7 +2,7 @@ import React from 'react'
 
 interface Props{
     title: string,
-    children: JSX.Element | JSX.Element[] ,
+    children: JSX.Element | JSX.Element[] | any,
     column: string[],
     AddBtn: JSX.Element
 }

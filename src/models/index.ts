@@ -54,9 +54,9 @@ export interface ClientModel {
 export interface ProductModel {
     id?: number,
     name: string,
-    price_selling: number,
-    price_buying?: number,
-    price_best_selling?: number,
+    price_selling: string,
+    price_buying?: string,
+    price_best_selling?: string,
     variant?: string[]
 }
 
