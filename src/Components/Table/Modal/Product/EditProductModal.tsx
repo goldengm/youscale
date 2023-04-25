@@ -2,13 +2,48 @@ import React, { useEffect, useState } from 'react'
 import { CustumInput } from '../../../Forms'
 import { MultiSelectElement } from '../../../Input'
 import ModalWrapper from '../ModalWrapper'
+import { GetProductModel, VariantModel } from '../../../../models'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 import './product.style.css'
+import { useGetVariantQuery } from '../../../../services/api/ClientApi/ClientVariantApi'
+import { usePatchProductMutation } from '../../../../services/api/ClientApi/ClientProductApi'
+
+type Inputs = {
+    name: string,
+    price_selling: string
+};
+
+const schema = yup.object().shape({
+    name: yup.string().notRequired(),
+    price_selling: yup.string().notRequired()
+}).required();
+
+const clearVariant = (variants: { label: string, value: string }[]) => {
+    const filterVariants = variants.map(vr => vr.value)
+    return filterVariants
+}
+
+const FormatVariantArray = (variants: string[]) => {
+    const formatVariants = variants.map(vr => ({ label: vr, value: vr }))
+    return formatVariants
+}
+
+const FormatVariant = (variants: VariantModel[] | undefined) => {
+    if (!variants) return []
+
+    const formatVariants = variants.map(vr => ({ label: vr.name, value: vr.name }))
+    return formatVariants
+}
 
 interface Props {
     showModal: boolean,
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+    refetch: ()=> any,
+    item: GetProductModel | undefined
 }
-export default function EditProductModal({ showModal, setShowModal }: Props): JSX.Element {
+export default function EditProductModal({ showModal, setShowModal, refetch, item }: Props): JSX.Element {
 
     useEffect(() => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -25,33 +60,96 @@ export default function EditProductModal({ showModal, setShowModal }: Props): JS
         }
     }, [])
 
+    const handleCloseModal = () => {
+        var body = document.querySelector<HTMLBodyElement>('body');
+
+        if (body) {
+            body.classList.remove('modal-open');
+            body.style.overflow = '';
+            body.style.paddingRight = '';
+
+            var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
+
+            if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
+
+            setShowModal(false)
+        }
+    }
+
     return (
         <ModalWrapper title={'Edit product'} showModal={showModal} setShowModal={setShowModal} id='AddProductModal'>
-            <FormBody />
+            <FormBody item={item} handleCloseModal={handleCloseModal} refetch={refetch}  />
         </ModalWrapper>
     )
 }
 
-const FormBody = () => {
-    const [selected, setSelected] = useState<[]>([]);
+interface FormBodyProps {
+    item: GetProductModel | undefined,
+    refetch: ()=> any,
+    handleCloseModal: () => void
+}
+const FormBody = ({ item, refetch, handleCloseModal }: FormBodyProps) => {
+    const [patchProd] = usePatchProductMutation()
 
-    const options = [
-        { label: "Grapes", value: "grapes" },
-        { label: "Mango", value: "mango" },
-        { label: "Strawberry", value: "strawberry", disabled: true },
-    ];
+    const [selected, setSelected] = useState<{ label: string, value: string }[]>(
+        item ? FormatVariantArray(item.variant) : []
+    );
+
+    const { data: variantData } = useGetVariantQuery()
+
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        resolver: yupResolver(schema),
+    });
+
+    const onSubmit = (values: Inputs) => {
+
+        const data = {
+            id: item ? item.id : 0,
+            variant: clearVariant(selected),
+            ...values
+        }
+
+        patchProd(data).unwrap()
+            .then(res => {
+                console.log(res)
+                refetch()
+                handleCloseModal()
+            })
+            .catch(err => alert(err.data.message))
+    }
 
     return (
         <div className="card-body">
             <div className="basic-form">
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
-                        <CustumInput type={'text'} label={"Name"} placeholder={'Nivea'} />
-                        <CustumInput type={'text'} label={"Price of buying"} placeholder={'12.55'} />
+                        <CustumInput
+                            defaultValue={item?.name}
+                            register={register}
+                            name={'name'}
+                            error={errors.name}
+                            type={'text'}
+                            label={"Name"}
+                            placeholder={'Nivea'}
+                        />
+
+                        <CustumInput
+                            defaultValue={item?.price_selling}
+                            register={register}
+                            name={'price_selling'}
+                            error={errors.price_selling}
+                            type={'text'}
+                            label={"Price of buying"}
+                            placeholder={'12.55'}
+                        />
                     </div>
-                    
+
                     <div className="row">
-                        <MultiSelectElement options={options} selected={selected} onChange={setSelected} />
+                        <MultiSelectElement
+                            options={FormatVariant(variantData?.data)}
+                            selected={selected}
+                            onChange={setSelected}
+                        />
                     </div>
 
                     <button type="submit" className="btn btn-primary add-btn">

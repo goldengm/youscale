@@ -3,9 +3,18 @@ import { GetProductModel } from '../../../models'
 
 interface Props{
     setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>,
-    data: GetProductModel | undefined
+    data: GetProductModel | undefined,
+    setItem: React.Dispatch<React.SetStateAction<GetProductModel | undefined>>
 }
-export default function ProductRow({ setShowEditModal, data }:Props): JSX.Element {
+export default function ProductRow({ setShowEditModal, data, setItem }:Props): JSX.Element {
+
+    const handleEditRow = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
+        e.preventDefault()
+
+        setShowEditModal(true)
+        setItem(data)
+    }
+
     return (
         <tr>
             <th>{data?.id}</th>
@@ -14,7 +23,7 @@ export default function ProductRow({ setShowEditModal, data }:Props): JSX.Elemen
             <td>
                 <div className="d-flex">
                     <a
-                        onClick={() => setShowEditModal(true)}
+                        onClick={handleEditRow}
                         href="#"
                         className="btn btn-primary shadow btn-xs sharp me-1"
                     >
