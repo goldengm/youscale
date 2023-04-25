@@ -2,16 +2,23 @@ import React from 'react'
 
 interface Props{
     children: JSX.Element | JSX.Element[],
-    column: string[]
+    column: string[],
+    handleCheckAll: () => void
 }
-export default function TableWrapper({ children, column }:Props): JSX.Element {
+export default function TableWrapper({ children, column, handleCheckAll }:Props): JSX.Element {
     return (
         <div className="card-body">
             <div className="table-responsive">
                 <table id="example3" className="display table-custum">
                     <thead>
                         <tr>
-                            <th />
+                            <th>
+                                <input 
+                                    type="checkbox" 
+                                    className="check_all" 
+                                    onChange={handleCheckAll}
+                                />
+                            </th>
                             { column.map((col: string, key: number) => <th key={key}>{col}</th>) }
                             <th>Action</th>
                         </tr>

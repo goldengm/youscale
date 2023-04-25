@@ -15,9 +15,11 @@ interface RowProps {
     row: GetClientOrderModel,
     order: { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string } | undefined,
     refetch: () => void,
-    column: ColumnModel[] | undefined
+    column: ColumnModel[] | undefined,
+    setIdOrders: React.Dispatch<React.SetStateAction<number[] | undefined>>,
+    handleCheckRow: (id: number) => void
 }
-export default function Row({ row, order, refetch, column }: RowProps): JSX.Element {
+export default function Row({ row, order, refetch, column, handleCheckRow }: RowProps): JSX.Element {
 
     const [patchOrder] = usePatchClientOrderMutation()
 
@@ -108,7 +110,14 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
             {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} item={row} />}
             {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(row.Order_id)} />}
 
-            <td></td>
+            <td>
+                <input
+                    onChange={() => handleCheckRow(order?.id || 0)}
+                    checked={order?.checked}
+                    className='case'
+                    type="checkbox"
+                />
+            </td>
 
             {
                 column && column.map(dt => {
@@ -133,9 +142,9 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Agent') {
                             return (
                                 <td>
-                                    <DisplayTeamMember 
+                                    <DisplayTeamMember
                                         onChange={handleChangeTeam}
-                                        data={dataTeamMember?.data} 
+                                        data={dataTeamMember?.data}
                                         order={order}
                                     />
                                 </td>
@@ -145,7 +154,7 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Up/Downsell') {
                             return (
                                 <td>
-                                    <DisplayUpDown 
+                                    <DisplayUpDown
                                         onChange={handleChangeUpDown}
                                         currentData={row}
                                     />
@@ -156,8 +165,8 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Source') {
                             return (
                                 <td>
-                                    <DisplaySource 
-                                        onChange={handleChangeSource}  
+                                    <DisplaySource
+                                        onChange={handleChangeSource}
                                         currentData={row}
                                     />
                                 </td>
@@ -167,8 +176,8 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Changer') {
                             return (
                                 <td>
-                                    <DisplayChangeOuvrir 
-                                        name='changer' 
+                                    <DisplayChangeOuvrir
+                                        name='changer'
                                         onChange={handleChangeChanger}
                                         currentData={row}
                                     />
@@ -179,8 +188,8 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Ouvrir') {
                             return (
                                 <td>
-                                    <DisplayChangeOuvrir 
-                                        name='ouvrir' 
+                                    <DisplayChangeOuvrir
+                                        name='ouvrir'
                                         onChange={handleChangeOuvrir}
                                         currentData={row}
                                     />
@@ -191,7 +200,7 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                         if (formatDtName === 'Ville') {
                             return (
                                 <td>
-                                    <DisplayCity refetch={refetch} name='id_city' data={order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : []} order={order && order}  />
+                                    <DisplayCity refetch={refetch} name='id_city' data={order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : []} order={order && order} />
                                 </td>
                             )
                         }
@@ -271,9 +280,9 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                     >
                         <i className="fas fa-pencil-alt" />
                     </a>
-                    <a  
+                    <a
                         onClick={() => setShowDeleteModal(true)}
-                        href="#" 
+                        href="#"
                         className="btn btn-danger shadow btn-xs sharp"
                     >
                         <i className="fa fa-trash" />

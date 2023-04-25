@@ -14,3 +14,13 @@
 .io-logo:hover{
     cursor: pointer;
 }
+
+.check_all{
+    height: 22px;
+    width: 22px;
+}
+
+.case{
+    height: 22px;
+    width: 22px;
+}
