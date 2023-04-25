@@ -37,8 +37,8 @@ const FormBody = () => {
             <div className="basic-form">
                 <form>
                     <div className="row">
-                        <CustumInput type={'text'} label={"Name"} placeholder={'Nom'} />
-                        <CustumInput type={'text'} label={"Price"} placeholder={'Prix'} />
+                        {/* <CustumInput type={'text'} label={"Name"} placeholder={'Nom'} />
+                        <CustumInput type={'text'} label={"Price"} placeholder={'Prix'} /> */}
                     </div>
 
                     <button type="submit" className="btn btn-primary">

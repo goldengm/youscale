@@ -36,18 +36,19 @@ const FormBody = () => {
             <div className="basic-form">
                 <form>
                     <div className="row">
-                        <CustumSelect name='Categorie' />
-                        <CustumSelect name='Produit' />
-                        <CustumInput type={'text'} label={"Amount"} placeholder={'4.56'} className={'lg-input-cus'} />
+                        {/* <CustumSelect name='Categorie' />
+                        <CustumSelect name='Produit' /> */}
+                        {/* <CustumInput type={'text'} label={"Amount"} placeholder={'4.56'} className={'lg-input-cus'} /> */}
                     </div>
-
+                    
                     <div className="row">
+                    {/* 
                         <CustumInput type={'date'} label={"Date from"} placeholder={'14/02/2022'} />
-                        <CustumInput type={'date'} label={"Date to"} placeholder={'28/02/2022'} />
+                        <CustumInput type={'date'} label={"Date to"} placeholder={'28/02/2022'} /> */}
                     </div>
 
                     <div className="row">
-                        <CustumTextArea label='Note (optional)' />
+                        {/* <CustumTextArea label='Note (optional)' /> */}
                     </div>
 
                     <button type="submit" className="btn btn-primary">

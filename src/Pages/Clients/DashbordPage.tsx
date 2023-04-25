@@ -29,7 +29,7 @@ export default function DashbordPage(): JSX.Element {
     refetch()
   }, [idTeam])
 
-  return isLoading ? <div className='global-loader'>
+  return !data ? <div className='global-loader'>
     <RotatingLines
       strokeColor="grey"
       strokeWidth="3"

@@ -38,18 +38,18 @@ const FormBody = () => {
             <div className="basic-form">
                 <form>
                     <div className="row">
-                        <CustumInput type={'text'} label={"Name"} placeholder={'Patrick Doe'} />
+                        {/* <CustumInput type={'text'} label={"Name"} placeholder={'Patrick Doe'} />
                         <CustumInput type={'email'} label={"Email"} placeholder={'her@mail.com'} />
-                        <CustumInput type={'password'} label={"Password"} placeholder={'*****'} className={'lg-input-cus'} />
+                        <CustumInput type={'password'} label={"Password"} placeholder={'*****'} className={'lg-input-cus'} /> */}
                     </div>
 
                     <div className="row">
-                        <CustumInput type={'number'} label={"Salaire"} placeholder={'1455.25'} defaultValue={0} />
+                        {/* <CustumInput type={'number'} label={"Salaire"} placeholder={'1455.25'} defaultValue={0} />
                         <CustumInput type={'number'} label={"Comission"} placeholder={'12.6'} defaultValue={0} />
                         <CustumInput type={'number'} label={"Upsell"} placeholder={'36.4'} defaultValue={0} />
                         <CustumInput type={'number'} label={"Downsell"} placeholder={'14.2'} defaultValue={0} />
                         <CustumInput type={'number'} label={"CrossSell"} placeholder={'8'} defaultValue={0} />
-                        <CustumInput type={'number'} label={"Max order pending"} placeholder={'2'} defaultValue={0} />
+                        <CustumInput type={'number'} label={"Max order pending"} placeholder={'2'} defaultValue={0} /> */}
                     </div>
 
                     <div className="row">
