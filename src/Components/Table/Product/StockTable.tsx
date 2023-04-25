@@ -16,7 +16,7 @@ export default function StockTable(): JSX.Element {
     return (
         <TableWrapper title='Stock' column={['Produit', 'Ville', 'Quantite']} AddBtn={<AddStockBtn setShowModal={setShowAddStockModal} />}>
             { showAddStockModal ? <AddStockModal showModal={showAddStockModal} setShowModal={setShowAddStockModal} refetch={refetch}  /> : <></> }
-            { showEditStockModal ? <EditStockModal showModal={showEditStockModal} setShowModal={setShowEditStockModal}  /> : <></> }
+            { showEditStockModal ? <EditStockModal showModal={showEditStockModal} item={item} setShowModal={setShowEditStockModal} refetch={refetch}  /> : <></> }
 
             { data?.data.map((dt, index)=> <StockRow 
                 key={index}
