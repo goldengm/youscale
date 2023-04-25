@@ -24,7 +24,7 @@ export default function CustumSelect({ name, onChange, data = DEFAULT_VALUE }: P
                 id="inlineFormCustomSelect"
                 onChange={onChange}
             >
-                <option selected={true}>{name}</option>
+                <option value={0} selected={true}>{name}</option>
                 { data.map((dt,index)=> <option key={index} value={dt.value}>{dt.label}</option> ) }
             </select>
         </div>

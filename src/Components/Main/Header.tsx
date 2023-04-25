@@ -54,20 +54,24 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
 
 export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu }: Props): JSX.Element {
 
-  const { data: productData, isSuccess: isProductSuccess } = useGetProductQuery()
-  const { data: teamData, isSuccess: isTeamSuccess } = useGetTeamMemberQuery()
+  const { data: productData } = useGetProductQuery()
+  const { data: teamData } = useGetTeamMemberQuery()
   const { data, isSuccess } = useGetAnnoucementQuery()
 
   const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
-    console.log(value)
+    if(value === '0') return
+
+    setIdTeam && setIdTeam(Number(value))
   }
 
   const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
-    console.log(value)
+    if(value === '0') return
+
+    setProduct && setProduct(value)
   }
 
   return (

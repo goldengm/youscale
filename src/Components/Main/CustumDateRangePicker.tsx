@@ -21,6 +21,7 @@ export default function CustumDateRangePicker({ setDate, setUsingDate }: CustomD
 
                 var dateFrom = val[0].toISOString().slice(0, 10)
                 var dateTo = val[1].toISOString().slice(0, 10)
+                
                 setDate && setDate([dateFrom, dateTo])
                 setValue(val)
                 setUsingDate && setUsingDate(true)
