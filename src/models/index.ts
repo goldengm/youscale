@@ -88,9 +88,9 @@ export interface CityModel {
 
 export interface StockModel {
     id?: number,
-    quantity: number,
-    id_product: number,
-    id_city: number
+    quantity: string,
+    id_product: string,
+    id_city: string
 }
 
 export interface GetStockModel {

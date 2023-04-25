@@ -1,12 +1,69 @@
 import React, { useEffect } from 'react'
-import { CustumInput, CustumTextArea, CustumSelectForm } from '../../../Forms'
+import { CustumInput, CustumSelectForm } from '../../../Forms'
 import ModalWrapper from '../ModalWrapper'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import { CityModel, GetProductModel } from '../../../../models';
+import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi';
+import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi';
+import { useAddStockMutation } from '../../../../services/api/ClientApi/ClientStockApi';
+
+type Inputs = {
+  quantity: string,
+  id_city: string,
+  id_product: string
+};
+
+type SelectType = {
+  label: string,
+  value: string | number
+}
+
+const schema = yup.object().shape({
+  quantity: yup.string().required('Ce champ est obligatoire'),
+  id_city: yup.string().required('Ce champ est obligatoire'),
+  id_product: yup.string().required('Ce champ est obligatoire'),
+}).required();
+
+const GetCityWhosNotFromSheet = (data: CityModel[] | undefined): SelectType[] => {
+  if (!data) return []
+
+  var newArr: SelectType[] = [{ label: 'none', value: 'none' }]
+
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].isFromSheet === false) {
+      newArr.push({
+        value: data[i].id ?? 0,
+        label: data[i].name
+      })
+    }
+  }
+
+  return newArr
+}
+
+const FormatProductSelect = (data: GetProductModel[] | undefined): SelectType[] => {
+  if (!data) return []
+
+  var newArr: SelectType[] = [{ label: 'none', value: 'none' }]
+
+  for (let i = 0; i < data.length; i++) {
+    newArr.push({
+      value: data[i].id ?? 0,
+      label: data[i].name
+    })
+  }
+
+  return newArr
+}
 
 interface Props {
   showModal: boolean,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+  refetch: () => any
 }
-export default function AddStockModal({ showModal, setShowModal }: Props): JSX.Element {
+export default function AddStockModal({ showModal, setShowModal, refetch }: Props): JSX.Element {
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
@@ -23,25 +80,84 @@ export default function AddStockModal({ showModal, setShowModal }: Props): JSX.E
     }
   }, [])
 
+  const handleCloseModal = () => {
+    var body = document.querySelector<HTMLBodyElement>('body');
+
+    if (body) {
+      body.classList.remove('modal-open');
+      body.style.overflow = '';
+      body.style.paddingRight = '';
+
+      var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
+
+      if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
+
+      setShowModal(false)
+    }
+  }
+
   return (
     <ModalWrapper title={'Add stock'} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
-      <FormBody />
+      <FormBody handleCloseModal={handleCloseModal} refetch={refetch} />
     </ModalWrapper>
   )
 }
 
-const FormBody = () => {
+interface FormBodyProps{
+  handleCloseModal: () => void,
+  refetch: () => any
+}
+const FormBody = ({ handleCloseModal, refetch }:FormBodyProps) => {
+
+  const [adderStock] = useAddStockMutation()
+
+  const { data: CityData } = useGetCityQuery()
+  const { data: productData } = useGetProductQuery()
+
+  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (values: Inputs) => {
+    adderStock(values).unwrap()
+      .then(res => {
+        refetch()
+        handleCloseModal()
+      })
+      .catch(err => alert(err.data.message))
+  }
+
   return (
     <div className="card-body">
       <div className="basic-form">
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-            <CustumInput type={'text'} label={"Quantité"} placeholder={'12'} />
+            <CustumInput
+              register={register}
+              name={'quantity'}
+              error={errors.quantity}
+              type={'text'}
+              label={"Quantité"}
+              placeholder={'12'}
+            />
           </div>
 
           <div className="row">
-            <CustumSelectForm label={"Ville"} name={'city'} />
-            <CustumSelectForm label={"Produit"} name={'product'} />
+            <CustumSelectForm
+              data={GetCityWhosNotFromSheet(CityData?.data)}
+              register={register}
+              error={errors.id_city}
+              label={"Ville"}
+              name={'id_city'}
+            />
+
+            <CustumSelectForm
+              data={FormatProductSelect(productData?.data)}
+              register={register}
+              error={errors.id_product}
+              label={"Produit"}
+              name={'id_product'}
+            />
           </div>
 
           <button type="submit" className="btn btn-primary">

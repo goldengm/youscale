@@ -5,10 +5,10 @@ import ModalWrapper from '../ModalWrapper'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import './product.style.css'
 import { VariantModel } from '../../../../models';
 import { useAddVariantMutation, useGetVariantQuery } from '../../../../services/api/ClientApi/ClientVariantApi';
 import { useAddProductMutation } from '../../../../services/api/ClientApi/ClientProductApi';
+import './product.style.css'
 
 type Inputs = {
     name: string,
