@@ -92,6 +92,9 @@ const FormBody = ({ date, setDate, onClick }: FormBodyProps) => {
         <form>
           <div className="row">
             <CustumInput
+              name={'date'}
+              register={()=> console.log("nothing")}
+              error={undefined}
               defaultValue={date}
               onChange={handleChangeDate}
               type={'date'}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
-import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal } from '../Modal/Order'
+import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal, DeleteOrderModal } from '../Modal/Order'
 import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel } from '../../../models'
 import './styles.css'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
@@ -36,6 +36,7 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false)
     const [showReportModal, setShowReportModal] = useState<boolean>(false)
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
 
     const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
@@ -105,6 +106,7 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={row} />}
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} id_order={String(row.Order_id)} />}
             {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} item={row} />}
+            {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(row.Order_id)} />}
 
             <td></td>
 
@@ -269,7 +271,11 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
                     >
                         <i className="fas fa-pencil-alt" />
                     </a>
-                    <a href="#" className="btn btn-danger shadow btn-xs sharp">
+                    <a  
+                        onClick={() => setShowDeleteModal(true)}
+                        href="#" 
+                        className="btn btn-danger shadow btn-xs sharp"
+                    >
                         <i className="fa fa-trash" />
                     </a>
                 </div>
