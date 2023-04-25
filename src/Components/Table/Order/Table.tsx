@@ -4,10 +4,11 @@ import { AddOrderModal } from '../Modal/Order'
 import TableWrapper from './TableWrapper'
 import './styles.css'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
-import { ColumnModel, GetClientOrderModel, ProductOrder } from '../../../models'
+import { ColumnModel, GetClientOrderModel, OrderQueryModel, ProductOrder } from '../../../models'
 import { RotatingLines } from 'react-loader-spinner'
 import { useGetClientOrderExportModelQuery } from '../../../services/api/ClientApi/ClientOrderApi'
 import { CSVLink } from "react-csv";
+import { useGetStatusQuery } from '../../../services/api/ClientApi/ClientStatusApi'
 
 type Order = {
     code: Number;
@@ -35,9 +36,10 @@ const GetColumn = (col: ColumnModel[] | undefined): string[] => {
 
 interface TableProps {
     data: Order,
+    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
     refetch: () => any
 }
-export default function Table({ data, refetch }: TableProps): JSX.Element {
+export default function Table({ data, refetch, setOrderQueryData }: TableProps): JSX.Element {
     const [showOrderModal, setShowOrderModal] = React.useState(false)
     const { data: ColumnData } = useGetColumnQuery()
 
@@ -84,7 +86,7 @@ export default function Table({ data, refetch }: TableProps): JSX.Element {
             {showOrderModal && <AddOrderModal refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
 
             <div className="card">
-                <TableHeader setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} />
+                <TableHeader setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} setOrderQueryData={setOrderQueryData} />
                 <TableWrapper column={GetColumn(ColumnData?.data)} handleCheckAll={handleCheckAll}>
                     {
                         data ? data.data.map((dt, index) => <Row
@@ -111,16 +113,17 @@ export default function Table({ data, refetch }: TableProps): JSX.Element {
 
 interface TableHeaderProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
     refetch: () => any,
     id_orders: number[] | undefined
 }
-const TableHeader = ({ setShowModal, refetch, id_orders }: TableHeaderProps): JSX.Element => {
+const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
             <AddOrderBtn setShowModal={setShowModal} />
             <ImportBtn id_orders={id_orders} />
-            <SearchBar />
-            <StatusDropdown name="Status" />
+            <SearchBar setOrderQueryData={setOrderQueryData} refetch={refetch} />
+            <StatusDropdown name="Status" setOrderQueryData={setOrderQueryData} refetch={refetch} />
         </div>
     )
 }
@@ -167,9 +170,17 @@ const ImportBtn = ({ id_orders }: ImportBtnProps): JSX.Element => {
     )
 }
 
-const SearchBar = (): JSX.Element => {
+interface SearchBarProps {
+    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
+    refetch: any
+}
+const SearchBar = ({ setOrderQueryData, refetch }: SearchBarProps): JSX.Element => {
     return (
         <input
+            onChange={(e) => {
+                setOrderQueryData({ search: e.target.value, status: '' })
+                refetch()
+            }}
             type="text"
             className="form-control input-rounded search-bar-custum"
             placeholder="Rechercher une commande"
@@ -178,19 +189,31 @@ const SearchBar = (): JSX.Element => {
 }
 
 interface Props {
-    name: string
+    name: string,
+    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
+    refetch: any
 }
-const StatusDropdown = ({ name }: Props): JSX.Element => {
+const StatusDropdown = ({ name, setOrderQueryData, refetch }: Props): JSX.Element => {
+    const { data: dataStatus, isSuccess } = useGetStatusQuery()
+
+    const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) =>{
+        e.preventDefault()
+
+        const { value } = e.target
+
+        setOrderQueryData({ status: value, search: '' })
+        refetch()
+    }
+
     return (
         <div className="col-auto my-1">
             <select
-                className="me-sm-2 default-select form-control wide"
+                onChange={handleChangeStatus}
+                className="me-sm-2 form-control wide"
                 id="inlineFormCustomSelect"
             >
                 <option selected={true}>{name}</option>
-                <option value={1}>One</option>
-                <option value={2}>Two</option>
-                <option value={3}>Three</option>
+                { isSuccess && dataStatus.countOrderByStatus.map((status: any, index) => <option value={status.name}>{status.name} ({status.count})</option>) }
             </select>
         </div>
     )

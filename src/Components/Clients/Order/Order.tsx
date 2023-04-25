@@ -44,7 +44,7 @@ export default function Order(): JSX.Element {
     <Main name={'Order'} showTeamFilter={true} setIdTeam={setIdTeam} setProduct={setProduct} usingDate={usingDate} showProductFilter={true} setDate={setDate} setUsingDate={setUsingDate} showDateFilter={true}>
       <div className="content-body">
         <div className="container-fluid">
-          <Table data={OrderClient} refetch={RefetchOrderClient} />
+          <Table data={OrderClient} refetch={RefetchOrderClient} setOrderQueryData={setOrderQueryData} />
         </div>
       </div>
     </Main>
