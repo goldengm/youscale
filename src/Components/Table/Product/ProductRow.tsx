@@ -3,15 +3,23 @@ import { GetProductModel } from '../../../models'
 
 interface Props{
     setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>,
     data: GetProductModel | undefined,
     setItem: React.Dispatch<React.SetStateAction<GetProductModel | undefined>>
 }
-export default function ProductRow({ setShowEditModal, data, setItem }:Props): JSX.Element {
+export default function ProductRow({ setShowEditModal, setShowDeleteModal, data, setItem }:Props): JSX.Element {
 
     const handleEditRow = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
         e.preventDefault()
 
         setShowEditModal(true)
+        setItem(data)
+    }
+
+    const handleDeleteRow = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
+        e.preventDefault()
+
+        setShowDeleteModal(true)
         setItem(data)
     }
 
@@ -30,7 +38,10 @@ export default function ProductRow({ setShowEditModal, data, setItem }:Props): J
                         <i className="fas fa-pencil-alt" />
                     </a>
 
-                    <a href="#" className="btn btn-danger shadow btn-xs sharp">
+                    <a  
+                        onClick={handleDeleteRow}
+                        href="#" 
+                        className="btn btn-danger shadow btn-xs sharp">
                         <i className="fa fa-trash" />
                     </a>
                 </div>
