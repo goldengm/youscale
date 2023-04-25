@@ -566,7 +566,7 @@ export interface PatchClientOrderModel {
     date?: Date,
     nom?: string,
     telephone?: string,
-    prix?: number,
+    prix?: string,
     adresse?: string,
     shipping?: string,
     source?: string,

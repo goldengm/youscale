@@ -7,9 +7,10 @@ interface Props {
     name: string,
     register: UseFormRegister<any>,
     error: FieldError | undefined,
-    data: {label: string, value: string | number}[]
+    data: {label: string, value: string | number}[],
+    defaultSelected? : string | number
 }
-export default function CustumSelectForm({ label, name, register, error, data }: Props): JSX.Element {
+export default function CustumSelectForm({ label, name, register, error, data, defaultSelected='' }: Props): JSX.Element {
     return (
         <div className="mb-3 col-md-4">
             <label className="form-label">{label}</label>
@@ -19,7 +20,7 @@ export default function CustumSelectForm({ label, name, register, error, data }:
                 className="me-sm-2 default-select form-control wide"
                 id="inlineFormCustomSelect"
             >
-                { data.map((dt) => <option value={dt.value}>{dt.label}</option> )}
+                { data.map((dt) => <option selected={String(defaultSelected) === String(dt.value)} value={dt.value}>{dt.label}</option> )}
             </select>
             { error && <p className='error'>{error.message}</p> }
         </div>

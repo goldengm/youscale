@@ -102,9 +102,9 @@ export default function Row({ row, order, refetch, column }: RowProps): JSX.Elem
     return (
         <tr className='tr-custum'>
             {showOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
-            {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} />}
+            {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={row} />}
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} />}
-            {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal}  refetch={refetch} item={row} />}
+            {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} item={row} />}
 
             <td></td>
 

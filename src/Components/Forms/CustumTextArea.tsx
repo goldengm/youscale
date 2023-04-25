@@ -6,9 +6,10 @@ interface Props {
     label: string,
     register: UseFormRegister<any>,
     name: string,
-    error: FieldError | undefined
+    error: FieldError | undefined,
+    defaultValue?: string | number
 }
-export default function CustumTextArea({ label, register, name, error }: Props): JSX.Element {
+export default function CustumTextArea({ label, register, name, error, defaultValue }: Props): JSX.Element {
   return (
     <div>
         <label className="form-label">{label}</label>
@@ -17,7 +18,7 @@ export default function CustumTextArea({ label, register, name, error }: Props):
           className="form-control" 
           rows={4} 
           id="comment" 
-          defaultValue={""} 
+          defaultValue={defaultValue} 
         />
         { error && <p className='error'>{error.message}</p> }
     </div>
