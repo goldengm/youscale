@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import StockRow from './StockRow'
 import TableWrapper from './TableWrapper'
-import { AddStockModal, EditStockModal } from '../Modal/Product'
+import { AddStockModal, EditStockModal, DeleteStockModal } from '../Modal/Product'
 import { useGetStockQuery } from '../../../services/api/ClientApi/ClientStockApi'
 import { GetStockModel } from '../../../models'
 
@@ -17,6 +17,7 @@ export default function StockTable(): JSX.Element {
         <TableWrapper title='Stock' column={['Produit', 'Ville', 'Quantite']} AddBtn={<AddStockBtn setShowModal={setShowAddStockModal} />}>
             { showAddStockModal ? <AddStockModal showModal={showAddStockModal} setShowModal={setShowAddStockModal} refetch={refetch}  /> : <></> }
             { showEditStockModal ? <EditStockModal showModal={showEditStockModal} item={item} setShowModal={setShowEditStockModal} refetch={refetch}  /> : <></> }
+            { showDeleteStockModal ? <DeleteStockModal showModal={showDeleteStockModal} item={item} setShowModal={setShowDeleteStockModal} refetch={refetch}  /> : <></> }
 
             { data?.data.map((dt, index)=> <StockRow 
                 key={index}
