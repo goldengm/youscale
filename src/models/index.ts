@@ -158,18 +158,19 @@ export interface TeamMemberModel {
     name: string,
     email: string,
     password: string,
+    day_payment: string,
     can_del_or_edit_order: boolean,
     all_column_access: boolean,
     all_cities_access: boolean,
     all_product_access: boolean,
     all_page_access: boolean,
-    day_payment: number,
-    salaire: number,
-    commission: number,
-    upsell: number,
-    downsell: number,
-    crosssell: number,
-    max_order: number
+    salaire: string,
+    commission: string,
+    upsell: string,
+    downsell: string,
+    crosssell: string,
+    max_order: string,
+    
 }
 
 export interface GetTeamMemberModel {
