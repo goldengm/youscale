@@ -21,7 +21,7 @@ export default function Team(): JSX.Element {
     const [idTeam, setIdTeam] = useState<number>(GetRole() === 'TEAM' ? JSON.parse(userData || '{id: 0}').id : 0)
     const [usingDate, setUsingDate] = useState<boolean>(false)
     const [OrderQueryData, setOrderQueryData] = useState<TeamDashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
-    const { data: teamData, refetch: refetchTeamData, isSuccess: isSuccessTeam } = useGetTeamDashbordQuery(OrderQueryData)
+    const { data: teamData, refetch: refetchTeamData } = useGetTeamDashbordQuery(OrderQueryData)
 
     useEffect(() => {
         setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined  })
@@ -49,7 +49,7 @@ export default function Team(): JSX.Element {
     }
 
     return (
-        <Main name={'Team'} showTeamFilter={true} setIdTeam={setIdTeam} showDateFilter={true} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate}>
+        <Main name={'Team'} showTeamFilter={GetRole() === 'TEAM' ? false : true} setIdTeam={setIdTeam} showDateFilter={true} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate}>
             {showAddTeamModal && <AddTeamModal refetch={refetch} showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} />}
             {showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} dataEdit={item} refetch={refetch} />}
             <div className="content-body">

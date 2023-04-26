@@ -271,9 +271,9 @@ export interface AddPerteModel {
     note: string,
     dateFrom: string,
     dateTo: string,
-    amount: number,
-    id_product: number,
-    id_perte_categorie: number
+    amount: string,
+    id_product: string,
+    id_perte_categorie: string
 }
 
 export interface DetailsOfSpendingModel {
