@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface Props{
-    children: JSX.Element | JSX.Element[]
+    children: JSX.Element | JSX.Element[] | any
 }
 export default function EarningCard({ children }:Props) {
     return (

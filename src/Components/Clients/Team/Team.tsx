@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
 import { FaPen } from 'react-icons/fa'
 import { PERFORMANCE_STATS_DATA, EARNING_STATS_DATA } from '../../../services/mocks/mock-youscale-dashbord'
@@ -7,16 +7,36 @@ import EarningCard from './EarningCard'
 import { CustomHist } from '../../Chart'
 import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
 import './team.style.css'
-import { GetTeamMemberModel } from '../../../models'
+import { EarningTable, GetTeamMemberModel, TeamDashbordQueryModel } from '../../../models'
 import { useGetTeamMemberQuery, usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi'
+import { useGetTeamDashbordQuery } from '../../../services/api/ClientApi/ClientTeamDashbordApi'
+import { GetRole } from '../../../services/storageFunc'
 
 export default function Team(): JSX.Element {
-    const { data, refetch } = useGetTeamMemberQuery()
+    const userData = localStorage.getItem('userData')
+
+    const { data, refetch, isSuccess } = useGetTeamMemberQuery()
+
+    const [date, setDate] = useState<string[]>([])
+    const [idTeam, setIdTeam] = useState<number>(GetRole() === 'TEAM' ? JSON.parse(userData || '{id: 0}').id : 0)
+    const [usingDate, setUsingDate] = useState<boolean>(false)
+    const [OrderQueryData, setOrderQueryData] = useState<TeamDashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
+    const { data: teamData, refetch: refetchTeamData, isSuccess: isSuccessTeam } = useGetTeamDashbordQuery(OrderQueryData)
+
+    useEffect(() => {
+        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined  })
+        refetchTeamData()
+    }, [date, usingDate])
+
+    useEffect(() => {
+        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined  })
+        refetchTeamData()
+    }, [idTeam])
 
     const [showAddTeamModal, setShowAddTeamModal] = useState<boolean>(false)
     const [showEditTeamModal, setShowEditTeamModal] = useState<boolean>(false)
 
-    const [ item, setItem ] = useState<GetTeamMemberModel>()
+    const [item, setItem] = useState<GetTeamMemberModel>()
 
     let option = {
         responsive: true,
@@ -29,20 +49,23 @@ export default function Team(): JSX.Element {
     }
 
     return (
-        <Main name={'Team'}>
+        <Main name={'Team'} showTeamFilter={true} setIdTeam={setIdTeam} showDateFilter={true} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate}>
             {showAddTeamModal && <AddTeamModal refetch={refetch} showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} />}
             {showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} dataEdit={item} refetch={refetch} />}
             <div className="content-body">
                 <div className="container-fluid">
                     <div className="team-header">
                         <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} />
-                        <PerformanceCard>
-                            <CustomHist data={PERFORMANCE_STATS_DATA} options={option} />
-                        </PerformanceCard>
+                        {
+                            teamData &&
+                            <PerformanceCard>
+                                <CustomHist data={teamData.data.performance} options={option} />
+                            </PerformanceCard>
+                        }
                     </div>
                     <EarningCard>
-                        <CustomHist data={EARNING_STATS_DATA} options={option} />
-                        <EarningTale />
+                        { teamData && <CustomHist data={teamData.data.earning} options={option} /> }
+                        <EarningTale earningTable={teamData?.data.earning_table} />
                     </EarningCard>
                 </div>
             </div>
@@ -55,7 +78,7 @@ interface PropsTeamCard {
     setShowEditTeamModal: React.Dispatch<React.SetStateAction<boolean>>,
     data: GetTeamMemberModel[] | undefined;
     setItem: React.Dispatch<React.SetStateAction<GetTeamMemberModel | undefined>>
-    refetch: ()=> any
+    refetch: () => any
 }
 const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, setItem }: PropsTeamCard): JSX.Element => {
 
@@ -92,7 +115,6 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
     const [patchTeamMember, { error, isError }] = usePatchTeamMemberMutation()
 
     const handleEditSatus = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-        e.preventDefault()
 
         patchTeamMember({ id: item.id, active: !item.active }).unwrap()
             .then((res: any) => {
@@ -101,7 +123,7 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
             .catch((err: any) => alert(err.data.message))
     }
 
-    const handleShowEdit = (e: React.MouseEvent<SVGElement, MouseEvent>) =>{
+    const handleShowEdit = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
         e.preventDefault()
 
         setItem(item)
@@ -142,7 +164,32 @@ const Switch = ({ onClick, active }: SwitchProps) => {
     )
 }
 
-const EarningTale = () => {
+interface EarningTaleProps {
+    earningTable: EarningTable | undefined
+}
+const EarningTale = ({ earningTable }: EarningTaleProps) => {
+
+    function sumNbCommande(earningTable: EarningTable | undefined) {
+        if (!earningTable) return 0
+
+        var sum = earningTable.upsell.nb_commande + earningTable.livre.nb_commande + earningTable.downsell.nb_commande + earningTable.crosssell.nb_commande
+        return sum
+    }
+
+    function sumHerEarning(earningTable: EarningTable | undefined) {
+        if (!earningTable) return 0
+
+        var sum = earningTable.upsell.her_earning + earningTable.livre.her_earning + earningTable.downsell.her_earning + earningTable.crosssell.her_earning + earningTable.crosssell.salaire
+        return sum
+    }
+
+    function sumSalaire(earningTable: EarningTable | undefined) {
+        if (!earningTable) return 0
+
+        var sum = earningTable.upsell.salaire + earningTable.livre.salaire + earningTable.downsell.salaire + earningTable.crosssell.salaire
+        return sum
+    }
+
     return (
         <div className="col-lg-12">
             <div className="card">
@@ -154,38 +201,45 @@ const EarningTale = () => {
                                     <th></th>
                                     <th>Nombre de commande</th>
                                     <th>Her earning</th>
+                                    <th>Salaire</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Livre</td>
-                                    <td>22</td>
-                                    <td className="color-danger">14.85 dhs</td>
+                                    <td>{earningTable?.livre.nb_commande}</td>
+                                    <td>{earningTable?.livre.her_earning}</td>
+                                    <td className="color-danger">{earningTable?.livre.salaire} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>Upsell</td>
-                                    <td>30</td>
-                                    <td className="color-success">55.32 dhs</td>
+                                    <td>{earningTable?.upsell.nb_commande}</td>
+                                    <td>{earningTable?.upsell.her_earning}</td>
+                                    <td className="color-danger">{earningTable?.upsell.salaire} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>Downsell</td>
-                                    <td>30</td>
-                                    <td className="color-success">55.32 dhs</td>
+                                    <td>{earningTable?.downsell.nb_commande}</td>
+                                    <td>{earningTable?.downsell.her_earning}</td>
+                                    <td className="color-danger">{earningTable?.downsell.salaire} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>CrossSell</td>
-                                    <td>30</td>
-                                    <td className="color-success">55.32 dhs</td>
+                                    <td>{earningTable?.crosssell.nb_commande}</td>
+                                    <td>{earningTable?.crosssell.her_earning}</td>
+                                    <td className="color-danger">{earningTable?.crosssell.salaire} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>Salaire</td>
-                                    <td>30</td>
-                                    <td className="color-success">55.32 dhs</td>
+                                    <td>0</td>
+                                    <td>{earningTable?.crosssell.salaire}</td>
+                                    <td className="color-danger">{sumSalaire(earningTable)} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>Total</td>
-                                    <td>55</td>
-                                    <td><span className="badge badge-primary light">21.56 dhs</span></td>
+                                    <td>{sumNbCommande(earningTable)}</td>
+                                    <td>{sumHerEarning(earningTable)}</td>
+                                    <td><span className="badge badge-primary light">{sumSalaire(earningTable)} dhs</span></td>
                                 </tr>
                             </tbody>
                         </table>
