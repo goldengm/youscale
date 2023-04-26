@@ -5,8 +5,9 @@ import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
 import { AddPerteModal, DeletePerteModal } from '../../Table/Modal/Paiement'
 import './paiement.style.css'
-import { DashbordQueryModel, TransactionModel } from '../../../models'
+import { DashbordQueryModel, DetailsOfSpendingModel, TransactionModel } from '../../../models'
 import { useGetPaiementDashbordQuery } from '../../../services/api/ClientApi/ClientPaiementDashbord'
+import { useAddGoalMutation, useGetGoalQuery } from '../../../services/api/ClientApi/ClientGoalApi'
 
 export default function Paiement() {
 
@@ -18,32 +19,32 @@ export default function Paiement() {
     const [product, setProduct] = useState<string>('')
     const [date, setDate] = useState<string[]>()
     const [usingDate, setUsingDate] = useState<boolean>(false)
-    const [OrderQueryData, setOrderQueryData] = useState<DashbordQueryModel>({usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1]})
+    const [OrderQueryData, setOrderQueryData] = useState<DashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
     const { data, isLoading, refetch } = useGetPaiementDashbordQuery(OrderQueryData)
-  
+
     useEffect(() => { refetch() }, [])
-  
+
     useEffect(() => {
-      setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
-      refetch()
+        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
+        refetch()
     }, [date, usingDate])
-  
+
     useEffect(() => {
-      setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_product_array: product })
-      refetch()
+        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_product_array: product })
+        refetch()
     }, [product])
 
     return (
         <Main name='Paiement'>
-            { showAddPerteModal && <AddPerteModal refetch={refetch} setShowModal={setShowAddPerteModal} showModal={showAddPerteModal} /> }
-            { showDeletePerteModal && <DeletePerteModal refetch={refetch} id_perte={String(item?.id) ?? ''} setShowModal={setShowDeletePerteModal} showModal={showDeletePerteModal} /> }
+            {showAddPerteModal && <AddPerteModal refetch={refetch} setShowModal={setShowAddPerteModal} showModal={showAddPerteModal} />}
+            {showDeletePerteModal && <DeletePerteModal refetch={refetch} id_perte={String(item?.id) ?? ''} setShowModal={setShowDeletePerteModal} showModal={showDeletePerteModal} />}
             <div className="content-body">
                 <div className="container-fluid">
-                    <DisplayCard />
+                    <DisplayCard earning_net={data?.data.earningNet || 0} chff_affaire={data?.data.ChffAffaire || 0} spending={data?.data.spending || 0} />
                     <div className="row"><Goal /></div>
                     <div className="row">
                         <Transaction data={data?.data.transaction} setShowAddPerteModal={setShowAddPerteModal} setItem={setItem} setShowDeletePerteModal={setShowDeletePerteModal} />
-                        <DetailsOfSpending />
+                        <DetailsOfSpending data={data?.data.detailOfSpending} />
                     </div>
                 </div>
             </div>
@@ -51,19 +52,24 @@ export default function Paiement() {
     )
 }
 
-const DisplayCard = (): JSX.Element => {
+interface DisplayCardProps {
+    earning_net: string | number,
+    chff_affaire: string | number,
+    spending: string | number
+}
+const DisplayCard = ({ earning_net, chff_affaire, spending }: DisplayCardProps): JSX.Element => {
     return (
         <div className="row invoice-card-row">
-            <Card bg={'warning'} value={'2478'} title={'Earning net'} icon={<MdAttachMoney size={35} color={'white'} />} />
-            <Card bg={'success'} value={'983'} title={'Chiffre d\'affaire'} icon={<FiShoppingCart size={35} color={'white'} />} />
-            <Card bg={'info'} value={'1256'} title={'Spendings'} icon={<FaTruckMoving size={35} color={'white'} />} />
+            <Card bg={'warning'} value={earning_net} title={'Earning net'} icon={<MdAttachMoney size={35} color={'white'} />} />
+            <Card bg={'success'} value={chff_affaire} title={'Chiffre d\'affaire'} icon={<FiShoppingCart size={35} color={'white'} />} />
+            <Card bg={'info'} value={spending} title={'Spendings'} icon={<FaTruckMoving size={35} color={'white'} />} />
         </div>
     )
 }
 
 interface CardProps {
     bg: string,
-    value: string,
+    value: string | number,
     title: string,
     icon: JSX.Element
 }
@@ -86,6 +92,17 @@ const Card = ({ bg, value, title, icon }: CardProps): JSX.Element => {
 }
 
 const Goal = (): JSX.Element => {
+    const { data, refetch } = useGetGoalQuery()
+    const [ value, setValue ] = useState<number>(0)
+
+    const [addGoal] = useAddGoalMutation()
+
+    const submitGoal = () => {
+        addGoal({ value: value }).then(() => {
+            refetch()
+        })
+    }
+
     return (
         <div className="col-md-6">
             <div className="card">
@@ -96,26 +113,32 @@ const Goal = (): JSX.Element => {
                             <div className="progress mt-4 goal-progress-line" style={{ height: 10 }}>
                                 <div
                                     className="progress-bar bg-primary progress-animated"
-                                    style={{ width: "45%", height: 10 }}
+                                    style={{ width: `${data?.data.goalPercent || 0}%`, height: 10 }}
                                     role="progressbar"
                                 >
-                                    <span className="sr-only">60% Complete</span>
+                                    <span className="sr-only">`${data?.data.goalPercent || 0}% Complete</span>
                                 </div>
                             </div>
                             <div className="goal-form">
                                 <input
-                                    type="text"
+                                    onChange={(e) => setValue(Number(e.target.value))}
+                                    value={value}
+                                    type="number"
                                     className="form-control input-rounded input-goal"
                                     placeholder="123.5"
                                 />
-                                <button type="button" className="btn btn-outline-primary btn-xs">
+                                <button 
+                                    onClick={submitGoal}
+                                    type="button" 
+                                    className="btn btn-outline-primary btn-xs"
+                                >
                                     Valider
                                 </button>
                             </div>
 
 
                         </div>
-                        <h2 className="fs-38">854</h2>
+                        <h2 className="fs-38">{data?.data.goalValue.value || 0}</h2>
                     </div>
                 </div>
             </div>
@@ -129,15 +152,15 @@ interface TransactionProps {
     setItem: React.Dispatch<React.SetStateAction<TransactionModel | undefined>>,
     data: TransactionModel[] | undefined
 }
-const Transaction = ({setShowAddPerteModal, data, setItem, setShowDeletePerteModal}:TransactionProps): JSX.Element => {
+const Transaction = ({ setShowAddPerteModal, data, setItem, setShowDeletePerteModal }: TransactionProps): JSX.Element => {
     return (
         <div className="col-xl-4 col-xxl-6 col-lg-6">
             <div className="card">
                 <div className="card-header border-0 pb-0 table-header">
                     <h4 className="card-title">TRANSACTIONS</h4>
-                    <a 
-                        onClick={()=> setShowAddPerteModal(true)}
-                        type="button" 
+                    <a
+                        onClick={() => setShowAddPerteModal(true)}
+                        type="button"
                         className="btn btn-danger mb-2">
                         Add perte
                     </a>
@@ -148,7 +171,7 @@ const Transaction = ({setShowAddPerteModal, data, setItem, setShowDeletePerteMod
                         className="widget-media table-paiement"
                     >
                         <ul className="timeline">
-                            { data && data.map((dt, index)=> <TransactionRow key={index} data={dt} setItem={setItem} setShowDeletePerteModal={setShowDeletePerteModal} /> ) }
+                            {data && data.map((dt, index) => <TransactionRow key={index} data={dt} setItem={setItem} setShowDeletePerteModal={setShowDeletePerteModal} />)}
                         </ul>
                     </div>
                 </div>
@@ -157,14 +180,14 @@ const Transaction = ({setShowAddPerteModal, data, setItem, setShowDeletePerteMod
     )
 }
 
-interface TransactionRowProps{
+interface TransactionRowProps {
     data: TransactionModel,
     setItem: React.Dispatch<React.SetStateAction<TransactionModel | undefined>>,
     setShowDeletePerteModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const TransactionRow = ({ data, setItem, setShowDeletePerteModal }:TransactionRowProps): JSX.Element => {
+const TransactionRow = ({ data, setItem, setShowDeletePerteModal }: TransactionRowProps): JSX.Element => {
 
-    const handleDelete = (e: React.MouseEvent<SVGElement, MouseEvent>) =>{
+    const handleDelete = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
         setItem(data)
         setShowDeletePerteModal(true)
     }
@@ -177,12 +200,12 @@ const TransactionRow = ({ data, setItem, setShowDeletePerteModal }:TransactionRo
                     <small className="d-block">{data.dateFrom.toString().slice(0, 10)} - {data.dateTo.toString().slice(0, 10)}</small>
                 </div>
                 <div className="dropdown">
-                   <strong className='table-price'>{data.amount} dhs</strong>
-                   <MdDeleteForever 
+                    <strong className='table-price'>{data.amount} dhs</strong>
+                    <MdDeleteForever
                         onClick={handleDelete}
-                        className='table-delete-icon' 
-                        size={30} 
-                        color='red' 
+                        className='table-delete-icon'
+                        size={30}
+                        color='red'
                     />
                 </div>
             </div>
@@ -190,7 +213,10 @@ const TransactionRow = ({ data, setItem, setShowDeletePerteModal }:TransactionRo
     )
 }
 
-const DetailsOfSpending = (): JSX.Element => {
+interface DetailsOfSpendingProps {
+    data: DetailsOfSpendingModel[] | undefined
+}
+const DetailsOfSpending = ({ data }: DetailsOfSpendingProps): JSX.Element => {
     return (
         <div className="col-xl-4 col-xxl-6 col-lg-6">
             <div className="card">
@@ -203,9 +229,7 @@ const DetailsOfSpending = (): JSX.Element => {
                         className="widget-media table-paiement"
                     >
                         <ul className="timeline">
-                            <SpendingRow />
-                            <SpendingRow />
-                            <SpendingRow />
+                            {data && data.map((dt, index) => <SpendingRow key={index} item={dt} />)}
                         </ul>
                     </div>
                 </div>
@@ -214,15 +238,18 @@ const DetailsOfSpending = (): JSX.Element => {
     )
 }
 
-const SpendingRow = (): JSX.Element => {
+interface SpendingRowProps {
+    item: DetailsOfSpendingModel
+}
+const SpendingRow = ({ item }: SpendingRowProps): JSX.Element => {
     return (
         <li>
             <div className="timeline-panel">
                 <div className="media-body">
-                    <h5 className="mb-1"><strong>Tiktok ads</strong></h5>
+                    <h5 className="mb-1"><strong>{item.Perte_Categorie.name}</strong></h5>
                 </div>
                 <div className="dropdown">
-                   <strong className='table-price'>200dhs</strong>
+                    <strong className='table-price'>{item.total_amount} dhs</strong>
                 </div>
             </div>
         </li>
