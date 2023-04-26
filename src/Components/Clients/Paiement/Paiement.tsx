@@ -3,13 +3,17 @@ import Main from '../../Main'
 import { MdAttachMoney, MdDeleteForever } from 'react-icons/md'
 import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
-import { AddPerteModal } from '../../Table/Modal/Paiement'
+import { AddPerteModal, DeletePerteModal } from '../../Table/Modal/Paiement'
 import './paiement.style.css'
 import { DashbordQueryModel, TransactionModel } from '../../../models'
 import { useGetPaiementDashbordQuery } from '../../../services/api/ClientApi/ClientPaiementDashbord'
 
 export default function Paiement() {
+
+    const [item, setItem] = useState<TransactionModel>()
+
     const [showAddPerteModal, setShowAddPerteModal] = useState<boolean>(false)
+    const [showDeletePerteModal, setShowDeletePerteModal] = useState<boolean>(false)
 
     const [product, setProduct] = useState<string>('')
     const [date, setDate] = useState<string[]>()
@@ -32,12 +36,13 @@ export default function Paiement() {
     return (
         <Main name='Paiement'>
             { showAddPerteModal && <AddPerteModal refetch={refetch} setShowModal={setShowAddPerteModal} showModal={showAddPerteModal} /> }
+            { showDeletePerteModal && <DeletePerteModal refetch={refetch} id_perte={String(item?.id) ?? ''} setShowModal={setShowDeletePerteModal} showModal={showDeletePerteModal} /> }
             <div className="content-body">
                 <div className="container-fluid">
                     <DisplayCard />
                     <div className="row"><Goal /></div>
                     <div className="row">
-                        <Transaction data={data?.data.transaction} setShowAddPerteModal={setShowAddPerteModal} />
+                        <Transaction data={data?.data.transaction} setShowAddPerteModal={setShowAddPerteModal} setItem={setItem} setShowDeletePerteModal={setShowDeletePerteModal} />
                         <DetailsOfSpending />
                     </div>
                 </div>
@@ -120,9 +125,11 @@ const Goal = (): JSX.Element => {
 
 interface TransactionProps {
     setShowAddPerteModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setShowDeletePerteModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setItem: React.Dispatch<React.SetStateAction<TransactionModel | undefined>>,
     data: TransactionModel[] | undefined
 }
-const Transaction = ({setShowAddPerteModal, data}:TransactionProps): JSX.Element => {
+const Transaction = ({setShowAddPerteModal, data, setItem, setShowDeletePerteModal}:TransactionProps): JSX.Element => {
     return (
         <div className="col-xl-4 col-xxl-6 col-lg-6">
             <div className="card">
@@ -141,7 +148,7 @@ const Transaction = ({setShowAddPerteModal, data}:TransactionProps): JSX.Element
                         className="widget-media table-paiement"
                     >
                         <ul className="timeline">
-                            { data && data.map((dt, index)=> <TransactionRow key={index} data={dt} /> ) }
+                            { data && data.map((dt, index)=> <TransactionRow key={index} data={dt} setItem={setItem} setShowDeletePerteModal={setShowDeletePerteModal} /> ) }
                         </ul>
                     </div>
                 </div>
@@ -151,9 +158,17 @@ const Transaction = ({setShowAddPerteModal, data}:TransactionProps): JSX.Element
 }
 
 interface TransactionRowProps{
-    data: TransactionModel
+    data: TransactionModel,
+    setItem: React.Dispatch<React.SetStateAction<TransactionModel | undefined>>,
+    setShowDeletePerteModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const TransactionRow = ({ data }:TransactionRowProps): JSX.Element => {
+const TransactionRow = ({ data, setItem, setShowDeletePerteModal }:TransactionRowProps): JSX.Element => {
+
+    const handleDelete = (e: React.MouseEvent<SVGElement, MouseEvent>) =>{
+        setItem(data)
+        setShowDeletePerteModal(true)
+    }
+
     return (
         <li>
             <div className="timeline-panel">
@@ -163,7 +178,12 @@ const TransactionRow = ({ data }:TransactionRowProps): JSX.Element => {
                 </div>
                 <div className="dropdown">
                    <strong className='table-price'>{data.amount} dhs</strong>
-                   <MdDeleteForever className='table-delete-icon' size={30} color='red' />
+                   <MdDeleteForever 
+                        onClick={handleDelete}
+                        className='table-delete-icon' 
+                        size={30} 
+                        color='red' 
+                    />
                 </div>
             </div>
         </li>
