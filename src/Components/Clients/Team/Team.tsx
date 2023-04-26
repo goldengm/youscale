@@ -11,10 +11,12 @@ import { GetTeamMemberModel } from '../../../models'
 import { useGetTeamMemberQuery, usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 
 export default function Team(): JSX.Element {
-    const { data, isSuccess, refetch } = useGetTeamMemberQuery()
+    const { data, refetch } = useGetTeamMemberQuery()
 
     const [showAddTeamModal, setShowAddTeamModal] = useState<boolean>(false)
     const [showEditTeamModal, setShowEditTeamModal] = useState<boolean>(false)
+
+    const [ item, setItem ] = useState<GetTeamMemberModel>()
 
     let option = {
         responsive: true,
@@ -29,11 +31,11 @@ export default function Team(): JSX.Element {
     return (
         <Main name={'Team'}>
             {showAddTeamModal && <AddTeamModal refetch={refetch} showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} />}
-            {showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} />}
+            {showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} dataEdit={item} refetch={refetch} />}
             <div className="content-body">
                 <div className="container-fluid">
                     <div className="team-header">
-                        <TeamCard data={data?.data} setShowAddTeamModal={setShowAddTeamModal} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} />
+                        <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} />
                         <PerformanceCard>
                             <CustomHist data={PERFORMANCE_STATS_DATA} options={option} />
                         </PerformanceCard>
@@ -52,9 +54,10 @@ interface PropsTeamCard {
     setShowAddTeamModal: React.Dispatch<React.SetStateAction<boolean>>,
     setShowEditTeamModal: React.Dispatch<React.SetStateAction<boolean>>,
     data: GetTeamMemberModel[] | undefined;
+    setItem: React.Dispatch<React.SetStateAction<GetTeamMemberModel | undefined>>
     refetch: ()=> any
 }
-const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch }: PropsTeamCard): JSX.Element => {
+const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, setItem }: PropsTeamCard): JSX.Element => {
 
     return (
         <div className="col-xl-3 col-xxl-5 col-xl-custum">
@@ -71,7 +74,7 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch }: 
                     </a>
                 </div>
                 <div className="card-body">
-                    {data && data.map((dt, index) => <TeamRow key={index} refetch={refetch} item={dt} setShowEditTeamModal={setShowEditTeamModal} />)}
+                    {data && data.map((dt, index) => <TeamRow key={index} refetch={refetch} item={dt} setShowEditTeamModal={setShowEditTeamModal} setItem={setItem} />)}
                 </div>
             </div>
         </div>
@@ -81,9 +84,10 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch }: 
 interface PropsTeamRow {
     setShowEditTeamModal: React.Dispatch<React.SetStateAction<boolean>>,
     item: GetTeamMemberModel,
+    setItem: React.Dispatch<React.SetStateAction<GetTeamMemberModel | undefined>>
     refetch: () => any
 }
-const TeamRow = ({ setShowEditTeamModal, item, refetch }: PropsTeamRow): JSX.Element => {
+const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow): JSX.Element => {
 
     const [patchTeamMember, { error, isError }] = usePatchTeamMemberMutation()
 
@@ -97,6 +101,13 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch }: PropsTeamRow): JSX.Ele
             .catch((err: any) => alert(err.data.message))
     }
 
+    const handleShowEdit = (e: React.MouseEvent<SVGElement, MouseEvent>) =>{
+        e.preventDefault()
+
+        setItem(item)
+        setShowEditTeamModal(true)
+    }
+
     return (
         <div className="d-flex align-items-end mt-2 pb-3 justify-content-between">
             <div className="fs-18 card-info">
@@ -106,10 +117,11 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch }: PropsTeamRow): JSX.Ele
 
             <div className="fs-18 card-edit">
                 <FaPen
-                    onClick={() => setShowEditTeamModal(true)}
+                    onClick={handleShowEdit}
                     className='edit-team-pencil'
                     style={{ marginRight: 12 }}
                 />
+
                 <Switch active={item.active} onClick={handleEditSatus} />
             </div>
         </div>

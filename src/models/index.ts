@@ -170,7 +170,10 @@ export interface TeamMemberModel {
     downsell: string,
     crosssell: string,
     max_order: string,
-    
+    column_access: string[];
+    cities_access: string[];
+    product_access: string[];
+    page_access: string[];
 }
 
 export interface GetTeamMemberModel {
@@ -183,13 +186,17 @@ export interface GetTeamMemberModel {
     all_cities_access?: boolean,
     all_product_access?: boolean,
     all_page_access?: boolean,
-    day_payment?: number,
-    salaire?: number,
-    commission?: number,
-    upsell?: number,
-    downsell?: number,
-    crosssell?: number,
-    max_order?: number
+    column_access?: string[];
+    cities_access?: string[];
+    product_access?: string[];
+    page_access?: string[];
+    day_payment?: string,
+    salaire?: string,
+    commission?: string,
+    upsell?: string,
+    downsell?: string,
+    crosssell?: string,
+    max_order?: string
     active?: boolean,
     Team_Client_Column_Acces?: ColumnAccessModel[],
     Team_Client_City_Acces?: CityAccessModel[],
