@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { RiFileDownloadFill } from 'react-icons/ri'
 import { AddStatusModal, AddCityModal, EditCityModal } from '../../Table/Modal/Setting';
+import { useGetStatusQuery, usePatchStatusMutation } from '../../../services/api/ClientApi/ClientStatusApi';
+import { StatusModel } from '../../../models';
 import 'react-nestable/dist/styles/index.css';
 
 export default function OrderSetting() {
@@ -8,14 +10,16 @@ export default function OrderSetting() {
     const [showAddCityModal, setShowAddCityModal] = useState<boolean>(false)
     const [showEditCityModal, setShowEditCityModal] = useState<boolean>(false)
 
+    const { data: statusData, refetch: refetchStatus } = useGetStatusQuery()
+
     return (
         <div className="row">
-            { showAddStatusModal && <AddStatusModal setShowModal={setShowAddStatusModal} showModal={showAddStatusModal} /> }
-            { showAddCityModal && <AddCityModal setShowModal={setShowAddCityModal} showModal={showAddCityModal} /> }
-            { showEditCityModal && <EditCityModal setShowModal={setShowEditCityModal} showModal={showEditCityModal} /> }
+            {showAddStatusModal && <AddStatusModal setShowModal={setShowAddStatusModal} showModal={showAddStatusModal} refetch={refetchStatus} />}
+            {showAddCityModal && <AddCityModal setShowModal={setShowAddCityModal} showModal={showAddCityModal} />}
+            {showEditCityModal && <EditCityModal setShowModal={setShowEditCityModal} showModal={showEditCityModal} />}
 
             <h3 className="mt-4 mb-3">Order Settings</h3>
-            <Status setShowAddStatusModal={setShowAddStatusModal} />
+            <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus}  />
             <CSVExport />
             <ChangeColumn />
             <ColumnOfOrder />
@@ -25,29 +29,29 @@ export default function OrderSetting() {
     )
 }
 
-interface StatusProps{
-    setShowAddStatusModal: React.Dispatch<React.SetStateAction<boolean>>
+interface StatusProps {
+    setShowAddStatusModal: React.Dispatch<React.SetStateAction<boolean>>,
+    statusData: StatusModel[] | undefined,
+    refetchStatus: ()=> any
 }
-const Status = ({ setShowAddStatusModal }:StatusProps): JSX.Element => {
+const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProps): JSX.Element => {
+
     return (
         <div className="col-xl-6 col-lg-6">
             <div className="card">
                 <div className="card-header">
                     <h4 className="card-title">Status</h4>
 
-                    <a 
-                        onClick={()=> setShowAddStatusModal(true)}
-                        type="button" 
+                    <a
+                        onClick={() => setShowAddStatusModal(true)}
+                        type="button"
                         className="btn btn-primary mb-2">
                         Add status
                     </a>
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        <StatusCheckbox />
-                        <StatusCheckbox />
-                        <StatusCheckbox />
-                        <StatusCheckbox />
+                        {statusData && statusData.map(dt => <StatusCheckbox dt={dt} refetch={refetchStatus} />)}
                     </div>
                 </div>
             </div>
@@ -55,17 +59,40 @@ const Status = ({ setShowAddStatusModal }:StatusProps): JSX.Element => {
     )
 }
 
-const StatusCheckbox = (): JSX.Element => {
+interface StatusCheckboxProps {
+    dt: StatusModel,
+    refetch: () => any
+}
+const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
+    const [patchStatus] = usePatchStatusMutation()
+
+    const handleStatusCheckbox = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+
+        const data = { id: dt.id ?? 0, checked: !dt.checked }
+
+        patchStatus(data).unwrap()
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                alert(err.data.message)
+            })
+
+        refetch()
+    }
+
     return (
         <div className="col-xl-4 col-xxl-6 col-6">
             <div className="form-check custom-checkbox mb-3">
                 <input
+                    onClick={handleStatusCheckbox}
+                    defaultChecked={dt.checked}
                     type="checkbox"
                     className="form-check-input"
                     id="customCheckBox1"
                 />
                 <label className="form-check-label" htmlFor="customCheckBox1">
-                    Order id
+                    {dt.name}
                 </label>
             </div>
         </div>
@@ -81,12 +108,28 @@ const CSVExport = (): JSX.Element => {
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        <StatusCheckbox />
-                        <StatusCheckbox />
-                        <StatusCheckbox />
-                        <StatusCheckbox />
+                        <CSVStatusCheckbox />
+                        <CSVStatusCheckbox />
+                        <CSVStatusCheckbox />
+                        <CSVStatusCheckbox />
                     </div>
                 </div>
+            </div>
+        </div>
+    )
+}
+const CSVStatusCheckbox = (): JSX.Element => {
+    return (
+        <div className="col-xl-4 col-xxl-6 col-6">
+            <div className="form-check custom-checkbox mb-3">
+                <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="customCheckBox1"
+                />
+                <label className="form-check-label" htmlFor="customCheckBox1">
+                    Order id
+                </label>
             </div>
         </div>
     )
@@ -216,11 +259,11 @@ const ColumnOfOrder = (): JSX.Element => {
     )
 }
 
-interface CityProps{
+interface CityProps {
     setShowAddCityModal: React.Dispatch<React.SetStateAction<boolean>>,
     setShowEditCityModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const City = ({ setShowAddCityModal, setShowEditCityModal }:CityProps): JSX.Element => {
+const City = ({ setShowAddCityModal, setShowEditCityModal }: CityProps): JSX.Element => {
 
     return (
         <div className="col-12">
@@ -228,9 +271,9 @@ const City = ({ setShowAddCityModal, setShowEditCityModal }:CityProps): JSX.Elem
                 <div className="card-header">
                     <h4 className="card-title">City</h4>
 
-                    <a 
-                        onClick={()=> setShowAddCityModal(true)}
-                        type="button" 
+                    <a
+                        onClick={() => setShowAddCityModal(true)}
+                        type="button"
                         className="btn btn-primary mb-2"
                     >
                         Add city
@@ -257,7 +300,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal }:CityProps): JSX.Elem
                                                 <td>1200 dhs</td>
                                                 <td>
                                                     <div className="d-flex">
-                                                        <a onClick={()=> setShowEditCityModal(true)} href="#" className="btn btn-primary shadow btn-xs sharp me-1">
+                                                        <a onClick={() => setShowEditCityModal(true)} href="#" className="btn btn-primary shadow btn-xs sharp me-1">
                                                             <i className="fas fa-pencil-alt" />
                                                         </a>
                                                         <a href="#" className="btn btn-danger shadow btn-xs sharp">

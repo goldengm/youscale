@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { CustumInput } from '../../../Forms'
 import ModalWrapper from '../ModalWrapper'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import { useAddColumnMutation } from '../../../../services/api/ClientApi/ClientColumnApi';
 
+type Inputs = {
+    name: '',
+    alias: '',
+    active: true,
+    isExported: false
+};
+
+const schema = yup.object().shape({
+    name: yup.string().required('Ce champ est obligatoire'),
+    active: yup.boolean().required('Ce champ est obligatoire')
+}).required();
 
 interface Props {
     showModal: boolean,
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+    refetch: () => any
 }
-export default function AddStatusModal({ showModal, setShowModal }: Props): JSX.Element {
+export default function AddStatusModal({ showModal, setShowModal, refetch }: Props): JSX.Element {
 
     useEffect(() => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -24,25 +40,70 @@ export default function AddStatusModal({ showModal, setShowModal }: Props): JSX.
         }
     }, [])
 
+    const handleCloseModal = () => {
+        var body = document.querySelector<HTMLBodyElement>('body');
+
+        if (body) {
+            body.classList.remove('modal-open');
+            body.style.overflow = '';
+            body.style.paddingRight = '';
+
+            var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
+
+            if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
+
+            setShowModal(false)
+        }
+    }
+
     return (
         <ModalWrapper showModal={showModal} title={'Add status'} setShowModal={setShowModal} id='AddOrderModal'>
-            <FormBody />
+            <FormBody handleCloseModal={handleCloseModal} refetch={refetch} />
         </ModalWrapper>
     )
 }
 
-const FormBody = () => {
+interface FormBodyProps {
+    handleCloseModal: () => any,
+    refetch: () => any
+}
+const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
+    const [addColumn] = useAddColumnMutation()
+
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        resolver: yupResolver(schema)
+    });
+
+    const onSubmit = (values: Inputs) => {
+        const data = { ...values, alias: '', isExported: false }
+
+        addColumn(data).unwrap()
+        .then(res => {
+            refetch()
+            handleCloseModal()
+        })
+        .catch(err => alert(err.data.message))
+    }
+
     return (
         <div className="card-body">
             <div className="basic-form">
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
-                        {/* <CustumInput type={'text'} label={"Name"} placeholder={'Nom'} /> */}
+                        <CustumInput
+                            register={register}
+                            name={'name'}
+                            error={errors.name}
+                            type={'text'}
+                            label={"Name"}
+                            placeholder={'Nom'}
+                        />
                     </div>
 
                     <div className="row">
                         <div className="form-check custom-checkbox mb-3 checkbox-info">
                             <input
+                                {...register('active')}
                                 type="checkbox"
                                 className="form-check-input"
                                 defaultChecked={true}
