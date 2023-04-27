@@ -8,6 +8,26 @@ import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi';
 import { CLIENT_UPLOAD_CITY_URL } from '../../../services/url/API_URL';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
+
+type Inputs = {
+    default_conf_pricing: string,
+    delfault_del_pricing: string,
+    default_time: string,
+    automated_msg: string
+    startWrldOrder: string
+};
+
+const schema = yup.object().shape({
+    default_conf_pricing: yup.string().required('Ce champ est obligatoire'),
+    delfault_del_pricing: yup.string().required('Ce champ est obligatoire'),
+    default_time: yup.string().required('Ce champ est obligatoire'),
+    automated_msg: yup.string().required('Ce champ est obligatoire'),
+    startWrldOrder: yup.string().required('Ce champ est obligatoire')
+}).required();
 
 const SplitActiveInnactive = (data: ColumnModel[] | undefined) => {
 
@@ -33,7 +53,7 @@ export default function OrderSetting() {
     const { data: statusData, refetch: refetchStatus } = useGetStatusQuery()
     const { data, refetch } = useGetColumnQuery()
 
-    const [ item, setItem ] = useState<CityModel>()
+    const [item, setItem] = useState<CityModel>()
     const { data: cityData, refetch: refetchData } = useGetCityQuery()
 
     const objData = SplitActiveInnactive(data?.data)
@@ -415,7 +435,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            { data && data.map((dt, index)=> <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />) }
+                                            {data && data.map((dt, index) => <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />)}
                                         </tbody>
                                     </table>
                                 </div>
@@ -433,20 +453,20 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
     )
 }
 
-interface CityRowProps{
+interface CityRowProps {
     setShowEditCityModal: React.Dispatch<React.SetStateAction<boolean>>,
     setItem: React.Dispatch<React.SetStateAction<CityModel | undefined>>,
     setShowDeleteCityModal: React.Dispatch<React.SetStateAction<boolean>>,
     item: CityModel
 }
-const CityRow = ({ setShowEditCityModal, setShowDeleteCityModal, setItem, item }:CityRowProps): JSX.Element => {
+const CityRow = ({ setShowEditCityModal, setShowDeleteCityModal, setItem, item }: CityRowProps): JSX.Element => {
 
-    const handleEdit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
+    const handleEdit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         setItem(item)
         setShowEditCityModal(true)
     }
 
-    const handleDelete = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
+    const handleDelete = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         setItem(item)
         setShowDeleteCityModal(true)
     }
@@ -471,7 +491,7 @@ const CityRow = ({ setShowEditCityModal, setShowDeleteCityModal, setItem, item }
 }
 
 interface DragAndDropFileProps {
-    refetch: ()=> any
+    refetch: () => any
 }
 function DragAndDropFile({ refetch }: DragAndDropFileProps) {
     const [dragging, setDragging] = useState(false);
@@ -556,6 +576,28 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
 
 const ConfSetting = (): JSX.Element => {
 
+    const { data, refetch } = useGetSettingQuery()
+    const [patchSetting] = usePatchSettingMutation()
+
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        resolver: yupResolver(schema),
+    });
+
+    const onSubmit = (values: Inputs) => {
+        const datas = {
+            ...values,
+            id: data?.data.id ?? 0
+        }
+
+        patchSetting(datas).unwrap()
+            .then(res => {
+                console.log(res)
+                refetch()
+            })
+            .catch(err => console.warn(err))
+    }
+
+
     return (
         <div className="col-12">
             <div className="card">
@@ -563,56 +605,77 @@ const ConfSetting = (): JSX.Element => {
                     <h4 className="card-title">Configuration</h4>
                 </div>
                 <div className="card-body">
-                    <div className="row">
-                        <div className="mb-3 row">
-                            <label className="col-sm-2 col-form-label col-form-label-sm">Default confirmation pricing</label>
-                            <div className="col-sm-10">
-                                <input
-                                    type="number"
-                                    placeholder="10"
-                                    className="form-control form-control-sm"
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="row">
+                            <div className="mb-3 row">
+                                <label className="col-sm-2 col-form-label col-form-label-sm">Default confirmation pricing</label>
+                                <div className="col-sm-10">
+                                    <input
+                                        {...register('default_conf_pricing')}
+                                        defaultValue={data?.data.default_cof_ricing || ''}
+                                        type="number"
+                                        placeholder="10"
+                                        className="form-control form-control-sm"
+                                    />
+                                    {errors && <p className='error'>{errors.default_conf_pricing?.message}</p>}
+                                </div>
+                            </div>
+                            <div className="mb-3 row">
+                                <label className="col-sm-2 col-form-label col-form-label-sm">Default delivery pricing</label>
+                                <div className="col-sm-10">
+                                    <input
+                                        {...register('delfault_del_pricing')}
+                                        defaultValue={data?.data.delfaulnpt_del_pricing || ''}
+                                        type="number"
+                                        placeholder="10"
+                                        className="form-control form-control-sm"
+                                    />
+                                    {errors && <p className='error'>{errors.delfault_del_pricing?.message}</p>}
+                                </div>
+                            </div>
+                            <div className="mb-3 row">
+                                <label className="col-sm-2 col-form-label col-form-label-sm">Default time between each action</label>
+                                <div className="col-sm-10">
+                                    <input
+                                        {...register('default_time')}
+                                        defaultValue={data?.data.default_time || ''}
+                                        type="number"
+                                        placeholder="10"
+                                        className="form-control form-control-sm"
+                                    />
+                                    {errors && <p className='error'>{errors.default_time?.message}</p>}
+                                </div>
+                            </div>
+                            <div className="mb-3 row">
+                                <label className="col-sm-2 col-form-label col-form-label-sm">Start world order</label>
+                                <div className="col-sm-10">
+                                    <input
+                                        {...register('startWrldOrder')}
+                                        defaultValue={data?.data.startWrldOrder || ''}
+                                        type="text"
+                                        placeholder="salam"
+                                        className="form-control form-control-sm"
+                                    />
+                                    {errors && <p className='error'>{errors.startWrldOrder?.message}</p>}
+                                </div>
+                            </div>
+                            <div className="mb-3 row">
+                                <label className="col-sm-2 col-form-label col-form-label-sm">Automated message</label>
+                                <textarea
+                                    {...register('automated_msg')}
+                                    defaultValue={data?.data.automated_msg || ''}
+                                    className="form-control"
+                                    rows={4} id="comment"
                                 />
+                                {errors && <p className='error'>{errors.automated_msg?.message}</p>}
                             </div>
                         </div>
-                        <div className="mb-3 row">
-                            <label className="col-sm-2 col-form-label col-form-label-sm">Default delivery pricing</label>
-                            <div className="col-sm-10">
-                                <input
-                                    type="number"
-                                    placeholder="10"
-                                    className="form-control form-control-sm"
-                                />
-                            </div>
-                        </div>
-                        <div className="mb-3 row">
-                            <label className="col-sm-2 col-form-label col-form-label-sm">Default time between each action</label>
-                            <div className="col-sm-10">
-                                <input
-                                    type="number"
-                                    placeholder="10"
-                                    className="form-control form-control-sm"
-                                />
-                            </div>
-                        </div>
-                        <div className="mb-3 row">
-                            <label className="col-sm-2 col-form-label col-form-label-sm">Start world order</label>
-                            <div className="col-sm-10">
-                                <input
-                                    type="text"
-                                    placeholder="salam"
-                                    className="form-control form-control-sm"
-                                />
-                            </div>
-                        </div>
-                        <div className="mb-3 row">
-                            <label className="col-sm-2 col-form-label col-form-label-sm">Automated message</label>
-                            <textarea className="form-control" rows={4} id="comment" defaultValue={""} />
-                        </div>
-                    </div>
 
-                    <button type="button" className="btn btn-primary btn-sm">
-                        Enregistrer
-                    </button>
+                        <button type="submit" className="btn btn-primary btn-sm">
+                            Enregistrer
+                        </button>
+                    </form>
+
                     <br /><br />
                     <button type="button" className="btn btn-outline-info btn-xxs">
                         Modifier le mot de passe
