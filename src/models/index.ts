@@ -77,7 +77,7 @@ export interface GetProductModel {
 export interface CityModel {
     id?: number,
     name: string,
-    price: number,
+    price: string,
     isFromSheet?: boolean,
     City_User?:{
         id: number,

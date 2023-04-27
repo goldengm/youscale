@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { RiFileDownloadFill } from 'react-icons/ri'
-import { AddStatusModal, AddCityModal, EditCityModal } from '../../Table/Modal/Setting';
+import { AddStatusModal, AddCityModal, EditCityModal, DeleteCityModal } from '../../Table/Modal/Setting';
 import { useGetStatusQuery, usePatchStatusMutation } from '../../../services/api/ClientApi/ClientStatusApi';
-import { ColumnModel, ColumnPatchModel, StatusModel } from '../../../models';
+import { CityModel, ColumnModel, ColumnPatchModel, StatusModel } from '../../../models';
 import 'react-nestable/dist/styles/index.css';
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api/ClientApi/ClientColumnApi';
+import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi';
+import { CLIENT_UPLOAD_CITY_URL } from '../../../services/url/API_URL';
+import axios from 'axios';
 
 const SplitActiveInnactive = (data: ColumnModel[] | undefined) => {
 
@@ -24,23 +27,31 @@ export default function OrderSetting() {
     const [showAddCityModal, setShowAddCityModal] = useState<boolean>(false)
     const [showEditCityModal, setShowEditCityModal] = useState<boolean>(false)
 
+    const [showDeleteCityModal, setShowDeleteCityModal] = useState<boolean>(false)
+
+
     const { data: statusData, refetch: refetchStatus } = useGetStatusQuery()
     const { data, refetch } = useGetColumnQuery()
+
+    const [ item, setItem ] = useState<CityModel>()
+    const { data: cityData, refetch: refetchData } = useGetCityQuery()
 
     const objData = SplitActiveInnactive(data?.data)
 
     return (
         <div className="row">
             {showAddStatusModal && <AddStatusModal setShowModal={setShowAddStatusModal} showModal={showAddStatusModal} refetch={refetchStatus} />}
-            {showAddCityModal && <AddCityModal setShowModal={setShowAddCityModal} showModal={showAddCityModal} />}
-            {showEditCityModal && <EditCityModal setShowModal={setShowEditCityModal} showModal={showEditCityModal} />}
+
+            {showAddCityModal && <AddCityModal setShowModal={setShowAddCityModal} refetch={refetchData} showModal={showAddCityModal} />}
+            {showEditCityModal && <EditCityModal item={item} setShowModal={setShowEditCityModal} refetch={refetchData} showModal={showEditCityModal} />}
+            {showDeleteCityModal && <DeleteCityModal id_city={item?.id ? String(item?.id) : ''} setShowModal={setShowDeleteCityModal} refetch={refetchData} showModal={showDeleteCityModal} />}
 
             <h3 className="mt-4 mb-3">Order Settings</h3>
             <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus} />
             <CSVExport statusData={data?.data} refetchStatus={refetchStatus} />
             <ChangeColumn />
             <ColumnOfOrder objData={objData} refetch={refetch} />
-            <City setShowAddCityModal={setShowAddCityModal} setShowEditCityModal={setShowEditCityModal} />
+            <City setShowAddCityModal={setShowAddCityModal} refetch={refetchData} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} data={cityData?.data} setItem={setItem} />
             <ConfSetting />
         </div>
     )
@@ -367,9 +378,13 @@ const Column = ({ title, className, data }: ColumnProps): JSX.Element => {
 
 interface CityProps {
     setShowAddCityModal: React.Dispatch<React.SetStateAction<boolean>>,
-    setShowEditCityModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowEditCityModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setShowDeleteCityModal: React.Dispatch<React.SetStateAction<boolean>>
+    setItem: React.Dispatch<React.SetStateAction<CityModel | undefined>>,
+    refetch: () => any
+    data: CityModel[] | undefined
 }
-const City = ({ setShowAddCityModal, setShowEditCityModal }: CityProps): JSX.Element => {
+const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModal, setItem, data, refetch }: CityProps): JSX.Element => {
 
     return (
         <div className="col-12">
@@ -400,21 +415,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal }: CityProps): JSX.Ele
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th>1</th>
-                                                <td>Abidjan</td>
-                                                <td>1200 dhs</td>
-                                                <td>
-                                                    <div className="d-flex">
-                                                        <a onClick={() => setShowEditCityModal(true)} href="#" className="btn btn-primary shadow btn-xs sharp me-1">
-                                                            <i className="fas fa-pencil-alt" />
-                                                        </a>
-                                                        <a href="#" className="btn btn-danger shadow btn-xs sharp">
-                                                            <i className="fa fa-trash" />
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            { data && data.map((dt, index)=> <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />) }
                                         </tbody>
                                     </table>
                                 </div>
@@ -423,7 +424,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal }: CityProps): JSX.Ele
                         </div>
 
                         <div className="col-md-6">
-                            <DragAndDropFile />
+                            <DragAndDropFile refetch={refetch} />
                         </div>
                     </div>
                 </div>
@@ -432,10 +433,47 @@ const City = ({ setShowAddCityModal, setShowEditCityModal }: CityProps): JSX.Ele
     )
 }
 
-interface DragAndDropFileProps {
-    refetch?: any
+interface CityRowProps{
+    setShowEditCityModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setItem: React.Dispatch<React.SetStateAction<CityModel | undefined>>,
+    setShowDeleteCityModal: React.Dispatch<React.SetStateAction<boolean>>,
+    item: CityModel
 }
-function DragAndDropFile({ }: DragAndDropFileProps) {
+const CityRow = ({ setShowEditCityModal, setShowDeleteCityModal, setItem, item }:CityRowProps): JSX.Element => {
+
+    const handleEdit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
+        setItem(item)
+        setShowEditCityModal(true)
+    }
+
+    const handleDelete = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
+        setItem(item)
+        setShowDeleteCityModal(true)
+    }
+
+    return (
+        <tr>
+            <th>{item.id}</th>
+            <td>{item.name}</td>
+            <td>{item.price} dhs</td>
+            <td>
+                <div className="d-flex">
+                    <a onClick={handleEdit} href="#" className="btn btn-primary shadow btn-xs sharp me-1">
+                        <i className="fas fa-pencil-alt" />
+                    </a>
+                    <a onClick={handleDelete} href="#" className="btn btn-danger shadow btn-xs sharp">
+                        <i className="fa fa-trash" />
+                    </a>
+                </div>
+            </td>
+        </tr>
+    )
+}
+
+interface DragAndDropFileProps {
+    refetch: ()=> any
+}
+function DragAndDropFile({ refetch }: DragAndDropFileProps) {
     const [dragging, setDragging] = useState(false);
     const [file, setFile] = useState<any>(null);
 
@@ -447,6 +485,31 @@ function DragAndDropFile({ }: DragAndDropFileProps) {
     const handleDragLeave = () => {
         setDragging(false);
     };
+
+    const sendData = (data: File) => {
+
+        const formData = new FormData();
+        formData.append('file', data)
+
+        const token = localStorage.getItem('token')
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${token}`);
+
+        axios.post(CLIENT_UPLOAD_CITY_URL, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                console.log(res)
+                refetch()
+            })
+            .catch(err => {
+                alert(err)
+            })
+    }
 
     const handleDrop = (event: any) => {
         event.preventDefault();
@@ -486,7 +549,7 @@ function DragAndDropFile({ }: DragAndDropFileProps) {
                 </>
             )}
             {file && <p className='drag-txt'> : {file.name}</p>}
-            {file && <button onClick={() => console.log('send data')}>Envoyer</button>}
+            {file && <button onClick={() => sendData(file)}>Envoyer</button>}
         </div>
     );
 }
