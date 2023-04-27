@@ -156,7 +156,7 @@ const CSVStatusCheckbox = ({ dt, refetch }: CSVStatusCheckboxProps): JSX.Element
                     id="customCheckBox1"
                 />
                 <label className="form-check-label" htmlFor="customCheckBox1">
-                    {dt.name}
+                    {dt.alias ?? dt.name}
                 </label>
             </div>
         </div>
@@ -164,6 +164,38 @@ const CSVStatusCheckbox = ({ dt, refetch }: CSVStatusCheckboxProps): JSX.Element
 }
 
 const ChangeColumn = (): JSX.Element => {
+
+    const { data, refetch } = useGetColumnQuery()
+    const [alias, setAlias] = useState<string>()
+    const [id, setId] = useState<number>()
+    const [patchColumn] = usePatchColumnMutation()
+
+    useEffect(() => {
+        setId(data?.data[0].id ?? 0)
+        setAlias(data?.data[0].alias ?? 'no alias')
+    }, [data])
+
+    const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = e.target
+
+        setId(JSON.parse(value).id)
+        setAlias(JSON.parse(value).alias ?? 'no alias')
+    }
+
+    const handleChangeAlias = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+
+        setAlias(value)
+    }
+
+    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        patchColumn({ id, alias }).unwrap().then(() => {
+            refetch()
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     return (
         <div className="col-xl-6 col-lg-6">
             <div className="card">
@@ -173,22 +205,34 @@ const ChangeColumn = (): JSX.Element => {
                             <div className="mb-3">
                                 <label className="form-label">Add alias to column</label>
                                 <select
-                                    className="default-select  form-control wide"
+                                    name={'alias'}
+                                    onChange={handleChangeSelect}
+                                    className="form-control"
                                 >
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    {data && data.data.map((dt: any) => (<option value={JSON.stringify(dt)}>{dt.name}</option>))}
                                 </select>
 
                             </div>
                             <div className="col mt-2 mt-sm-0">
-                                <input type="text" className="form-control" placeholder="alias" />
+                                <input
+                                    onChange={handleChangeAlias}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="alias"
+                                    value={alias}
+                                />
                             </div>
 
-                            <button type="button" className="btn btn-outline-primary btn-xs">
-                                Change
-                            </button>
+                            {
+                                alias &&
+                                <button
+                                    onClick={handleSubmit}
+                                    type="button"
+                                    className="btn btn-outline-primary btn-xs"
+                                >
+                                    Change
+                                </button>
+                            }
                         </form>
                     </div>
                 </div>
