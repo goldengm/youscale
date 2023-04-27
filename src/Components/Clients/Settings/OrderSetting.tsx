@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { RiFileDownloadFill } from 'react-icons/ri'
 import { AddStatusModal, AddCityModal, EditCityModal } from '../../Table/Modal/Setting';
 import { useGetStatusQuery, usePatchStatusMutation } from '../../../services/api/ClientApi/ClientStatusApi';
-import { StatusModel } from '../../../models';
+import { ColumnModel, StatusModel } from '../../../models';
 import 'react-nestable/dist/styles/index.css';
+import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api/ClientApi/ClientColumnApi';
 
 export default function OrderSetting() {
     const [showAddStatusModal, setShowAddStatusModal] = useState<boolean>(false)
@@ -11,6 +12,7 @@ export default function OrderSetting() {
     const [showEditCityModal, setShowEditCityModal] = useState<boolean>(false)
 
     const { data: statusData, refetch: refetchStatus } = useGetStatusQuery()
+    const { data, refetch } = useGetColumnQuery()
 
     return (
         <div className="row">
@@ -19,8 +21,8 @@ export default function OrderSetting() {
             {showEditCityModal && <EditCityModal setShowModal={setShowEditCityModal} showModal={showEditCityModal} />}
 
             <h3 className="mt-4 mb-3">Order Settings</h3>
-            <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus}  />
-            <CSVExport />
+            <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus} />
+            <CSVExport statusData={data?.data} refetchStatus={refetchStatus} />
             <ChangeColumn />
             <ColumnOfOrder />
             <City setShowAddCityModal={setShowAddCityModal} setShowEditCityModal={setShowEditCityModal} />
@@ -32,7 +34,7 @@ export default function OrderSetting() {
 interface StatusProps {
     setShowAddStatusModal: React.Dispatch<React.SetStateAction<boolean>>,
     statusData: StatusModel[] | undefined,
-    refetchStatus: ()=> any
+    refetchStatus: () => any
 }
 const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProps): JSX.Element => {
 
@@ -99,7 +101,11 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
     )
 }
 
-const CSVExport = (): JSX.Element => {
+interface CSVExportProps {
+    statusData: ColumnModel[] | undefined,
+    refetchStatus: () => any
+}
+const CSVExport = ({ statusData, refetchStatus }: CSVExportProps): JSX.Element => {
     return (
         <div className="col-xl-6 col-lg-6">
             <div className="card">
@@ -108,27 +114,49 @@ const CSVExport = (): JSX.Element => {
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        <CSVStatusCheckbox />
-                        <CSVStatusCheckbox />
-                        <CSVStatusCheckbox />
-                        <CSVStatusCheckbox />
+                        {statusData && statusData.map(dt => <CSVStatusCheckbox dt={dt} refetch={refetchStatus} />)}
                     </div>
                 </div>
             </div>
         </div>
     )
 }
-const CSVStatusCheckbox = (): JSX.Element => {
+
+interface CSVStatusCheckboxProps {
+    dt: ColumnModel,
+    refetch: () => any
+}
+const CSVStatusCheckbox = ({ dt, refetch }: CSVStatusCheckboxProps): JSX.Element => {
+
+    const [patchColumn] = usePatchColumnMutation()
+
+    const handleStatusCheckbox = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+
+        const data = { id: dt.id ?? 0, isExported: !dt.isExported }
+
+        patchColumn(data).unwrap()
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                alert(err.data.message)
+            })
+
+        refetch()
+    }
+
     return (
         <div className="col-xl-4 col-xxl-6 col-6">
             <div className="form-check custom-checkbox mb-3">
                 <input
+                    onClick={handleStatusCheckbox}
+                    defaultChecked={dt.isExported}
                     type="checkbox"
                     className="form-check-input"
                     id="customCheckBox1"
                 />
                 <label className="form-check-label" htmlFor="customCheckBox1">
-                    Order id
+                    {dt.name}
                 </label>
             </div>
         </div>
