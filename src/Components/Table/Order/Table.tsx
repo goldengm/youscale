@@ -29,7 +29,7 @@ const GetColumn = (col: ColumnModel[] | undefined): string[] => {
 
     var column: string[] = []
 
-    col.map(dt => dt.active && column.push(dt.name))
+    col.map(dt => dt.active && column.push(dt.alias || dt.name))
 
     return [...column, 'history']
 }

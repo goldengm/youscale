@@ -2,9 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { RiFileDownloadFill } from 'react-icons/ri'
 import { AddStatusModal, AddCityModal, EditCityModal } from '../../Table/Modal/Setting';
 import { useGetStatusQuery, usePatchStatusMutation } from '../../../services/api/ClientApi/ClientStatusApi';
-import { ColumnModel, StatusModel } from '../../../models';
+import { ColumnModel, ColumnPatchModel, StatusModel } from '../../../models';
 import 'react-nestable/dist/styles/index.css';
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api/ClientApi/ClientColumnApi';
+
+const SplitActiveInnactive = (data: ColumnModel[] | undefined) => {
+
+    const active = data && data.filter(dt => dt.active && dt)
+    const innactive = data && data.filter(dt => !dt.active && dt)
+
+    var obj = {
+        'active': active,
+        'innactive': innactive
+    }
+
+    return obj
+}
 
 export default function OrderSetting() {
     const [showAddStatusModal, setShowAddStatusModal] = useState<boolean>(false)
@@ -13,6 +26,8 @@ export default function OrderSetting() {
 
     const { data: statusData, refetch: refetchStatus } = useGetStatusQuery()
     const { data, refetch } = useGetColumnQuery()
+
+    const objData = SplitActiveInnactive(data?.data)
 
     return (
         <div className="row">
@@ -24,7 +39,7 @@ export default function OrderSetting() {
             <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus} />
             <CSVExport statusData={data?.data} refetchStatus={refetchStatus} />
             <ChangeColumn />
-            <ColumnOfOrder />
+            <ColumnOfOrder objData={objData} refetch={refetch} />
             <City setShowAddCityModal={setShowAddCityModal} setShowEditCityModal={setShowEditCityModal} />
             <ConfSetting />
         </div>
@@ -241,7 +256,25 @@ const ChangeColumn = (): JSX.Element => {
     )
 }
 
-const ColumnOfOrder = (): JSX.Element => {
+interface ColumnOfOrderCardProps {
+    refetch: () => any,
+    objData: { active: ColumnModel[] | undefined, innactive: ColumnModel[] | undefined }
+}
+const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Element => {
+
+    const [updated, setUpdated] = useState<boolean>(false)
+    const [dataUpdated, setDataUpdated] = useState<ColumnPatchModel>()
+
+    const [patchColumn] = usePatchColumnMutation()
+
+    useEffect(() => {
+        if (dataUpdated) {
+            patchColumn(dataUpdated).unwrap()
+                .then(res => console.log(res))
+                .catch(err => alert(err.data.message))
+        }
+    }, [updated])
+
     useEffect(() => {
         setTimeout(() => {
             const draggables = document.querySelectorAll('.col-order')
@@ -264,6 +297,11 @@ const ColumnOfOrder = (): JSX.Element => {
                 e.preventDefault()
                 const draggable = document.querySelector('.dragging')
 
+                const patchData: ColumnPatchModel = { id: draggable?.id, active: true }
+
+                setDataUpdated(patchData)
+                setUpdated(true)
+
                 draggable && activeContainer.appendChild(draggable)
             })
 
@@ -271,6 +309,10 @@ const ColumnOfOrder = (): JSX.Element => {
                 e.preventDefault()
                 const draggable = document.querySelector('.dragging')
 
+                const patchData: ColumnPatchModel = { id: draggable?.id, active: false }
+
+                setDataUpdated(patchData)
+                setUpdated(false)
 
                 draggable && innactiveContainer.appendChild(draggable)
             })
@@ -286,44 +328,36 @@ const ColumnOfOrder = (): JSX.Element => {
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        <div className="col-md-6">
-                            <div className="card-content">
-                                <div className="nestable">
-                                    <div className="dd" id="nestable">
-                                        <h3>Active</h3>
-                                        <ol className="dd-list active-column">
-                                            <li draggable={true} className="dd-item col-order" data-id={3}>
-                                                <div className="dd-handle">Order ID</div>
-                                            </li>
-                                            <li draggable={true} className="dd-item col-order" data-id={1}>
-                                                <div className="dd-handle">Product</div>
-                                            </li>
-                                            <li draggable={true} className="dd-item col-order" data-id={13}>
-                                                <div className="dd-handle">Nom</div>
-                                            </li>
-                                        </ol>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Column data={objData.active} className={'active-column'} title='Active columns' />
+                        <Column data={objData.innactive} className={'inactive-column'} title='Inactive columns' />
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
-                        <div className="col-md-6">
-                            <div className="card-content">
-                                <div className="nestable">
-                                    <div className="dd" id="nestable2">
-                                        <h3>Innactive</h3>
-                                        <ol className="dd-list inactive-column">
-                                            <li draggable={true} className="dd-item col-order" data-id={14}>
-                                                <div className="dd-handle">Telephone</div>
-                                            </li>
-                                            <li draggable={true} className="dd-item col-order" data-id={15}>
-                                                <div className="dd-handle">Date</div>
-                                            </li>
-                                        </ol>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+interface ColumnProps {
+    title: string,
+    className: string,
+    data: ColumnModel[] | undefined
+}
+const Column = ({ title, className, data }: ColumnProps): JSX.Element => {
+    return (
+        <div className="col-md-6">
+            <div className="card-content">
+                <div className="nestable">
+                    <div className="dd" id="nestable">
+                        <h3>{title}</h3>
+                        <ol className={`dd-list ${className}`}>
+                            {
+                                data?.map((dt, index) =>
+                                    <li id={`${dt.id}`} key={index} draggable={true} className="dd-item col-order" data-id={index}>
+                                        <div className="dd-handle">{dt.alias ?? dt.name}</div>
+                                    </li>
+                                )
+                            }
+                        </ol>
                     </div>
                 </div>
             </div>
