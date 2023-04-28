@@ -1,6 +1,10 @@
 import React from 'react'
+import { useGetClientAccountQuery } from '../../../services/api/ClientApi/ClientAccountApi'
 
 export const Account = (): JSX.Element => {
+
+    const { data } = useGetClientAccountQuery()
+
     return (
         <div className="row">
             <div className="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
@@ -27,7 +31,7 @@ export const Account = (): JSX.Element => {
                             </span>
                             <div className="media-body">
                                 <p className="mb-1">Solde</p>
-                                <h4 className="mb-0">364.5 dhs</h4>
+                                <h4 className="mb-0">{data?.data.solde || 0} dhs</h4>
                             </div>
                         </div>
                     </div>
@@ -43,7 +47,7 @@ export const Account = (): JSX.Element => {
                             </span>
                             <div className="media-body text-white text-end">
                                 <p className="mb-1">Montant du</p>
-                                <h3 className="text-white">763 dhs</h3>
+                                <h3 className="text-white">{data?.data.montant_du || 0} dhs</h3>
                             </div>
                         </div>
                     </div>
