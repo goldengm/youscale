@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
+import { showToastError } from '../../../services/toast/showToastError';
 
 type Inputs = {
     default_conf_pricing: string,
@@ -123,7 +124,7 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
                 console.log(res)
             })
             .catch(err => {
-                alert(err.data.message)
+                showToastError(err.data.message)
             })
 
         refetch()
@@ -185,7 +186,7 @@ const CSVStatusCheckbox = ({ dt, refetch }: CSVStatusCheckboxProps): JSX.Element
                 console.log(res)
             })
             .catch(err => {
-                alert(err.data.message)
+                showToastError(err.data.message)
             })
 
         refetch()
@@ -302,7 +303,7 @@ const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Elemen
         if (dataUpdated) {
             patchColumn(dataUpdated).unwrap()
                 .then(res => console.log(res))
-                .catch(err => alert(err.data.message))
+                .catch(err => showToastError(err.data.message))
         }
     }, [updated])
 
@@ -527,7 +528,7 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
                 refetch()
             })
             .catch(err => {
-                alert(err)
+                showToastError(err)
             })
     }
 

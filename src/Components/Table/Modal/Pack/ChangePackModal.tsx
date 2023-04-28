@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import ModalWrapper from '../ModalWrapper'
 import { useChangeSubscriptionMutation } from '../../../../services/api/ClientApi/ClientSubscriptionApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 
 interface MyError {
     data: {
@@ -57,7 +58,7 @@ export default function ChangePackModal({ showModal, setShowModal, refetch, id_s
             .then(() => {
                 refetch()
                 handleCloseModal()
-            }).catch((err: MyError) => alert(err.data.message))
+            }).catch((err: MyError) => showToastError(err.data.message))
     }
 
     return (

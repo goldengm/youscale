@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { VariantModel } from '../../../../models';
 import { useAddVariantMutation, useGetVariantQuery } from '../../../../services/api/ClientApi/ClientVariantApi';
 import { useAddProductMutation } from '../../../../services/api/ClientApi/ClientProductApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 import './product.style.css'
 
 type Inputs = {
@@ -103,7 +104,7 @@ const FormBody = ({setShowModal, refetch, handleCloseModal}: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch(err => alert(err.data.message))
+            .catch(err => showToastError(err.data.message))
     }
 
     return (
@@ -169,7 +170,7 @@ const AddVariant = ({ refetchVariant }: AddVariantProps): JSX.Element => {
                 refetchVariant()
                 setVariant('')
             })
-            .catch((err: any) => alert(err.data.message))
+            .catch((err: any) => showToastError(err.data.message))
 
     }
 

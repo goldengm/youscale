@@ -5,6 +5,7 @@ import { MultiSelectElement, SendButton } from '../../../Input'
 import { ProductOrder } from '../../../../models'
 import { usePatchClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi'
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi'
+import { showToastError } from '../../../../services/toast/showToastError'
 
 interface Props {
   showModal: boolean,
@@ -76,7 +77,7 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
 
   const onSubmit = () => {
     if (selectedProduct.length === 0) {
-      alert('Please select at least one product')
+      showToastError('Please select at least one product')
       return
     }
 
@@ -89,7 +90,7 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
         refetch()
         handleCloseModal()
       })
-      .catch(err => alert(err.data.message))
+      .catch(err => showToastError(err.data.message))
   }
 
   return (

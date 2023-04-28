@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useGetLinkSheetQuery, useIntegrateSheetMutation } from '../../../../services/api/ClientApi/ClientIntegrateSheetApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 
 type Inputs = {
     spreadsheetId: string,
@@ -79,7 +80,7 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
             refetch()
         }).catch((err: any) => {
             console.log(err)
-            alert(err.data.message)
+            showToastError(err.data.message)
         })
     }
 

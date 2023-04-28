@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useGetStatusQuery } from '../../../../services/api/ClientApi/ClientStatusApi';
 import { usePatchClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 
 type SelectType = {
   label: string,
@@ -148,7 +149,7 @@ const FormBody = ({ dataEdit, handleCloseModal, refetch }: FormBodyProps) => {
         refetch()
         handleCloseModal()
       })
-      .catch(err => alert(err.data.message))
+      .catch(err => showToastError(err.data.message))
   }
 
   return (

@@ -9,6 +9,7 @@ import * as yup from "yup";
 import './product.style.css'
 import { useGetVariantQuery } from '../../../../services/api/ClientApi/ClientVariantApi'
 import { usePatchProductMutation } from '../../../../services/api/ClientApi/ClientProductApi'
+import { showToastError } from '../../../../services/toast/showToastError'
 
 type Inputs = {
     name: string,
@@ -115,7 +116,7 @@ const FormBody = ({ item, refetch, handleCloseModal }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch(err => alert(err.data.message))
+            .catch(err => showToastError(err.data.message))
     }
 
     return (

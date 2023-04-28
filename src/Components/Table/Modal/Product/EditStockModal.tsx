@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { usePatchStockMutation } from '../../../../services/api/ClientApi/ClientStockApi';
 import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi';
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 
 type Inputs = {
   quantity: string,
@@ -135,7 +136,7 @@ const FormBody = ({ item, handleCloseModal, refetch }: FormBodyProps) => {
         refetch()
         handleCloseModal()
       })
-      .catch(err => alert(err.data.message))
+      .catch(err => showToastError(err.data.message))
   }
 
   return (

@@ -10,6 +10,7 @@ import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi'
 import { useGetStatusQuery } from '../../../services/api/ClientApi/ClientStatusApi'
 import { usePatchClientOrderMutation } from '../../../services/api/ClientApi/ClientOrderApi'
 import { useGetTeamMemberQuery } from '../../../services/api/ClientApi/ClientTeamMemberApi'
+import { showToastError } from '../../../services/toast/showToastError'
 
 interface RowProps {
     row: GetClientOrderModel,
@@ -57,7 +58,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
     const handleChangeTeam = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
-        patchOrder({ id: order?.id, id_team: Number(value), prev_id_team: order ? order.id_team : 0 }).unwrap().then(() => refetch && refetch()).catch((err) => { alert(err.data.message); refetch && refetch() })
+        patchOrder({ id: order?.id, id_team: Number(value), prev_id_team: order ? order.id_team : 0 }).unwrap().then(() => refetch && refetch()).catch((err) => { showToastError(err.data.message); refetch && refetch() })
     }
 
     const handleChangeOuvrir = (e: React.ChangeEvent<HTMLSelectElement>): void => {

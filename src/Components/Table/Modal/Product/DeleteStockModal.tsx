@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ModalWrapper from '../ModalWrapper'
 import { GetStockModel  } from '../../../../models';
 import { useDeleteStockMutation } from '../../../../services/api/ClientApi/ClientStockApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 
 interface Props {
     showModal: boolean,
@@ -54,7 +55,7 @@ export default function DeleteStockModal({ showModal, setShowModal, refetch, ite
                     handleCloseModal()
                     console.log(res)
                 })
-                .catch(err => alert(err.data.message))
+                .catch(err => showToastError(err.data.message))
         }
 
     }

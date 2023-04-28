@@ -3,6 +3,7 @@ import ModalWrapper from '../ModalWrapper'
 import { CustumInput } from '../../../Forms';
 import { GetClientOrderModel } from '../../../../models';
 import { usePatchClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 
 interface Props {
   showModal: boolean,
@@ -59,7 +60,7 @@ export default function ReportOrderModal({ showModal, setShowModal, item, refetc
         refetch()
         handleCloseModal()
       })
-      .catch(err => alert(err.data.message))
+      .catch(err => showToastError(err.data.message))
   }
 
   return (

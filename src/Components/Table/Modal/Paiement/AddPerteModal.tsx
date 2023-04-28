@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { GetProductModel, PerteCategorieModel } from '../../../../models'
 import { useAddClientPerteMutation } from '../../../../services/api/ClientApi/ClientPerteApi'
+import { showToastError } from '../../../../services/toast/showToastError'
 
 type SelectType = {
     label: string,
@@ -107,7 +108,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch(err => alert(err.data.message))
+            .catch(err => showToastError(err.data.message))
     }
 
     return (

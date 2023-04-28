@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useAddColumnMutation } from '../../../../services/api/ClientApi/ClientColumnApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 
 type Inputs = {
     name: '',
@@ -82,7 +83,7 @@ const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
             refetch()
             handleCloseModal()
         })
-        .catch(err => alert(err.data.message))
+        .catch(err => showToastError(err.data.message))
     }
 
     return (

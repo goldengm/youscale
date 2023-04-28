@@ -14,6 +14,7 @@ import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityAp
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi'
 import { useGetPageQuery } from '../../../../services/api/ClientApi/ClientPageApi'
 import { usePatchTeamMemberMutation } from '../../../../services/api/ClientApi/ClientTeamMemberApi'
+import { showToastError } from '../../../../services/toast/showToastError'
 
 type Inputs = {
     name: string,
@@ -208,7 +209,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-        .catch(err => alert(err.data.message))
+        .catch(err => showToastError(err.data.message))
     }
 
     return (

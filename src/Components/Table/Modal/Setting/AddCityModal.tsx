@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useAddCityMutation } from '../../../../services/api/ClientApi/ClientCityApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 
 
 type Inputs = {
@@ -80,7 +81,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch(err => alert(err.data.message))
+            .catch(err => showToastError(err.data.message))
     }
 
     return (

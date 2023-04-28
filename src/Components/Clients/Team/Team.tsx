@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
 import { FaPen } from 'react-icons/fa'
-import { PERFORMANCE_STATS_DATA, EARNING_STATS_DATA } from '../../../services/mocks/mock-youscale-dashbord'
 import PerformanceCard from './PerformanceCard'
 import EarningCard from './EarningCard'
 import { CustomHist } from '../../Chart'
@@ -10,12 +9,14 @@ import './team.style.css'
 import { EarningTable, GetTeamMemberModel, TeamDashbordQueryModel } from '../../../models'
 import { useGetTeamMemberQuery, usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 import { useGetTeamDashbordQuery } from '../../../services/api/ClientApi/ClientTeamDashbordApi'
+import { showToastError } from '../../../services/toast/showToastError'
+
 import { GetRole } from '../../../services/storageFunc'
 
 export default function Team(): JSX.Element {
     const userData = localStorage.getItem('userData')
 
-    const { data, refetch, isSuccess } = useGetTeamMemberQuery()
+    const { data, refetch } = useGetTeamMemberQuery()
 
     const [date, setDate] = useState<string[]>([])
     const [idTeam, setIdTeam] = useState<number>(GetRole() === 'TEAM' ? JSON.parse(userData || '{id: 0}').id : 0)
@@ -24,12 +25,12 @@ export default function Team(): JSX.Element {
     const { data: teamData, refetch: refetchTeamData } = useGetTeamDashbordQuery(OrderQueryData)
 
     useEffect(() => {
-        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined  })
+        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined })
         refetchTeamData()
     }, [date, usingDate])
 
     useEffect(() => {
-        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined  })
+        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined })
         refetchTeamData()
     }, [idTeam])
 
@@ -64,7 +65,7 @@ export default function Team(): JSX.Element {
                         }
                     </div>
                     <EarningCard>
-                        { teamData && <CustomHist data={teamData.data.earning} options={option} /> }
+                        {teamData && <CustomHist data={teamData.data.earning} options={option} />}
                         <EarningTale earningTable={teamData?.data.earning_table} />
                     </EarningCard>
                 </div>
@@ -120,7 +121,7 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
             .then((res: any) => {
                 refetch()
             })
-            .catch((err: any) => alert(err.data.message))
+            .catch((err: any) => showToastError(err.data.message))
     }
 
     const handleShowEdit = (e: React.MouseEvent<SVGElement, MouseEvent>) => {

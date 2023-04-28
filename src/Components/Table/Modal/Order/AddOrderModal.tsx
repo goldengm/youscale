@@ -10,6 +10,7 @@ import { useGetStatusQuery } from '../../../../services/api/ClientApi/ClientStat
 import { MultiSelectElement } from '../../../Input'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { showToastError } from '../../../../services/toast/showToastError'
 import * as yup from "yup";
 
 type SelectType = {
@@ -187,7 +188,7 @@ const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
   const onSubmit = (values: Inputs) => {
 
     if (selectedProduct.length === 0) {
-      alert('Please select at least one product')
+      showToastError('Please select at least one product')
       return
     }
 
@@ -202,7 +203,7 @@ const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
         refetch()
         handleCloseModal()
       })
-      .catch(err => alert(err.data.message))
+      .catch(err => showToastError(err.data.message))
 
   }
 

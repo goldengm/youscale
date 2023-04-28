@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ModalWrapper from '../ModalWrapper'
 import { useDeleteCityMutation } from '../../../../services/api/ClientApi/ClientCityApi';
+import { showToastError } from '../../../../services/toast/showToastError';
 
 interface Props {
     showModal: boolean,
@@ -51,7 +52,7 @@ export default function DeleteCityModal({ showModal, setShowModal, refetch, id_c
                handleCloseModal()
                refetch()
             })
-            .catch(err => alert(err.data.message))
+            .catch(err => showToastError(err.data.message))
     }
 
     return (
