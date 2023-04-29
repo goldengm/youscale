@@ -19,7 +19,7 @@ export default function DisplayChangeOuvrir({ name, currentData, onChange }: Pro
       className="select-custum"
     >
 
-      <option value={0}>Aucun</option>
+      <option value={'Aucun'}>Aucun</option>
       { name == 'changer' && Data.map((dt) => (<option selected={dt === currentData.Changer} value={dt}>{dt}</option>)) }
       { name == 'ouvrir' && Data.map((dt) => (<option selected={dt === currentData.Ouvrir} value={dt}>{dt}</option>)) }
     </select>

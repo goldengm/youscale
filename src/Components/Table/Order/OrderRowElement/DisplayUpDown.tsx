@@ -10,6 +10,7 @@ export default function DisplayUpDown({ onChange, currentData }: Props): JSX.Ele
   const [Data] = useState<string[]>([
     'UpSell',
     'DownSell',
+    'CrossSell',
   ])
 
   return (
@@ -18,7 +19,7 @@ export default function DisplayUpDown({ onChange, currentData }: Props): JSX.Ele
       className="select-custum"
     >
 
-      <option value={0}>Aucun</option>
+      <option value={'Aucun'}>Aucun</option>
       {Data.map((dt) => (<option selected={dt === currentData['Up/Downsell']} value={dt}>{dt}</option>))}
     </select>
   )

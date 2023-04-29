@@ -4,13 +4,14 @@ import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, Dis
 import { IoLogoWhatsapp } from 'react-icons/io5'
 import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal, DeleteOrderModal } from '../Modal/Order'
 import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel } from '../../../models'
-import './styles.css'
+import { CustumDropdown } from '../../Input'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi'
 import { useGetStatusQuery } from '../../../services/api/ClientApi/ClientStatusApi'
 import { usePatchClientOrderMutation } from '../../../services/api/ClientApi/ClientOrderApi'
 import { useGetTeamMemberQuery } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 import { showToastError } from '../../../services/toast/showToastError'
+import './styles.css'
 
 interface RowProps {
     row: GetClientOrderModel,
@@ -103,6 +104,14 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         window.open(`https://wa.me/${phone_number}?text=${encodeURI(message)}`, "_blank");
     };
 
+    const FormatCity = (data:  CityModel[]) => {
+        var options : { label: string, value: string | number }[] = []
+
+        data.map((dt)=> options.push({ label: dt.name, value: dt.id || 0 }) )
+
+        return options
+    }
+
     return (
         <tr className='tr-custum'>
             {showOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
@@ -133,7 +142,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                             return (
                                 <td>
                                     <IoLogoWhatsapp className='io-logo' onClick={() => handleClick('+212' + row[formatDtName])} size={25} color={'green'} />
-                                    <a data-bs-toggle="modal" data-bs-target="#basicModal" href={`tel:+212${row[formatDtName]}`}>
+                                    <a href={`tel:+212${row[formatDtName]}`}>
                                         <strong>{row[formatDtName]}</strong>
                                     </a>
                                 </td>
@@ -201,7 +210,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         if (formatDtName === 'Ville') {
                             return (
                                 <td>
-                                    <DisplayCity refetch={refetch} name='id_city' data={order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : []} order={order && order} />
+                                    <CustumDropdown refetch={refetch} options={FormatCity(order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : [])} name='id_city' data={order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : []} order={order && order} />
                                 </td>
                             )
                         }
