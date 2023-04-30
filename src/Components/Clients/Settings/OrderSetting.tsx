@@ -446,7 +446,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
 
                         <div className="col-md-6">
                             <DragAndDropFile refetch={refetch} />
-                            <a href='#' className="btn btn-outline-primary btn-xs">Copier le model</a>
+                            <a href='/load/model.csv' className="btn btn-outline-primary btn-xs export-btn">Copier le model</a>
                         </div>
                     </div>
                 </div>

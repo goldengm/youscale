@@ -25,6 +25,7 @@ type Inputs = {
     downsell: string,
     crosssell: string,
     max_order: string,
+    can_del_or_edit_order: boolean,
     all_column_access: boolean,
     all_cities_access: boolean,
     all_product_access: boolean,
@@ -46,6 +47,7 @@ const schema = yup.object().shape({
     crosssell: yup.string().required('Ce champ est obligatoire'),
     max_order: yup.string().required('Ce champ est obligatoire'),
 
+    can_del_or_edit_order: yup.boolean().required('Ce champ est obligatoire'),
     all_column_access: yup.boolean().required('Ce champ est obligatoire'),
     all_cities_access: yup.boolean().required('Ce champ est obligatoire'),
     all_product_access: yup.boolean().required('Ce champ est obligatoire'),
@@ -135,7 +137,6 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
         const data = {
             ...values,
             day_payment: '1',
-            can_del_or_edit_order: true,
             column_access: values.column_access ?? [],
             cities_access: values.cities_access ?? [],
             product_access: values.product_access ?? [],
@@ -244,6 +245,21 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             placeholder={'2'}
                             defaultValue={0}
                         />
+                    </div>
+
+                    <div className="row">
+                        <div className="form-check custom-checkbox mb-3 checkbox-info">
+                            <input
+                                {...register('can_del_or_edit_order')}
+                                type="checkbox"
+                                className="form-check-input"
+                                defaultChecked={true}
+                                id="customCheckBox2"
+                            />
+                            <label className="form-check-label" htmlFor="customCheckBox2">
+                                {'Can delete or edit orders'}
+                            </label>
+                        </div>
                     </div>
 
                     <div className="row">

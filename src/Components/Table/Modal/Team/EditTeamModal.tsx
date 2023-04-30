@@ -26,6 +26,7 @@ type Inputs = {
     downsell: string,
     crosssell: string,
     max_order: string,
+    can_del_or_edit_order: boolean,
     all_column_access: boolean,
     all_cities_access: boolean,
     all_product_access: boolean,
@@ -47,6 +48,7 @@ const schema = yup.object().shape({
     crosssell: yup.string().notRequired(),
     max_order: yup.string().notRequired(),
 
+    can_del_or_edit_order: yup.boolean().notRequired(),
     all_column_access: yup.boolean().notRequired(),
     all_cities_access: yup.boolean().notRequired(),
     all_product_access: yup.boolean().notRequired(),
@@ -128,38 +130,38 @@ const getCityAccess = (data: CityAccessModel[] | undefined): MSEAccessType[] => 
     return []
 }
 
-const getProductAccessEdit = (data: ProductAccessModel[] | undefined): string[] =>{
-    if(!data) return []
+const getProductAccessEdit = (data: ProductAccessModel[] | undefined): string[] => {
+    if (!data) return []
     var outs: string[] = []
 
-    data.map((dt, i)=> outs.push(String(dt.Product.id)))
+    data.map((dt, i) => outs.push(String(dt.Product.id)))
 
     return outs
 }
 
-const getCityAccessEdit = (data: CityAccessModel[] | undefined): string[] =>{
-    if(!data) return []
+const getCityAccessEdit = (data: CityAccessModel[] | undefined): string[] => {
+    if (!data) return []
     var outs: string[] = []
 
-    data.map((dt, i)=> outs.push(String(dt.City_User.id)))
+    data.map((dt, i) => outs.push(String(dt.City_User.id)))
 
     return outs
 }
 
-const getPageAccessEdit = (data: PageAccessModel[] | undefined): string[] =>{
-    if(!data) return []
+const getPageAccessEdit = (data: PageAccessModel[] | undefined): string[] => {
+    if (!data) return []
     var outs: string[] = []
 
-    data.map((dt, i)=> outs.push(String(dt.Client_Page.id)))
+    data.map((dt, i) => outs.push(String(dt.Client_Page.id)))
 
     return outs
 }
 
-const getColumnAccessEdit = (data: ColumnAccessModel[] | undefined): string[] =>{
-    if(!data) return []
+const getColumnAccessEdit = (data: ColumnAccessModel[] | undefined): string[] => {
+    if (!data) return []
     var outs: string[] = []
 
-    data.map((dt, i)=> outs.push(String(dt.Column_Of_Order.id)))
+    data.map((dt, i) => outs.push(String(dt.Column_Of_Order.id)))
 
     return outs
 }
@@ -228,14 +230,13 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
     });
 
     const onSubmit = (values: Inputs) => {
-        
+
         console.log(dataEdit?.column_access)
 
         const data: GetTeamMemberModel = {
             ...values,
             id: dataEdit?.id || 0,
             day_payment: '1',
-            can_del_or_edit_order: true,
             column_access: values.column_access ? values.column_access : getColumnAccessEdit(dataEdit?.Team_Client_Column_Acces),
             cities_access: values.cities_access ? values.cities_access : getCityAccessEdit(dataEdit?.Team_Client_City_Acces),
             product_access: values.product_access ? values.product_access : getProductAccessEdit(dataEdit?.Team_Client_Product_Acces),
@@ -247,7 +248,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-        .catch(err => showToastError(err.data.message))
+            .catch(err => showToastError(err.data.message))
     }
 
     return (
@@ -347,6 +348,22 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                             label={"Max order pending"}
                             placeholder={'2'}
                         />
+                    </div>
+
+
+                    <div className="row">
+                        <div className="form-check custom-checkbox mb-3 checkbox-info">
+                            <input
+                                {...register('can_del_or_edit_order')}
+                                type="checkbox"
+                                className="form-check-input"
+                                defaultChecked={dataEdit?.can_del_or_edit_order}
+                                id="customCheckBox2"
+                            />
+                            <label className="form-check-label" htmlFor="customCheckBox2">
+                                {'Can delete or edit orders'}
+                            </label>
+                        </div>
                     </div>
 
                     <div className="row">
