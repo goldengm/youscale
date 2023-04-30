@@ -41,12 +41,13 @@ const schema = yup.object().shape({
 }).required();
 
 interface Props {
+  id_order: string,
   showModal: boolean,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
   dataEdit: GetClientOrderModel,
   refetch: () => any
 }
-export default function EditOrderModal({ showModal, setShowModal, dataEdit, refetch }: Props): JSX.Element {
+export default function EditOrderModal({ showModal, setShowModal, dataEdit, refetch, id_order }: Props): JSX.Element {
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
@@ -81,18 +82,19 @@ export default function EditOrderModal({ showModal, setShowModal, dataEdit, refe
 
   return (
     <ModalWrapper title={'Edit order'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
-      <FormBody dataEdit={dataEdit} handleCloseModal={handleCloseModal} refetch={refetch} />
+      <FormBody dataEdit={dataEdit} handleCloseModal={handleCloseModal} refetch={refetch} id_order={id_order} />
     </ModalWrapper>
   )
 }
 
 interface FormBodyProps {
+  id_order: string,
   dataEdit: GetClientOrderModel,
   handleCloseModal: () => void,
   refetch: () => any
 }
 
-const FormBody = ({ dataEdit, handleCloseModal, refetch }: FormBodyProps) => {
+const FormBody = ({ dataEdit, handleCloseModal, refetch, id_order }: FormBodyProps) => {
 
   const [patchOrder] = usePatchClientOrderMutation()
 
@@ -142,8 +144,13 @@ const FormBody = ({ dataEdit, handleCloseModal, refetch }: FormBodyProps) => {
   }, [])
 
   const onSubmit = (values: Inputs) => {
-
-    patchOrder(values).unwrap()
+    
+    const data = {
+      ...values,
+      id: Number(id_order)
+    }
+    
+    patchOrder(data).unwrap()
       .then(res => {
         console.log(res)
         refetch()

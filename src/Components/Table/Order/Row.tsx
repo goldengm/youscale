@@ -115,10 +115,10 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
     return (
         <tr className='tr-custum'>
             {showOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
-            {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={row} />}
-            {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} id_order={String(row.Order_id)} />}
+            {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={row} id_order={String(order?.id ?? 0)} />}
+            {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} id_order={String(order?.id ?? 0)} />}
             {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} item={row} />}
-            {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(row.Order_id)} />}
+            {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
 
             <td>
                 <input

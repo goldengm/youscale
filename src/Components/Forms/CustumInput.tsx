@@ -19,6 +19,7 @@ export default function CustumInput({ label, placeholder, type, className='', de
         <div className={`mb-3 col-md-6 ${className}`}>
             <label className="form-label">{label}</label>
             <input
+                min={0}
                 {...register(name)}
                 defaultValue={defaultValue}
                 onChange={onChange}
