@@ -8,10 +8,10 @@ import { showToastError } from '../../../../services/toast/showToastError';
 interface Props {
   showModal: boolean,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-  item: GetClientOrderModel,
+  id_order: string,
   refetch: () => void
 }
-export default function ReportOrderModal({ showModal, setShowModal, item, refetch }: Props): JSX.Element {
+export default function ReportOrderModal({ showModal, setShowModal, refetch, id_order }: Props): JSX.Element {
 
   const [patchOrder] = usePatchClientOrderMutation()
   const [date, setDate] = useState<string>(String(new Date()))
@@ -51,7 +51,7 @@ export default function ReportOrderModal({ showModal, setShowModal, item, refetc
     e.preventDefault()
 
     const data = {
-      id: item.Order_id ? item.Order_id : 0,
+      id: Number(id_order),
       reportedDate: date
     }
 

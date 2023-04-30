@@ -104,10 +104,10 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         window.open(`https://wa.me/${phone_number}?text=${encodeURI(message)}`, "_blank");
     };
 
-    const FormatCity = (data:  CityModel[]) => {
-        var options : { label: string, value: string | number }[] = []
+    const FormatCity = (data: CityModel[]) => {
+        var options: { label: string, value: string | number }[] = []
 
-        data.map((dt)=> options.push({ label: dt.name, value: dt.id || 0 }) )
+        data.map((dt) => options.push({ label: dt.name, value: dt.id || 0 }))
 
         return options
     }
@@ -117,7 +117,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
             {showOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={row} id_order={String(order?.id ?? 0)} />}
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} id_order={String(order?.id ?? 0)} />}
-            {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} item={row} />}
+            {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
             {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
 
             <td>
@@ -218,13 +218,16 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         if (formatDtName === 'Status') {
                             return (
                                 <td>
-                                    {order?.reportedDate && <span className="badge badge-pill badge-info">{order?.reportedDate}</span>}
-                                    <DisplayStatus
-                                        currentData={row}
-                                        statusData={FilterStatusData(dataStatus?.data)}
-                                        onChange={handleChangeStatus}
-                                        name='Status'
-                                    />
+                                    <div className="container-msg">
+                                        {order?.reportedDate && <span className="tooltip-text-msg badge badge-pill badge-info">{order?.reportedDate}</span>}
+                                        <DisplayStatus
+                                            currentData={row}
+                                            statusData={FilterStatusData(dataStatus?.data)}
+                                            onChange={handleChangeStatus}
+                                            name='Status'
+                                        />
+                                    </div>
+                                    {/* {order?.reportedDate && <span className="badge badge-pill badge-info">{order?.reportedDate}</span>} */}
                                 </td>
                             )
                         }
@@ -239,7 +242,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                                             data-bs-toggle="popover"
                                             data-bs-placement="top"
                                             data-bs-content={row[formatDtName]}
-                                            title="Message"
+                                            title={row[formatDtName]}
                                             aria-describedby="popover437986"
                                         />
                                     </div>

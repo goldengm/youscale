@@ -5,11 +5,11 @@ import PerformanceCard from './PerformanceCard'
 import EarningCard from './EarningCard'
 import { CustomHist } from '../../Chart'
 import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
-import './team.style.css'
 import { EarningTable, GetTeamMemberModel, TeamDashbordQueryModel } from '../../../models'
 import { useGetTeamMemberQuery, usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 import { useGetTeamDashbordQuery } from '../../../services/api/ClientApi/ClientTeamDashbordApi'
 import { showToastError } from '../../../services/toast/showToastError'
+import './team.style.css'
 
 import { GetRole } from '../../../services/storageFunc'
 

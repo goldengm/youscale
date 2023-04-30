@@ -24,3 +24,28 @@
     height: 22px;
     width: 22px;
 }
+
+.container-msg{
+    position: relative;
+    display: inline-block;
+    width: auto;
+    text-align: center;
+}
+
+.tooltip-text-msg{
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -6px);
+    width: 150px;
+    background-color:#f1f1f1;
+    color: black;
+    padding: 5px 10px;
+    z-index: 999;
+    border-radius: 3px;
+}
+
+.container-msg:hover .tooltip-text-msg {
+    display: block;
+}
