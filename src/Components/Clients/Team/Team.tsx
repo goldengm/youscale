@@ -202,7 +202,6 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
                                     <th></th>
                                     <th>Nombre de commande</th>
                                     <th>Her earning</th>
-                                    <th>Salaire</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -210,37 +209,31 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
                                     <td>Livre</td>
                                     <td>{earningTable?.livre.nb_commande}</td>
                                     <td>{earningTable?.livre.her_earning}</td>
-                                    <td className="color-danger">{earningTable?.livre.salaire} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>Upsell</td>
                                     <td>{earningTable?.upsell.nb_commande}</td>
                                     <td>{earningTable?.upsell.her_earning}</td>
-                                    <td className="color-danger">{earningTable?.upsell.salaire} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>Downsell</td>
                                     <td>{earningTable?.downsell.nb_commande}</td>
                                     <td>{earningTable?.downsell.her_earning}</td>
-                                    <td className="color-danger">{earningTable?.downsell.salaire} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>CrossSell</td>
                                     <td>{earningTable?.crosssell.nb_commande}</td>
                                     <td>{earningTable?.crosssell.her_earning}</td>
-                                    <td className="color-danger">{earningTable?.crosssell.salaire} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>Salaire</td>
                                     <td>0</td>
                                     <td>{earningTable?.crosssell.salaire}</td>
-                                    <td className="color-danger">{sumSalaire(earningTable)} dhs</td>
                                 </tr>
                                 <tr>
                                     <td>Total</td>
                                     <td>{sumNbCommande(earningTable)}</td>
                                     <td>{sumHerEarning(earningTable)}</td>
-                                    <td><span className="badge badge-primary light">{sumSalaire(earningTable)} dhs</span></td>
                                 </tr>
                             </tbody>
                         </table>
