@@ -40,7 +40,7 @@ type Inputs = {
 const schema = yup.object().shape({
     name: yup.string().notRequired(),
     email: yup.string().notRequired(),
-    password: yup.string().notRequired(),
+    password: yup.string().min(8, 'Le mot de passe doit contenir au minimum 8 caractères').notRequired(),
     salaire: yup.string().notRequired(),
     commission: yup.string().notRequired(),
     upsell: yup.string().notRequired(),

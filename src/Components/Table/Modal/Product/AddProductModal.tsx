@@ -9,6 +9,7 @@ import { VariantModel } from '../../../../models';
 import { useAddVariantMutation, useGetVariantQuery } from '../../../../services/api/ClientApi/ClientVariantApi';
 import { useAddProductMutation } from '../../../../services/api/ClientApi/ClientProductApi';
 import { showToastError } from '../../../../services/toast/showToastError';
+import { showToastSucces } from '../../../../services/toast/showToastSucces';
 import './product.style.css'
 
 type Inputs = {
@@ -167,6 +168,7 @@ const AddVariant = ({ refetchVariant }: AddVariantProps): JSX.Element => {
         if (variant === '') return
         addVariant({ name: variant }).unwrap()
             .then((res: any) => {
+                showToastSucces('Variant ajouté')
                 refetchVariant()
                 setVariant('')
             })
