@@ -128,6 +128,42 @@ const getCityAccess = (data: CityAccessModel[] | undefined): MSEAccessType[] => 
     return []
 }
 
+const getProductAccessEdit = (data: ProductAccessModel[] | undefined): string[] =>{
+    if(!data) return []
+    var outs: string[] = []
+
+    data.map((dt, i)=> outs.push(String(dt.Product.id)))
+
+    return outs
+}
+
+const getCityAccessEdit = (data: CityAccessModel[] | undefined): string[] =>{
+    if(!data) return []
+    var outs: string[] = []
+
+    data.map((dt, i)=> outs.push(String(dt.City_User.id)))
+
+    return outs
+}
+
+const getPageAccessEdit = (data: PageAccessModel[] | undefined): string[] =>{
+    if(!data) return []
+    var outs: string[] = []
+
+    data.map((dt, i)=> outs.push(String(dt.Client_Page.id)))
+
+    return outs
+}
+
+const getColumnAccessEdit = (data: ColumnAccessModel[] | undefined): string[] =>{
+    if(!data) return []
+    var outs: string[] = []
+
+    data.map((dt, i)=> outs.push(String(dt.Column_Of_Order.id)))
+
+    return outs
+}
+
 interface Props {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
@@ -193,15 +229,17 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
 
     const onSubmit = (values: Inputs) => {
         
+        console.log(dataEdit?.column_access)
+
         const data: GetTeamMemberModel = {
             ...values,
             id: dataEdit?.id || 0,
             day_payment: '1',
             can_del_or_edit_order: true,
-            column_access: values.column_access ?? [],
-            cities_access: values.cities_access ?? [],
-            product_access: values.product_access ?? [],
-            page_access: values.page_access ?? []
+            column_access: values.column_access ? values.column_access : getColumnAccessEdit(dataEdit?.Team_Client_Column_Acces),
+            cities_access: values.cities_access ? values.cities_access : getCityAccessEdit(dataEdit?.Team_Client_City_Acces),
+            product_access: values.product_access ? values.product_access : getProductAccessEdit(dataEdit?.Team_Client_Product_Acces),
+            page_access: values.page_access ? values.page_access : getPageAccessEdit(dataEdit?.Team_Client_Page_Acces)
         }
 
         patchTeam(data).unwrap()
@@ -238,7 +276,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                         />
 
                         <CustumInput
-                            defaultValue={dataEdit?.email}
+                            defaultValue={dataEdit?.password}
                             register={register}
                             name={'password'}
                             error={errors.password}
