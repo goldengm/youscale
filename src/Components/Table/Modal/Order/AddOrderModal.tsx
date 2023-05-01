@@ -252,7 +252,7 @@ const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
               register={register}
               name={'message'}
               error={errors.message}
-              label={"Message"}
+              label={"Commentaire"}
             />
           </div>
 
@@ -308,6 +308,7 @@ const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
           </div>
 
           <div className="row">
+            <label className="form-label">{'Produit'}</label>
             {ProductSuccess ? <MultiSelectElement options={FormatDataOption(ProductData?.data)} selected={selectedProduct} onChange={setSelectedProduct} /> : <></>}
 
             {selectedProduct.map((dt, index) =>

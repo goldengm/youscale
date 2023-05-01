@@ -6,17 +6,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useAddColumnMutation } from '../../../../services/api/ClientApi/ClientColumnApi';
 import { showToastError } from '../../../../services/toast/showToastError';
+import { useAddStatusMutation } from '../../../../services/api/ClientApi/ClientStatusApi';
 
 type Inputs = {
     name: '',
-    alias: '',
-    active: true,
-    isExported: false
+    checked: true
 };
 
 const schema = yup.object().shape({
     name: yup.string().required('Ce champ est obligatoire'),
-    active: yup.boolean().required('Ce champ est obligatoire')
+    checked: yup.boolean().required('Ce champ est obligatoire')
 }).required();
 
 interface Props {
@@ -69,16 +68,16 @@ interface FormBodyProps {
     refetch: () => any
 }
 const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
-    const [addColumn] = useAddColumnMutation()
+    const [addStatus] = useAddStatusMutation()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(schema)
     });
 
     const onSubmit = (values: Inputs) => {
-        const data = { ...values, alias: '', isExported: false }
+        const data = { ...values }
 
-        addColumn(data).unwrap()
+        addStatus(data).unwrap()
         .then(res => {
             refetch()
             handleCloseModal()
@@ -104,7 +103,7 @@ const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
                     <div className="row">
                         <div className="form-check custom-checkbox mb-3 checkbox-info">
                             <input
-                                {...register('active')}
+                                {...register('checked')}
                                 type="checkbox"
                                 className="form-check-input"
                                 defaultChecked={true}

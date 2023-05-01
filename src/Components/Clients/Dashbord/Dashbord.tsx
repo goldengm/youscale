@@ -83,7 +83,7 @@ const Card = ({ bg, value, title, icon }: CardProps): JSX.Element => {
                         {icon}
                     </div>
                     <div>
-                        <h2 className="text-white invoice-num">{value}</h2>
+                        <h2 className="text-white invoice-num">{Number(value).toFixed(2)}</h2>
                         <span className="text-white fs-18">{title}</span>
                     </div>
                 </div>

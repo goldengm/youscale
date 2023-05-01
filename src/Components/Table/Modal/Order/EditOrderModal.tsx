@@ -209,7 +209,7 @@ const FormBody = ({ dataEdit, handleCloseModal, refetch, id_order }: FormBodyPro
               register={register}
               name={'message'}
               error={errors.message}
-              label={"Message"}
+              label={"Commentaire"}
             />
           </div>
 
