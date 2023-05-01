@@ -63,6 +63,7 @@ export interface ProductModel {
 export interface GetProductModel {
     id: number,
     name: string,
+    isDeleted: boolean,
     variant: string[],
     price_selling: number,
     price_buying: number,

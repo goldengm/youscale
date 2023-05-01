@@ -23,11 +23,11 @@ type Inputs = {
 };
 
 const schema = yup.object().shape({
-    default_conf_pricing: yup.string().required('Ce champ est obligatoire'),
-    delfault_del_pricing: yup.string().required('Ce champ est obligatoire'),
-    default_time: yup.string().required('Ce champ est obligatoire'),
-    automated_msg: yup.string().required('Ce champ est obligatoire'),
-    startWrldOrder: yup.string().required('Ce champ est obligatoire')
+    default_conf_pricing: yup.string().notRequired(),
+    delfault_del_pricing: yup.string().notRequired(),
+    default_time: yup.string().notRequired(),
+    automated_msg: yup.string().notRequired(),
+    startWrldOrder: yup.string().notRequired()
 }).required();
 
 const SplitActiveInnactive = (data: ColumnModel[] | undefined) => {
@@ -588,7 +588,12 @@ const ConfSetting = (): JSX.Element => {
     const onSubmit = (values: Inputs) => {
         const datas = {
             ...values,
-            id: data?.data.id ?? 0
+            id: data?.data.id ?? 0,
+            default_conf_pricing : String(data?.data.default_cof_ricing) || '0.0',
+            delfault_del_pricing : String(data?.data.delfaulnpt_del_pricing) || '0.0',
+            default_time : String(data?.data.default_time) || '0.0',
+            startWrldOrder: String(data?.data.startWrldOrder)  || '0.0',
+            automated_msg: String(data?.data.automated_msg) || '0.0'
         }
 
         patchSetting(datas).unwrap()

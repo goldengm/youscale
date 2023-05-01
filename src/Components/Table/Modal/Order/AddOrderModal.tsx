@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CustumInput, CustumTextArea, CustumSelectForm } from '../../../Forms'
 import { ProductOrderCard } from './Card'
 import ModalWrapper from '../ModalWrapper'
-import { CityModel, StatusModel } from '../../../../models'
+import { CityModel, GetProductModel, StatusModel } from '../../../../models'
 import { useAddClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi'
 import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi'
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi'
@@ -152,11 +152,12 @@ const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
     { label: 'Non', value: 'Non' }
   ]
 
-  const FormatDataOption = (data: any) => {
-    var objArr: { label: string, value: string, allVariant: [], variant: [] }[] = []
+  const FormatDataOption = (data: GetProductModel[]) => {
+    var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
 
     for (let i = 0; i < data.length; i++) {
-      objArr.push({ label: data[i].name, value: data[i].id, allVariant: data[i].variant, variant: [] })
+      if(!data[i].isDeleted)
+        objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
     }
 
     return objArr

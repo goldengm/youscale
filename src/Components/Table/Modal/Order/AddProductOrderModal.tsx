@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ProductOrderCard } from './Card'
 import ModalWrapper from '../ModalWrapper'
 import { MultiSelectElement, SendButton } from '../../../Input'
-import { ProductOrder } from '../../../../models'
+import { GetProductModel, ProductOrder } from '../../../../models'
 import { usePatchClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi'
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi'
 import { showToastError } from '../../../../services/toast/showToastError'
@@ -19,11 +19,12 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
   const [patchOrder] = usePatchClientOrderMutation()
   const { data: ProductData, isSuccess } = useGetProductQuery()
 
-  const FormatDataOption = (data: any) => {
-    var objArr: { label: string, value: string, allVariant: [], variant: [] }[] = []
+  const FormatDataOption = (data: GetProductModel[]) => {
+    var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
 
     for (let i = 0; i < data.length; i++) {
-      objArr.push({ label: data[i].name, value: data[i].id, allVariant: data[i].variant, variant: [] })
+      if(!data[i].isDeleted)
+        objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
     }
 
     return objArr

@@ -21,7 +21,7 @@ export default function ProductTable(): JSX.Element {
             { showEditProductModal ? <EditProductModal refetch={refetch} showModal={showEditProductModal} setShowModal={setShowEditProductModal} item={item}  /> : <></> }
             { showDeleteProductModal ? <DeleteProductModal refetch={refetch} showModal={showDeleteProductModal} setShowModal={setShowDeleteProductModal} item={item}  /> : <></> }
 
-            { isSuccess && data.data.map((dt, key) => <ProductRow data={dt} key={key} setShowDeleteModal={setShowDeleteProductModal} setShowEditModal={setShowEditProductModal} setItem={setItem} /> ) }
+            { isSuccess && data.data.map((dt, key) => !dt.isDeleted && <ProductRow data={dt} key={key} setShowDeleteModal={setShowDeleteProductModal} setShowEditModal={setShowEditProductModal} setItem={setItem} /> ) }
         </TableWrapper>
     )
 }
