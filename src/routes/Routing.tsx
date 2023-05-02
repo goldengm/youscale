@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Redirect from './Redirect';
 import Error403 from '../Pages/Errors/Error403';
-import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage, LoginPage, RegisterPage, OPTVerificationPage } from '../Pages/Clients';
+import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage, LoginPage, RegisterPage, OPTVerificationPage, ForgotPasswordPage } from '../Pages/Clients';
 import { useGetClientTeamMemberPageQuery } from '../services/api/ClientTeamApi/ClientTeamPageApi';
 import { GetRole } from '../services/storageFunc';
 
@@ -29,6 +29,12 @@ const Routing = (): JSX.Element => {
 
     return (
         <Routes>
+            <Route path="/forgotpwd" element={
+                <Redirect>
+                    <ForgotPasswordPage />
+                </Redirect>
+            } />
+
             <Route path="/opt-verification" element={
                 <Redirect>
                     <OPTVerificationPage />

@@ -139,7 +139,7 @@ export default function LoginPage() {
                                                     </div>
                                                 </div>
                                                 <div className="mb-3">
-                                                    <a href="page-forgot-password.html">Password oublié?</a>
+                                                    <a href="/forgotpwd">Password oublié ?</a>
                                                 </div>
                                             </div>
                                             <div className="text-center">

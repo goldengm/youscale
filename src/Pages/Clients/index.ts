@@ -8,6 +8,7 @@ import PackPage from "./PackPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import OPTVerificationPage from "./OPTVerificationPage";
+import ForgotPasswordPage from "./ForgotPasswordPage";
 
 export { 
     DashbordPage,
@@ -19,5 +20,6 @@ export {
     PackPage,
     LoginPage,
     RegisterPage,
-    OPTVerificationPage
+    OPTVerificationPage,
+    ForgotPasswordPage
  };

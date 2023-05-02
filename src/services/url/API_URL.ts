@@ -14,6 +14,7 @@ export const ADMIN_LOGIN_AS_CLIENT_URL = `${BASE_URL}/api/youscale/v1/admin/logi
 export const ADMIN_TEAM_LOGIN_URL = `${BASE_URL}/api/youscale/v1/team/admin/login`
 export const CLIENT_TEAM_LOGIN_URL = `${BASE_URL}/api/youscale/v1/team/user/login`
 export const CLIENT_PASSWORD_URL = `${BASE_URL}/api/youscale/v1/client/password`
+export const CLIENT_FORGET_PASSWORD_URL = `${BASE_URL}/api/youscale/v1/client/password/forgot`
 
 /**Client URL */
 export const CLIENT_PRODUIT_URL = `${BASE_URL}/api/youscale/v1/client/product`

@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import { authService } from "../auth/AuthService";
-import { ClientLoginModel, AdminLoginModel, ClientRegisterModel, AdminRegisterModel, ClientOTPModel } from "../../models";
+import { ClientLoginModel, AdminLoginModel, ClientRegisterModel, AdminRegisterModel, ClientOTPModel, ForgotPwdModel } from "../../models";
 
 export const clientLoginThunk = createAsyncThunk(
     'auth/clientlogin',
@@ -31,6 +31,18 @@ export const clientOTPVerifyThunk = createAsyncThunk(
   async (user:ClientOTPModel, thunkAPI) => {
     try {
       return await authService.clientOTPVerify(user);
+    } catch (error : any) {
+      const message = error.response.data.message || 'Something went wrong try again';
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const clientForgotPwdThunk = createAsyncThunk(
+  'auth/clientforgotpwd',
+  async (user: ForgotPwdModel, thunkAPI) => {
+    try {
+      return await authService.clientForgotPwd(user);
     } catch (error : any) {
       const message = error.response.data.message || 'Something went wrong try again';
       return thunkAPI.rejectWithValue(message);

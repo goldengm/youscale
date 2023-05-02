@@ -25,6 +25,10 @@ export interface ClientOTPModel {
     telephone: string
 }
 
+export interface ForgotPwdModel {
+    email: string
+}
+
 export interface ClientRegisterModel {
     email: string,
     fullname: string,
