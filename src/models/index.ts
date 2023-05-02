@@ -34,7 +34,7 @@ export interface ClientRegisterModel {
     fullname: string,
     telephone: string,
     password: string,
-    code_auth: string
+    code_auth?: string
 }
 
 export interface AdminModel {

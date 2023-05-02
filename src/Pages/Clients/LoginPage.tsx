@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import './styles.css'
+import React, { useEffect } from 'react'
 import { SetRole, GetRole } from '../../services/storageFunc'
 import { selectAuth } from '../../services/slice/authSlice'
 import { clientLoginThunk, clientTeamLoginThunk } from '../../services/thunks/authThunks';
@@ -7,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import './styles.css'
 
 type Inputs = {
     email: string;
@@ -21,7 +21,7 @@ const schema = yup.object().shape({
 export default function LoginPage() {
 
     const dispatch = useDispatch<any>()
-    const { message, isAuthenticated, isError, isVerified, isLoading } = useSelector(selectAuth)
+    const { message, isAuthenticated, isError, isVerified } = useSelector(selectAuth)
 
     const handleChangeRole = (role: 'CLIENT' | 'TEAM'): any => {
         SetRole(role)
@@ -50,6 +50,7 @@ export default function LoginPage() {
             if (GetRole() === 'TEAM') window.location.href = '/'
         }
 
+        console.log(isVerified)
         if (isVerified === false) {
             const telephone = JSON.parse(localStorage.getItem('telephone') || '')
             window.location.href = `/opt-verification?telephone=${telephone}`
