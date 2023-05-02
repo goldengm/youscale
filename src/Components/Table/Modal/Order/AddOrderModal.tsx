@@ -108,11 +108,11 @@ export default function AddOrderModal({ showModal, setShowModal, refetch }: Prop
   )
 }
 
-interface FormBodyProps{
+interface FormBodyProps {
   refetch: () => any,
   handleCloseModal: () => void
 }
-const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
+const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
   const [addOrder] = useAddClientOrderMutation()
 
   const [selectedProduct, setSelectedProduct] = useState<{ label: string, value: number | undefined, quantity: number, variant: string[], allVariant: string[] | undefined }[]>([]);
@@ -156,7 +156,7 @@ const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
     var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
 
     for (let i = 0; i < data.length; i++) {
-      if(!data[i].isDeleted)
+      if (!data[i].isDeleted)
         objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
     }
 
@@ -211,7 +211,7 @@ const FormBody = ({ refetch, handleCloseModal }:FormBodyProps) => {
   return (
     <div className="card-body">
       <div className="basic-form">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
           <div className="row">
             <CustumInput
               register={register}
