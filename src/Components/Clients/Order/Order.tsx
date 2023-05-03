@@ -26,12 +26,12 @@ export default function Order(): JSX.Element {
   }, [])
 
   useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], search: undefined, status: undefined, id_product_array: product ?? undefined, id_team: idTeam ?? undefined })
+    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], search: undefined, status: undefined, id_product_array: product ?? undefined, id_team: idTeam !== 0 ? idTeam : undefined })
     RefetchOrderClient()
   }, [date, usingDate])
 
   useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_product_array: product !== '0' ? product : undefined, id_team: idTeam ?? undefined })
+    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_product_array: product !== '0' ? product : undefined, id_team: idTeam !== 0 ? idTeam : undefined })
     RefetchOrderClient()
   }, [product])
 
