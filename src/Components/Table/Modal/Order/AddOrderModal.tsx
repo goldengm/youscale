@@ -211,7 +211,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
   return (
     <div className="card-body">
       <div className="basic-form">
-        <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete='false'>
           <div className="row">
             <CustumInput
               register={register}

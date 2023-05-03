@@ -22,6 +22,8 @@ export default function CustumInput({ label, placeholder, type, className='', de
                 min={0}
                 {...register(name)}
                 defaultValue={defaultValue}
+                role='presentation'
+                autoComplete='off'
                 onChange={onChange}
                 type={type}
                 className="form-control"
