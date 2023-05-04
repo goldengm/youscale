@@ -10,7 +10,7 @@ export default function DashbordPage(): JSX.Element {
   const [idTeam, setIdTeam] = useState<number>(0)
   const [usingDate, setUsingDate] = useState<boolean>(false)
   const [OrderQueryData, setOrderQueryData] = useState<DashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
-  const { data, isLoading, refetch } = useGetClientDashbordQuery(OrderQueryData)
+  const { data, refetch } = useGetClientDashbordQuery(OrderQueryData)
 
   useEffect(() => { refetch() }, [])
 

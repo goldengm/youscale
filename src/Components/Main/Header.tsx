@@ -32,7 +32,9 @@ const convertProduct = (data: GetProductModel[] | undefined): dataType => {
   var out: dataType = []
 
   data.map(dt => {
-    out.push({ label: dt.name, value: String(dt.id) })
+    if(!dt.isDeleted){
+      out.push({ label: dt.name, value: String(dt.id) })
+    }
   })
 
   return out
