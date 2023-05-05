@@ -593,7 +593,7 @@ const ConfSetting = (): JSX.Element => {
             delfault_del_pricing : values.delfault_del_pricing || String(data?.data.delfaulnpt_del_pricing) || '0.0',
             default_time : values.default_time || String(data?.data.default_time) || '0.0',
             startWrldOrder: values.startWrldOrder || String(data?.data.startWrldOrder)  || 'none',
-            automated_msg: values.automated_msg || String(data?.data.automated_msg) || '0.0'
+            automated_msg: values.automated_msg || String(data?.data.automated_msg) || 'nones'
         }
 
         patchSetting(datas).unwrap()
@@ -623,7 +623,7 @@ const ConfSetting = (): JSX.Element => {
                                         type="number"
                                         min={0}
                                         max={1000}
-                                        step={0.2}
+                                        step={0.1}
                                         placeholder="10"
                                         className="form-control form-control-sm"
                                     />
@@ -638,7 +638,7 @@ const ConfSetting = (): JSX.Element => {
                                         defaultValue={data?.data.delfaulnpt_del_pricing || ''}
                                         min={0}
                                         max={1000}
-                                        step={0.2}
+                                        step={0.1}
                                         type="number"
                                         placeholder="10"
                                         className="form-control form-control-sm"
@@ -654,7 +654,7 @@ const ConfSetting = (): JSX.Element => {
                                         defaultValue={data?.data.default_time || ''}
                                         min={0}
                                         max={1000}
-                                        step={0.2}
+                                        step={0.1}
                                         type="number"
                                         placeholder="10"
                                         className="form-control form-control-sm"
@@ -667,9 +667,7 @@ const ConfSetting = (): JSX.Element => {
                                 <div className="col-sm-10">
                                     <input
                                         {...register('startWrldOrder')}
-                                        defaultValue={data?.data.startWrldOrder || 'default'}
-                                        min={0}
-                                        max={1000}
+                                        defaultValue={data?.data.startWrldOrder}
                                         type="text"
                                         placeholder="salam"
                                         className="form-control form-control-sm"
@@ -681,7 +679,7 @@ const ConfSetting = (): JSX.Element => {
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Automated message</label>
                                 <textarea
                                     {...register('automated_msg')}
-                                    defaultValue={data?.data.automated_msg || 'default'}
+                                    defaultValue={data?.data.automated_msg}
                                     className="form-control"
                                     rows={4} id="comment"
                                 />
