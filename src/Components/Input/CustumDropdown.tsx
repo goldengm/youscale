@@ -25,6 +25,10 @@ export default function CustumDropdown({ options, name, order, refetch, data }: 
     const [patchOrder] = usePatchClientOrderMutation()
 
     const handlePatchMutation = (parms : { label: string, value: string | number }[]) =>{
+        if(parms.length === 0) return
+        if(parms[0].value === value[0].value) return
+
+        setValue([{ label: parms[0].label, value: parms[0].value }])
         patchOrder({ id: order?.id, id_city: Number(parms[0].value) }).unwrap().then(() => refetch && refetch())
     }
 
@@ -35,7 +39,7 @@ export default function CustumDropdown({ options, name, order, refetch, data }: 
             values={value}
             multi={false}
             options={options}
-            onChange={handlePatchMutation}
+            onChange={(e)=> handlePatchMutation(e)}
         />
     )
 }

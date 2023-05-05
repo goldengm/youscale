@@ -218,16 +218,15 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         if (formatDtName === 'Status') {
                             return (
                                 <td>
-                                    <div className="container-msg">
-                                        {order?.reportedDate && <span className="tooltip-text-msg badge badge-pill badge-info">{order?.reportedDate}</span>}
+                                    <div className="tooltip-order">
                                         <DisplayStatus
                                             currentData={row}
                                             statusData={FilterStatusData(dataStatus?.data)}
                                             onChange={handleChangeStatus}
                                             name='Status'
                                         />
+                                        {order?.reportedDate && <span className="tooltiptext">{order?.reportedDate.slice(0, 10)}</span>}
                                     </div>
-                                    {/* {order?.reportedDate && <span className="badge badge-pill badge-info">{order?.reportedDate}</span>} */}
                                 </td>
                             )
                         }
@@ -235,17 +234,18 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         if (formatDtName === 'Message') {
                             return (
                                 <td>
-                                    <div className="bootstrap-popover d-inline-block">
-                                        <BiMessageRoundedDetail
-                                            size={30}
-                                            data-bs-container="body"
-                                            data-bs-toggle="popover"
-                                            data-bs-placement="top"
-                                            data-bs-content={row[formatDtName]}
-                                            title={row[formatDtName]}
-                                            aria-describedby="popover437986"
-                                        />
+                                    <div className="tooltip-order"><BiMessageRoundedDetail
+                                        size={30}
+                                        data-bs-container="body"
+                                        data-bs-toggle="popover"
+                                        data-bs-placement="top"
+                                        data-bs-content={row[formatDtName]}
+                                        title={row[formatDtName]}
+                                        aria-describedby="popover437986"
+                                    />
+                                        <span className="tooltiptext">{row[formatDtName]}</span>
                                     </div>
+
                                 </td>
                             )
                         }

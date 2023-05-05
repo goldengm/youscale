@@ -56,7 +56,7 @@ export default function RegisterPage() {
             if (GetRole() === 'TEAM') window.location.href = '/'
         }
 
-        if (!isVerified) {
+        if (isVerified === false) {
             const telephone = JSON.parse(localStorage.getItem('telephone') || '')
             window.location.href = `/opt-verification?telephone=${telephone}`
         }

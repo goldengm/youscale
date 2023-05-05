@@ -25,7 +25,8 @@ type Inputs = {
     downsell: string,
     crosssell: string,
     max_order: string,
-    can_del_or_edit_order: boolean,
+    can_delete_order: boolean,
+    can_edit_order: boolean,
     all_column_access: boolean,
     all_cities_access: boolean,
     all_product_access: boolean,
@@ -47,7 +48,9 @@ const schema = yup.object().shape({
     crosssell: yup.string().required('Ce champ est obligatoire'),
     max_order: yup.string().required('Ce champ est obligatoire'),
 
-    can_del_or_edit_order: yup.boolean().required('Ce champ est obligatoire'),
+    can_delete_order: yup.boolean().required('Ce champ est obligatoire'),
+    can_edit_order: yup.boolean().required('Ce champ est obligatoire'),
+
     all_column_access: yup.boolean().required('Ce champ est obligatoire'),
     all_cities_access: yup.boolean().required('Ce champ est obligatoire'),
     all_product_access: yup.boolean().required('Ce champ est obligatoire'),
@@ -250,14 +253,27 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                     <div className="row">
                         <div className="form-check custom-checkbox mb-3 checkbox-info">
                             <input
-                                {...register('can_del_or_edit_order')}
+                                {...register('can_delete_order')}
                                 type="checkbox"
                                 className="form-check-input"
                                 defaultChecked={true}
                                 id="customCheckBox2"
                             />
                             <label className="form-check-label" htmlFor="customCheckBox2">
-                                {'Can delete or edit orders'}
+                                {'Can delete orders'}
+                            </label>
+                        </div>
+
+                        <div className="form-check custom-checkbox mb-3 checkbox-info">
+                            <input
+                                {...register('can_edit_order')}
+                                type="checkbox"
+                                className="form-check-input"
+                                defaultChecked={true}
+                                id="customCheckBox2"
+                            />
+                            <label className="form-check-label" htmlFor="customCheckBox2">
+                                {'Can edit orders'}
                             </label>
                         </div>
                     </div>

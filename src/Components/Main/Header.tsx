@@ -47,7 +47,9 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
   var out: dataType = []
 
   data.map(dt => {
-    out.push({ label: dt.name ?? '', value: String(dt.id) })
+    if(dt.active){
+      out.push({ label: dt.name ?? '', value: String(dt.id) })
+    }
   })
 
   return out
@@ -139,7 +141,6 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
                     </svg>
                   </Link>
                 </li>
-
               </ul>
             </div>
           </nav>

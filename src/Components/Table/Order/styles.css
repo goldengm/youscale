@@ -1,51 +1,57 @@
-.table-custum{
+.table-custum {
     width: 170%;
     min-height: 140px;
 }
 
-.tr-custum{
+.tr-custum {
     height: 65px;
 }
 
-.search-bar-custum{
+.search-bar-custum {
     width: 20rem;
 }
 
-.io-logo:hover{
+.io-logo:hover {
     cursor: pointer;
 }
 
-.check_all{
+.check_all {
     height: 22px;
     width: 22px;
 }
 
-.case{
+.case {
     height: 22px;
     width: 22px;
-}
-
-.container-msg{
-    position: relative;
-    display: inline-block;
-    width: auto;
-    text-align: center;
-}
-
-.tooltip-text-msg{
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translate(-50%, -6px);
-    width: 150px;
-    background-color:#f1f1f1;
-    color: black;
-    padding: 5px 10px;
-    z-index: 999;
-    border-radius: 3px;
 }
 
 .container-msg:hover .tooltip-text-msg {
     display: block;
+}
+
+.tooltip-order {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip-order .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip-order:hover .tooltiptext {
+    visibility: visible;
 }

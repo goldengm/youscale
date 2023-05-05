@@ -623,6 +623,7 @@ const ConfSetting = (): JSX.Element => {
                                         type="number"
                                         min={0}
                                         max={1000}
+                                        step={0.2}
                                         placeholder="10"
                                         className="form-control form-control-sm"
                                     />
@@ -637,6 +638,7 @@ const ConfSetting = (): JSX.Element => {
                                         defaultValue={data?.data.delfaulnpt_del_pricing || ''}
                                         min={0}
                                         max={1000}
+                                        step={0.2}
                                         type="number"
                                         placeholder="10"
                                         className="form-control form-control-sm"
@@ -652,6 +654,7 @@ const ConfSetting = (): JSX.Element => {
                                         defaultValue={data?.data.default_time || ''}
                                         min={0}
                                         max={1000}
+                                        step={0.2}
                                         type="number"
                                         placeholder="10"
                                         className="form-control form-control-sm"
