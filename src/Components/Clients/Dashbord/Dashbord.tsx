@@ -305,7 +305,7 @@ const BestCityCardComponent = ({ data }:BestCityCardProps): JSX.Element => {
             <div className="card">
                 <div className="card-header border-0 pb-0">
                     <div>
-                        <h4 className="card-title mb-2">Best Selling Products</h4>
+                        <h4 className="card-title mb-2">Best Cities</h4>
                     </div>
                 </div>
                 <div className="card-body">

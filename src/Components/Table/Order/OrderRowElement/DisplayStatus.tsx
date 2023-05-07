@@ -13,7 +13,6 @@ export default function DisplayStatus( { name, onChange, statusData, currentData
             onChange={onChange}
             className="select-custum"
         >
-            <option selected={true}>{name}</option>
             {
                 statusData && statusData.map(
                     (dt) => ( <option selected={dt.name === currentData.Status} value={dt.name}>{dt.name}</option> ))

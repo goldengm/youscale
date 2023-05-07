@@ -231,7 +231,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                             )
                         }
 
-                        if (formatDtName === 'Message') {
+                        if (formatDtName === 'Commentaire') {
                             return (
                                 <td>
                                     <div className="tooltip-order"><BiMessageRoundedDetail

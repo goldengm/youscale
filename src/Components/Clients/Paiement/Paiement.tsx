@@ -17,7 +17,7 @@ export default function Paiement() {
     const [showDeletePerteModal, setShowDeletePerteModal] = useState<boolean>(false)
 
     const [product, setProduct] = useState<string>('')
-    const [date, setDate] = useState<string[]>()
+    const [date, setDate] = useState<string[]>([])
     const [usingDate, setUsingDate] = useState<boolean>(false)
     const [OrderQueryData, setOrderQueryData] = useState<DashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
     const { data, isLoading, refetch } = useGetPaiementDashbordQuery(OrderQueryData)
@@ -30,12 +30,12 @@ export default function Paiement() {
     }, [date, usingDate])
 
     useEffect(() => {
-        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_product_array: product })
+        setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_product_array: product !== '0' ? product : undefined, })
         refetch()
     }, [product])
 
     return (
-        <Main name='Paiement'>
+        <Main name='Paiement' setProduct={setProduct} usingDate={usingDate} showProductFilter={true} setDate={setDate} setUsingDate={setUsingDate} showDateFilter={true}>
             {showAddPerteModal && <AddPerteModal refetch={refetch} setShowModal={setShowAddPerteModal} showModal={showAddPerteModal} />}
             {showDeletePerteModal && <DeletePerteModal refetch={refetch} id_perte={String(item?.id) ?? ''} setShowModal={setShowDeletePerteModal} showModal={showDeletePerteModal} />}
             <div className="content-body">
@@ -93,7 +93,7 @@ const Card = ({ bg, value, title, icon }: CardProps): JSX.Element => {
 
 const Goal = (): JSX.Element => {
     const { data, refetch } = useGetGoalQuery()
-    const [ value, setValue ] = useState<number>(0)
+    const [value, setValue] = useState<number>(0)
 
     const [addGoal] = useAddGoalMutation()
 
@@ -127,9 +127,9 @@ const Goal = (): JSX.Element => {
                                     className="form-control input-rounded input-goal"
                                     placeholder="123.5"
                                 />
-                                <button 
+                                <button
                                     onClick={submitGoal}
-                                    type="button" 
+                                    type="button"
                                     className="btn btn-outline-primary btn-xs"
                                 >
                                     Valider
