@@ -1,3 +1,11 @@
 .ads-card{
     height: 50vh;
 }
+
+.ads-wh{
+    width: 100%;
+}
+
+.fs-18 {
+    font-size: 14px !important;
+}

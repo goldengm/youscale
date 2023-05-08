@@ -30,11 +30,16 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                         costPerDelivred={data.costPerDelivred} rateOfConfirmed={data.rateOfConfirmed}
                         rateOfDelivred={data.rateOfDelivred} earningNet={data.earningNet}
                     />
-                    <div className="row">
-                        <Ads data={data.orderStatistic} />
-                        <Report dataOrder={data.orderReport} dataEarningNet={data.reportEarningNet} dataCost={data.costReport} dataRate={data.rateReport} />
-                        <BestSellingProductCard data={data.bestSellingProduct} />
-                        <BestCityCardComponent data={data.bestCity} />
+                    <div>
+                        <div className="row">
+                            <OrderStatisticCard data={data.orderStatistic} />
+                            <Report dataOrder={data.orderReport} dataEarningNet={data.reportEarningNet} dataCost={data.costReport} dataRate={data.rateReport} />
+                        </div>
+                        <div className="row">
+                            <BestSellingProductCard data={data.bestSellingProduct} />
+                            <BestCityCardComponent data={data.bestCity} />
+                            <Ads />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,13 +97,32 @@ const Card = ({ bg, value, title, icon }: CardProps): JSX.Element => {
     )
 }
 
-interface AdsProps {
-    data: orderStatistic
-}
-const Ads = ({ data }: AdsProps): JSX.Element => {
+const Ads = (): JSX.Element => {
 
     const { data: AdsData, isSuccess } = useGetAdsQuery()
 
+    return (
+        <div className="col-xl-3 col-xxl-4">
+            <div className="card">
+                <div className="card-body">
+                    <div className="row align-items-center">
+                        <p>Ads</p>
+                        <div className="col-xl-6 ads-wh">
+                            <div className="card-bx bg-blue ads-card">
+                                {(isSuccess && AdsData.data) && <img className="pattern-img" src={`data:image/jpeg;base64,${AdsData.data.image}`} alt="ads" />}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+interface OrderStatisticCardProps {
+    data: orderStatistic
+}
+const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
     let option = {
         responsive: true,
         plugins: {
@@ -110,43 +134,39 @@ const Ads = ({ data }: AdsProps): JSX.Element => {
     }
 
     return (
-        <div className="col-xl-9 col-xxl-12">
+        <div className="col-xl-6 col-xxl-4">
             <div className="card">
+                <div className="card-header border-0 pb-0">
+                    <div>
+                        <h4 className="card-title mb-2">Order statistique</h4>
+                    </div>
+                </div>
+
                 <div className="card-body">
-                    <div className="row align-items-center">
-                        <p>Ads</p>
-                        <div className="col-xl-6">
-                            <div className="card-bx bg-blue ads-card">
-                                {(isSuccess && AdsData.data) && <img className="pattern-img" src={`data:image/jpeg;base64,${AdsData.data.image}`} alt="ads" />}
-                            </div>
+                    <div className="mt-xl-0 mt-4">
+                        <div className="col-md-6">
+                            <ul className="card-list mt-4">
+                                <li>
+                                    <span className="bg-blue circle" />
+                                    Pending<span>{data.data.datasets[0].data[1]}</span>
+                                </li>
+                                <li>
+                                    <span className="bg-success circle" />
+                                    Delivered<span>{data.data.datasets[0].data[0]}</span>
+                                </li>
+                                <li>
+                                    <span className="bg-warning circle" />
+                                    Cancelled<span>{data.data.datasets[0].data[2]}</span>
+                                </li>
+                                <li>
+                                    <span className="bg-light circle" />
+                                    Total order <span>{data.total}</span>
+                                </li>
+                            </ul>
                         </div>
-                        <div className="col-xl-6">
-                            <div className="row  mt-xl-0 mt-4">
-                                <div className="col-md-6">
-                                    <h4 className="card-title">Order statistique</h4>
-                                    <ul className="card-list mt-4">
-                                        <li>
-                                            <span className="bg-blue circle" />
-                                            Pending<span>{data.data.datasets[0].data[1]}</span>
-                                        </li>
-                                        <li>
-                                            <span className="bg-success circle" />
-                                            Delivered<span>{data.data.datasets[0].data[0]}</span>
-                                        </li>
-                                        <li>
-                                            <span className="bg-warning circle" />
-                                            Cancelled<span>{data.data.datasets[0].data[2]}</span>
-                                        </li>
-                                        <li>
-                                            <span className="bg-light circle" />
-                                            Total order <span>{data.total}</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="col-md-6">
-                                    <CustomPie data={data.data} options={option} />
-                                </div>
-                            </div>
+
+                        <div className="col-md-6">
+                            <CustomPie data={data.data} options={option} />
                         </div>
                     </div>
                 </div>
@@ -183,7 +203,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
     })
 
     return (
-        <div className="col-xl-6 col-xxl-12">
+        <div className="col-xl-6 col-xxl-8">
             <div className="card">
                 <div className="card-header d-block d-sm-flex border-0">
                     <div className="me-3">
@@ -264,7 +284,7 @@ interface BestSellingProductProps {
 }
 const BestSellingProductCard = ({ data }: BestSellingProductProps): JSX.Element => {
     return (
-        <div className="col-xl-3 col-xxl-5">
+        <div className="col-xl-3 col-xxl-4">
             <div className="card">
                 <div className="card-header border-0 pb-0">
                     <div>
@@ -272,7 +292,7 @@ const BestSellingProductCard = ({ data }: BestSellingProductProps): JSX.Element 
                     </div>
                 </div>
                 <div className="card-body">
-                    { data && data.map((product, index) => <BestSellingCard key={index} price={product.price} count={product.count} price_product={product.price_product} name={product.name} /> ) }
+                    {data && data.map((product, index) => <BestSellingCard key={index} price={product.price} count={product.count} price_product={product.price_product} name={product.name} />)}
                 </div>
             </div>
         </div>
@@ -299,9 +319,9 @@ const BestSellingCard = ({ name, price, count, price_product }: BestSellingCardP
 interface BestCityCardProps {
     data: BestCity[]
 }
-const BestCityCardComponent = ({ data }:BestCityCardProps): JSX.Element => {
+const BestCityCardComponent = ({ data }: BestCityCardProps): JSX.Element => {
     return (
-        <div className="col-xl-3 col-xxl-5">
+        <div className="col-xl-3 col-xxl-4">
             <div className="card">
                 <div className="card-header border-0 pb-0">
                     <div>
@@ -309,18 +329,18 @@ const BestCityCardComponent = ({ data }:BestCityCardProps): JSX.Element => {
                     </div>
                 </div>
                 <div className="card-body">
-                    { data && data.map((city, index)=> <BestCityCard key={index} city={city.City_User.name} order={city.count} /> ) }
+                    {data && data.map((city, index) => <BestCityCard key={index} city={city.City_User.name} order={city.count} />)}
                 </div>
             </div>
         </div>
     )
 }
 
-interface BestCitiesProps{
+interface BestCitiesProps {
     city: string,
     order: number
 }
-const BestCityCard = ({city, order}:BestCitiesProps): JSX.Element => {
+const BestCityCard = ({ city, order }: BestCitiesProps): JSX.Element => {
     return (
         <div className="d-flex align-items-end mt-2 pb-3 justify-content-between">
             <span>{city}</span>
