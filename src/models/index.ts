@@ -295,9 +295,16 @@ export interface AddPerteModel {
 }
 
 export interface DetailsOfSpendingModel {
-    total_amount: number,
-    Perte_Categorie: PerteCategorieModel,
-    Product: ProductModel
+    categoryName: string
+    products: DetailsOfSpendingProduct[]
+}
+
+export interface DetailsOfSpendingProduct {
+    id: number
+    name: string
+    variant: string[]
+    price_selling: number
+    amount: number
 }
 
 export interface ColumnOfOrderModel {

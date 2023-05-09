@@ -246,10 +246,10 @@ const SpendingRow = ({ item }: SpendingRowProps): JSX.Element => {
         <li>
             <div className="timeline-panel">
                 <div className="media-body">
-                    <h5 className="mb-1"><strong>{item.Perte_Categorie.name}</strong></h5>
+                    <h5 className="mb-1"><strong>{item.categoryName}</strong></h5>
                 </div>
                 <div className="dropdown">
-                    <strong className='table-price'>{item.total_amount} dhs</strong>
+                    { item.products.map((pr, key)=> <p key={key} className='table-price'>{pr.name} - {pr.amount}dhs</p>) }    
                 </div>
             </div>
         </li>
