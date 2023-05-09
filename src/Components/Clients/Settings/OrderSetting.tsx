@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { RiFileDownloadFill } from 'react-icons/ri'
 import { AddStatusModal, AddCityModal, EditCityModal, DeleteCityModal } from '../../Table/Modal/Setting';
 import { useGetStatusQuery, usePatchStatusMutation } from '../../../services/api/ClientApi/ClientStatusApi';
-import { CityModel, ColumnModel, ColumnPatchModel, StatusModel } from '../../../models';
+import { CityModel, ColumnModel, ColumnPatchModel, ErrorModel, StatusModel } from '../../../models';
 import 'react-nestable/dist/styles/index.css';
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api/ClientApi/ClientColumnApi';
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi';
@@ -123,8 +123,11 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
             .then(res => {
                 console.log(res)
             })
-            .catch(err => {
-                showToastError(err.data.message)
+            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
             })
 
         refetch()
@@ -182,11 +185,14 @@ const CSVStatusCheckbox = ({ dt, refetch }: CSVStatusCheckboxProps): JSX.Element
         const data = { id: dt.id ?? 0, isExported: !dt.isExported }
 
         patchColumn(data).unwrap()
-            .then(res => {
+            .then((res: any) => {
                 console.log(res)
             })
-            .catch(err => {
-                showToastError(err.data.message)
+            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
             })
 
         refetch()
@@ -303,7 +309,12 @@ const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Elemen
         if (dataUpdated) {
             patchColumn(dataUpdated).unwrap()
                 .then(res => console.log(res))
-                .catch(err => showToastError(err.data.message))
+                .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                    if (err.data) {
+                        if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                        else if ('message' in err.data) showToastError(err.data.message);
+                    }
+                })
         }
     }, [updated])
 
@@ -528,8 +539,11 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
                 console.log(res)
                 refetch()
             })
-            .catch(err => {
-                showToastError(err)
+            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
             })
     }
 
@@ -601,7 +615,12 @@ const ConfSetting = (): JSX.Element => {
                 console.log(res)
                 refetch()
             })
-            .catch(err => console.warn(err))
+            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
 

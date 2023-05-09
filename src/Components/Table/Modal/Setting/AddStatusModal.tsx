@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { useAddColumnMutation } from '../../../../services/api/ClientApi/ClientColumnApi';
 import { showToastError } from '../../../../services/toast/showToastError';
 import { useAddStatusMutation } from '../../../../services/api/ClientApi/ClientStatusApi';
+import { ErrorModel } from '../../../../models';
 
 type Inputs = {
     name: '',
@@ -82,7 +83,12 @@ const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
             refetch()
             handleCloseModal()
         })
-        .catch(err => showToastError(err.data.message))
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     return (

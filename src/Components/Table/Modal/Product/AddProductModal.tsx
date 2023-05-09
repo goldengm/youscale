@@ -5,7 +5,7 @@ import ModalWrapper from '../ModalWrapper'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { VariantModel } from '../../../../models';
+import { VariantModel, ErrorModel } from '../../../../models';
 import { useAddVariantMutation, useGetVariantQuery } from '../../../../services/api/ClientApi/ClientVariantApi';
 import { useAddProductMutation } from '../../../../services/api/ClientApi/ClientProductApi';
 import { showToastError } from '../../../../services/toast/showToastError';
@@ -78,12 +78,12 @@ export default function AddProductModal({ showModal, setShowModal, refetch }: Pr
     )
 }
 
-interface FormBodyProps{
+interface FormBodyProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
     refetch: () => any,
     handleCloseModal: () => any
 }
-const FormBody = ({setShowModal, refetch, handleCloseModal}: FormBodyProps) => {
+const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) => {
     const [selected, setSelected] = useState<[]>([]);
 
     const [addProd] = useAddProductMutation()
@@ -105,7 +105,7 @@ const FormBody = ({setShowModal, refetch, handleCloseModal}: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch(err => showToastError(err.data.message))
+            .catch((err: { data: ErrorModel, status: number }) => showToastError(err.data.errors[0].msg))
     }
 
     return (
@@ -172,9 +172,14 @@ const AddVariant = ({ refetchVariant }: AddVariantProps): JSX.Element => {
                 refetchVariant()
                 setVariant('')
             })
-            .catch((err: any) => showToastError(err.data.message))
+            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
 
-    }
+    } // err.data.message
 
     return (
         <div className="row variant-row">

@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useAddCityMutation } from '../../../../services/api/ClientApi/ClientCityApi';
 import { showToastError } from '../../../../services/toast/showToastError';
+import { ErrorModel } from '../../../../models';
 
 
 type Inputs = {
@@ -81,7 +82,12 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch(err => showToastError(err.data.message))
+            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     return (

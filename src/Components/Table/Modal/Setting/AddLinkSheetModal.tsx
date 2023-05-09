@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useGetLinkSheetQuery, useIntegrateSheetMutation } from '../../../../services/api/ClientApi/ClientIntegrateSheetApi';
 import { showToastError } from '../../../../services/toast/showToastError';
+import { ErrorModel } from '../../../../models';
 
 type Inputs = {
     spreadsheetId: string,
@@ -78,9 +79,11 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
             console.log(result)
             handleCloseModal()
             refetch()
-        }).catch((err: any) => {
-            console.log(err)
-            showToastError(err.data.message)
+        }).catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
         })
     }
 

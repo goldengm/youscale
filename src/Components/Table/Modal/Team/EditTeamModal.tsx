@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CustumInput } from '../../../Forms'
 import { MultiSelectElement } from '../../../Input'
 import ModalWrapper from '../ModalWrapper'
-import { CityAccessModel, ColumnAccessModel, GetTeamMemberModel, PageAccessModel, ProductAccessModel } from '../../../../models'
+import { CityAccessModel, ColumnAccessModel, ErrorModel, GetTeamMemberModel, PageAccessModel, ProductAccessModel } from '../../../../models'
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form/dist/types/form'
 import { FieldError } from 'react-hook-form/dist/types/errors'
 import { useForm } from 'react-hook-form';
@@ -250,7 +250,12 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch(err => showToastError(err.data.message))
+            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     return (

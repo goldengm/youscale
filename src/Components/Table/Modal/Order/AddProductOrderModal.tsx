@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ProductOrderCard } from './Card'
 import ModalWrapper from '../ModalWrapper'
 import { MultiSelectElement, SendButton } from '../../../Input'
-import { GetProductModel, ProductOrder } from '../../../../models'
+import { ErrorModel, GetProductModel, ProductOrder } from '../../../../models'
 import { usePatchClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi'
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi'
 import { showToastError } from '../../../../services/toast/showToastError'
@@ -91,7 +91,12 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
         refetch()
         handleCloseModal()
       })
-      .catch(err => showToastError(err.data.message))
+      .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+        if (err.data) {
+            if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+            else if ('message' in err.data) showToastError(err.data.message);
+        }
+    })
   }
 
   return (

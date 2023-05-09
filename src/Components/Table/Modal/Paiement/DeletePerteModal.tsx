@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ModalWrapper from '../ModalWrapper'
 import { useDeleteClientPerteMutation } from '../../../../services/api/ClientApi/ClientPerteApi';
 import { showToastError } from '../../../../services/toast/showToastError';
+import { ErrorModel } from '../../../../models';
 
 interface Props {
     showModal: boolean,
@@ -52,7 +53,12 @@ export default function DeletePerteModal({ showModal, setShowModal, refetch, id_
                handleCloseModal()
                refetch()
             })
-            .catch(err => showToastError(err.data.message))
+            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     return (

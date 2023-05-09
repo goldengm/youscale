@@ -14,6 +14,7 @@ import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientPro
 import { useGetPageQuery } from '../../../../services/api/ClientApi/ClientPageApi'
 import { useAddTeamMemberMutation } from '../../../../services/api/ClientApi/ClientTeamMemberApi'
 import { showToastError } from '../../../../services/toast/showToastError'
+import { ErrorModel } from '../../../../models'
 
 type Inputs = {
     name: string,
@@ -151,7 +152,12 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch(err => showToastError(err.data.message))
+            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     return (

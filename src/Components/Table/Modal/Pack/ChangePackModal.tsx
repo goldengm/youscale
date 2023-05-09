@@ -2,12 +2,7 @@ import React, { useEffect } from 'react'
 import ModalWrapper from '../ModalWrapper'
 import { useChangeSubscriptionMutation } from '../../../../services/api/ClientApi/ClientSubscriptionApi';
 import { showToastError } from '../../../../services/toast/showToastError';
-
-interface MyError {
-    data: {
-        message: string;
-    };
-}
+import { ErrorModel } from '../../../../models';
 
 interface Props {
     showModal: boolean,
@@ -58,7 +53,12 @@ export default function ChangePackModal({ showModal, setShowModal, refetch, id_s
             .then(() => {
                 refetch()
                 handleCloseModal()
-            }).catch((err: MyError) => showToastError(err.data.message))
+            }).catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     return (

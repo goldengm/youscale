@@ -1,11 +1,22 @@
 export type OptionsType = {
-    label: string, 
+    label: string,
     value: string
 }
 
 export interface AdminLoginModel {
     email: string,
     password: string
+}
+
+export interface ErrorModel {
+    errors: Error[]
+}
+
+export interface Error {
+    value: string
+    msg: string
+    param: string
+    location: string
 }
 
 export interface AdminRegisterModel {
@@ -84,7 +95,7 @@ export interface CityModel {
     name: string,
     price: string,
     isFromSheet?: boolean,
-    City_User?:{
+    City_User?: {
         id: number,
         name: string,
         active: boolean
@@ -736,7 +747,7 @@ export interface OrderReport {
     datasets: Dataset[];
 }
 
-export interface CostReport{
+export interface CostReport {
     labels: string[];
     datasets: Dataset[];
 }
@@ -781,7 +792,7 @@ export interface ProductOrder {
     id: number;
     id_order: number;
     id_product: number;
-    variant:  string[];
+    variant: string[];
     quantity: number;
     createdAt: Date;
     updatedAt: Date;
@@ -851,7 +862,7 @@ export interface ResetPasswordModel {
     newPassword: string;
 }
 
-export interface VariantModel{
+export interface VariantModel {
     id?: number;
     name: string;
 }
