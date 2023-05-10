@@ -90,13 +90,6 @@ const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProp
             <div className="card">
                 <div className="card-header">
                     <h4 className="card-title">Status</h4>
-
-                    <a
-                        onClick={() => setShowAddStatusModal(true)}
-                        type="button"
-                        className="btn btn-primary mb-2">
-                        Add status
-                    </a>
                 </div>
                 <div className="card-body">
                     <div className="row">
