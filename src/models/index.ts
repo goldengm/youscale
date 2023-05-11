@@ -813,6 +813,8 @@ export interface OrderQueryModel {
     datefrom?: string;
     dateto?: string;
     id_team?: number;
+    _skip?: number;
+    _limit?: number;
     id_product_array?: string;
 }
 
