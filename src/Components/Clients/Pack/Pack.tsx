@@ -4,8 +4,12 @@ import Main from '../../Main'
 import { Tarif } from './Tarif'
 import { Account } from './Account'
 import { Transaction } from './Transaction'
+import { PaymentMethod } from './PaymentMethod'
+import { useGetClientPaymentMethodQuery } from '../../../services/api/ClientApi/ClientPaymentMethodApi'
 
 export default function Pack() {
+    const { data, isLoading } = useGetClientPaymentMethodQuery()
+
     return (
         <Main name='Pack'>
             <div className="content-body">
@@ -14,6 +18,7 @@ export default function Pack() {
                     <Tarif />
                     <PackTitlte title='Payment methods' />
                     <Account />
+                    <PaymentMethod data={data?.data} />
                     <Transaction />
                 </div>
             </div>

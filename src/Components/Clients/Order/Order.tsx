@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
 import { Table } from '../../Table/Order'
-import { ClientOrderApi, useGetClientOrderQuery } from '../../../services/api/ClientApi/ClientOrderApi'
+import { ClientOrderApi, useGetClientOrderQuery, useGetSheetOrderQuery } from '../../../services/api/ClientApi/ClientOrderApi'
 import { OrderQueryModel } from '../../../models'
 import { useDispatch } from 'react-redux'
 import { GetRole } from '../../../services/storageFunc'
@@ -11,6 +11,8 @@ export default function Order(): JSX.Element {
   const userData = localStorage.getItem('userData')
 
   const [_skip, _setSkip] = useState<number>(10);
+
+  const { data: sheetData } = useGetSheetOrderQuery()
 
   const [date, setDate] = useState<string[]>([])
   const [product, setProduct] = useState<string>('')

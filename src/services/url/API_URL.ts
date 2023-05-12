@@ -1,5 +1,5 @@
 const url ={
-    prod: 'https://devtestco.com', //https://api.oumardev.com
+    prod: 'https://api.oumardev.com',
     dev: 'http://127.0.0.1:2590'
 }
 const BASE_URL = url.prod
