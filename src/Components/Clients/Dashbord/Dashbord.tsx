@@ -5,7 +5,7 @@ import { MdAttachMoney } from 'react-icons/md'
 import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
 import { TbTruckDelivery } from 'react-icons/tb'
-import { BsFillPatchCheckFill } from 'react-icons/bs'
+import { BsFillPatchCheckFill, BsPatchQuestion } from 'react-icons/bs'
 import { CustomPie, CustomLine } from '../../Chart'
 import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity } from '../../../models'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
@@ -91,6 +91,13 @@ const Card = ({ bg, value, title, icon }: CardProps): JSX.Element => {
                         <h2 className="text-white invoice-num">{Number(value).toFixed(2)}</h2>
                         <span className="text-white fs-18">{title}</span>
                     </div>
+
+                    <div className="tooltip-card"><BsPatchQuestion size={30} color={'white'} />
+                        <span className="tooltiptext-card" >Formule here</span>
+                    </div>
+                    {/* <div className="tooltip-icon">
+                        <BsPatchQuestion size={30} color={'white'} />
+                    </div> */}
                 </div>
             </div>
         </div>

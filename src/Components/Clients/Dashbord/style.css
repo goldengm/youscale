@@ -1,11 +1,47 @@
-.ads-card{
+.ads-card {
     height: 50vh;
 }
 
-.ads-wh{
+.ads-wh {
     width: 100%;
 }
 
 .fs-18 {
     font-size: 14px !important;
+}
+
+.tooltip-icon-card {
+    z-index: 99999;
+}
+
+.tooltip-icon-card:hover {
+    cursor: pointer;
+}
+
+.tooltip-card {
+    position: relative;
+    z-index: 88888;
+    height: 20px;
+}
+
+.tooltip-card .tooltiptext-card {
+    visibility: hidden;
+    z-index: 999999;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip-card:hover .tooltiptext-card {
+    visibility: visible;
 }
