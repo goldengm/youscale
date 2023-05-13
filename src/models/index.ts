@@ -492,7 +492,13 @@ export interface AdminPackModel {
 export interface AdminPaymentMethodModel {
     id?: number,
     name: string,
-    image?: string
+    image?: string,
+    Bank_Information?: {
+        id: number,
+        name: string,
+        bank: string,
+        rib: string
+    }
 }
 
 export interface AdminBankInformationModel {

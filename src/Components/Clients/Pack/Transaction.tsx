@@ -1,27 +1,36 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
-import { useGetAdminBankInformationQuery } from '../../../services/api/AdminApi/AdminBankInformationApi'
+import * as yup from "yup"
 import { useCouponMutation } from '../../../services/api/ClientApi/ClientCouponApi';
 import { useGetClientLastPaymentQuery } from '../../../services/api/ClientApi/ClientLastPaymentApi';
 import { useClientMakeRefoundMutation } from '../../../services/api/ClientApi/ClientMakeRefoundApi';
 
-export const Transaction = (): JSX.Element => {
+interface Bank {
+    id: number;
+    name: string;
+    bank: string;
+    rib: string;
+}
+
+interface TransactionProps{
+    data: Bank | undefined
+}
+export const Transaction = ({ data }:TransactionProps): JSX.Element => {
     return (
         <div className="row">
-            <Bank />
+            <Bank data={data} />
             <PaymentAction />
         </div>
     )
 }
 
-const Bank = (): JSX.Element => {
+const Bank = ({ data }:TransactionProps): JSX.Element => {
     return (
         <div className="col-xl-6">
             <div className="card">
                 <div className="card-body">
-                    <BankInformation />
+                    <BankInformation data={data} />
                 </div>
             </div>
         </div>
@@ -41,15 +50,14 @@ const PaymentAction = (): JSX.Element => {
     )
 }
 
-const BankInformation = (): JSX.Element => {
-    const { data } = useGetAdminBankInformationQuery()
+const BankInformation = ({ data }:TransactionProps): JSX.Element => {
 
     return (
         <div className="basic-list-group">
             <ul className="list-group">
-                <li className="list-group-item">Bank: <strong>{data?.data.bank || 'xxxx'}</strong></li>
-                <li className="list-group-item">Name: <strong>{data?.data.name || 'xxxx'}</strong></li>
-                <li className="list-group-item">RIB: <strong>{data?.data.rib || 'xxxx'}</strong></li>
+                <li className="list-group-item">Bank: <strong>{data?.bank || 'xxxx'}</strong></li>
+                <li className="list-group-item">Name: <strong>{data?.name || 'xxxx'}</strong></li>
+                <li className="list-group-item">RIB: <strong>{data?.rib || 'xxxx'}</strong></li>
             </ul>
         </div>
     )
