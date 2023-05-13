@@ -1,8 +1,12 @@
-const url ={
-    prod: 'https://api.youscale.ma', //https://api.oumardev.com
+var url = window.location.href;
+var protocol = window.location.protocol;
+var baseUrl = protocol + "//" + url.split("/")[2];
+
+const urls = {
+    prod:  baseUrl === 'https://app.youscale.ma' ? 'https://api.youscale.ma' : 'https://staging.youscale.ma',
     dev: 'http://127.0.0.1:2590'
 }
-const BASE_URL = url.prod
+const BASE_URL = urls.prod
 
 /** Auth URL */
 export const CLIENT_LOGIN_URL = `${BASE_URL}/api/youscale/v1/client/login`
