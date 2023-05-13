@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './pack.style.css'
 import Main from '../../Main'
 import { Tarif } from './Tarif'
@@ -7,8 +7,19 @@ import { Transaction } from './Transaction'
 import { PaymentMethod } from './PaymentMethod'
 import { useGetClientPaymentMethodQuery } from '../../../services/api/ClientApi/ClientPaymentMethodApi'
 
+interface Bank {
+    id: number;
+    name: string;
+    bank: string;
+    rib: string;
+}
 export default function Pack() {
     const { data, isLoading } = useGetClientPaymentMethodQuery()
+    const [currentBank, setCurrentBank] = useState<Bank | undefined>()
+
+    useEffect(() => {
+        setCurrentBank(data?.data[0].Bank_Information)
+    }, [data])
 
     return (
         <Main name='Pack'>
@@ -18,8 +29,8 @@ export default function Pack() {
                     <Tarif />
                     <PackTitlte title='Payment methods' />
                     <Account />
-                    <PaymentMethod data={data?.data} />
-                    <Transaction />
+                    <PaymentMethod data={data?.data} setCurrentBank={setCurrentBank} />
+                    <Transaction data={currentBank} />
                 </div>
             </div>
         </Main>

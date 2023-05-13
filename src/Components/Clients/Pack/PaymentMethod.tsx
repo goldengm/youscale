@@ -1,24 +1,33 @@
 import React from 'react'
 import { AdminPaymentMethodModel } from '../../../models'
 
+interface Bank {
+    id: number;
+    name: string;
+    bank: string;
+    rib: string
+}
 interface PaymentMethod{
     data: AdminPaymentMethodModel[] | undefined
+    setCurrentBank: React.Dispatch<React.SetStateAction<Bank | undefined>>
 }
-export const PaymentMethod = ({ data }:PaymentMethod): JSX.Element => {
+export const PaymentMethod = ({ data, setCurrentBank }:PaymentMethod): JSX.Element => {
     return (
         <div className='row'>
-            { data && data.map((payment, key )=>  <Card key={key} logo={`data:image/jpeg;base64,${payment.image}`} name={payment.name} /> ) }
+            { data && data.map((payment, key )=>  <Card key={key} item={payment} setCurrentBank={setCurrentBank} logo={`data:image/jpeg;base64,${payment.image}`} name={payment.name} /> ) }
         </div>
     )
 }
 
 interface CardProps{
     logo:string | undefined,
+    setCurrentBank: React.Dispatch<React.SetStateAction<Bank | undefined>>,
+    item: AdminPaymentMethodModel,
     name:string
 }
-const Card = ({logo, name}: CardProps): JSX.Element => {
+const Card = ({logo, name, setCurrentBank, item }: CardProps): JSX.Element => {
     return (
-        <div className="col-xl-3 col-lg-6 col-sm-6">
+        <div onClick={()=> setCurrentBank(item.Bank_Information)} className="col-xl-3 col-lg-6 col-sm-6">
             <div className="card">
                 <div className="card-body">
                     <div className="new-arrival-product">
