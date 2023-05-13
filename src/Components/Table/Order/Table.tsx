@@ -4,6 +4,7 @@ import { AddOrderModal } from '../Modal/Order'
 import TableWrapper from './TableWrapper'
 import './styles.css'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { ColumnModel, GetClientOrderModel, OrderQueryModel, ProductOrder } from '../../../models'
 import { RotatingLines } from 'react-loader-spinner'
 import { useGetClientOrderExportModelQuery } from '../../../services/api/ClientApi/ClientOrderApi'
@@ -37,9 +38,17 @@ const GetColumn = (col: ColumnModel[] | undefined): string[] => {
 interface TableProps {
     data: Order,
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
+    _skip: number,
+    _setSkip: React.Dispatch<React.SetStateAction<number>>,
+    isLoading: boolean,
     refetch: () => any
 }
-export default function Table({ data, refetch, setOrderQueryData }: TableProps): JSX.Element {
+export default function Table({ data, refetch, setOrderQueryData, isLoading, _skip, _setSkip }: TableProps): JSX.Element {
+
+    const fetchData = async () => {
+        _setSkip(_skip + 50)
+    }
+
     const [showOrderModal, setShowOrderModal] = React.useState(false)
     const { data: ColumnData } = useGetColumnQuery()
 
@@ -86,26 +95,29 @@ export default function Table({ data, refetch, setOrderQueryData }: TableProps):
             {showOrderModal && <AddOrderModal refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
 
             <div className="card">
-                <TableHeader setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} setOrderQueryData={setOrderQueryData} />
-                <TableWrapper column={GetColumn(ColumnData?.data)} handleCheckAll={handleCheckAll}>
-                    {
-                        data ? data.data.map((dt, index) => <Row
-                            handleCheckRow={handleCheckRow}
-                            row={dt}
-                            setIdOrders={setIdOrders}
-                            refetch={refetch}
-                            order={rowData ? rowData[index] : undefined}
-                            column={ColumnData?.data}
-                        />) :
-                            <RotatingLines
-                                strokeColor="grey"
-                                strokeWidth="3"
-                                animationDuration="0.75"
-                                width="50"
-                                visible={true}
-                            />
-                    }
-                </TableWrapper>
+                <TableHeader setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} />
+                <InfiniteScroll
+                    dataLength={data?.data.length || 0}
+                    next={fetchData}
+                    hasMore={true} // Replace with a condition based on your data source
+                    loader={<p>...</p>}
+                    endMessage={<p>No more data to load.</p>}
+                >
+                    <TableWrapper column={GetColumn(ColumnData?.data)} handleCheckAll={handleCheckAll}>
+
+                        {
+                            data ? data?.data.map((dt, index) => <Row
+                                handleCheckRow={handleCheckRow}
+                                row={dt}
+                                setIdOrders={setIdOrders}
+                                refetch={refetch}
+                                order={rowData ? rowData[index] : undefined}
+                                column={ColumnData?.data}
+                            />) : <></>
+                        }
+
+                    </TableWrapper>
+                </InfiniteScroll>
             </div>
         </div>
     )
@@ -114,16 +126,17 @@ export default function Table({ data, refetch, setOrderQueryData }: TableProps):
 interface TableHeaderProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
+    _skip: number,
     refetch: () => any,
     id_orders: number[] | undefined
 }
-const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData }: TableHeaderProps): JSX.Element => {
+const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
             <AddOrderBtn setShowModal={setShowModal} />
             <ImportBtn id_orders={id_orders} />
-            <SearchBar setOrderQueryData={setOrderQueryData} refetch={refetch} />
-            <StatusDropdown name="Status" setOrderQueryData={setOrderQueryData} refetch={refetch} />
+            <SearchBar _skip={_skip} setOrderQueryData={setOrderQueryData} refetch={refetch} />
+            <StatusDropdown _skip={_skip} name="Status" setOrderQueryData={setOrderQueryData} refetch={refetch} />
         </div>
     )
 }
@@ -172,13 +185,14 @@ const ImportBtn = ({ id_orders }: ImportBtnProps): JSX.Element => {
 
 interface SearchBarProps {
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
+    _skip: number,
     refetch: any
 }
-const SearchBar = ({ setOrderQueryData, refetch }: SearchBarProps): JSX.Element => {
+const SearchBar = ({ setOrderQueryData, refetch, _skip }: SearchBarProps): JSX.Element => {
     return (
         <input
             onChange={(e) => {
-                setOrderQueryData({ search: e.target.value, status: '' })
+                setOrderQueryData({ search: e.target.value, status: '', _skip: 0, _limit: _skip })
                 refetch()
             }}
             type="text"
@@ -191,17 +205,18 @@ const SearchBar = ({ setOrderQueryData, refetch }: SearchBarProps): JSX.Element 
 interface Props {
     name: string,
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
+    _skip: number,
     refetch: any
 }
-const StatusDropdown = ({ name, setOrderQueryData, refetch }: Props): JSX.Element => {
+const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip }: Props): JSX.Element => {
     const { data: dataStatus, isSuccess } = useGetStatusQuery()
 
-    const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) =>{
+    const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault()
 
         const { value } = e.target
 
-        setOrderQueryData({ status: value, search: '' })
+        setOrderQueryData({ status: value, search: '', _skip: 0, _limit: _skip  })
         refetch()
     }
 
@@ -213,7 +228,7 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch }: Props): JSX.Elemen
                 id="inlineFormCustomSelect"
             >
                 <option selected={true}>{name}</option>
-                { isSuccess && dataStatus.countOrderByStatus.map((status: any, index) => <option value={status.name}>{status.name} ({status.count})</option>) }
+                {isSuccess && dataStatus.countOrderByStatus.map((status: any, index) => <option value={status.name}>{status.name} ({status.count})</option>)}
             </select>
         </div>
     )
