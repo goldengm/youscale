@@ -5,7 +5,7 @@ interface Bank {
     id: number;
     name: string;
     bank: string;
-    rib: string;
+    rib: string
 }
 interface PaymentMethod{
     data: AdminPaymentMethodModel[] | undefined
