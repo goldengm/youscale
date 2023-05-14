@@ -3,7 +3,7 @@ var protocol = window.location.protocol;
 var baseUrl = protocol + "//" + url.split("/")[2];
 
 const urls = {
-    prod:  baseUrl === 'https://app.youscale.ma' ? 'https://api.youscale.ma' : 'https://staging.youscale.ma',
+    prod:  baseUrl === 'https://app.youscale.ma' ? 'https://api.youscale.ma' : 'https://api.oumardev.com',
     dev: 'http://127.0.0.1:2590'
 }
 const BASE_URL = urls.prod
