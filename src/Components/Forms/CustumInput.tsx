@@ -12,9 +12,10 @@ interface Props {
     register: UseFormRegister<any> | any,
     name: string,
     error: FieldError | undefined,
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any,
+    max?: number
 }
-export default function CustumInput({ label, placeholder, type, className='', defaultValue='', register, name, error, onChange }: Props): JSX.Element {
+export default function CustumInput({ label, placeholder, type, className='', defaultValue='', register, name, error, onChange, max }: Props): JSX.Element {
     return (
         <div className={`mb-3 col-md-6 ${className}`}>
             <label className="form-label">{label}</label>

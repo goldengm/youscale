@@ -18,7 +18,7 @@ type Inputs = {
 };
 
 const schema = yup.object().shape({
-    name: yup.string().required('Ce champ est obligatoire'),
+    name: yup.string().max(14, 'Maximum 14 caractères').required('Ce champ est obligatoire'),
     price_selling: yup.string().required('Ce champ est obligatoire')
 }).required();
 
@@ -114,6 +114,7 @@ const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) =>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
                         <CustumInput
+                            max={14}
                             register={register}
                             name={'name'}
                             error={errors.name}
