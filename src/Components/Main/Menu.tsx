@@ -174,15 +174,6 @@ export default function Menu(): JSX.Element {
                 })
           }
         </ul>
-        <div className="copyright">
-          <p>
-            <strong>Dompet Payment Admin Dashboard</strong> © 2022 All Rights
-            Reserved
-          </p>
-          <p className="fs-12">
-            Made with <span className="heart" /> by DexignLab
-          </p>
-        </div>
       </div>
     </div>
   )
