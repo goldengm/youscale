@@ -5,6 +5,21 @@ import { ErrorModel, GetClientOrderModel } from '../../../../models';
 import { usePatchClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi';
 import { showToastError } from '../../../../services/toast/showToastError';
 
+const getMinDate = (): string => {
+  const today = new Date();
+  
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  
+  const year = tomorrow.getFullYear();
+  const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+  const day = String(tomorrow.getDate()).padStart(2, '0');  
+
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate
+}
+
 interface Props {
   showModal: boolean,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
@@ -60,12 +75,12 @@ export default function ReportOrderModal({ showModal, setShowModal, refetch, id_
         refetch()
         handleCloseModal()
       })
-      .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+      .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
         if (err.data) {
-            if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-            else if ('message' in err.data) showToastError(err.data.message);
+          if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+          else if ('message' in err.data) showToastError(err.data.message);
         }
-    })
+      })
   }
 
   return (
@@ -99,7 +114,8 @@ const FormBody = ({ date, setDate, onClick }: FormBodyProps) => {
           <div className="row">
             <CustumInput
               name={'date'}
-              register={()=> console.log("nothing")}
+              min={getMinDate()}
+              register={() => console.log("nothing")}
               error={undefined}
               defaultValue={date}
               onChange={handleChangeDate}

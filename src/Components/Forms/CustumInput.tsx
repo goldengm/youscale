@@ -13,14 +13,14 @@ interface Props {
     name: string,
     error: FieldError | undefined,
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any,
-    max?: number
+    min?: string
 }
-export default function CustumInput({ label, placeholder, type, className='', defaultValue='', register, name, error, onChange, max }: Props): JSX.Element {
+export default function CustumInput({ label, placeholder, type, className='', defaultValue='', register, name, error, onChange, min }: Props): JSX.Element {
     return (
         <div className={`mb-3 col-md-6 ${className}`}>
             <label className="form-label">{label}</label>
             <input
-                min={0}
+                min={min || 0}
                 {...register(name)}
                 defaultValue={defaultValue}
                 role='presentation'
