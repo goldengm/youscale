@@ -154,16 +154,22 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                         <div className="col-md-6">
                             <ul className="card-list mt-4">
                                 <li>
-                                    <span className="bg-blue circle" />
-                                    Pending<span>{data.data.datasets[0].data[1]}</span>
-                                </li>
-                                <li>
-                                    <span className="bg-success circle" />
+                                    <span className="bg-delivered circle" />
                                     Delivered<span>{data.data.datasets[0].data[0]}</span>
                                 </li>
                                 <li>
-                                    <span className="bg-warning circle" />
-                                    Cancelled<span>{data.data.datasets[0].data[2]}</span>
+                                    <span className="bg-pending-1 circle" />
+                                    Pending<span>{data.data.datasets[0].data[1]}</span>
+                                </li>
+                               
+                                <li>
+                                    <span className="bg-pending-2 circle" />
+                                    Pending(2)<span>{data.data.datasets[0].data[2]}</span>
+                                </li>
+
+                                <li>
+                                    <span className="bg-cancelled circle" />
+                                    Cancelled<span>{data.data.datasets[0].data[3]}</span>
                                 </li>
                                 <li>
                                     <span className="bg-light circle" />
