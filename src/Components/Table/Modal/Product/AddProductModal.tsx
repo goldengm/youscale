@@ -114,7 +114,6 @@ const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) =>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
                         <CustumInput
-                            max={14}
                             register={register}
                             name={'name'}
                             error={errors.name}
