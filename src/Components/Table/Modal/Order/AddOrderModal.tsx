@@ -53,7 +53,7 @@ const schema = yup.object().shape({
   nom: yup.string().required('Ce champ est obligatoire'),
   telephone: yup.string().required('Ce champ est obligatoire'),
   prix: yup.string().required('Ce champ est obligatoire'),
-  adresse: yup.string().required('Ce champ est obligatoire'),
+  adresse: yup.string().notRequired(),
   message: yup.string().notRequired(),
   id_city: yup.string().required('Ce champ est obligatoire'),
   status: yup.string().required('Ce champ est obligatoire'),
@@ -273,6 +273,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
 
             <CustumSelectForm
               data={FilterStatusData(StatusData?.data)}
+              defaultSelected={'Nouveau'}
               register={register}
               error={errors.status}
               label={"Status"}

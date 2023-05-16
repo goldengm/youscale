@@ -34,11 +34,6 @@ export default function ForgotPasswordPage() {
                             <div className="row no-gutters">
                                 <div className="col-xl-12">
                                     <div className="auth-form">
-                                        <div className="text-center mb-3">
-                                            <a href="index.html">
-                                                <img src="images/logo-full.png" alt="" />
-                                            </a>
-                                        </div>
                                         <h4 className="text-center mb-4">Mot de passe oublié</h4>
                                         <form action="#">
                                             <div className="mb-3">

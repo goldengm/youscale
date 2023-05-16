@@ -72,11 +72,6 @@ export default function RegisterPage() {
                             <div className="row no-gutters">
                                 <div className="col-xl-12">
                                     <div className="auth-form">
-                                        <div className="text-center mb-3">
-                                            <a href="index.html">
-                                                <img src="images/logo-full.png" alt="" />
-                                            </a>
-                                        </div>
                                         <h4 className="text-center mb-4">S'inscrire</h4>
                                         {isError && <span className="auth-error">{message}</span>}
                                         <form onSubmit={handleSubmit(handleSend)}>

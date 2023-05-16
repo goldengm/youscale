@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { RiFileDownloadFill } from 'react-icons/ri'
-import { AddStatusModal, AddCityModal, EditCityModal, DeleteCityModal } from '../../Table/Modal/Setting';
+import { AddStatusModal, AddCityModal, EditCityModal, DeleteCityModal, EditPasswordModal } from '../../Table/Modal/Setting';
 import { useGetStatusQuery, usePatchStatusMutation } from '../../../services/api/ClientApi/ClientStatusApi';
 import { CityModel, ColumnModel, ColumnPatchModel, ErrorModel, StatusModel } from '../../../models';
 import 'react-nestable/dist/styles/index.css';
@@ -13,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
 import { showToastError } from '../../../services/toast/showToastError';
+import { showToastSucces } from '../../../services/toast/showToastSucces';
 
 type Inputs = {
     default_conf_pricing: string,
@@ -50,6 +51,7 @@ export default function OrderSetting() {
 
     const [showDeleteCityModal, setShowDeleteCityModal] = useState<boolean>(false)
 
+    const [showEditPasswordModal, setShowEditPasswordModal] = useState<boolean>(false)
 
     const { data: statusData, refetch: refetchStatus } = useGetStatusQuery()
     const { data, refetch } = useGetColumnQuery()
@@ -66,6 +68,7 @@ export default function OrderSetting() {
             {showAddCityModal && <AddCityModal setShowModal={setShowAddCityModal} refetch={refetchData} showModal={showAddCityModal} />}
             {showEditCityModal && <EditCityModal item={item} setShowModal={setShowEditCityModal} refetch={refetchData} showModal={showEditCityModal} />}
             {showDeleteCityModal && <DeleteCityModal id_city={item?.id ? String(item?.id) : ''} setShowModal={setShowDeleteCityModal} refetch={refetchData} showModal={showDeleteCityModal} />}
+            {showEditPasswordModal && <EditPasswordModal setShowModal={setShowEditPasswordModal} showModal={showEditPasswordModal} />}
 
             <h3 className="mt-4 mb-3">Order Settings</h3>
             <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus} />
@@ -73,7 +76,7 @@ export default function OrderSetting() {
             <ChangeColumn />
             <ColumnOfOrder objData={objData} refetch={refetch} />
             <City setShowAddCityModal={setShowAddCityModal} refetch={refetchData} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} data={cityData?.data} setItem={setItem} />
-            <ConfSetting />
+            <ConfSetting setShowEditPasswordModal={setShowEditPasswordModal} />
         </div>
     )
 }
@@ -583,7 +586,10 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
     );
 }
 
-const ConfSetting = (): JSX.Element => {
+interface ConfSettingProps{
+    setShowEditPasswordModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+const ConfSetting = ({ setShowEditPasswordModal }:ConfSettingProps): JSX.Element => {
 
     const { data, refetch } = useGetSettingQuery()
     const [patchSetting] = usePatchSettingMutation()
@@ -606,6 +612,7 @@ const ConfSetting = (): JSX.Element => {
         patchSetting(datas).unwrap()
             .then(res => {
                 console.log(res)
+                showToastSucces('La configuration a été modifié')
                 refetch()
             })
             .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
@@ -705,7 +712,10 @@ const ConfSetting = (): JSX.Element => {
                     </form>
 
                     <br /><br />
-                    <button type="button" className="btn btn-outline-info btn-xxs">
+                    <button 
+                        onClick={()=> setShowEditPasswordModal(true)}
+                        type="button" 
+                        className="btn btn-outline-info btn-xxs">
                         Modifier le mot de passe
                     </button>
                 </div>
