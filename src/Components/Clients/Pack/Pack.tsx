@@ -14,11 +14,11 @@ interface Bank {
     rib: string;
 }
 export default function Pack() {
-    const { data, isLoading } = useGetClientPaymentMethodQuery()
+    const { data } = useGetClientPaymentMethodQuery()
     const [currentBank, setCurrentBank] = useState<Bank | undefined>()
 
     useEffect(() => {
-        setCurrentBank(data?.data[0].Bank_Information)
+        setCurrentBank(data?.data[0] ? data?.data[0].Bank_Information : undefined)
     }, [data])
 
     return (

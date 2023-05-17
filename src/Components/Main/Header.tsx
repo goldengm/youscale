@@ -104,6 +104,7 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
               <div className="header-left">
                 <div className="dashboard_bar">{name}</div>
               </div>
+              <h4 className='card-title'>{data?.data && data?.data.text}</h4>
               <ul className="navbar-nav header-right">
                 <li className="nav-item">
                   {showProductFilter && <CustumSelect name='Product' data={convertProduct(productData?.data)} onChange={handleProductChange} />}

@@ -35,11 +35,27 @@ const GetCityWhosNotFromSheet = (data: CityModel[] | undefined): SelectType[] =>
   return newArr
 }
 
+const getMinDate = (): string => {
+  const today = new Date();
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  
+  const year = tomorrow.getFullYear();
+  const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+  const day = String(tomorrow.getDate()).padStart(2, '0');  
+
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate
+}
+
 type Inputs = {
   nom: string,
   telephone: string,
   prix: string,
   adresse: string,
+  reportedDate: string,
   message: string,
   id_city: string,
   status: string,
@@ -54,6 +70,7 @@ const schema = yup.object().shape({
   telephone: yup.string().required('Ce champ est obligatoire'),
   prix: yup.string().required('Ce champ est obligatoire'),
   adresse: yup.string().notRequired(),
+  reportedDate: yup.string().notRequired(),
   message: yup.string().notRequired(),
   id_city: yup.string().required('Ce champ est obligatoire'),
   status: yup.string().required('Ce champ est obligatoire'),
@@ -204,12 +221,12 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
         refetch()
         handleCloseModal()
       })
-      .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+      .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
         if (err.data) {
-            if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-            else if ('message' in err.data) showToastError(err.data.message);
+          if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+          else if ('message' in err.data) showToastError(err.data.message);
         }
-    })
+      })
 
   }
 
@@ -259,6 +276,16 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
               name={'message'}
               error={errors.message}
               label={"Commentaire"}
+            />
+
+            <CustumInput
+              register={register}
+              min={getMinDate()}
+              name={'reportedDate'}
+              error={errors.reportedDate}
+              type={'date'}
+              label={"Date de report"}
+              placeholder={'jj/mm/aaaa'}
             />
           </div>
 

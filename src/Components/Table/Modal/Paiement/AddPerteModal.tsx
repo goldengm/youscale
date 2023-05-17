@@ -34,6 +34,19 @@ const DataToSelect = (data: PerteCategorieModel[] | GetProductModel[] | undefine
     return new_arr
 }
 
+const FormatDataOption = (data: GetProductModel[] | undefined) => {
+    if (!data) return []
+
+    var objArr: { label: string, value: string }[] = []
+
+    for (let i = 0; i < data.length; i++) {
+      if (!data[i].isDeleted)
+        objArr.push({ label: data[i].name, value: String(data[i].id) })
+    }
+
+    return objArr
+  }
+
 const schema = yup.object().shape({
     dateFrom: yup.string().required('Ce champ est obligatoire'),
     dateTo: yup.string().required('Ce champ est obligatoire'),
@@ -130,7 +143,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                         />
 
                         <CustumSelectForm
-                            data={DataToSelect(productData?.data)}
+                            data={FormatDataOption(productData?.data)}
                             register={register}
                             error={errors.id_product}
                             label={"Produit"}
