@@ -130,7 +130,7 @@ interface FormBodyProps {
   handleCloseModal: () => void
 }
 const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
-  const [addOrder] = useAddClientOrderMutation()
+  const [addOrder, { isLoading }] = useAddClientOrderMutation()
 
   const [selectedProduct, setSelectedProduct] = useState<{ label: string, value: number | undefined, quantity: number, variant: string[], allVariant: string[] | undefined }[]>([]);
 
@@ -357,7 +357,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
             )}
           </div>
 
-          <button type="submit" className="btn btn-primary">
+          <button disabled={isLoading} type="submit" className="btn btn-primary">
             Ajouter
           </button>
         </form>

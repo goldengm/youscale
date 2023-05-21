@@ -3,7 +3,7 @@ import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
 import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal, DeleteOrderModal } from '../Modal/Order'
-import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel } from '../../../models'
+import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel, ErrorModel } from '../../../models'
 import { CustumDropdown } from '../../Input'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi'
@@ -46,6 +46,12 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         const { value } = e.target
 
         patchOrder({ id: order?.id, status: value }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
 
         if (value === 'Reporte') setShowReportModal(true)
     }
@@ -54,30 +60,60 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         const { value } = e.target
 
         patchOrder({ id: order?.id, source: value }).then(() => refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const handleChangeTeam = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
-        patchOrder({ id: order?.id, id_team: Number(value), prev_id_team: order ? order.id_team : 0 }).unwrap().then(() => refetch && refetch()).catch((err) => { showToastError(err.data.message); refetch && refetch() })
+        patchOrder({ id: order?.id, id_team: Number(value), prev_id_team: order ? order.id_team : 0 }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const handleChangeOuvrir = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, ouvrir: value }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const handleChangeChanger = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, changer: value }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const handleChangeUpDown = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, updownsell: value }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const FilterStatusData = (data: StatusModel[] | undefined) => {

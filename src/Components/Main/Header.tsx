@@ -6,6 +6,7 @@ import { useGetProductQuery } from '../../services/api/ClientApi/ClientProductAp
 import { useGetTeamMemberQuery } from '../../services/api/ClientApi/ClientTeamMemberApi'
 import { useGetAnnoucementQuery } from '../../services/api/ClientApi/ClientAnnoucementApi'
 import { GetProductModel, GetTeamMemberModel } from '../../models'
+import './styles.css'
 
 interface Props {
   setDate?: React.Dispatch<React.SetStateAction<string[]>>,
@@ -104,7 +105,7 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
               <div className="header-left">
                 <div className="dashboard_bar">{name}</div>
               </div>
-              <h4 className='card-title'>{data?.data && data?.data.text}</h4>
+              <p className='annoucement-txt'>{data?.data && data?.data.text}</p>
               <ul className="navbar-nav header-right">
                 <li className="nav-item">
                   {showProductFilter && <CustumSelect name='Product' data={convertProduct(productData?.data)} onChange={handleProductChange} />}
