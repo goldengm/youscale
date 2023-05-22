@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { CustumSelect } from '../Forms'
 import CustumDateRangePicker from './CustumDateRangePicker'
+import { RxVideo } from 'react-icons/rx'
 import { useGetProductQuery } from '../../services/api/ClientApi/ClientProductApi'
 import { useGetTeamMemberQuery } from '../../services/api/ClientApi/ClientTeamMemberApi'
 import { useGetAnnoucementQuery } from '../../services/api/ClientApi/ClientAnnoucementApi'
+import { VideoModal } from '../Table/Modal/Video'
 import { GetProductModel, GetTeamMemberModel } from '../../models'
 import './styles.css'
 
@@ -33,7 +35,7 @@ const convertProduct = (data: GetProductModel[] | undefined): dataType => {
   var out: dataType = []
 
   data.map(dt => {
-    if(!dt.isDeleted){
+    if (!dt.isDeleted) {
       out.push({ label: dt.name, value: String(dt.id) })
     }
   })
@@ -48,7 +50,7 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
   var out: dataType = []
 
   data.map(dt => {
-    if(dt.active){
+    if (dt.active) {
       out.push({ label: dt.name ?? '', value: String(dt.id) })
     }
   })
@@ -63,10 +65,12 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
   const { data: teamData } = useGetTeamMemberQuery()
   const { data, isSuccess } = useGetAnnoucementQuery()
 
+  const [showVideo, setShowVideo] = useState<boolean>(false)
+
   const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
-    if(value === '0') return
+    if (value === '0') return
 
     setIdTeam && setIdTeam(Number(value))
   }
@@ -74,16 +78,16 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
   const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
-    if(value === '0') return
+    if (value === '0') return
 
     setProduct && setProduct(value)
   }
 
   return (
     <>
+      { showVideo && <VideoModal setShowModal={setShowVideo} showModal={showVideo} />}
       <div className="nav-header">
         <a href="index.html" className="brand-logo">
-
           <img src="/cus_img/logo.png" alt="logo" className="brand-title" width="124px" height="33px" />
         </a>
         <div
@@ -141,6 +145,16 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
                         fill="#4f7086"
                       />
                     </svg>
+                  </Link>
+                  <Link
+                    to={'#'}
+                    className="nav-link"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setShowVideo(true)
+                    }}
+                  >
+                   <RxVideo size={30}/>
                   </Link>
                 </li>
               </ul>
