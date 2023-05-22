@@ -6,7 +6,7 @@ const urls = {
     prod:  baseUrl === 'https://app.youscale.ma' ? 'https://api.youscale.ma' : 'https://staging-api.youscale.ma',
     dev: 'https://api.oumardev.com'
 }
-const BASE_URL = urls.dev
+const BASE_URL = urls.prod
 
 /** Auth URL */
 export const CLIENT_LOGIN_URL = `${BASE_URL}/api/youscale/v1/client/login`
