@@ -8,14 +8,16 @@ interface Props {
     register: UseFormRegister<any>,
     error: FieldError | undefined,
     data: {label: string, value: string | number}[],
-    defaultSelected? : string | number
+    defaultSelected? : string | number,
+    Onchange?: (e: React.ChangeEvent<HTMLSelectElement>)=> any
 }
-export default function CustumSelectForm({ label, name, register, error, data, defaultSelected='' }: Props): JSX.Element {
+export default function CustumSelectForm({ label, name, register, error, data, Onchange, defaultSelected='' }: Props): JSX.Element {
     return (
         <div className="mb-3 col-md-4">
             <label className="form-label">{label}</label>
             <select
                 {...register(name)}
+                onChange={Onchange}
                 name={name}
                 className="me-sm-2 default-select form-control wide"
                 id="inlineFormCustomSelect"
