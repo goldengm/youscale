@@ -40,10 +40,10 @@ const getMinDate = (): string => {
 
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
-  
+
   const year = tomorrow.getFullYear();
   const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
-  const day = String(tomorrow.getDate()).padStart(2, '0');  
+  const day = String(tomorrow.getDate()).padStart(2, '0');
 
   const formattedDate = `${year}-${month}-${day}`;
 
@@ -133,6 +133,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
   const [addOrder, { isLoading }] = useAddClientOrderMutation()
 
   const [selectedProduct, setSelectedProduct] = useState<{ label: string, value: number | undefined, quantity: number, variant: string[], allVariant: string[] | undefined }[]>([]);
+  const [showReporte, setShowReporte] = useState<boolean>(false)
 
   const { data: CityData } = useGetCityQuery()
   const { data: ProductData, isSuccess: ProductSuccess } = useGetProductQuery()
@@ -189,6 +190,15 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
     }
 
     return objArr
+  }
+
+  const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target
+
+    if (value === 'Reporte')
+      setShowReporte(true)
+    else
+      setShowReporte(false)
   }
 
   const FilterStatusData = (data: StatusModel[] | undefined): SelectType[] => {
@@ -278,15 +288,19 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
               label={"Commentaire"}
             />
 
-            <CustumInput
-              register={register}
-              min={getMinDate()}
-              name={'reportedDate'}
-              error={errors.reportedDate}
-              type={'date'}
-              label={"Date de report"}
-              placeholder={'jj/mm/aaaa'}
-            />
+            {
+              showReporte &&
+              <CustumInput
+                register={register}
+                min={getMinDate()}
+                name={'reportedDate'}
+                error={errors.reportedDate}
+                type={'date'}
+                label={"Date de report"}
+                placeholder={'jj/mm/aaaa'}
+              />
+            }
+
           </div>
 
           <div className="row">
@@ -300,6 +314,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
 
             <CustumSelectForm
               data={FilterStatusData(StatusData?.data)}
+              Onchange={handleChangeStatus}
               defaultSelected={'Nouveau'}
               register={register}
               error={errors.status}
