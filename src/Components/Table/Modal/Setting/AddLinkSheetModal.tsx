@@ -118,9 +118,13 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
                         />
                     </div>
 
+                    
+
                     <button type="submit" className="btn btn-primary">
                         Ajouter
                     </button>
+                    <br />
+                    <a href='/load/SheetIntegration.xlsx' className="btn btn-outline-primary btn-xs export-btn">Copier le model</a>
                 </form>
             </div>
         </div>
