@@ -443,7 +443,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {data && data.map((dt, index) => <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />)}
+                                            {data && data.map((dt, index) => !dt.isFromSheet && <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />)}
                                         </tbody>
                                     </table>
                                 </div>
