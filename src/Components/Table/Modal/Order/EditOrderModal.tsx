@@ -96,6 +96,7 @@ interface FormBodyProps {
 
 const FormBody = ({ dataEdit, handleCloseModal, refetch, id_order }: FormBodyProps) => {
 
+  console.log('ed: ',dataEdit)
   const [patchOrder] = usePatchClientOrderMutation()
 
   const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
@@ -170,7 +171,7 @@ const FormBody = ({ dataEdit, handleCloseModal, refetch, id_order }: FormBodyPro
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
             <CustumInput
-              defaultValue={dataEdit.Nom}
+              defaultValue={dataEdit.Destinataire}
               register={register}
               name={'nom'}
               error={errors.nom}

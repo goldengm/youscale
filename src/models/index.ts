@@ -95,6 +95,7 @@ export interface CityModel {
     name: string,
     price: string,
     isFromSheet?: boolean,
+    isDeleted?: boolean,
     City_User?: {
         id: number,
         name: string,

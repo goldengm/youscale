@@ -1,9 +1,19 @@
 import React from 'react'
 import { useGetClientPackQuery } from '../../../services/api/ClientApi/ClientPackApi'
 import { ChangePackModal } from '../../Table/Modal/Pack'
+import { ClientGetPackModel } from '../../../models';
 
-export const Tarif = (): JSX.Element => {
-    const { data, isLoading, refetch } = useGetClientPackQuery()
+interface TarifProps{
+    data: {
+        code: Number;
+        data: ClientGetPackModel;
+    } | undefined
+    
+    isLoading: boolean
+
+    refetch: () => any
+}
+export const Tarif = ({ data, isLoading, refetch}: TarifProps): JSX.Element => {
 
     return (
         <div className="row">
