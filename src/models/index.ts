@@ -19,6 +19,11 @@ export interface Error {
     location: string
 }
 
+export interface Cient {
+    fullname?: string
+    livoToken?: string
+}
+
 export interface AdminRegisterModel {
     email: string,
     fullname: string,

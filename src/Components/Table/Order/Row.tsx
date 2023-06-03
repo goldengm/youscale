@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
-import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
+import { TbPointFilled } from 'react-icons/tb'
+import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal, DeleteOrderModal } from '../Modal/Order'
 import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel, ErrorModel } from '../../../models'
 import { CustumDropdown } from '../../Input'
@@ -15,7 +16,7 @@ import './styles.css'
 
 interface RowProps {
     row: GetClientOrderModel,
-    order: { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string } | undefined,
+    order: { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string } | undefined,
     refetch: () => void,
     column: ColumnModel[] | undefined,
     setIdOrders: React.Dispatch<React.SetStateAction<number[] | undefined>>,
@@ -171,7 +172,19 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         var formatDtName = dt.name.replace(' ', '_').split(' ').join('')
 
                         if (formatDtName === 'Order_id') {
-                            return <td>{order?.SheetId ?? row[formatDtName]}</td>
+                            return (
+                                <td>
+                                    {
+                                        order?.isSendLivo === 'not_send' ? 
+                                            <TbPointFilled size={17} color={'gray'} />
+                                        : order?.isSendLivo === 'error_send' ? 
+                                            <TbPointFilled size={17} color={'red'} />
+                                        : 
+                                            <TbPointFilled size={17} color={'green'} />
+                                    }
+                                    {order?.SheetId ?? row[formatDtName]}
+                                </td>
+                            )
                         }
 
                         if (formatDtName === 'Telephone') {
