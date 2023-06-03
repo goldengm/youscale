@@ -1,22 +1,30 @@
 import React, { useState } from 'react'
-import { AddLinkSheetModal } from '../../Table/Modal/Setting'
+import { AddLinkSheetModal, ShippingModal } from '../../Table/Modal/Setting'
 
 export default function API(): JSX.Element {
 
     const [ showAddLinkSheetModal, setShowAddLinkSheetModal ] = useState<boolean>(false)
+    const [ showShippingModal, setShowShippingModal ] = useState<boolean>(false)
 
-    const handleShowModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+    const handleShowSheetModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
         e.preventDefault()
         setShowAddLinkSheetModal(true)
+    }
+
+    const handleShowShippingModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+        e.preventDefault()
+        setShowShippingModal(true)
     }
 
     return (
         <div className="row">
             { showAddLinkSheetModal && <AddLinkSheetModal showModal={showAddLinkSheetModal} setShowModal={setShowAddLinkSheetModal} /> }
+            { showShippingModal && <ShippingModal showModal={showShippingModal} setShowModal={setShowShippingModal} /> }
+
             <h3 className="mt-4 mb-3">API</h3>
-            <APICard img={'/cus_img/goo_sheet.png'} title={'Google Sheets'} onClick={handleShowModal} />
+            <APICard img={'/cus_img/goo_sheet.png'} title={'Google Sheets'} onClick={handleShowSheetModal} />
             <APICard img={'/cus_img/shopify.png'} title={'Shopify'} />
-            <APICard title={'Shipping Companies'} />
+            <APICard title={'Shipping Companies'} onClick={handleShowShippingModal} />
         </div>
     )
 }

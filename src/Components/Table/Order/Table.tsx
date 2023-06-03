@@ -17,6 +17,7 @@ type Order = {
     order: {
         id: number;
         id_city: number;
+        isSendLivo: string;
         SheetId: string;
         id_team: number;
         Product_Orders: ProductOrder[];
@@ -55,7 +56,7 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
     const [id_orders, setIdOrders] = useState<number[]>()
 
     const [selectAll, setSelectAll] = useState<boolean>(false);
-    const [rowData, setRowData] = useState<{ id: number, checked?: boolean, SheetId: string, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string }[] | undefined>();
+    const [rowData, setRowData] = useState<{ id: number, checked?: boolean, isSendLivo: string, SheetId: string, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string }[] | undefined>();
 
     useEffect(() => {
         setRowData(data?.order);
