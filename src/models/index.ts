@@ -17,6 +17,16 @@ export interface ShippingModel {
     updatedAt: string
 }
 
+export interface ShippingCitiesModel {
+    id: number
+    id_user: number
+    id_city: number
+    id_shipping: number
+    createdAt: string
+    updatedAt: string
+    City_User: CityUser
+}
+
 export interface ErrorModel {
     errors: Error[]
 }

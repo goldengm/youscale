@@ -14,6 +14,7 @@ import * as yup from "yup";
 import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
 import { showToastError } from '../../../services/toast/showToastError';
 import { showToastSucces } from '../../../services/toast/showToastSucces';
+import { useGetShippingCitiesQuery, useGetShippingQuery, useLinkShipingCitiesMutation, useRemoveShippingCitiesMutation, useVerifyShippingCitiesQuery } from '../../../services/api/ClientApi/ClientShippingApi';
 
 type Inputs = {
     default_conf_pricing: string,
@@ -74,6 +75,7 @@ export default function OrderSetting() {
             <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus} />
             <CSVExport statusData={data?.data} refetchStatus={refetchStatus} />
             <ChangeColumn />
+            <ShippingCities />
             <ColumnOfOrder objData={objData} refetch={refetch} />
             <City setShowAddCityModal={setShowAddCityModal} refetch={refetchData} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} data={cityData?.data} setItem={setItem} />
             <ConfSetting setShowEditPasswordModal={setShowEditPasswordModal} />
@@ -119,7 +121,7 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
             .then(res => {
                 console.log(res)
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -184,7 +186,7 @@ const CSVStatusCheckbox = ({ dt, refetch }: CSVStatusCheckboxProps): JSX.Element
             .then((res: any) => {
                 console.log(res)
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -305,7 +307,7 @@ const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Elemen
         if (dataUpdated) {
             patchColumn(dataUpdated).unwrap()
                 .then(res => console.log(res))
-                .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                     if (err.data) {
                         if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                         else if ('message' in err.data) showToastError(err.data.message);
@@ -535,7 +537,7 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
                 console.log(res)
                 refetch()
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -586,10 +588,10 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
     );
 }
 
-interface ConfSettingProps{
+interface ConfSettingProps {
     setShowEditPasswordModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const ConfSetting = ({ setShowEditPasswordModal }:ConfSettingProps): JSX.Element => {
+const ConfSetting = ({ setShowEditPasswordModal }: ConfSettingProps): JSX.Element => {
 
     const { data, refetch } = useGetSettingQuery()
     const [patchSetting] = usePatchSettingMutation()
@@ -602,10 +604,10 @@ const ConfSetting = ({ setShowEditPasswordModal }:ConfSettingProps): JSX.Element
         const datas = {
             ...values,
             id: data?.data.id ?? 0,
-            default_conf_pricing : values.default_conf_pricing || String(data?.data.default_cof_ricing) || '0.0',
-            delfault_del_pricing : values.delfault_del_pricing || String(data?.data.delfaulnpt_del_pricing) || '0.0',
-            default_time : values.default_time || String(data?.data.default_time) || '0.0',
-            startWrldOrder: values.startWrldOrder || String(data?.data.startWrldOrder)  || 'none',
+            default_conf_pricing: values.default_conf_pricing || String(data?.data.default_cof_ricing) || '0.0',
+            delfault_del_pricing: values.delfault_del_pricing || String(data?.data.delfaulnpt_del_pricing) || '0.0',
+            default_time: values.default_time || String(data?.data.default_time) || '0.0',
+            startWrldOrder: values.startWrldOrder || String(data?.data.startWrldOrder) || 'none',
             automated_msg: values.automated_msg || String(data?.data.automated_msg) || 'nones'
         }
 
@@ -615,7 +617,7 @@ const ConfSetting = ({ setShowEditPasswordModal }:ConfSettingProps): JSX.Element
                 showToastSucces('La configuration a été modifié')
                 refetch()
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -712,12 +714,130 @@ const ConfSetting = ({ setShowEditPasswordModal }:ConfSettingProps): JSX.Element
                     </form>
 
                     <br /><br />
-                    <button 
-                        onClick={()=> setShowEditPasswordModal(true)}
-                        type="button" 
+                    <button
+                        onClick={() => setShowEditPasswordModal(true)}
+                        type="button"
                         className="btn btn-outline-info btn-xxs">
                         Modifier le mot de passe
                     </button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const ShippingCities = (): JSX.Element => {
+
+    const [linkShipping] = useLinkShipingCitiesMutation()
+    const [removeShipping] = useRemoveShippingCitiesMutation()
+
+    const [arg, setArg] = useState<{ id_city: number | undefined, id_shipping: number | undefined }>({ id_city: 0, id_shipping: 0 })
+
+    const { data: dataCities } = useGetCityQuery()
+    const { data: dataShipping } = useGetShippingQuery()
+
+    const { data: dataShippingCities, refetch: refetchShippingCities, isSuccess } = useGetShippingCitiesQuery(arg)
+    const { isError, refetch } = useVerifyShippingCitiesQuery(arg)
+
+    const [idShipping, setIdShipping] = useState<number>()
+    const [idCitie, setIdCitie] = useState<number>()
+
+    const handleChangeShippingSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = e.target
+
+        setIdShipping(Number(value))
+
+        setArg({ id_shipping: Number(value), id_city: idCitie })
+
+        refetch()
+        refetchShippingCities()
+    }
+
+    const handleChangeCitieSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = e.target
+
+        setIdCitie(Number(value))
+
+        setArg({ id_shipping: idShipping, id_city: Number(value) })
+
+        refetch()
+        refetchShippingCities()
+    }
+
+    const handleSubmitRemove = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        removeShipping({ id_city: idCitie, id_shipping: idShipping }).unwrap()
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+
+            setTimeout(() => {
+                window.location.reload()
+            }, 1000);
+    }
+
+    const handleSubmitLink = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        linkShipping({ id_city: idCitie, id_shipping: idShipping }).unwrap()
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+
+            setTimeout(() => {
+                window.location.reload()
+            }, 1000);
+    }
+
+    return (
+        <div className="col-xl-6 col-lg-6">
+            <div className="card">
+                <div className="card-body">
+                    <div className="basic-form">
+                        <form>
+                            <div className="mb-3">
+                                <label className="form-label">Shipping</label>
+                                <select
+                                    name={'alias'}
+                                    onChange={handleChangeShippingSelect}
+                                    className="form-control"
+                                >
+                                    <option>{'Choisissez votre entreprise'}</option>
+                                    {dataShipping && dataShipping.data.map((dt: any) => (<option value={dt.id}>{dt.name}</option>))}
+                                </select>
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="form-label">Cities</label>
+                                <select
+                                    name={'alias'}
+                                    onChange={handleChangeCitieSelect}
+                                    className="form-control"
+                                >
+                                    <option>{'Choisissez votre ville'}</option>
+                                    {dataCities && dataCities.data.map((dt: any) => (<option value={dt.id}>{dt.name}</option>))}
+                                </select>
+                            </div>
+
+                            {(idShipping && idCitie) && (
+                                isError ?
+                                    <button
+                                        onClick={handleSubmitRemove}
+                                        type="button"
+                                        className="btn btn-outline-primary btn-xs"
+                                    >
+                                        Remove
+                                    </button> :
+                                    <button
+                                        onClick={handleSubmitLink}
+                                        type="button"
+                                        className="btn btn-outline-primary btn-xs"
+                                    >
+                                        Add
+                                    </button>
+                            )
+                            }
+                        </form>
+                    </div>
+                    <div className="profile-skills mt-2 mb-2">
+                        { isSuccess && dataShippingCities.data.map(dt => <a href="#" className="btn btn-primary light btn-xs mb-1">{dt.City_User.name}</a> ) }
+                    </div>
+
                 </div>
             </div>
         </div>
