@@ -5,8 +5,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { showToastError } from '../../../../services/toast/showToastError';
-import { ErrorModel } from '../../../../models';
+import { ErrorModel, ShippingModel } from '../../../../models';
 import { useGetClientQuery, usePatchClientMutation } from '../../../../services/api/ClientApi/ClientApi';
+import { useGetShippingQuery } from '../../../../services/api/ClientApi/ClientShippingApi';
 
 type Inputs = {
     livoToken: string
@@ -88,6 +89,8 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
     return (
         <div className="card-body">
             <div className="basic-form">
+
+                <Shipping />
                 <p style={{ display: 'grid' }}>
                     <code>You need to go to your livo account and copy your token</code>
                 </p>
@@ -108,6 +111,40 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
                         Modifier
                     </button>
                 </form>
+            </div>
+        </div>
+    )
+}
+
+const Shipping = () => {
+    const { data, isSuccess } = useGetShippingQuery()
+
+    return (
+        <div className="row">
+            { isSuccess && data?.data.map((dt: ShippingModel)=> <ShippingCard item={dt} />) }
+        </div>
+    )
+}
+
+interface ShippingCardProps {
+    item: ShippingModel
+}
+const ShippingCard = ({ item }: ShippingCardProps) => {
+    return (
+        <div style={{width: '33%'}} className="col-xl-3 col-lg-6 col-sm-6">
+            <div className="card">
+                <div className="card-body">
+                    <div className="new-arrival-product">
+                        <div className="new-arrivals-img-contnent" >
+                            <img src={`data:image/jpeg;base64,${item.image}`} className='img-fluid' alt="" />
+                        </div>
+                        <div className="new-arrival-content text-center mt-3">
+                            <h4>
+                                <a href="#">{item.name}</a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )
