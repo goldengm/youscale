@@ -57,6 +57,7 @@ export const CLIENT_PAIEMENT_DASHBORD_URL = `${BASE_URL}/api/youscale/v1/client/
 export const CLIENT_GOAL_URL = `${BASE_URL}/api/youscale/v1/client/goal`
 export const CLIENT_UPLOAD_CITY_URL = `${BASE_URL}/api/youscale/v1/client/city/upload`
 export const CLIENT_SHEET_INTEGRATION_URL = `${BASE_URL}/api/youscale/v1/client/integratesheet`
+export const CLIENT_SHIPPING_COMPANIE_URL = `${BASE_URL}/api/youscale/v1/client/shippingcompanie`
 
 
 /**Admin URL */

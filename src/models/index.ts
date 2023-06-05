@@ -8,6 +8,25 @@ export interface AdminLoginModel {
     password: string
 }
 
+export interface ShippingModel {
+    image: string
+    id: number
+    name: string
+    id_admin: number
+    createdAt: string
+    updatedAt: string
+}
+
+export interface ShippingCitiesModel {
+    id: number
+    id_user: number
+    id_city: number
+    id_shipping: number
+    createdAt: string
+    updatedAt: string
+    City_User: CityUser
+}
+
 export interface ErrorModel {
     errors: Error[]
 }

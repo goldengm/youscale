@@ -34,6 +34,7 @@ import { ClientPaiementDashbordApi } from "./services/api/ClientApi/ClientPaieme
 import { ClientGoalApi } from "./services/api/ClientApi/ClientGoalApi";
 import { ClientIntegrateSheetApi } from "./services/api/ClientApi/ClientIntegrateSheetApi";
 import { ClientApi } from "./services/api/ClientApi/ClientApi";
+import { ClientShippingApi } from "./services/api/ClientApi/ClientShippingApi";
 
 import { AdminDetailOfSpendingApi } from "./services/api/AdminApi/AdminDetailOfSpendingApi";
 import { AdminGainApi } from "./services/api/AdminApi/AdminGainApi";
@@ -104,6 +105,7 @@ export const store = configureStore({
         [ClientGoalApi.reducerPath]: ClientGoalApi.reducer,
         [ClientIntegrateSheetApi.reducerPath]: ClientIntegrateSheetApi.reducer,
         [ClientApi.reducerPath]: ClientApi.reducer,
+        [ClientShippingApi.reducerPath]: ClientShippingApi.reducer,
 
         [AdminDetailOfSpendingApi.reducerPath]: AdminDetailOfSpendingApi.reducer,
         [AdminGainApi.reducerPath]: AdminGainApi.reducer,
@@ -173,6 +175,7 @@ export const store = configureStore({
         ClientGoalApi.middleware,
         ClientIntegrateSheetApi.middleware,
         ClientApi.middleware,
+        ClientShippingApi.middleware,
 
         AdminDetailOfSpendingApi.middleware,
         AdminGainApi.middleware,
