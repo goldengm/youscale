@@ -14,7 +14,6 @@ import * as yup from "yup";
 import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
 import { showToastError } from '../../../services/toast/showToastError';
 import { showToastSucces } from '../../../services/toast/showToastSucces';
-import { useGetShippingCitiesQuery, useGetShippingQuery, useLinkShipingCitiesMutation, useRemoveShippingCitiesMutation, useVerifyShippingCitiesQuery } from '../../../services/api/ClientApi/ClientShippingApi';
 
 type Inputs = {
     default_conf_pricing: string,
@@ -75,7 +74,6 @@ export default function OrderSetting() {
             <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus} />
             <CSVExport statusData={data?.data} refetchStatus={refetchStatus} />
             <ChangeColumn />
-            <ShippingCities />
             <ColumnOfOrder objData={objData} refetch={refetch} />
             <City setShowAddCityModal={setShowAddCityModal} refetch={refetchData} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} data={cityData?.data} setItem={setItem} />
             <ConfSetting setShowEditPasswordModal={setShowEditPasswordModal} />
@@ -720,124 +718,6 @@ const ConfSetting = ({ setShowEditPasswordModal }: ConfSettingProps): JSX.Elemen
                         className="btn btn-outline-info btn-xxs">
                         Modifier le mot de passe
                     </button>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-const ShippingCities = (): JSX.Element => {
-
-    const [linkShipping] = useLinkShipingCitiesMutation()
-    const [removeShipping] = useRemoveShippingCitiesMutation()
-
-    const [arg, setArg] = useState<{ id_city: number | undefined, id_shipping: number | undefined }>({ id_city: 0, id_shipping: 0 })
-
-    const { data: dataCities } = useGetCityQuery()
-    const { data: dataShipping } = useGetShippingQuery()
-
-    const { data: dataShippingCities, refetch: refetchShippingCities, isSuccess } = useGetShippingCitiesQuery(arg)
-    const { isError, refetch } = useVerifyShippingCitiesQuery(arg)
-
-    const [idShipping, setIdShipping] = useState<number>()
-    const [idCitie, setIdCitie] = useState<number>()
-
-    const handleChangeShippingSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { value } = e.target
-
-        setIdShipping(Number(value))
-
-        setArg({ id_shipping: Number(value), id_city: idCitie })
-
-        refetch()
-        refetchShippingCities()
-    }
-
-    const handleChangeCitieSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { value } = e.target
-
-        setIdCitie(Number(value))
-
-        setArg({ id_shipping: idShipping, id_city: Number(value) })
-
-        refetch()
-        refetchShippingCities()
-    }
-
-    const handleSubmitRemove = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        removeShipping({ id_city: idCitie, id_shipping: idShipping }).unwrap()
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-
-            setTimeout(() => {
-                window.location.reload()
-            }, 1000);
-    }
-
-    const handleSubmitLink = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        linkShipping({ id_city: idCitie, id_shipping: idShipping }).unwrap()
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-
-            setTimeout(() => {
-                window.location.reload()
-            }, 1000);
-    }
-
-    return (
-        <div className="col-xl-6 col-lg-6">
-            <div className="card">
-                <div className="card-body">
-                    <div className="basic-form">
-                        <form>
-                            <div className="mb-3">
-                                <label className="form-label">Shipping</label>
-                                <select
-                                    name={'alias'}
-                                    onChange={handleChangeShippingSelect}
-                                    className="form-control"
-                                >
-                                    <option>{'Choisissez votre entreprise'}</option>
-                                    {dataShipping && dataShipping.data.map((dt: any) => (<option value={dt.id}>{dt.name}</option>))}
-                                </select>
-                            </div>
-
-                            <div className="mb-3">
-                                <label className="form-label">Cities</label>
-                                <select
-                                    name={'alias'}
-                                    onChange={handleChangeCitieSelect}
-                                    className="form-control"
-                                >
-                                    <option>{'Choisissez votre ville'}</option>
-                                    {dataCities && dataCities.data.map((dt: any) => (<option value={dt.id}>{dt.name}</option>))}
-                                </select>
-                            </div>
-
-                            {(idShipping && idCitie) && (
-                                isError ?
-                                    <button
-                                        onClick={handleSubmitRemove}
-                                        type="button"
-                                        className="btn btn-outline-primary btn-xs"
-                                    >
-                                        Remove
-                                    </button> :
-                                    <button
-                                        onClick={handleSubmitLink}
-                                        type="button"
-                                        className="btn btn-outline-primary btn-xs"
-                                    >
-                                        Add
-                                    </button>
-                            )
-                            }
-                        </form>
-                    </div>
-                    <div className="profile-skills mt-2 mb-2">
-                        { isSuccess && dataShippingCities.data.map(dt => <a href="#" className="btn btn-primary light btn-xs mb-1">{dt.City_User.name}</a> ) }
-                    </div>
-
                 </div>
             </div>
         </div>

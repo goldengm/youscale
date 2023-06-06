@@ -119,6 +119,7 @@ export interface CityModel {
     name: string,
     price: string,
     isFromSheet?: boolean,
+    id_shipping?: number,
     isDeleted?: boolean,
     City_User?: {
         id: number,
