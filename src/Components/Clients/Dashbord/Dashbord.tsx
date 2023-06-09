@@ -59,7 +59,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
     return (
         <div className="row invoice-card-row">
 
-            <Card bg={'warning'} value={earningNet} title={'Earning net'} icon={<MdAttachMoney size={35} color={'white'} />} />
+            <Card bg={'warning'} value={earningNet} orderInProgress={orderInProgress} title={'Earning net'} icon={<MdAttachMoney size={35} color={'white'} />} />
 
             <Card bg={'success'} value={costPerLead} title={'Cost per lead'} icon={<FiShoppingCart size={35} color={'white'} />} />
 
@@ -78,8 +78,9 @@ interface CardProps {
     value: number,
     title: string,
     icon: JSX.Element
+    orderInProgress?: number
 }
-const Card = ({ bg, value, title, icon }: CardProps): JSX.Element => {
+const Card = ({ bg, value, title, icon, orderInProgress }: CardProps): JSX.Element => {
     return (
         <div className="col-xl-3 col-xxl-3 col-sm-6">
             <div className={`card bg-${bg} invoice-card`}>
@@ -89,8 +90,11 @@ const Card = ({ bg, value, title, icon }: CardProps): JSX.Element => {
                     </div>
                     <div>
                         <h2 className="text-white invoice-num">{Number(value).toFixed(2)}</h2>
-                        <span className="text-white fs-18">{title}</span>
+                        <span className="text-white fs-18">{title}</span> <br />
+                        {orderInProgress && <span className="text-white fs-18">Order in progress:{orderInProgress}</span>}
                     </div>
+
+                    
 
                     <div className="tooltip-card"><BsPatchQuestion size={30} color={'white'} />
                         <span className="tooltiptext-card" >Formule here</span>
