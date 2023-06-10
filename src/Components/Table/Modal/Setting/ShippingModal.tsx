@@ -92,7 +92,7 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
 
                 <Shipping />
                 <p style={{ display: 'grid' }}>
-                    <code>You need to go to your livo account and copy your token</code>
+                    <code>Vous devez vous rendre dans votre societe de livraison et copier votre token</code>
                 </p>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
