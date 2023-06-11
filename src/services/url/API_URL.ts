@@ -93,3 +93,4 @@ export const CLIENT_TEAM_COLUMN_URL = `${BASE_URL}/api/youscale/v1/client-team/c
 export const CLIENT_TEAM_PRODUCT_URL = `${BASE_URL}/api/youscale/v1/client-team/productacces`;
 export const CLIENT_TEAM_CITY_URL = `${BASE_URL}/api/youscale/v1/client-team/cityacces`;
 export const CLIENT_TEAM_ORDER_URL = `${BASE_URL}/api/youscale/v1/client-team/order`;
+
