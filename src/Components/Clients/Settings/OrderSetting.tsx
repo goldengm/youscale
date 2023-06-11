@@ -119,7 +119,7 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
             .then(res => {
                 console.log(res)
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -184,7 +184,7 @@ const CSVStatusCheckbox = ({ dt, refetch }: CSVStatusCheckboxProps): JSX.Element
             .then((res: any) => {
                 console.log(res)
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -305,7 +305,7 @@ const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Elemen
         if (dataUpdated) {
             patchColumn(dataUpdated).unwrap()
                 .then(res => console.log(res))
-                .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                     if (err.data) {
                         if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                         else if ('message' in err.data) showToastError(err.data.message);
@@ -443,7 +443,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {data && data.map((dt, index) => <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />)}
+                                            {data && data.map((dt, index) => !dt.isFromSheet && <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />)}
                                         </tbody>
                                     </table>
                                 </div>
@@ -535,7 +535,7 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
                 console.log(res)
                 refetch()
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -586,10 +586,10 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
     );
 }
 
-interface ConfSettingProps{
+interface ConfSettingProps {
     setShowEditPasswordModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const ConfSetting = ({ setShowEditPasswordModal }:ConfSettingProps): JSX.Element => {
+const ConfSetting = ({ setShowEditPasswordModal }: ConfSettingProps): JSX.Element => {
 
     const { data, refetch } = useGetSettingQuery()
     const [patchSetting] = usePatchSettingMutation()
@@ -602,10 +602,10 @@ const ConfSetting = ({ setShowEditPasswordModal }:ConfSettingProps): JSX.Element
         const datas = {
             ...values,
             id: data?.data.id ?? 0,
-            default_conf_pricing : values.default_conf_pricing || String(data?.data.default_cof_ricing) || '0.0',
-            delfault_del_pricing : values.delfault_del_pricing || String(data?.data.delfaulnpt_del_pricing) || '0.0',
-            default_time : values.default_time || String(data?.data.default_time) || '0.0',
-            startWrldOrder: values.startWrldOrder || String(data?.data.startWrldOrder)  || 'none',
+            default_conf_pricing: values.default_conf_pricing || String(data?.data.default_cof_ricing) || '0.0',
+            delfault_del_pricing: values.delfault_del_pricing || String(data?.data.delfaulnpt_del_pricing) || '0.0',
+            default_time: values.default_time || String(data?.data.default_time) || '0.0',
+            startWrldOrder: values.startWrldOrder || String(data?.data.startWrldOrder) || 'none',
             automated_msg: values.automated_msg || String(data?.data.automated_msg) || 'nones'
         }
 
@@ -615,7 +615,7 @@ const ConfSetting = ({ setShowEditPasswordModal }:ConfSettingProps): JSX.Element
                 showToastSucces('La configuration a été modifié')
                 refetch()
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -712,9 +712,9 @@ const ConfSetting = ({ setShowEditPasswordModal }:ConfSettingProps): JSX.Element
                     </form>
 
                     <br /><br />
-                    <button 
-                        onClick={()=> setShowEditPasswordModal(true)}
-                        type="button" 
+                    <button
+                        onClick={() => setShowEditPasswordModal(true)}
+                        type="button"
                         className="btn btn-outline-info btn-xxs">
                         Modifier le mot de passe
                     </button>

@@ -8,6 +8,25 @@ export interface AdminLoginModel {
     password: string
 }
 
+export interface ShippingModel {
+    image: string
+    id: number
+    name: string
+    id_admin: number
+    createdAt: string
+    updatedAt: string
+}
+
+export interface ShippingCitiesModel {
+    id: number
+    id_user: number
+    id_city: number
+    id_shipping: number
+    createdAt: string
+    updatedAt: string
+    City_User: CityUser
+}
+
 export interface ErrorModel {
     errors: Error[]
 }
@@ -17,6 +36,11 @@ export interface Error {
     msg: string
     param: string
     location: string
+}
+
+export interface Cient {
+    fullname?: string
+    livoToken?: string
 }
 
 export interface AdminRegisterModel {
@@ -95,6 +119,8 @@ export interface CityModel {
     name: string,
     price: string,
     isFromSheet?: boolean,
+    id_shipping?: number,
+    isDeleted?: boolean,
     City_User?: {
         id: number,
         name: string,

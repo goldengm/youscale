@@ -59,7 +59,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
     return (
         <div className="row invoice-card-row">
 
-            <Card bg={'warning'} value={earningNet} title={'Earning net'} icon={<MdAttachMoney size={35} color={'white'} />} />
+            <Card bg={'warning'} value={earningNet} orderInProgress={orderInProgress} title={'Earning net'} icon={<MdAttachMoney size={35} color={'white'} />} />
 
             <Card bg={'success'} value={costPerLead} title={'Cost per lead'} icon={<FiShoppingCart size={35} color={'white'} />} />
 
@@ -78,8 +78,9 @@ interface CardProps {
     value: number,
     title: string,
     icon: JSX.Element
+    orderInProgress?: number
 }
-const Card = ({ bg, value, title, icon }: CardProps): JSX.Element => {
+const Card = ({ bg, value, title, icon, orderInProgress }: CardProps): JSX.Element => {
     return (
         <div className="col-xl-3 col-xxl-3 col-sm-6">
             <div className={`card bg-${bg} invoice-card`}>
@@ -89,8 +90,11 @@ const Card = ({ bg, value, title, icon }: CardProps): JSX.Element => {
                     </div>
                     <div>
                         <h2 className="text-white invoice-num">{Number(value).toFixed(2)}</h2>
-                        <span className="text-white fs-18">{title}</span>
+                        <span className="text-white fs-18">{title}</span> <br />
+                        {orderInProgress && <span className="text-white fs-18">Order in progress:{orderInProgress}</span>}
                     </div>
+
+                    
 
                     <div className="tooltip-card"><BsPatchQuestion size={30} color={'white'} />
                         <span className="tooltiptext-card" >Formule here</span>
@@ -154,16 +158,22 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                         <div className="col-md-6">
                             <ul className="card-list mt-4">
                                 <li>
-                                    <span className="bg-blue circle" />
-                                    Pending<span>{data.data.datasets[0].data[1]}</span>
-                                </li>
-                                <li>
-                                    <span className="bg-success circle" />
+                                    <span className="bg-delivered circle" />
                                     Delivered<span>{data.data.datasets[0].data[0]}</span>
                                 </li>
                                 <li>
-                                    <span className="bg-warning circle" />
-                                    Cancelled<span>{data.data.datasets[0].data[2]}</span>
+                                    <span className="bg-pending-1 circle" />
+                                    Pending<span>{data.data.datasets[0].data[1]}</span>
+                                </li>
+                               
+                                <li>
+                                    <span className="bg-pending-2 circle" />
+                                    Pending(2)<span>{data.data.datasets[0].data[2]}</span>
+                                </li>
+
+                                <li>
+                                    <span className="bg-cancelled circle" />
+                                    Cancelled<span>{data.data.datasets[0].data[3]}</span>
                                 </li>
                                 <li>
                                     <span className="bg-light circle" />

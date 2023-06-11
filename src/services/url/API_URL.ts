@@ -3,8 +3,9 @@ var protocol = window.location.protocol;
 var baseUrl = protocol + "//" + url.split("/")[2];
 
 const urls = {
-    prod:  baseUrl === 'https://app.youscale.ma' ? 'https://api.youscale.ma' : 'https://api.oumardev.com',
-    dev: 'http://127.0.0.1:2590'
+    prod:  baseUrl === 'https://app.youscale.ma' ? 'https://api.youscale.ma' : 'https://staging-api.youscale.ma',
+    dev: 'https://api.oumardev.com',
+    local: 'http://127.0.0.1:8500'
 }
 const BASE_URL = urls.prod
 
@@ -21,6 +22,7 @@ export const CLIENT_PASSWORD_URL = `${BASE_URL}/api/youscale/v1/client/password`
 export const CLIENT_FORGET_PASSWORD_URL = `${BASE_URL}/api/youscale/v1/client/password/forgot`
 
 /**Client URL */
+export const CLIENT_URL = `${BASE_URL}/api/youscale/v1/client`
 export const CLIENT_PRODUIT_URL = `${BASE_URL}/api/youscale/v1/client/product`
 export const CLIENT_CITY_URL = `${BASE_URL}/api/youscale/v1/client/city`
 export const CLIENT_STOCK_URL = `${BASE_URL}/api/youscale/v1/client/stock`
@@ -55,6 +57,7 @@ export const CLIENT_PAIEMENT_DASHBORD_URL = `${BASE_URL}/api/youscale/v1/client/
 export const CLIENT_GOAL_URL = `${BASE_URL}/api/youscale/v1/client/goal`
 export const CLIENT_UPLOAD_CITY_URL = `${BASE_URL}/api/youscale/v1/client/city/upload`
 export const CLIENT_SHEET_INTEGRATION_URL = `${BASE_URL}/api/youscale/v1/client/integratesheet`
+export const CLIENT_SHIPPING_COMPANIE_URL = `${BASE_URL}/api/youscale/v1/client/shippingcompanie`
 
 
 /**Admin URL */

@@ -17,7 +17,7 @@ type Inputs = {
 };
 
 const schema = yup.object().shape({
-    name: yup.string().notRequired(),
+    name: yup.string().max(14, 'Maximum 14 caractères').notRequired(),
     price_selling: yup.string().notRequired()
 }).required();
 

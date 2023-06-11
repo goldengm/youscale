@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
-import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { IoLogoWhatsapp } from 'react-icons/io5'
+import { TbPointFilled } from 'react-icons/tb'
+import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal, DeleteOrderModal } from '../Modal/Order'
-import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel } from '../../../models'
+import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel, ErrorModel } from '../../../models'
 import { CustumDropdown } from '../../Input'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi'
@@ -15,7 +16,7 @@ import './styles.css'
 
 interface RowProps {
     row: GetClientOrderModel,
-    order: { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string } | undefined,
+    order: { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string } | undefined,
     refetch: () => void,
     column: ColumnModel[] | undefined,
     setIdOrders: React.Dispatch<React.SetStateAction<number[] | undefined>>,
@@ -46,6 +47,12 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         const { value } = e.target
 
         patchOrder({ id: order?.id, status: value }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
 
         if (value === 'Reporte') setShowReportModal(true)
     }
@@ -54,30 +61,60 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         const { value } = e.target
 
         patchOrder({ id: order?.id, source: value }).then(() => refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const handleChangeTeam = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
-        patchOrder({ id: order?.id, id_team: Number(value), prev_id_team: order ? order.id_team : 0 }).unwrap().then(() => refetch && refetch()).catch((err) => { showToastError(err.data.message); refetch && refetch() })
+        patchOrder({ id: order?.id, id_team: Number(value), prev_id_team: order ? order.id_team : 0 }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const handleChangeOuvrir = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, ouvrir: value }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const handleChangeChanger = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, changer: value }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const handleChangeUpDown = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, updownsell: value }).unwrap().then(() => refetch && refetch())
+        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     const FilterStatusData = (data: StatusModel[] | undefined) => {
@@ -107,7 +144,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
     const FormatCity = (data: CityModel[]) => {
         var options: { label: string, value: string | number }[] = []
 
-        data.map((dt) => options.push({ label: dt.name, value: dt.id || 0 }))
+        data.map((dt) => !dt.isDeleted && options.push({ label: dt.name, value: dt.id || 0 }))
 
         return options
     }
@@ -135,7 +172,19 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         var formatDtName = dt.name.replace(' ', '_').split(' ').join('')
 
                         if (formatDtName === 'Order_id') {
-                            return <td>{order?.SheetId ?? row[formatDtName]}</td>
+                            return (
+                                <td>
+                                    {
+                                        order?.isSendLivo === 'not_send' ? 
+                                            <TbPointFilled size={17} color={'gray'} />
+                                        : order?.isSendLivo === 'error_send' ? 
+                                            <TbPointFilled size={17} color={'red'} />
+                                        : 
+                                            <TbPointFilled size={17} color={'green'} />
+                                    }
+                                    {order?.SheetId ?? row[formatDtName]}
+                                </td>
+                            )
                         }
 
                         if (formatDtName === 'Telephone') {
@@ -210,7 +259,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         if (formatDtName === 'Ville') {
                             return (
                                 <td>
-                                    <CustumDropdown refetch={refetch} options={FormatCity(order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : [])} name='id_city' data={order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : []} order={order && order} />
+                                    <CustumDropdown refetch={refetch} options={FormatCity(dataCity ? dataCity.data : [])} name='id_city' data={dataCity ? dataCity.data : []} order={order && order} />
                                 </td>
                             )
                         }

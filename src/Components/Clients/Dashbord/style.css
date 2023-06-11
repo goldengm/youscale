@@ -45,3 +45,19 @@
 .tooltip-card:hover .tooltiptext-card {
     visibility: visible;
 }
+
+.bg-pending-1{
+    background: #F68407!important;
+}
+
+.bg-delivered{
+    background: #43A047!important;
+}
+
+.bg-pending-2{
+    background: #b4936f!important;
+}
+
+.bg-cancelled{
+    background: #E53935!important;
+}

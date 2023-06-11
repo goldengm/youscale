@@ -1,6 +1,6 @@
 import React from 'react'
-import Pack from '../../Components/Clients/Pack/Pack'
+import PackContainer from '../../Components/Clients/Pack/PackContainer'
 
 export default function PackPage() {
-  return <Pack />
+  return <PackContainer />
 }
