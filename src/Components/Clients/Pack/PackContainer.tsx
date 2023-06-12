@@ -7,6 +7,7 @@ import { Transaction } from './Transaction'
 import { PaymentMethod } from './PaymentMethod'
 import { useGetClientPaymentMethodQuery } from '../../../services/api/ClientApi/ClientPaymentMethodApi'
 import { useGetClientPackQuery } from '../../../services/api/ClientApi/ClientPackApi'
+import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
 
 interface Bank {
     id: number;
@@ -16,6 +17,8 @@ interface Bank {
 }
 export default function PackContainer() {
     const { data: dataPack, isLoading, refetch } = useGetClientPackQuery()
+    const { data: dataSetting } = useGetSettingQuery()
+
     const { data } = useGetClientPaymentMethodQuery()
     const [currentBank, setCurrentBank] = useState<Bank | undefined>()
 
@@ -33,14 +36,14 @@ export default function PackContainer() {
         // Calculate the difference in days
         const diffInDays = Math.floor((endUtc - startUtc) / millisecondsPerDay);
 
-        return diffInDays;
+        return (dataSetting?.data.trial_period || 0) - diffInDays;
     }
 
     return (
         <Main name='Pack'>
             <div className="content-body">
                 <div className="container-fluid">
-                    {dataPack?.data && <PackTitlte title={`Pack <p class='expire-txt'>your pack will expire in ${computeDateDifference(new Date(), new Date(dataPack.data.Subscription.date_expiration) )} days</p>`} />}
+                    {dataPack?.data && <PackTitlte title={`Pack <p class='expire-txt'>your pack will expire in ${computeDateDifference(new Date(dataPack.data.Subscription.date_subscription), new Date())} days</p>`} />}
                     <Tarif data={dataPack} isLoading={isLoading} refetch={refetch} />
                     <PackTitlte title='Payment methods' />
                     <Account />
