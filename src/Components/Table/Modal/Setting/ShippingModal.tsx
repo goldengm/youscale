@@ -103,7 +103,7 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
                         className={'lg-input-cus'}
                         error={errors.livoToken}
                         type={'text'}
-                        label={"Livo token"}
+                        label={"societe de livraison token"}
                         placeholder={'HDHGDHGDV54EZ44DFZ4X44545D45SD'}
                     />
 
