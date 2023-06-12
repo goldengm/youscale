@@ -370,6 +370,7 @@ export interface GetSettingModel {
     default_cof_ricing: number,
     delfaulnpt_del_pricing: number,
     default_time: number,
+    trial_period: number,
     automated_msg: string,
     startWrldOrder: string
 }
