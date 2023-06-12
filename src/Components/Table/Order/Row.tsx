@@ -35,8 +35,6 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         RefetchStatus()
     }, [])
 
-    const [message] = useState(dataSetting?.data.automated_msg || '');
-
     const [showOrderModal, setShowOrderModal] = useState<boolean>(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false)
@@ -138,7 +136,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
     }
 
     const handleClick = (phone_number: string) => {
-        window.open(`https://wa.me/${phone_number}?text=${encodeURI(message)}`, "_blank");
+        window.open(`https://wa.me/${phone_number}?text=${encodeURI(dataSetting?.data.automated_msg || '')}`, "_blank");
     };
 
     const FormatCity = (data: CityModel[]) => {
