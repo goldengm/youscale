@@ -50,7 +50,7 @@ export default function Order(): JSX.Element {
   }, [_skip])
 
   return (
-    <Main name={'Order'} showTeamFilter={true} setIdTeam={setIdTeam} setProduct={setProduct} usingDate={usingDate} showProductFilter={true} setDate={setDate} setUsingDate={setUsingDate} showDateFilter={true}>
+    <Main name={'Order'} urlVideo={'https://www.youtube.com/watch?v=t_d1cKerFUc'} showTeamFilter={true} setIdTeam={setIdTeam} setProduct={setProduct} usingDate={usingDate} showProductFilter={true} setDate={setDate} setUsingDate={setUsingDate} showDateFilter={true}>
       <div className="content-body">
         <div className="container-fluid">
             <Table 
