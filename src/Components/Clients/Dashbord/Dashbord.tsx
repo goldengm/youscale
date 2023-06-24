@@ -23,7 +23,7 @@ interface Props {
 }
 export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, usingDate }: Props): JSX.Element {
     return (
-        <Main name={'Dashbord'} showTeamFilter={showTeamFilter} setIdTeam={setIdTeam} setProduct={setProduct} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate} showProductFilter={showProductFilter} showDateFilter={showDateFilter}>
+        <Main name={'Dashbord'} showTeamFilter={showTeamFilter} urlVideo={'https://www.youtube.com/watch?v=vKl4nbql6ao'} setIdTeam={setIdTeam} setProduct={setProduct} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate} showProductFilter={showProductFilter} showDateFilter={showDateFilter}>
             <div className="content-body">
                 <div className="container-fluid">
                     <DisplayCard costPerLead={data.costPerLead} orderInProgress={data.orderInProgress}

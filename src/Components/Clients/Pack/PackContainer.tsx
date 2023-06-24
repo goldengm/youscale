@@ -40,7 +40,7 @@ export default function PackContainer() {
     }
 
     return (
-        <Main name='Pack'>
+        <Main urlVideo={'https://www.youtube.com/watch?v=Y2eNJGFfhVY'} name='Pack'>
             <div className="content-body">
                 <div className="container-fluid">
                     {dataPack?.data && <PackTitlte title={`Pack <p class='expire-txt'>your pack will expire in ${computeDateDifference(new Date(dataPack.data.Subscription.date_subscription), new Date())} days</p>`} />}

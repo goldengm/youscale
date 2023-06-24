@@ -3,9 +3,10 @@ import ModalWrapper from '../ModalWrapper'
 
 interface Props {
   showModal: boolean,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+  urlVideo: string
 }
-export default function VideoModal({ showModal, setShowModal }: Props): JSX.Element {
+export default function VideoModal({ showModal, setShowModal, urlVideo }: Props): JSX.Element {
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
@@ -40,20 +41,21 @@ export default function VideoModal({ showModal, setShowModal }: Props): JSX.Elem
 
   return (
     <ModalWrapper title={'Video'} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
-      <FormBody handleCloseModal={handleCloseModal} />
+      <FormBody handleCloseModal={handleCloseModal} urlVideo={urlVideo} />
     </ModalWrapper>
   )
 }
 
 interface FormBodyProps{
   handleCloseModal: () => void
+  urlVideo: string
 }
-const FormBody = ({ handleCloseModal }:FormBodyProps) => {
+const FormBody = ({ handleCloseModal, urlVideo }:FormBodyProps) => {
 
   return (
     <div className="card-body">
       <div className="basic-form">
-        <iframe width="390" height="315" src="https://www.youtube.com/embed/tgbNymZ7vqY" allowFullScreen></iframe>
+        <iframe width="390" height="315" src={urlVideo} allowFullScreen></iframe>
       </div>
     </div>
   )
