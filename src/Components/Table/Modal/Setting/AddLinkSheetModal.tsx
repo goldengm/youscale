@@ -4,9 +4,9 @@ import ModalWrapper from '../ModalWrapper'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { useGetLinkSheetQuery, useIntegrateSheetMutation } from '../../../../services/api/ClientApi/ClientIntegrateSheetApi';
+import { useGetLinkSheetQuery, useIntegrateSheetMutation, usePatchSheetMutation } from '../../../../services/api/ClientApi/ClientIntegrateSheetApi';
 import { showToastError } from '../../../../services/toast/showToastError';
-import { ErrorModel } from '../../../../models';
+import { ErrorModel, GetSheetIntegrationModel } from '../../../../models';
 
 type Inputs = {
     spreadsheetId: string,
@@ -24,6 +24,9 @@ interface Props {
 }
 export default function AddLinkSheetModal({ showModal, setShowModal }: Props): JSX.Element {
 
+    const { data, refetch } = useGetLinkSheetQuery();
+    const [row, setRow] = useState<GetSheetIntegrationModel[]>([])
+
     useEffect(() => {
         var body = document.querySelector<HTMLBodyElement>('body');
 
@@ -38,6 +41,10 @@ export default function AddLinkSheetModal({ showModal, setShowModal }: Props): J
             body.appendChild(modalBackdrop);
         }
     }, [])
+
+    useEffect(() => {
+        data && setRow(data?.data)
+    }, [data])
 
     const handleCloseModal = () => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -57,48 +64,67 @@ export default function AddLinkSheetModal({ showModal, setShowModal }: Props): J
 
     return (
         <ModalWrapper showModal={showModal} title={'API integration'} setShowModal={setShowModal} id='AddOrderModal'>
-            <FormBody handleCloseModal={handleCloseModal} />
+            <p style={{ display: 'grid' }}>
+                You need to share your spread sheet with this address:
+                <code>appsheet@fluent-edition-339019.iam.gserviceaccount.com</code>
+            </p>
+            <a href="javascript:void(0)" onClick={() => setRow(prev => [...prev, { SheetID: '', range_: '' } as GetSheetIntegrationModel])} className="badge badge-outline-light">Nouveau sheet +</a>
+            {row.map(dt => <FormBody handleCloseModal={handleCloseModal} data={dt} refetch={refetch} />)}
+
+            <br />
+            <a href='/load/SheetIntegration.xlsx' className="btn btn-outline-primary btn-xs export-btn">Copier le model</a>
         </ModalWrapper>
     )
 }
 
 interface FormBodyProps {
     handleCloseModal: () => any
+    refetch: () => any
+    data: GetSheetIntegrationModel | undefined
 }
-const FormBody = ({ handleCloseModal }: FormBodyProps) => {
+const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
 
     const [integrateSheet] = useIntegrateSheetMutation();
-    const { data, refetch } = useGetLinkSheetQuery();
+    const [patchSheet] = usePatchSheetMutation();
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(schema),
     });
 
     const onSubmit = (values: Inputs) => {
-        integrateSheet(values).unwrap().then((result: any) => {
-            console.log(result)
-            handleCloseModal()
-            refetch()
-        }).catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-            if (err.data) {
-                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                else if ('message' in err.data) showToastError(err.data.message);
-            }
-        })
+        if(!data?.id){
+            integrateSheet(values).unwrap().then((result: any) => {
+                handleCloseModal()
+                refetch()
+            }).catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
+        }else{
+            patchSheet({
+                id: data.id,
+                ...values
+            }).unwrap().then((result: any) => {
+                handleCloseModal()
+                refetch()
+            }).catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
+        }
     }
 
     return (
         <div className="card-body">
             <div className="basic-form">
-                <p style={{ display: 'grid' }}>
-                    You need to share your spread sheet with this address:
-                    <code>appsheet@fluent-edition-339019.iam.gserviceaccount.com</code>
-                </p>
-
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
                         <CustumInput
-                            defaultValue={data?.data?.SheetID || ''}
+                            defaultValue={data?.SheetID ?? ''}
                             register={register}
                             name={'spreadsheetId'}
                             error={errors.spreadsheetId}
@@ -108,7 +134,7 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
                         />
 
                         <CustumInput
-                            defaultValue={data?.data?.range_ || ''}
+                            defaultValue={data?.range_ ?? ''}
                             register={register}
                             name={'range'}
                             error={errors.range}
@@ -118,13 +144,7 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
                         />
                     </div>
 
-                    
-
-                    <button type="submit" className="btn btn-primary">
-                        Ajouter
-                    </button>
-                    <br />
-                    <a href='/load/SheetIntegration.xlsx' className="btn btn-outline-primary btn-xs export-btn">Copier le model</a>
+                    <button type="submit" className="badge badge-md badge-success">Ajouter</button>
                 </form>
             </div>
         </div>
