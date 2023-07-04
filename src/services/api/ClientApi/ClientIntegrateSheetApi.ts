@@ -17,7 +17,16 @@ export const ClientIntegrateSheetApi = createApi({
             })
         }),
 
-        getLinkSheet : builder.query<{code: Number, data:GetSheetIntegrationModel}, void>({
+        PatchSheet : builder.mutation<void, SheetIntegrationModel>({
+            query : (data: SheetIntegrationModel) => ({
+                method : 'PATCH',
+                url : `/${data.id}`,
+                body : data,
+                headers: { Authorization: `Bear ${token}` },
+            })
+        }),
+
+        getLinkSheet : builder.query<{code: Number, data:GetSheetIntegrationModel[]}, void>({
             query:() => ({
                 method: 'GET',
                 url: '/',
@@ -27,4 +36,4 @@ export const ClientIntegrateSheetApi = createApi({
     })
 })
 
-export const { useIntegrateSheetMutation, useGetLinkSheetQuery }  = ClientIntegrateSheetApi;
+export const { useIntegrateSheetMutation, useGetLinkSheetQuery, usePatchSheetMutation }  = ClientIntegrateSheetApi;
