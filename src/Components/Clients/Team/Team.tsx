@@ -50,7 +50,7 @@ export default function Team(): JSX.Element {
     }
 
     return (
-        <Main name={'Team'} showTeamFilter={GetRole() === 'TEAM' ? false : true} setIdTeam={setIdTeam} showDateFilter={true} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate}>
+        <Main name={'Team'} urlVideo={'https://www.youtube.com/watch?v=Y2eNJGFfhVY'} showTeamFilter={GetRole() === 'TEAM' ? false : true} setIdTeam={setIdTeam} showDateFilter={true} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate}>
             {showAddTeamModal && <AddTeamModal refetch={refetch} showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} />}
             {showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} dataEdit={item} refetch={refetch} />}
             <div className="content-body">

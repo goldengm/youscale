@@ -935,11 +935,13 @@ export interface addGoalModel {
 }
 
 export interface SheetIntegrationModel {
+    id?: number
     spreadsheetId: string;
     range: string;
 }
 
 export interface GetSheetIntegrationModel {
+    id?: number;
     SheetID: string;
     range_: string;
 }
