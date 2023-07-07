@@ -12,6 +12,7 @@ export interface ShippingModel {
     image: string
     id: number
     name: string
+    isShow: boolean
     id_admin: number
     createdAt: string
     updatedAt: string
@@ -648,6 +649,7 @@ export interface PatchClientOrderModel {
 export interface Pack {
     id: number,
     name: string,
+    isShow: boolean
     price_per_month: number,
     item_inclued: string[],
     createdAt: Date,

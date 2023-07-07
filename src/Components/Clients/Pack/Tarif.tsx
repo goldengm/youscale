@@ -3,37 +3,36 @@ import { useGetClientPackQuery } from '../../../services/api/ClientApi/ClientPac
 import { ChangePackModal } from '../../Table/Modal/Pack'
 import { ClientGetPackModel } from '../../../models';
 
-interface TarifProps{
+interface TarifProps {
     data: {
         code: Number;
         data: ClientGetPackModel;
     } | undefined
-    
+
     isLoading: boolean
 
     refetch: () => any
 }
-export const Tarif = ({ data, isLoading, refetch}: TarifProps): JSX.Element => {
+export const Tarif = ({ data, isLoading, refetch }: TarifProps): JSX.Element => {
 
     return (
         <div className="row">
             {
                 isLoading ? <div>Loading...</div> :
-                    data?.data.Pack.map((pack, index) => {
-                        return (
-                            <TarifItems
-                                key={index}
-                                refetch={refetch}
-                                id_pack={pack.id}
-                                id_subscription={data.data.Subscription.id}
-                                name={pack.name}
-                                price={pack.price_per_month}
-                                currently={pack.id === data.data.Subscription.id_pack}
-                                items={pack.item_inclued}
-                                date_expiration={data.data.Subscription.date_expiration}
-                            />
-                        )
-                    })
+                    data?.data.Pack.map((pack, index) =>
+                        pack.isShow &&
+                        <TarifItems
+                            key={index}
+                            refetch={refetch}
+                            id_pack={pack.id}
+                            id_subscription={data.data.Subscription.id}
+                            name={pack.name}
+                            price={pack.price_per_month}
+                            currently={pack.id === data.data.Subscription.id_pack}
+                            items={pack.item_inclued}
+                            date_expiration={data.data.Subscription.date_expiration}
+                        />
+                    )
             }
         </div>
     )
@@ -78,9 +77,9 @@ const TarifItems = ({ name, price, currently, items, date_expiration, id_subscri
                             </>
                             :
                             <>
-                                <button 
-                                    onClick={()=> setShowModal(true) }
-                                    type="button" 
+                                <button
+                                    onClick={() => setShowModal(true)}
+                                    type="button"
                                     className="btn btn-outline-primary btn-xs pack-btn">
                                     Upgrade
                                 </button>
@@ -90,7 +89,7 @@ const TarifItems = ({ name, price, currently, items, date_expiration, id_subscri
 
                 </div>
             </div>
-            { showModal && <ChangePackModal setShowModal={setShowModal} showModal={showModal} id_subscription={id_subscription} id_pack={id_pack} refetch={refetch} /> }
+            {showModal && <ChangePackModal setShowModal={setShowModal} showModal={showModal} id_subscription={id_subscription} id_pack={id_pack} refetch={refetch} />}
         </div>
     )
 }
