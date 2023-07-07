@@ -121,7 +121,7 @@ const Shipping = () => {
 
     return (
         <div className="row">
-            { isSuccess && data?.data.map((dt: ShippingModel)=> <ShippingCard item={dt} />) }
+            { isSuccess && data?.data.map((dt: ShippingModel)=> dt.isShow && <ShippingCard item={dt} />) }
         </div>
     )
 }
