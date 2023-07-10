@@ -19,6 +19,7 @@ import { showToastError } from '../../../../services/toast/showToastError'
 type Inputs = {
     name: string,
     email: string,
+    livoToken: string,
     password: string,
     salaire: string,
     commission: string,
@@ -41,6 +42,7 @@ type Inputs = {
 const schema = yup.object().shape({
     name: yup.string().notRequired(),
     email: yup.string().notRequired(),
+    livoToken: yup.string().notRequired(),
     password: yup.string().min(8, 'Le mot de passe doit contenir au minimum 8 caractères').notRequired(),
     salaire: yup.string().notRequired(),
     commission: yup.string().notRequired(),
@@ -250,7 +252,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -291,6 +293,17 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                             type={'password'}
                             label={"Password"}
                             placeholder={'*****'}
+                            className={'lg-input-cus'}
+                        />
+
+                        <CustumInput
+                            defaultValue={dataEdit?.livoToken}
+                            register={register}
+                            name={'livoToken'}
+                            error={errors.livoToken}
+                            type={'text'}
+                            label={"Livo token"}
+                            placeholder={'your_token_here'}
                             className={'lg-input-cus'}
                         />
                     </div>
@@ -384,7 +397,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                                 {'Can edit orders'}
                             </label>
                         </div>
-                        
+
                     </div>
 
                     <div className="row">
