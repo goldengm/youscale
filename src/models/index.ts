@@ -200,6 +200,7 @@ export interface CityAccessModel {
 export interface TeamMemberModel {
     name: string,
     email: string,
+    livoToken: string,
     password: string,
     day_payment: string,
     can_delete_order: boolean,
@@ -224,6 +225,7 @@ export interface GetTeamMemberModel {
     id: number,
     name?: string,
     email?: string,
+    livoToken?: string,
     password?: string,
     can_delete_order?: boolean,
     can_edit_order?: boolean,
