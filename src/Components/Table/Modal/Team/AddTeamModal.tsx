@@ -19,6 +19,7 @@ import { ErrorModel } from '../../../../models'
 type Inputs = {
     name: string,
     email: string,
+    livoToken: string,
     password: string,
     salaire: string,
     commission: string,
@@ -41,6 +42,7 @@ type Inputs = {
 const schema = yup.object().shape({
     name: yup.string().required('Ce champ est obligatoire'),
     email: yup.string().required('Ce champ est obligatoire'),
+    livoToken: yup.string().notRequired(),
     password: yup.string().min(8, 'Le mot de passe doit contenir au minimum 8 caractères').required('Ce champ est obligatoire'),
     salaire: yup.string().required('Ce champ est obligatoire'),
     commission: yup.string().required('Ce champ est obligatoire'),
@@ -152,7 +154,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -190,6 +192,16 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             type={'password'}
                             label={"Password"}
                             placeholder={'*****'}
+                            className={'lg-input-cus'}
+                        />
+
+                        <CustumInput
+                            register={register}
+                            name={'livoToken'}
+                            error={errors.livoToken}
+                            type={'text'}
+                            label={"Livo token"}
+                            placeholder={'your_token_here'}
                             className={'lg-input-cus'}
                         />
                     </div>
