@@ -17,7 +17,6 @@ function App(): JSX.Element {
 
     var token = params.get("token");
     var userData = params.get("userData");
-
     
     if (token && userData) {
       setToken(token)
