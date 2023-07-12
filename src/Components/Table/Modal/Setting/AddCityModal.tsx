@@ -39,7 +39,7 @@ const GetShippingCompanies = (data: ShippingModel[] | undefined): SelectType[] =
 const schema = yup.object().shape({
     name: yup.string().required('Ce champ est obligatoire'),
     price: yup.string().required('Ce champ est obligatoire'),
-    id_shipping: yup.number().required('Ce champ est obligatoire')
+    id_shipping: yup.number().notRequired()
 }).required();
 
 interface Props {
