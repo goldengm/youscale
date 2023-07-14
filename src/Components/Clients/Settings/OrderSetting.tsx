@@ -14,6 +14,7 @@ import * as yup from "yup";
 import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
 import { showToastError } from '../../../services/toast/showToastError';
 import { showToastSucces } from '../../../services/toast/showToastSucces';
+import { ColorPicker } from '../../Input';
 
 type Inputs = {
     default_conf_pricing: string,
@@ -129,6 +130,24 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
         refetch()
     }
 
+    const handleChangeColor = (color: string) => {
+
+        const data = { id: dt.id ?? 0, color: color }
+
+        patchStatus(data).unwrap()
+            .then(res => {
+                console.log(res)
+            })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
+
+        refetch()
+    }
+
     return (
         <div className="col-xl-4 col-xxl-6 col-6">
             <div className="form-check custom-checkbox mb-3">
@@ -143,6 +162,7 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
                     {dt.name}
                 </label>
             </div>
+            <ColorPicker color={dt.color} handleChangeColor={handleChangeColor} />
         </div>
     )
 }

@@ -355,6 +355,7 @@ export interface StatusModel {
     id?: number,
     name: string,
     checked: boolean,
+    color: string,
 }
 
 export interface countOrderByStatusModel {
@@ -365,7 +366,8 @@ export interface countOrderByStatusModel {
 
 export interface StatusPatchModel {
     id: number,
-    checked: boolean
+    checked?: boolean,
+    color?: string
 }
 
 export interface GetSettingModel {
