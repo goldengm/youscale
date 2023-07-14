@@ -24,7 +24,7 @@ type SelectType = {
 const GetShippingCompanies = (data: ShippingModel[] | undefined): SelectType[] => {
     if (!data) return []
 
-    var newArr: SelectType[] = [{ label: 'none', value: 'none' }]
+    var newArr: SelectType[] = [{ label: 'none', value: 0 }]
 
     for (let i = 0; i < data.length; i++) {
         newArr.push({
@@ -38,8 +38,7 @@ const GetShippingCompanies = (data: ShippingModel[] | undefined): SelectType[] =
 
 const schema = yup.object().shape({
     name: yup.string().required('Ce champ est obligatoire'),
-    price: yup.string().required('Ce champ est obligatoire'),
-    id_shipping: yup.number().notRequired()
+    price: yup.string().required('Ce champ est obligatoire')
 }).required();
 
 interface Props {
@@ -101,7 +100,12 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
 
     const onSubmit = (values: Inputs) => {
 
-        addCity(values).unwrap()
+        const data = {
+            ...values,
+            id_shipping : String(values.id_shipping) === "" ? null : values.id_shipping
+        }
+
+        addCity(data).unwrap()
             .then(res => {
                 refetch()
                 handleCloseModal()
@@ -138,6 +142,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                         />
 
                         <CustumSelectForm
+                            defaultSelected={null}
                             data={GetShippingCompanies(shippingData?.data)}
                             register={register}
                             error={errors.id_shipping}

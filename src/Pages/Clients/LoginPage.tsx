@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SetRole, GetRole } from '../../services/storageFunc'
 import { selectAuth } from '../../services/slice/authSlice'
 import { clientLoginThunk, clientTeamLoginThunk } from '../../services/thunks/authThunks';
 import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -19,6 +20,7 @@ const schema = yup.object().shape({
 }).required();
 
 export default function LoginPage() {
+    const [showPassword, setShowPassword] = useState<boolean>(false)
 
     const dispatch = useDispatch<any>()
     const { message, isAuthenticated, isError, isVerified } = useSelector(selectAuth)
@@ -57,7 +59,7 @@ export default function LoginPage() {
         }
     }, [isAuthenticated, isVerified])
 
-    const handleSend = (data: Inputs) =>{
+    const handleSend = (data: Inputs) => {
         if (GetRole() === 'CLIENT') dispatch(clientLoginThunk(data))
         if (GetRole() === 'TEAM') dispatch(clientTeamLoginThunk(data))
     }
@@ -73,11 +75,11 @@ export default function LoginPage() {
                                     <div className="auth-form">
                                         <div className="text-center mb-3">
                                             <a href="index.html">
-                                                <img src="/cus_img/logo.png" width={200}  alt="" />
+                                                <img src="/cus_img/logo.png" width={200} alt="" />
                                             </a>
                                         </div>
                                         <h4 className="text-center mb-4">Se connecter</h4>
-                                        
+
                                         <div className="btn-group btn-login-switch">
                                             <button
                                                 onClick={() => handleChangeRole('CLIENT')}
@@ -114,12 +116,19 @@ export default function LoginPage() {
                                                 <label className="mb-1">
                                                     <strong>Password</strong>
                                                 </label>
-                                                <input
-                                                    {...register("password")}
-                                                    type="password"
-                                                    className="form-control"
-                                                    placeholder="******"
-                                                />
+                                                <div className="cust-input-content">
+                                                    <input
+                                                        {...register("password")}
+                                                        type={showPassword ? 'text' : "password"}
+                                                        className="form-control"
+                                                        placeholder="******"
+                                                    />
+                                                    {
+                                                        (
+                                                            showPassword ? <AiOutlineEye onClick={() => setShowPassword(!showPassword)} size={20} className='eyes' /> : <AiOutlineEyeInvisible onClick={() => setShowPassword(!showPassword)} size={20} className='eyes' />
+                                                        )
+                                                    }
+                                                </div>
                                                 {errors.password && <p className='error'>{errors.password.message}</p>}
                                             </div>
 

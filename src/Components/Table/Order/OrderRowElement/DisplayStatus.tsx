@@ -15,7 +15,7 @@ export default function DisplayStatus( { name, onChange, statusData, currentData
         >
             {
                 statusData && statusData.map(
-                    (dt) => ( <option selected={dt.name === currentData.Status} value={dt.name}>{dt.name}</option> ))
+                    (dt) => ( <option selected={dt.name === currentData.Status} style={{ color:dt.color ?? 'black'}} value={dt.name}>{dt.name}</option> ))
             }
         </select>
     )

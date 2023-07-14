@@ -7,14 +7,14 @@ import { UseFormRegister, UseFormSetValue } from 'react-hook-form/dist/types/for
 import { FieldError } from 'react-hook-form/dist/types/errors'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
-import './team.style.css'
 import { useGetColumnQuery } from '../../../../services/api/ClientApi/ClientColumnApi'
 import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi'
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi'
 import { useGetPageQuery } from '../../../../services/api/ClientApi/ClientPageApi'
 import { usePatchTeamMemberMutation } from '../../../../services/api/ClientApi/ClientTeamMemberApi'
 import { showToastError } from '../../../../services/toast/showToastError'
+import * as yup from "yup";
+import './team.style.css'
 
 type Inputs = {
     name: string,
@@ -286,10 +286,11 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                         />
 
                         <CustumInput
-                            defaultValue={dataEdit?.password}
+                            defaultValue={'yourpassword'}
                             register={register}
                             name={'password'}
                             error={errors.password}
+                            showEye={true}
                             type={'password'}
                             label={"Password"}
                             placeholder={'*****'}
