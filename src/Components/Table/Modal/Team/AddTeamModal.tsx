@@ -189,6 +189,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             register={register}
                             name={'password'}
                             error={errors.password}
+                            showEye={true}
                             type={'password'}
                             label={"Password"}
                             placeholder={'*****'}

@@ -23,7 +23,7 @@ type SelectType = {
 const GetShippingCompanies = (data: ShippingModel[] | undefined): SelectType[] => {
     if (!data) return []
 
-    var newArr: SelectType[] = [{ label: 'none', value: 'none' }]
+    var newArr: SelectType[] = [{ label: 'none', value: 0 }]
 
     for (let i = 0; i < data.length; i++) {
         newArr.push({
@@ -104,7 +104,8 @@ const FormBody = ({ refetch, handleCloseModal, item }: FormBodyProps) => {
     const onSubmit = (values: Inputs) => {
         const data = {
             ...values,
-            id: item?.id || 0
+            id: item?.id || 0,
+            id_shipping : values.id_shipping === 0 ? null : values.id_shipping
         }
 
         patchCity(data).unwrap()

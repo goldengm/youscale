@@ -120,7 +120,7 @@ export interface CityModel {
     name: string,
     price: string,
     isFromSheet?: boolean,
-    id_shipping?: number,
+    id_shipping?: number | null,
     isDeleted?: boolean,
     City_User?: {
         id: number,
@@ -355,6 +355,7 @@ export interface StatusModel {
     id?: number,
     name: string,
     checked: boolean,
+    color: string,
 }
 
 export interface countOrderByStatusModel {
@@ -365,7 +366,8 @@ export interface countOrderByStatusModel {
 
 export interface StatusPatchModel {
     id: number,
-    checked: boolean
+    checked?: boolean,
+    color?: string
 }
 
 export interface GetSettingModel {

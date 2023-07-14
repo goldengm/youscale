@@ -1,0 +1,8 @@
+.color-cont{
+    display: flex;
+    align-items: center;
+}
+
+.mg-color{
+    margin-right: 5px;
+}
