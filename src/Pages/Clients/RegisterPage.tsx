@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { GetRole } from '../../services/storageFunc'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { selectAuth } from '../../services/slice/authSlice'
 import { clientRegisterThunk } from '../../services/thunks/authThunks';
+import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
 import { useDispatch, useSelector } from "react-redux";
 import { showToastError } from '../../services/toast/showToastError';
 import * as yup from "yup";
@@ -24,6 +25,7 @@ const schema = yup.object().shape({
 }).required();
 
 export default function RegisterPage() {
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const { message, isAuthenticated, isError, isVerified } = useSelector(selectAuth)
 
     const dispatch = useDispatch<any>()
@@ -42,7 +44,7 @@ export default function RegisterPage() {
 
 
     const handleSend = (data: Inputs) => {
-        if(!isValidContactNumber(data.telephone)){
+        if (!isValidContactNumber(data.telephone)) {
             showToastError('Votre contact doit commencer par (+221) ou (+212)')
             return
         }
@@ -103,12 +105,19 @@ export default function RegisterPage() {
                                                 <label className="mb-1">
                                                     <strong>Password</strong>
                                                 </label>
-                                                <input
-                                                    {...register('password')}
-                                                    type="password"
-                                                    className="form-control"
-                                                    placeholder="********"
-                                                />
+                                                <div className="cust-input-content">
+                                                    <input
+                                                        {...register('password')}
+                                                        type={showPassword ? 'text' : "password"}
+                                                        className="form-control"
+                                                        placeholder="********"
+                                                    />
+                                                    {
+                                                        (
+                                                            showPassword ? <AiOutlineEye onClick={() => setShowPassword(!showPassword)} size={20} className='eyes' /> : <AiOutlineEyeInvisible onClick={() => setShowPassword(!showPassword)} size={20} className='eyes' />
+                                                        )
+                                                    }
+                                                </div>
                                                 {errors.password && <p className='error'>{errors.password.message}</p>}
                                             </div>
                                             <div className="mb-3">
