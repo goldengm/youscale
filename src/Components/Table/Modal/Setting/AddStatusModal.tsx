@@ -76,19 +76,7 @@ const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
     });
 
     const onSubmit = (values: Inputs) => {
-        const data = { ...values }
-
-        addStatus(data).unwrap()
-        .then(res => {
-            refetch()
-            handleCloseModal()
-        })
-        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-            if (err.data) {
-                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                else if ('message' in err.data) showToastError(err.data.message);
-            }
-        })
+      
     }
 
     return (

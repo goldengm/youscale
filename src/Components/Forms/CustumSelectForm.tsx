@@ -8,7 +8,7 @@ interface Props {
     register: UseFormRegister<any>,
     error: FieldError | undefined,
     data: {label: string, value: string | number}[],
-    defaultSelected? : string | number,
+    defaultSelected? : string | number | null,
     Onchange?: (e: React.ChangeEvent<HTMLSelectElement>)=> any
 }
 export default function CustumSelectForm({ label, name, register, error, data, Onchange, defaultSelected='' }: Props): JSX.Element {

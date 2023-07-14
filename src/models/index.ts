@@ -120,7 +120,7 @@ export interface CityModel {
     name: string,
     price: string,
     isFromSheet?: boolean,
-    id_shipping?: number,
+    id_shipping?: number | null,
     isDeleted?: boolean,
     City_User?: {
         id: number,
