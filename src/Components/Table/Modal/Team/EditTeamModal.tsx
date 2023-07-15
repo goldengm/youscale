@@ -300,7 +300,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                         <CustumInput
                             defaultValue={dataEdit?.livoToken}
                             register={register}
-                            name={'livoToken'}
+                            name={'Token'}
                             error={errors.livoToken}
                             type={'text'}
                             label={"Livo token"}
