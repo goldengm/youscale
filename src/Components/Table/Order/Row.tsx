@@ -138,12 +138,14 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
     const getRowColor = (currentData: GetClientOrderModel) : string | undefined =>{
         const statusData = FilterStatusData(dataStatus?.data)
 
-        const color = statusData.map(
+        
+        const color = statusData.filter(
             (dt) => {
-                if(dt.name === currentData.Status) return dt.color
+                if(dt.name.toUpperCase().replace(' ','') == currentData.Status.toUpperCase().replace(' ','')){
+                    return dt.color
+                }
             })
-
-            return color[0]
+            return color[0].color
     }
 
     const handleClick = (phone_number: string) => {
