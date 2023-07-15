@@ -201,7 +201,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             name={'livoToken'}
                             error={errors.livoToken}
                             type={'text'}
-                            label={"Livo token"}
+                            label={"token"}
                             placeholder={'your_token_here'}
                             className={'lg-input-cus'}
                         />

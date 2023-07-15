@@ -135,6 +135,17 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         return newArr
     }
 
+    const getRowColor = (currentData: GetClientOrderModel) : string | undefined =>{
+        const statusData = FilterStatusData(dataStatus?.data)
+
+        const color = statusData.map(
+            (dt) => {
+                if(dt.name === currentData.Status) return dt.color
+            })
+
+            return color[0]
+    }
+
     const handleClick = (phone_number: string) => {
         window.open(`https://wa.me/${phone_number}?text=${encodeURI(dataSetting?.data.automated_msg || '')}`, "_blank");
     };
@@ -148,7 +159,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
     }
 
     return (
-        <tr className='tr-custum'>
+        <tr className='tr-custum' style={{ backgroundColor: getRowColor(row) ?? 'transparent' }}>
             {showOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={row} id_order={String(order?.id ?? 0)} />}
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} id_order={String(order?.id ?? 0)} />}
