@@ -37,8 +37,7 @@ const GetShippingCompanies = (data: ShippingModel[] | undefined): SelectType[] =
 
 const schema = yup.object().shape({
     name: yup.string().required('Ce champ est obligatoire'),
-    price: yup.string().required('Ce champ est obligatoire'),
-    id_shipping: yup.number().notRequired()
+    price: yup.string().required('Ce champ est obligatoire')
 }).required();
 
 interface Props {
@@ -105,7 +104,7 @@ const FormBody = ({ refetch, handleCloseModal, item }: FormBodyProps) => {
         const data = {
             ...values,
             id: item?.id || 0,
-            id_shipping : values.id_shipping === 0 ? null : values.id_shipping
+            id_shipping : (String(values.id_shipping) === "") || (String(values.id_shipping) === "0") ? null : values.id_shipping
         }
 
         patchCity(data).unwrap()
