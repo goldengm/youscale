@@ -145,7 +145,8 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                     return dt.color
                 }
             })
-            return color[0].color
+
+            return color[0]?.color
     }
 
     const handleClick = (phone_number: string) => {
