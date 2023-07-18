@@ -14,7 +14,7 @@ export default function StockTable(): JSX.Element {
     const { data, refetch } = useGetStockQuery()
 
     return (
-        <TableWrapper title='Stock' column={['Produit', 'Ville', 'Quantite']} AddBtn={<AddStockBtn setShowModal={setShowAddStockModal} />}>
+        <TableWrapper title='Stock' column={['Produit', 'Quantite']} AddBtn={<AddStockBtn setShowModal={setShowAddStockModal} />}>
             { showAddStockModal ? <AddStockModal showModal={showAddStockModal} setShowModal={setShowAddStockModal} refetch={refetch}  /> : <></> }
             { showEditStockModal ? <EditStockModal showModal={showEditStockModal} item={item} setShowModal={setShowEditStockModal} refetch={refetch}  /> : <></> }
             { showDeleteStockModal ? <DeleteStockModal showModal={showDeleteStockModal} item={item} setShowModal={setShowDeleteStockModal} refetch={refetch}  /> : <></> }

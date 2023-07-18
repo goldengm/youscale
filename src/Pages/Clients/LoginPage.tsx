@@ -75,7 +75,7 @@ export default function LoginPage() {
                                     <div className="auth-form">
                                         <div className="text-center mb-3">
                                             <a href="index.html">
-                                                <img src="/cus_img/logo.png" width={200} alt="" />
+                                                <img src="/cus_img/Group15.png" width={200} alt="" />
                                             </a>
                                         </div>
                                         <h4 className="text-center mb-4">Se connecter</h4>

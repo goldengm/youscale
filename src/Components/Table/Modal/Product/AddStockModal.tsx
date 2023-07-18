@@ -5,14 +5,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { CityModel, ErrorModel, GetProductModel } from '../../../../models';
-import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi';
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi';
 import { useAddStockMutation } from '../../../../services/api/ClientApi/ClientStockApi';
 import { showToastError } from '../../../../services/toast/showToastError';
 
 type Inputs = {
   quantity: string,
-  id_city: string,
   id_product: string
 };
 
@@ -23,7 +21,6 @@ type SelectType = {
 
 const schema = yup.object().shape({
   quantity: yup.string().required('Ce champ est obligatoire'),
-  id_city: yup.string().required('Ce champ est obligatoire'),
   id_product: yup.string().required('Ce champ est obligatoire'),
 }).required();
 
@@ -104,15 +101,14 @@ export default function AddStockModal({ showModal, setShowModal, refetch }: Prop
   )
 }
 
-interface FormBodyProps{
+interface FormBodyProps {
   handleCloseModal: () => void,
   refetch: () => any
 }
-const FormBody = ({ handleCloseModal, refetch }:FormBodyProps) => {
+const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
 
   const [adderStock] = useAddStockMutation()
 
-  const { data: CityData } = useGetCityQuery()
   const { data: productData } = useGetProductQuery()
 
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
@@ -125,12 +121,12 @@ const FormBody = ({ handleCloseModal, refetch }:FormBodyProps) => {
         refetch()
         handleCloseModal()
       })
-      .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+      .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
         if (err.data) {
-            if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-            else if ('message' in err.data) showToastError(err.data.message);
+          if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+          else if ('message' in err.data) showToastError(err.data.message);
         }
-    })
+      })
   }
 
   return (
@@ -145,16 +141,6 @@ const FormBody = ({ handleCloseModal, refetch }:FormBodyProps) => {
               type={'text'}
               label={"Quantité"}
               placeholder={'12'}
-            />
-          </div>
-
-          <div className="row">
-            <CustumSelectForm
-              data={GetCityWhosNotFromSheet(CityData?.data)}
-              register={register}
-              error={errors.id_city}
-              label={"Ville"}
-              name={'id_city'}
             />
 
             <CustumSelectForm

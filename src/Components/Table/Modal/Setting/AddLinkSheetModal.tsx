@@ -9,13 +9,15 @@ import { showToastError } from '../../../../services/toast/showToastError';
 import { ErrorModel, GetSheetIntegrationModel } from '../../../../models';
 
 type Inputs = {
-    spreadsheetId: string,
+    spreadsheetId: string
     range: string
+    name: string
 };
 
 const schema = yup.object().shape({
     spreadsheetId: yup.string().required('Ce champ est obligatoire'),
-    range: yup.string().required('Ce champ est obligatoire')
+    range: yup.string().required('Ce champ est obligatoire'),
+    name: yup.string().required('Ce champ est obligatoire')
 }).required();
 
 interface Props {
@@ -92,7 +94,7 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
     });
 
     const onSubmit = (values: Inputs) => {
-        if(!data?.id){
+        if (!data?.id) {
             integrateSheet(values).unwrap().then((result: any) => {
                 handleCloseModal()
                 refetch()
@@ -102,7 +104,7 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
-        }else{
+        } else {
             patchSheet({
                 id: data.id,
                 ...values
@@ -143,6 +145,17 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
                             placeholder={'range_'}
                         />
                     </div>
+
+                    <CustumInput
+                        className={'lg-input-cus'}
+                        defaultValue={data?.name ?? ''}
+                        register={register}
+                        name={'name'}
+                        error={errors.name}
+                        type={'text'}
+                        label={"name"}
+                        placeholder={'Stock Janvier'}
+                    />
 
                     <button type="submit" className="badge badge-md badge-success">Ajouter</button>
                 </form>

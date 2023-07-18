@@ -8,3 +8,7 @@
 .product-table{
     width: auto !important;
 }
+
+.table-responsive{
+    height: 370px;
+}

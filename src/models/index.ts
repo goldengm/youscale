@@ -132,8 +132,7 @@ export interface CityModel {
 export interface StockModel {
     id?: number,
     quantity: string,
-    id_product: string,
-    id_city: string
+    id_product: string
 }
 
 export interface GetStockModel {
@@ -141,8 +140,7 @@ export interface GetStockModel {
     quantity: number,
     id_product: number,
     id_city: number,
-    Product: ProductModel,
-    City_User: CityModel
+    Product: ProductModel
 }
 
 export interface PageAccessModel {
@@ -943,11 +941,13 @@ export interface addGoalModel {
 export interface SheetIntegrationModel {
     id?: number
     spreadsheetId: string;
-    range: string;
+    range: string
+    name: string;
 }
 
 export interface GetSheetIntegrationModel {
     id?: number;
     SheetID: string;
     range_: string;
+    name: string;
 }
