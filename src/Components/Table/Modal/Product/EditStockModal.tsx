@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react'
 import { CustumInput, CustumSelectForm } from '../../../Forms'
 import ModalWrapper from '../ModalWrapper'
-import { CityModel, ErrorModel, GetProductModel, GetStockModel } from '../../../../models'
+import { ErrorModel, GetProductModel, GetStockModel } from '../../../../models'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { usePatchStockMutation } from '../../../../services/api/ClientApi/ClientStockApi';
-import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi';
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi';
 import { showToastError } from '../../../../services/toast/showToastError';
 
 type Inputs = {
   quantity: string,
-  id_city: string,
   id_product: string
 };
 
@@ -23,26 +21,8 @@ type SelectType = {
 
 const schema = yup.object().shape({
   quantity: yup.string().notRequired(),
-  id_city: yup.string().notRequired(),
   id_product: yup.string().notRequired(),
 }).required();
-
-const GetCityWhosNotFromSheet = (data: CityModel[] | undefined): SelectType[] => {
-  if (!data) return []
-
-  var newArr: SelectType[] = []
-
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].isFromSheet === false) {
-      newArr.push({
-        value: data[i].id ?? 0,
-        label: data[i].name
-      })
-    }
-  }
-
-  return newArr
-}
 
 const FormatProductSelect = (data: GetProductModel[] | undefined): SelectType[] => {
   if (!data) return []
@@ -114,7 +94,6 @@ const FormBody = ({ item, handleCloseModal, refetch }: FormBodyProps) => {
 
   const [patchStock] = usePatchStockMutation()
 
-  const { data: cityData } = useGetCityQuery()
   const { data: productData } = useGetProductQuery()
 
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
@@ -122,13 +101,11 @@ const FormBody = ({ item, handleCloseModal, refetch }: FormBodyProps) => {
   });
 
   const onSubmit = (values: Inputs) => {
-    console.log(item?.id_city)
 
     const data = {
       id: item ? item.id : 0,
-      id_city: values.id_city !== '' ? values.id_city : String(item?.id_city), 
       id_product: values.id_product ?? item?.id_product,
-      quantity : values.quantity ?? item?.quantity,
+      quantity: values.quantity ?? item?.quantity,
     }
 
     patchStock(data).unwrap()
@@ -136,12 +113,12 @@ const FormBody = ({ item, handleCloseModal, refetch }: FormBodyProps) => {
         refetch()
         handleCloseModal()
       })
-      .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+      .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
         if (err.data) {
-            if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-            else if ('message' in err.data) showToastError(err.data.message);
+          if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+          else if ('message' in err.data) showToastError(err.data.message);
         }
-    })
+      })
   }
 
   return (
@@ -157,17 +134,6 @@ const FormBody = ({ item, handleCloseModal, refetch }: FormBodyProps) => {
               type={'text'}
               label={"quantity"}
               placeholder={'12'}
-            />
-          </div>
-
-          <div className="row">
-            <CustumSelectForm
-              defaultSelected={item?.id_city}
-              data={GetCityWhosNotFromSheet(cityData?.data)}
-              register={register}
-              error={errors.id_city}
-              label={"Ville"}
-              name={'id_city'}
             />
 
             <CustumSelectForm
