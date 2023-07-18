@@ -89,7 +89,7 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
       { showVideo && <VideoModal setShowModal={setShowVideo} showModal={showVideo} urlVideo={urlVideo} />}
       <div className="nav-header">
         <a href="index.html" className="brand-logo">
-          <img src="/cus_img/logo.png" alt="logo" className="brand-title" width="124px" height="33px" />
+          <img src="/cus_img/Group15.png" alt="logo" className="brand-title" width="124px" height="33px" />
         </a>
         <div
           onClick={() => setShowMenu(!showMenu)}

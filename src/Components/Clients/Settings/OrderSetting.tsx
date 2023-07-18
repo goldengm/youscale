@@ -545,30 +545,41 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${token}`);
 
-        axios.post(CLIENT_UPLOAD_CITY_URL, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => {
-                console.log(res)
-                refetch()
-            })
-            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
-                if (err.data) {
-                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                    else if ('message' in err.data) showToastError(err.data.message);
-                }
-            })
+        console.log(data)
+
+        // axios.post(CLIENT_UPLOAD_CITY_URL, formData, {
+        //     headers: {
+        //         'Content-Type': 'multipart/form-data',
+        //         'Authorization': `Bearer ${token}`
+        //     }
+        // })
+        //     .then(res => {
+        //         console.log(res)
+        //         refetch()
+        //     })
+        //     .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+        //         if (err.data) {
+        //             if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+        //             else if ('message' in err.data) showToastError(err.data.message);
+        //         }
+        //     })
     }
 
     const handleDrop = (event: any) => {
         event.preventDefault();
         const selectedFile = event.dataTransfer.files[0];
-        setFile(selectedFile);
+        const allowedTypes = ["text/csv"]; // Define allowed MIME types here
+
+        // Validate file type
+        if (selectedFile && allowedTypes.includes(selectedFile.type)) {
+            setFile(selectedFile);
+        } else {
+            // Handle invalid file type
+            console.log("Invalid file type. Only CSV files are allowed.");
+        }
+
         setDragging(false);
-    };
+    }
 
     function handleFileSelect(event: React.ChangeEvent<HTMLInputElement>) {
         if (!event.target.files || event.target.files.length === 0) {

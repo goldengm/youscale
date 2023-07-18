@@ -27,7 +27,6 @@ export default function StockRow({ setShowEditModal, setShowDeleteModal, data, s
         <tr>
             <th>{data?.id}</th>
             <td>{data?.Product.name}</td>
-            <td>{data?.City_User.name}</td>
             <td>{data?.quantity}</td>
             <td>
                 <div className="d-flex">
