@@ -17,7 +17,12 @@ type Inputs = {
 const schema = yup.object().shape({
     spreadsheetId: yup.string().required('Ce champ est obligatoire'),
     range: yup.string().required('Ce champ est obligatoire'),
-    name: yup.string().required('Ce champ est obligatoire')
+    name: yup
+    .string()
+    .required('Ce champ est obligatoire')
+    .test('no-spaces', 'Le champ ne doit pas contenir d\'espace', value => {
+        return !/\s/.test(value);
+    })
 }).required();
 
 interface Props {
