@@ -38,6 +38,18 @@ export const clientOTPVerifyThunk = createAsyncThunk(
   }
 );
 
+export const resendOTPThunk = createAsyncThunk(
+  'auth/resendotp',
+  async (user:{ telephone : string }, thunkAPI) => {
+    try {
+      return await authService.resendCode(user);
+    } catch (error : any) {
+      const message = error.response.data.message || 'Something went wrong try again';
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const clientForgotPwdThunk = createAsyncThunk(
   'auth/clientforgotpwd',
   async (user: ForgotPwdModel, thunkAPI) => {
