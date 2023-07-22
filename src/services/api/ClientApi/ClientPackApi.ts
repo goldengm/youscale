@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ClientGetPackModel } from '../../../models'
+import { ClientGetPackModel, Pack } from '../../../models'
 import { CLIENT_PACK_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')
@@ -14,8 +14,15 @@ export const ClientPackApi = createApi({
                 url: '/',
                 headers: { Authorization: `Bear ${token}` },
             })
+        }),
+
+        getClientAllPack : builder.query<{code: Number, data: Pack[]}, void>({
+            query:() => ({
+                method: 'GET',
+                url: '/all'
+            })
         })
     })
 })
 
-export const { useGetClientPackQuery }  = ClientPackApi;
+export const { useGetClientPackQuery, useGetClientAllPackQuery }  = ClientPackApi;

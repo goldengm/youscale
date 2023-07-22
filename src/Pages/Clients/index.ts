@@ -9,6 +9,7 @@ import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import OPTVerificationPage from "./OPTVerificationPage";
 import ForgotPasswordPage from "./ForgotPasswordPage";
+import QuestionPage from "./QuestionPage";
 
 export { 
     DashbordPage,
@@ -21,5 +22,6 @@ export {
     LoginPage,
     RegisterPage,
     OPTVerificationPage,
-    ForgotPasswordPage
+    ForgotPasswordPage,
+    QuestionPage
  };
