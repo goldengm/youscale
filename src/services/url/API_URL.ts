@@ -13,6 +13,7 @@ const BASE_URL = urls.prod;
 export const CLIENT_LOGIN_URL = `${BASE_URL}/api/youscale/v1/client/login`;
 export const CLIENT_REGISTER_URL = `${BASE_URL}/api/youscale/v1/client/register`;
 export const CLIENT_OTP_URL = `${BASE_URL}/api/youscale/v1/client/verifyOTP`;
+export const RESEND_OTP_URL = `${BASE_URL}/api/youscale/v1/client/resend/code`;
 export const ADMIN_LOGIN_URL = `${BASE_URL}/api/youscale/v1/admin/login`;
 export const ADMIN_REGISTER_URL = `${BASE_URL}/api/youscale/v1/admin/login`;
 export const ADMIN_LOGIN_AS_CLIENT_URL = `${BASE_URL}/api/youscale/v1/admin/loginas/client`;

@@ -2,9 +2,10 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Redirect from './Redirect';
 import Error403 from '../Pages/Errors/Error403';
-import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage, LoginPage, RegisterPage, OPTVerificationPage, ForgotPasswordPage } from '../Pages/Clients';
+import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage, LoginPage, RegisterPage, OPTVerificationPage, ForgotPasswordPage, QuestionPage, ChoosePackPage } from '../Pages/Clients';
 import { useGetClientTeamMemberPageQuery } from '../services/api/ClientTeamApi/ClientTeamPageApi';
 import { GetRole } from '../services/storageFunc';
+import { logOut } from '../services/auth/logout';
 
 interface WithAuthTeamProps {
     Component: any,
@@ -16,6 +17,19 @@ const AuthComponent = ({ Component, pageAccess, name }: WithAuthTeamProps) => {
     if (GetRole() === "TEAM" && name === 'setting') return <Error403 />
 
     const user: any = localStorage.getItem('userData') ? JSON.parse(String(localStorage.getItem('userData'))) : null;
+    const step = localStorage.getItem("STEP")
+    
+    if(step){
+        if(JSON.parse(step) == 'NOT_VERIFIED'){
+            logOut()
+        }
+        if(JSON.parse(step) == "question") return <Navigate to="/question" />;
+        if(JSON.parse(step) == 'pack') return <Navigate to="/choose_pack" />;
+        if(JSON.parse(step) == 'completed') {
+            return <Component />
+        }
+
+    }
 
     if (!user) return <Navigate to="/login" />;
 
@@ -50,6 +64,18 @@ const Routing = (): JSX.Element => {
             <Route path="/register" element={
                 <Redirect>
                     <RegisterPage />
+                </Redirect>
+            } />
+
+            <Route path="/question" element={
+                <Redirect>
+                    <QuestionPage />
+                </Redirect>
+            } />
+
+            <Route path="/choose_pack" element={
+                <Redirect>
+                    <ChoosePackPage />
                 </Redirect>
             } />
 

@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form';
 import { GetRole } from '../../services/storageFunc'
-import { yupResolver } from '@hookform/resolvers/yup';
 import { selectAuth } from '../../services/slice/authSlice'
-import { clientRegisterThunk } from '../../services/thunks/authThunks';
-import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
+import { clientOTPVerifyThunk, clientRegisterThunk, resendOTPThunk } from '../../services/thunks/authThunks';
 import { useDispatch, useSelector } from "react-redux";
+import { CustumAuthInput } from '../../Components/Forms';
+import { useForm } from 'react-hook-form';
+import { IoIosArrowBack } from 'react-icons/io'
+import { yupResolver } from '@hookform/resolvers/yup';
+import { RotatingLines } from 'react-loader-spinner'
 import { showToastError } from '../../services/toast/showToastError';
 import * as yup from "yup";
 import './styles.css'
+
+const ParseTel = (contact: string): string => contact.trim()
 
 type Inputs = {
     fullname: string;
@@ -24,11 +28,30 @@ const schema = yup.object().shape({
     telephone: yup.string().required('Ce champ est obligatoire').min(7, '7 caractères maximum'),
 }).required();
 
-export default function RegisterPage() {
-    const [showPassword, setShowPassword] = useState<boolean>(false)
-    const { message, isAuthenticated, isError, isVerified } = useSelector(selectAuth)
+export default function LoginPage() {
+    const [showOtpSect, setSowOtpSect] = useState<boolean>(false)
 
+    return (
+        <div className='ys-login-page'>
+            <section className="ys-login-sect-video">
+                <div className='ys-login-sect-video-content'>
+                    <a href="/" className='sect-video-logo'>Youscale</a>
+                    <video playsInline className="video-sec" autoPlay loop muted src="https://cdn.dribbble.com/uploads/48226/original/b8bd4e4273cceae2889d9d259b04f732.mp4?1689028949"></video>
+                </div>
+            </section>
+
+            {showOtpSect ? <VerifyNumberSection showOtpSect={showOtpSect} setSowOtpSect={setSowOtpSect} /> : <LoginSection showOtpSect={showOtpSect} setSowOtpSect={setSowOtpSect} />}
+        </div>
+    )
+}
+
+interface LoginProps {
+    setSowOtpSect: React.Dispatch<React.SetStateAction<boolean>>
+    showOtpSect: boolean
+}
+const LoginSection = ({ setSowOtpSect }: LoginProps) => {
     const dispatch = useDispatch<any>()
+    const { message, isAuthenticated, isError, isVerified, step } = useSelector(selectAuth)
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(schema),
@@ -42,7 +65,6 @@ export default function RegisterPage() {
         }
     }
 
-
     const handleSend = (data: Inputs) => {
         if (!isValidContactNumber(data.telephone)) {
             showToastError('Votre contact doit commencer par (+221) ou (+212)')
@@ -54,105 +76,136 @@ export default function RegisterPage() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            if (GetRole() === 'CLIENT') window.location.href = '/'
+            if (GetRole() === 'CLIENT') {
+                if (step === 'completed') window.location.href = '/'
+                else if (step === 'question') window.location.href = '/question'
+                window.location.href = '/choose_pack'
+            }
             if (GetRole() === 'TEAM') window.location.href = '/'
         }
 
         if (isVerified === false) {
-            const telephone = JSON.parse(localStorage.getItem('telephone') || '')
-            window.location.href = `/opt-verification?telephone=${telephone}`
+            setSowOtpSect(true)
         }
     }, [isAuthenticated, isVerified])
 
-
     return (
-        <div className="authincation h-100">
-            <div className="container h-100">
-                <div className="row justify-content-center h-100 align-items-center">
-                    <div className="col-md-6">
-                        <div className="authincation-content">
-                            <div className="row no-gutters">
-                                <div className="col-xl-12">
-                                    <div className="auth-form">
-                                        <h4 className="text-center mb-4">S'inscrire</h4>
-                                        {isError && <span className="auth-error">{message}</span>}
-                                        <form onSubmit={handleSubmit(handleSend)}>
-                                            <div className="mb-3">
-                                                <label className="mb-1">
-                                                    <strong>Nom complet</strong>
-                                                </label>
-                                                <input
-                                                    {...register('fullname')}
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="username"
-                                                />
-                                                {errors.fullname && <p className='error'>{errors.fullname.message}</p>}
-                                            </div>
-                                            <div className="mb-3">
-                                                <label className="mb-1">
-                                                    <strong>Email</strong>
-                                                </label>
-                                                <input
-                                                    {...register('email')}
-                                                    type="email"
-                                                    className="form-control"
-                                                    placeholder="hello@example.com"
-                                                />
-                                                {errors.email && <p className='error'>{errors.email.message}</p>}
-                                            </div>
-                                            <div className="mb-3">
-                                                <label className="mb-1">
-                                                    <strong>Password</strong>
-                                                </label>
-                                                <div className="cust-input-content">
-                                                    <input
-                                                        {...register('password')}
-                                                        type={showPassword ? 'text' : "password"}
-                                                        className="form-control"
-                                                        placeholder="********"
-                                                    />
-                                                    {
-                                                        (
-                                                            showPassword ? <AiOutlineEye onClick={() => setShowPassword(!showPassword)} size={20} className='eyes' /> : <AiOutlineEyeInvisible onClick={() => setShowPassword(!showPassword)} size={20} className='eyes' />
-                                                        )
-                                                    }
-                                                </div>
-                                                {errors.password && <p className='error'>{errors.password.message}</p>}
-                                            </div>
-                                            <div className="mb-3">
-                                                <label className="mb-1">
-                                                    <strong>Contact</strong>
-                                                </label>
-                                                <input
-                                                    {...register('telephone')}
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="(+237) 00 00 00 00 00"
-                                                />
-                                                {errors.telephone && <p className='error'>{errors.telephone.message}</p>}
-                                            </div>
-                                            <div className="text-center mt-4">
-                                                <button type="submit" className="btn btn-primary btn-block">
-                                                    S'inscrire
-                                                </button>
-                                            </div>
-                                        </form>
-                                        <div className="new-account mt-3">
-                                            <p>
-                                                Vous avez déja un compte ?{" "}
-                                                <a className="text-primary" href="/login">
-                                                    Sign in
-                                                </a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <section className="ys-login-sect-content">
+            <div className="sect-content-auth">
+                <h2>Sign up to Youscale</h2>
+
+                <div className="content-auth-form">
+                    {isError && <span className="auth-error">{message}</span>}
+                    <form onSubmit={handleSubmit(handleSend)}>
+                        <CustumAuthInput
+                            label='Fullname'
+                            placeholder='John Doe'
+                            type='text'
+                            register={register}
+                            name='fullname'
+                            error={errors.fullname}
+                        />
+                        <CustumAuthInput
+                            label='Email'
+                            placeholder='hello@example.com'
+                            type='text'
+                            register={register}
+                            name='email'
+                            error={errors.email}
+                        />
+                        <CustumAuthInput
+                            label='Telephone'
+                            placeholder='(+237) 00 00 00 00 00'
+                            type='text'
+                            register={register}
+                            name='telephone'
+                            error={errors.telephone}
+                        />
+                        <CustumAuthInput
+                            label='Password'
+                            placeholder='*******'
+                            type='password'
+                            register={register}
+                            name='password'
+                            error={errors.password}
+                        />
+                        <button className="submit-button">S'inscrite</button>
+                    </form>
+                    <p className="auth-link">already have an account? <a className="underline" href="/login">Sign in</a></p>
                 </div>
             </div>
-        </div>
+        </section>
+    )
+}
+
+const VerifyNumberSection = ({ setSowOtpSect }: LoginProps) => {
+    const [code, setCode] = useState<string>()
+
+    const dispatch = useDispatch<any>()
+    const { message, isAuthenticated, isError, isLoading } = useSelector(selectAuth)
+
+    const telephone = JSON.parse(localStorage.getItem('telephone') || '')
+
+    const handleVerifyOTP = (): void => {
+        dispatch(clientOTPVerifyThunk({ telephone: ParseTel(telephone), code: Number(code) }))
+    }
+
+    const resendOTP = (): void => {
+        dispatch(resendOTPThunk({ telephone: ParseTel(telephone) }))
+    }
+
+    const handleChangeCode = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const { value } = e.target
+        setCode(value)
+    }
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            if (GetRole() === 'CLIENT') window.location.href = '/'
+            if (GetRole() === 'TEAM') window.location.href = '/order-client-team'
+        }
+    }, [isAuthenticated])
+
+    return (
+        <section className="ys-login-sect-content">
+            <div onClick={() => window.location.reload()} className="back-btn">
+                <IoIosArrowBack size={25} color={'black'} />
+            </div>
+            <div className="sect-content-auth">
+                <h2>Vérifier votre contact</h2>
+
+                <div className="content-auth-form">
+                    {isError && <span className="auth-error">{message}</span>}
+                    <form>
+                        <fieldset className='fields'>
+                            <label htmlFor="login-lab">{'Code'}</label>
+                            <input
+                                onChange={handleChangeCode}
+                                type={'number'}
+                                max={4}
+                                role='presentation'
+                                autoComplete='off'
+                                className="form-control"
+                            />
+                            <a onClick={() => resendOTP()} className='resend-c-txt' href="#">Renvoyer le code</a>
+                        </fieldset>
+
+                        <button
+                            onClick={() => handleVerifyOTP()}
+                            disabled={isLoading}
+                            className={`submit-button ${isLoading && 'hide-submit'}`}>
+                            {isLoading ? 'Verification' : 'Véfifier'}
+                            <RotatingLines
+                                strokeColor="grey"
+                                strokeWidth="5"
+                                animationDuration="0.75"
+                                width="22"
+                                visible={isLoading}
+                            />
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
     )
 }
