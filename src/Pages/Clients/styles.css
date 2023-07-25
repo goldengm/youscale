@@ -330,6 +330,8 @@
 .pack-choose-list{
     display: flex;
     flex-wrap: wrap;
+    width: 100vw;
+    padding: 30px;
 }
 
 .pack-choose-list div{
@@ -342,7 +344,6 @@
     scale: 1.1;
     z-index: 999999;
     cursor: pointer;
-    background-color: black;
 }
 
 .pack-choose-list .card:hover{
@@ -350,21 +351,8 @@
     scale: 1.1;
     z-index: 999999;
     cursor: pointer;
-    background-color: black;
 }
 
-.pack-choose-list .card:hover .card-header h4{
-    color: white;
-}
-
-.pack-choose-list .card:hover .pack-price{
-    color: white;
-}
-
-.selected_pack .card-header h4{
-    color: white;
-}
-
-.selected_pack .pack-price{
-    color: white;
+.pack-choose-list .col-xl-4{
+    width: 300px !important;
 }
