@@ -29,7 +29,7 @@ const schema = yup.object().shape({
 }).required();
 
 export default function LoginPage() {
-    const [showOtpSect, setSowOtpSect] = useState < boolean > (false)
+    const [showOtpSect, setSowOtpSect] = useState<boolean>(false)
 
     return (
         <div className='ys-login-page'>
@@ -50,10 +50,10 @@ interface LoginProps {
     showOtpSect: boolean
 }
 const LoginSection = ({ setSowOtpSect }: LoginProps) => {
-    const dispatch = useDispatch < any > ()
-    const { message, isAuthenticated, isError, isVerified } = useSelector(selectAuth)
+    const dispatch = useDispatch<any>()
+    const { message, isAuthenticated, isError, isVerified, step } = useSelector(selectAuth)
 
-    const { register, handleSubmit, formState: { errors } } = useForm < Inputs > ({
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(schema),
     });
 
@@ -76,7 +76,11 @@ const LoginSection = ({ setSowOtpSect }: LoginProps) => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            if (GetRole() === 'CLIENT') window.location.href = '/'
+            if (GetRole() === 'CLIENT') {
+                if (step === 'completed') window.location.href = '/'
+                else if (step === 'question') window.location.href = '/question'
+                window.location.href = '/choose_pack'
+            }
             if (GetRole() === 'TEAM') window.location.href = '/'
         }
 
@@ -101,7 +105,7 @@ const LoginSection = ({ setSowOtpSect }: LoginProps) => {
                             name='fullname'
                             error={errors.fullname}
                         />
-                         <CustumAuthInput
+                        <CustumAuthInput
                             label='Email'
                             placeholder='hello@example.com'
                             type='text'
@@ -109,7 +113,7 @@ const LoginSection = ({ setSowOtpSect }: LoginProps) => {
                             name='email'
                             error={errors.email}
                         />
-                         <CustumAuthInput
+                        <CustumAuthInput
                             label='Telephone'
                             placeholder='(+237) 00 00 00 00 00'
                             type='text'
@@ -135,9 +139,9 @@ const LoginSection = ({ setSowOtpSect }: LoginProps) => {
 }
 
 const VerifyNumberSection = ({ setSowOtpSect }: LoginProps) => {
-    const [code, setCode] = useState < string > ()
+    const [code, setCode] = useState<string>()
 
-    const dispatch = useDispatch < any > ()
+    const dispatch = useDispatch<any>()
     const { message, isAuthenticated, isError, isLoading } = useSelector(selectAuth)
 
     const telephone = JSON.parse(localStorage.getItem('telephone') || '')

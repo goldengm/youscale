@@ -10,6 +10,7 @@ import RegisterPage from "./RegisterPage";
 import OPTVerificationPage from "./OPTVerificationPage";
 import ForgotPasswordPage from "./ForgotPasswordPage";
 import QuestionPage from "./QuestionPage";
+import ChoosePackPage from "./ChoosePackPage";
 
 export { 
     DashbordPage,
@@ -23,5 +24,6 @@ export {
     RegisterPage,
     OPTVerificationPage,
     ForgotPasswordPage,
-    QuestionPage
+    QuestionPage,
+    ChoosePackPage
  };

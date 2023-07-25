@@ -205,9 +205,9 @@
 }
 
 .quest-header a {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 500;
-    color: #000;
+    color: #d71414;
     font-family: 'Lucida Handwriting'
 }
 
@@ -325,4 +325,46 @@
 
 .next-disable:hover {
     cursor: no-drop;
+}
+
+.pack-choose-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pack-choose-list div{
+    padding: 5px;
+    min-height: 80px;
+}
+
+.selected_pack{
+    border: 2px solid #5bd18f;
+    scale: 1.1;
+    z-index: 999999;
+    cursor: pointer;
+    background-color: black;
+}
+
+.pack-choose-list .card:hover{
+    border: 2px solid #5bd18f;
+    scale: 1.1;
+    z-index: 999999;
+    cursor: pointer;
+    background-color: black;
+}
+
+.pack-choose-list .card:hover .card-header h4{
+    color: white;
+}
+
+.pack-choose-list .card:hover .pack-price{
+    color: white;
+}
+
+.selected_pack .card-header h4{
+    color: white;
+}
+
+.selected_pack .pack-price{
+    color: white;
 }

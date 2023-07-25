@@ -46,7 +46,7 @@ interface LoginProps{
 }
 const LoginSection = ({ setSowOtpSect, showOtpSect }:LoginProps) => {
     const dispatch = useDispatch<any>()
-    const { message, isAuthenticated, isError, isVerified } = useSelector(selectAuth)
+    const { message, isAuthenticated, isError, isVerified, step } = useSelector(selectAuth)
 
     const activeBtn = (button: 'CLIENT' | 'TEAM'): string => {
 
@@ -71,7 +71,10 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }:LoginProps) => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            if (GetRole() === 'CLIENT') window.location.href = '/'
+            if (GetRole() === 'CLIENT'){
+                console.log(step)
+                window.location.href = '/'
+            }
             if (GetRole() === 'TEAM') window.location.href = '/'
         }
 
