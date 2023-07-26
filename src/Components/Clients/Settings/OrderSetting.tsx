@@ -3,18 +3,19 @@ import { RiFileDownloadFill } from 'react-icons/ri'
 import { AddStatusModal, AddCityModal, EditCityModal, DeleteCityModal, EditPasswordModal } from '../../Table/Modal/Setting';
 import { useGetStatusQuery, usePatchStatusMutation } from '../../../services/api/ClientApi/ClientStatusApi';
 import { CityModel, ColumnModel, ColumnPatchModel, ErrorModel, StatusModel } from '../../../models';
-import 'react-nestable/dist/styles/index.css';
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api/ClientApi/ClientColumnApi';
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi';
 import { CLIENT_UPLOAD_CITY_URL } from '../../../services/url/API_URL';
-import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
 import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
 import { showToastError } from '../../../services/toast/showToastError';
 import { showToastSucces } from '../../../services/toast/showToastSucces';
+import { RotatingLines } from 'react-loader-spinner'
 import { ColorPicker } from '../../Input';
+import * as yup from "yup";
+import axios from 'axios';
+import 'react-nestable/dist/styles/index.css';
 
 type Inputs = {
     default_conf_pricing: string,
@@ -73,8 +74,6 @@ export default function OrderSetting() {
 
             <h3 className="mt-4 mb-3">Order Settings</h3>
             <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus} />
-            <CSVExport statusData={data?.data} refetchStatus={refetchStatus} />
-            <ChangeColumn />
             <ColumnOfOrder objData={objData} refetch={refetch} />
             <City setShowAddCityModal={setShowAddCityModal} refetch={refetchData} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} data={cityData?.data} setItem={setItem} />
             <ConfSetting setShowEditPasswordModal={setShowEditPasswordModal} />
@@ -163,149 +162,6 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
                 </label>
             </div>
             <ColorPicker color={dt.color} handleChangeColor={handleChangeColor} />
-        </div>
-    )
-}
-
-interface CSVExportProps {
-    statusData: ColumnModel[] | undefined,
-    refetchStatus: () => any
-}
-const CSVExport = ({ statusData, refetchStatus }: CSVExportProps): JSX.Element => {
-    return (
-        <div className="col-xl-6 col-lg-6">
-            <div className="card">
-                <div className="card-header">
-                    <h4 className="card-title">Export csv column</h4>
-                </div>
-                <div className="card-body">
-                    <div className="row">
-                        {statusData && statusData.map(dt => <CSVStatusCheckbox dt={dt} refetch={refetchStatus} />)}
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-interface CSVStatusCheckboxProps {
-    dt: ColumnModel,
-    refetch: () => any
-}
-const CSVStatusCheckbox = ({ dt, refetch }: CSVStatusCheckboxProps): JSX.Element => {
-
-    const [patchColumn] = usePatchColumnMutation()
-
-    const handleStatusCheckbox = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-
-        const data = { id: dt.id ?? 0, isExported: !dt.isExported }
-
-        patchColumn(data).unwrap()
-            .then((res: any) => {
-                console.log(res)
-            })
-            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
-                if (err.data) {
-                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                    else if ('message' in err.data) showToastError(err.data.message);
-                }
-            })
-
-        refetch()
-    }
-
-    return (
-        <div className="col-xl-4 col-xxl-6 col-6">
-            <div className="form-check custom-checkbox mb-3">
-                <input
-                    onClick={handleStatusCheckbox}
-                    defaultChecked={dt.isExported}
-                    type="checkbox"
-                    className="form-check-input"
-                    id="customCheckBox1"
-                />
-                <label className="form-check-label" htmlFor="customCheckBox1">
-                    {dt.alias ?? dt.name}
-                </label>
-            </div>
-        </div>
-    )
-}
-
-const ChangeColumn = (): JSX.Element => {
-
-    const { data, refetch } = useGetColumnQuery()
-    const [alias, setAlias] = useState<string>()
-    const [id, setId] = useState<number>()
-    const [patchColumn] = usePatchColumnMutation()
-
-    useEffect(() => {
-        setId(data?.data[0].id ?? 0)
-        setAlias(data?.data[0].alias ?? 'no alias')
-    }, [data])
-
-    const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { value } = e.target
-
-        setId(JSON.parse(value).id)
-        setAlias(JSON.parse(value).alias ?? 'no alias')
-    }
-
-    const handleChangeAlias = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target
-
-        setAlias(value)
-    }
-
-    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        patchColumn({ id, alias }).unwrap().then(() => {
-            refetch()
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
-
-    return (
-        <div className="col-xl-6 col-lg-6">
-            <div className="card">
-                <div className="card-body">
-                    <div className="basic-form">
-                        <form>
-                            <div className="mb-3">
-                                <label className="form-label">Add alias to column</label>
-                                <select
-                                    name={'alias'}
-                                    onChange={handleChangeSelect}
-                                    className="form-control"
-                                >
-                                    {data && data.data.map((dt: any) => (<option value={JSON.stringify(dt)}>{dt.name}</option>))}
-                                </select>
-
-                            </div>
-                            <div className="col mt-2 mt-sm-0">
-                                <input
-                                    onChange={handleChangeAlias}
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="alias"
-                                    value={alias}
-                                />
-                            </div>
-
-                            {
-                                alias &&
-                                <button
-                                    onClick={handleSubmit}
-                                    type="button"
-                                    className="btn btn-outline-primary btn-xs"
-                                >
-                                    Change
-                                </button>
-                            }
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     )
 }
@@ -525,6 +381,7 @@ interface DragAndDropFileProps {
 function DragAndDropFile({ refetch }: DragAndDropFileProps) {
     const [dragging, setDragging] = useState(false);
     const [file, setFile] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(false)
 
     const handleDragOver = (event: any) => {
         event.preventDefault();
@@ -545,24 +402,26 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${token}`);
 
-        console.log(data)
+        setLoading(true)
 
-        // axios.post(CLIENT_UPLOAD_CITY_URL, formData, {
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //         'Authorization': `Bearer ${token}`
-        //     }
-        // })
-        //     .then(res => {
-        //         console.log(res)
-        //         refetch()
-        //     })
-        //     .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
-        //         if (err.data) {
-        //             if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-        //             else if ('message' in err.data) showToastError(err.data.message);
-        //         }
-        //     })
+        axios.post(CLIENT_UPLOAD_CITY_URL, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                console.log(res)
+                setLoading(false)
+                refetch()
+            })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                setLoading(false)
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     const handleDrop = (event: any) => {
@@ -574,7 +433,6 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
         if (selectedFile && allowedTypes.includes(selectedFile.type)) {
             setFile(selectedFile);
         } else {
-            // Handle invalid file type
             console.log("Invalid file type. Only CSV files are allowed.");
         }
 
@@ -592,28 +450,37 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
     }
 
     return (
-        <div
-            className="drag-and-drop-file"
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-        >
-            {dragging ? (
-                <>
-                    <RiFileDownloadFill />
-                    <div className='drag-txt'>Déposer le fichier ici</div>
+        loading ?
+            <RotatingLines
+                strokeColor="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                width="96"
+                visible={true}
+            />
+            :
+            <div
+                className="drag-and-drop-file"
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+            >
+                {dragging ? (
+                    <>
+                        <RiFileDownloadFill />
+                        <div className='drag-txt'>Déposer le fichier ici</div>
 
-                </>
-            ) : (
-                <>
-                    <RiFileDownloadFill size={50} color='gray' />
-                    <label htmlFor="payment_image" className='drag-txt'>Glissez et deposez un fichier excel</label>
-                    <input type="file" id="payment_image" onChange={handleFileSelect} name="payment_image" accept="text/csv" />
-                </>
-            )}
-            {file && <p className='drag-txt'> : {file.name}</p>}
-            {file && <button onClick={() => sendData(file)}>Envoyer</button>}
-        </div>
+                    </>
+                ) : (
+                    <>
+                        <RiFileDownloadFill size={50} color='gray' />
+                        <label htmlFor="payment_image" className='drag-txt'>Glissez et deposez un fichier excel</label>
+                        <input type="file" id="payment_image" onChange={handleFileSelect} name="payment_image" accept="text/csv" />
+                    </>
+                )}
+                {file && <p className='drag-txt'> : {file.name}</p>}
+                {file && <button onClick={() => sendData(file)}>Envoyer</button>}
+            </div>
     );
 }
 

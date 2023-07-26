@@ -5,9 +5,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { showToastError } from '../../../../services/toast/showToastError';
-import { ErrorModel, ShippingModel } from '../../../../models';
+import { ColumnModel, ErrorModel, ShippingModel } from '../../../../models';
 import { useGetClientQuery, usePatchClientMutation } from '../../../../services/api/ClientApi/ClientApi';
 import { useGetShippingQuery } from '../../../../services/api/ClientApi/ClientShippingApi';
+import { useGetColumnQuery, usePatchColumnMutation } from '../../../../services/api/ClientApi/ClientColumnApi';
 
 type Inputs = {
     livoToken: string
@@ -68,6 +69,7 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
 
     const [patchClient] = usePatchClientMutation();
     const { data, refetch } = useGetClientQuery();
+    const { data: dataColumn, refetch: refetchColumn } = useGetColumnQuery()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(schema),
@@ -89,7 +91,7 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
     return (
         <div className="card-body">
             <div className="basic-form">
-
+                <CSVExport statusData={dataColumn?.data} refetchStatus={refetchColumn} />
                 <Shipping />
                 <p style={{ display: 'grid' }}>
                     <code>Vous devez vous rendre dans votre societe de livraison et copier votre token</code>
@@ -121,7 +123,7 @@ const Shipping = () => {
 
     return (
         <div className="row">
-            { isSuccess && data?.data.map((dt: ShippingModel)=> dt.isShow && <ShippingCard item={dt} />) }
+            {isSuccess && data?.data.map((dt: ShippingModel) => dt.isShow && <ShippingCard item={dt} />)}
         </div>
     )
 }
@@ -131,7 +133,7 @@ interface ShippingCardProps {
 }
 const ShippingCard = ({ item }: ShippingCardProps) => {
     return (
-        <div style={{width: '33%'}} className="col-xl-3 col-lg-6 col-sm-6">
+        <div style={{ width: '33%' }} className="col-xl-3 col-lg-6 col-sm-6">
             <div className="card">
                 <div className="card-body">
                     <div className="new-arrival-product">
@@ -145,6 +147,69 @@ const ShippingCard = ({ item }: ShippingCardProps) => {
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    )
+}
+
+interface CSVExportProps {
+    statusData: ColumnModel[] | undefined,
+    refetchStatus: () => any
+}
+const CSVExport = ({ statusData, refetchStatus }: CSVExportProps): JSX.Element => {
+    return (
+        <div className="col-xl-6 col-lg-6 alias-lg-100">
+            <div className="card">
+                <div className="card-header">
+                    <h4 className="card-title">Export csv column</h4>
+                </div>
+                <div className="card-body">
+                    <div className="row">
+                        {statusData && statusData.map(dt => <CSVStatusCheckbox dt={dt} refetch={refetchStatus} />)}
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+interface CSVStatusCheckboxProps {
+    dt: ColumnModel
+    refetch: () => any
+}
+const CSVStatusCheckbox = ({ dt }: CSVStatusCheckboxProps): JSX.Element => {
+
+    const [patchColumn] = usePatchColumnMutation()
+
+    const handleStatusCheckbox = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+
+        const data = { id: dt.id ?? 0, isExported: !dt.isExported }
+
+        patchColumn(data).unwrap()
+            .then((res: any) => {
+                console.log(res)
+            })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
+    }
+
+    return (
+        <div className="col-xl-4 col-xxl-6 col-6">
+            <div className="form-check custom-checkbox mb-3">
+                <input
+                    onClick={handleStatusCheckbox}
+                    defaultChecked={dt.isExported}
+                    type="checkbox"
+                    className="form-check-input"
+                    id="customCheckBox1"
+                />
+                <label className="form-check-label" htmlFor="customCheckBox1">
+                    {dt.alias ?? dt.name}
+                </label>
             </div>
         </div>
     )
