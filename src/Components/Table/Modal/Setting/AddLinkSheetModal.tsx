@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { CustumInput } from '../../../Forms'
-import ModalWrapper from '../ModalWrapper'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
 import { useGetLinkSheetQuery, useIntegrateSheetMutation, usePatchSheetMutation } from '../../../../services/api/ClientApi/ClientIntegrateSheetApi';
 import { showToastError } from '../../../../services/toast/showToastError';
 import { ErrorModel, GetSheetIntegrationModel } from '../../../../models';
+import { useGetColumnQuery, usePatchColumnMutation } from '../../../../services/api/ClientApi/ClientColumnApi';
+import ModalWrapper from '../ModalWrapper'
+import * as yup from "yup";
+import './styles.css'
 
 type Inputs = {
     spreadsheetId: string
@@ -71,6 +73,7 @@ export default function AddLinkSheetModal({ showModal, setShowModal }: Props): J
 
     return (
         <ModalWrapper showModal={showModal} title={'API integration'} setShowModal={setShowModal} id='AddOrderModal'>
+            <ChangeColumn />
             <p style={{ display: 'grid' }}>
                 You need to share your spread sheet with this address:
                 <code>appsheet@fluent-edition-339019.iam.gserviceaccount.com</code>
@@ -164,6 +167,86 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
 
                     <button type="submit" className="badge badge-md badge-success">Ajouter</button>
                 </form>
+            </div>
+        </div>
+    )
+}
+
+const ChangeColumn = (): JSX.Element => {
+
+    const { data, refetch } = useGetColumnQuery()
+    const [alias, setAlias] = useState<string>()
+    const [id, setId] = useState<number>()
+    const [patchColumn] = usePatchColumnMutation()
+
+    useEffect(() => {
+        setId(data?.data[0].id ?? 0)
+        setAlias(data?.data[0].alias ?? 'no alias')
+    }, [data])
+
+    const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        //refetch()
+        const { value } = e.target
+
+        setId(JSON.parse(value).id)
+        setAlias(JSON.parse(value).alias ?? 'no alias')
+    }
+
+    const handleChangeAlias = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+
+        console.log(value)
+        setAlias(value)
+    }
+
+    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        patchColumn({ id, alias }).unwrap().then(() => {
+           
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    return (
+        <div className="col-xl-6 col-lg-6 alias-lg-100">
+            <div className="card">
+                <div className="card-body">
+                    <div className="basic-form">
+                        <form>
+                            <div className="mb-3">
+                                <label className="form-label">Add alias to column</label>
+                                <select
+                                    name={'alias'}
+                                    onChange={handleChangeSelect}
+                                    className="form-control"
+                                >
+                                    {data && data.data.map((dt: any) => (<option value={JSON.stringify(dt)}>{dt.name}</option>))}
+                                </select>
+
+                            </div>
+                            <div className="col mt-2 mt-sm-0">
+                                <input
+                                    onChange={handleChangeAlias}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="alias"
+                                    value={alias}
+                                />
+                            </div>
+
+                            {
+                                alias &&
+                                <button
+                                    onClick={handleSubmit}
+                                    type="button"
+                                    className="btn btn-outline-primary btn-xs"
+                                >
+                                    Change
+                                </button>
+                            }
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     )

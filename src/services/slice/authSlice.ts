@@ -6,6 +6,7 @@ const initialState = {
     isAuthenticated: false,
     isVerified: null,
     isLoading: false,
+    step: '',
     isError: false,
     message: ''
 };
@@ -22,8 +23,12 @@ const pendingReducer = (state:any, action:any) => {
 
 const fulfilledReducer = (state:any, action:any) => {
     const verified = action.payload.client?.active | action.payload.teamUser?.active
+    const step = action.payload.client?.step
+
+    localStorage.setItem('STEP', !verified ? JSON.stringify('NOT_VERIFIED') : JSON.stringify(step))
 
     state.isLoading = false;
+    state.step = step;
     state.isAuthenticated = verified;
     state.isVerified = Boolean(verified);
 
@@ -39,6 +44,7 @@ export const authSlice: Slice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.message = '';
+            state.step = '';
         },
     },
 

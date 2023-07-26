@@ -24,7 +24,25 @@ export const ClientApi = createApi({
                 headers: { Authorization: `Bear ${token}` },
             })
         }),
+
+        saveResponse : builder.mutation<void, { response : any}>({
+            query : (data: { response : any} ) => ({
+                method : 'POST',
+                url : `/reponse`,
+                body : data,
+                headers: { Authorization: `Bear ${token}` },
+            })
+        }),
+
+        chossePack : builder.mutation<void, { id_pack : number }>({
+            query : (data: { id_pack : number } ) => ({
+                method : 'POST',
+                url : `/choose_pack`,
+                body : data,
+                headers: { Authorization: `Bear ${token}` },
+            })
+        }),
     })
 })
 
-export const { useGetClientQuery, usePatchClientMutation }  = ClientApi;
+export const { useGetClientQuery, usePatchClientMutation, useSaveResponseMutation, useChossePackMutation }  = ClientApi;
