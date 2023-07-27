@@ -229,7 +229,7 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip }: Props): JSX
                 id="inlineFormCustomSelect"
             >
                 <option selected={true}>{name}</option>
-                {isSuccess && dataStatus.countOrderByStatus.map((status: any, index) => <option value={status.name}>{status.name} ({status.count})</option>)}
+                {isSuccess && dataStatus.countOrderByStatus.map((status, index) => status.checked && <option value={status.name}>{status.name} ({status.count})</option>)}
             </select>
         </div>
     )
