@@ -25,7 +25,7 @@ const fulfilledReducer = (state:any, action:any) => {
     const verified = action.payload.client?.active | action.payload.teamUser?.active
     const step = action.payload.client?.step
 
-    localStorage.setItem('STEP', !verified ? JSON.stringify('NOT_VERIFIED') : JSON.stringify(step))
+    localStorage.setItem('STEP', !verified ? JSON.stringify('NOT_VERIFIED') : step ? JSON.stringify(step) : JSON.stringify('completed'))
 
     state.isLoading = false;
     state.step = step;
