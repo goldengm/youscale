@@ -55,3 +55,16 @@
 .tooltip-order:hover .tooltiptext {
     visibility: visible;
 }
+
+.tbl-order{
+    height: 500px;
+}
+
+.responsive-cus{
+    overflow-y: hidden !important;
+    height: auto !important;
+}
+
+table { border: none; border-collapse: collapse; }
+table td { border-left: 1px solid #000; }
+table td:first-child { border-left: none; }

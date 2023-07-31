@@ -8,7 +8,7 @@ interface Props{
 export default function TableWrapper({ children, column, handleCheckAll }:Props): JSX.Element {
     return (
         <div className="card-body">
-            <div className="table-responsive">
+            <div className="table-responsive responsive-cus">
                 <table id="example3" className="display table-custum">
                     <thead>
                         <tr>

@@ -48,7 +48,7 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
 
   if (!data) return []
 
-  var out: dataType = []
+  var out: dataType = [{label: 'Aucun', value: String(0)}]
 
   data.map(dt => {
     if (dt.active) {
@@ -71,7 +71,7 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
   const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
-    if (value === '0') return
+    if (value === 'all') return
 
     setIdTeam && setIdTeam(Number(value))
   }
@@ -79,7 +79,7 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
   const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
-    if (value === '0') return
+    if (value === 'all') return
 
     setProduct && setProduct(value)
   }

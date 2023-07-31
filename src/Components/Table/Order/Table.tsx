@@ -22,6 +22,7 @@ type Order = {
         id_team: number;
         Product_Orders: ProductOrder[];
         reportedDate: string;
+        telDuplicate: boolean
         createdAt: Date;
     }[];
 } | undefined
@@ -56,7 +57,7 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
     const [id_orders, setIdOrders] = useState<number[]>()
 
     const [selectAll, setSelectAll] = useState<boolean>(false);
-    const [rowData, setRowData] = useState<{ id: number, checked?: boolean, isSendLivo: string, SheetId: string, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string }[] | undefined>();
+    const [rowData, setRowData] = useState<{ id: number, checked?: boolean, isSendLivo: string, SheetId: string, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, telDuplicate: boolean }[] | undefined>();
 
     useEffect(() => {
         setRowData(data?.order);
@@ -105,7 +106,6 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
                     endMessage={<p>No more data to load.</p>}
                 >
                     <TableWrapper column={GetColumn(ColumnData?.data)} handleCheckAll={handleCheckAll}>
-
                         {
                             data ? data?.data.map((dt, index) => <Row
                                 handleCheckRow={handleCheckRow}
