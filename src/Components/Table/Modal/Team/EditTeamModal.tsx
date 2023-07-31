@@ -222,7 +222,7 @@ interface FormBodyProps {
     dataEdit: GetTeamMemberModel | undefined
 }
 const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
-    const [patchTeam] = usePatchTeamMemberMutation()
+    const [patchTeam, { isLoading } ] = usePatchTeamMemberMutation()
 
     const { data: ColumnData } = useGetColumnQuery()
     const { data: CityData } = useGetCityQuery()
@@ -300,7 +300,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                         <CustumInput
                             defaultValue={dataEdit?.livoToken}
                             register={register}
-                            name={'Token'}
+                            name={'livoToken'}
                             error={errors.livoToken}
                             type={'text'}
                             label={"Token"}
@@ -451,7 +451,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                         />
                     </div>
 
-                    <button type="submit" className="btn btn-primary">
+                    <button disabled={isLoading} type="submit" className="btn btn-primary">
                         Ajouter
                     </button>
                 </form>

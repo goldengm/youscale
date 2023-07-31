@@ -7,7 +7,7 @@ import { RotatingLines } from 'react-loader-spinner'
 export default function DashbordPage(): JSX.Element {
   const [product, setProduct] = useState<string>('')
   const [date, setDate] = useState<string[]>([])
-  const [idTeam, setIdTeam] = useState<number>(0)
+  const [idTeam, setIdTeam] = useState<number>(-1)
   const [usingDate, setUsingDate] = useState<boolean>(false)
   const [OrderQueryData, setOrderQueryData] = useState<DashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
   const { data, refetch } = useGetClientDashbordQuery(OrderQueryData)
@@ -25,7 +25,7 @@ export default function DashbordPage(): JSX.Element {
   }, [product])
 
   useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam !==0 ? idTeam : undefined })
+    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam !==-1 ? idTeam : undefined })
     refetch()
   }, [idTeam])
 

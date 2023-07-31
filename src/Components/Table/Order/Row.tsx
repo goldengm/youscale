@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { IoLogoWhatsapp } from 'react-icons/io5'
+import { BsTelephoneXFill } from 'react-icons/bs'
 import { TbPointFilled } from 'react-icons/tb'
 import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal, DeleteOrderModal } from '../Modal/Order'
@@ -16,7 +17,7 @@ import './styles.css'
 
 interface RowProps {
     row: GetClientOrderModel,
-    order: { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string } | undefined,
+    order: { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string, telDuplicate: boolean } | undefined,
     refetch: () => void,
     column: ColumnModel[] | undefined,
     setIdOrders: React.Dispatch<React.SetStateAction<number[] | undefined>>,
@@ -203,9 +204,11 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                             return (
                                 <td>
                                     <IoLogoWhatsapp className='io-logo' onClick={() => handleClick('+212' + row[formatDtName])} size={25} color={'green'} />
+                                    {order?.telDuplicate && <BsTelephoneXFill size={11} color={'red'}/>}
                                     <a href={`tel:+212${row[formatDtName]}`}>
                                         <strong>{row[formatDtName]}</strong>
                                     </a>
+                                    
                                 </td>
                             )
                         }
@@ -271,7 +274,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         if (formatDtName === 'Ville') {
                             return (
                                 <td>
-                                    <CustumDropdown refetch={refetch} options={FormatCity(dataCity ? dataCity.data : [])} name='id_city' data={dataCity ? dataCity.data : []} order={order && order} />
+                                    <CustumDropdown refetch={refetch} options={FormatCity(order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : [])} name='id_city' data={order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : []} order={order && order} />
                                 </td>
                             )
                         }
