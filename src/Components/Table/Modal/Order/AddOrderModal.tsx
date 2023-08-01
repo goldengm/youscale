@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { CustumInput, CustumTextArea, CustumSelectForm } from '../../../Forms'
+import { CustumInput, CustumTextArea, CustumSelectForm, CityDropDown } from '../../../Forms'
 import { ProductOrderCard } from './Card'
 import ModalWrapper from '../ModalWrapper'
 import { CityModel, ErrorModel, GetProductModel, StatusModel } from '../../../../models'
@@ -139,7 +139,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
   const { data: ProductData, isSuccess: ProductSuccess } = useGetProductQuery()
   const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
 
-  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({
     resolver: yupResolver(schema),
   });
 
@@ -302,15 +302,16 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
             }
 
           </div>
-
           <div className="row">
-            <CustumSelectForm
+            <CityDropDown
+              setValue={setValue}
               data={GetCityWhosNotFromSheet(CityData?.data)}
-              register={register}
               error={errors.id_city}
               label={"Ville"}
-              name={'id_city'}
             />
+          </div>
+          <div className="row">
+
 
             <CustumSelectForm
               data={FilterStatusData(StatusData?.data)}

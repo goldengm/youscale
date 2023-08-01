@@ -71,7 +71,10 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
   const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
-    if (value === 'all') return
+    if (value === 'all'){
+      setIdTeam && setIdTeam(-1)
+      return
+    }
 
     setIdTeam && setIdTeam(Number(value))
   }
