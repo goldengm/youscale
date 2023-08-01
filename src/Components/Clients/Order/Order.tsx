@@ -16,7 +16,7 @@ export default function Order(): JSX.Element {
 
   const [date, setDate] = useState<string[]>([])
   const [product, setProduct] = useState<string>('')
-  const [idTeam, setIdTeam] = useState<number>(GetRole() === 'TEAM' ? JSON.parse(userData || '{id: 0}').id : 0)
+  const [idTeam, setIdTeam] = useState<number>(GetRole() === 'TEAM' ? JSON.parse(userData || '{id: -1}').id : -1)
   const [usingDate, setUsingDate] = useState<boolean>(false)
   const [OrderQueryData, setOrderQueryData] = useState<OrderQueryModel>({ search: '', status: '', _skip: 0, _limit: _skip })
 
@@ -30,22 +30,22 @@ export default function Order(): JSX.Element {
   }, [])
 
   useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], search: undefined, status: undefined, id_product_array: product ?? undefined, id_team: idTeam !== 0 ? idTeam : undefined, _skip: 0, _limit: _skip })
+    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], search: undefined, status: undefined, id_product_array: product ?? undefined, id_team: idTeam !== -1 ? idTeam : undefined, _skip: 0, _limit: _skip })
     RefetchOrderClient()
   }, [date, usingDate])
 
   useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_product_array: product !== '0' ? product : undefined, id_team: idTeam !== 0 ? idTeam : undefined, _skip: 0, _limit: _skip })
+    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_product_array: product !== '0' ? product : undefined, id_team: idTeam !== -1 ? idTeam : undefined, _skip: 0, _limit: _skip })
     RefetchOrderClient()
   }, [product])
 
   useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam !== 0 ? idTeam : undefined, id_product_array: product ?? undefined, _skip: 0, _limit: _skip })
+    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam !== -1 ? idTeam : undefined, id_product_array: product ?? undefined, _skip: 0, _limit: _skip })
     RefetchOrderClient()
   }, [idTeam])
 
   useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam !== 0 ? idTeam : undefined, id_product_array: product ?? undefined, _skip: 0, _limit: _skip })
+    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam !== -1 ? idTeam : undefined, id_product_array: product ?? undefined, _skip: 0, _limit: _skip })
     RefetchOrderClient()
   }, [_skip])
 
