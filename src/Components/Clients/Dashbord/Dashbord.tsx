@@ -28,7 +28,7 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                 <div className="container-fluid">
                     <DisplayCard costPerLead={data.costPerLead} orderInProgress={data.orderInProgress}
                         costPerDelivred={data.costPerDelivred} rateOfConfirmed={data.rateOfConfirmed}
-                        rateOfDelivred={data.rateOfDelivred} earningNet={data.earningNet}
+                        rateOfDelivred={data.rateOfDelivred} earningNet={data.earningNet} stock={data.stock}
                     />
                     <div>
                         <div className="row">
@@ -54,8 +54,9 @@ interface DisplayCardProps {
     rateOfConfirmed: number;
     rateOfDelivred: number;
     earningNet: number;
+    stock: number;
 }
-const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet }: DisplayCardProps): JSX.Element => {
+const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet, stock }: DisplayCardProps): JSX.Element => {
     return (
         <div className="row invoice-card-row">
 
@@ -69,6 +70,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
 
             <Card bg={'secondary'} value={rateOfDelivred} title={'Rate of delivred'} icon={<TbTruckDelivery size={35} color={'white'} />} />
 
+            <Card bg={'success'} value={stock} title={'Stock'} icon={<FiShoppingCart size={35} color={'white'} />} />
         </div>
     )
 }

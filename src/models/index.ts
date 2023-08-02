@@ -819,6 +819,7 @@ export interface DataLine {
 export interface DashbordModel {
     costPerLead: number;
     orderInProgress: number;
+    stock: number;
     costPerDelivred: number;
     rateOfConfirmed: number;
     rateOfDelivred: number;

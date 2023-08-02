@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import Row from './Row'
-import { AddOrderModal } from '../Modal/Order'
-import TableWrapper from './TableWrapper'
-import './styles.css'
+import { AddOrderModal, BulkEditAgentModal } from '../Modal/Order'
+import { RiDeleteBin6Fill } from 'react-icons/ri'
+import { FaUserEdit } from 'react-icons/fa'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { ColumnModel, GetClientOrderModel, OrderQueryModel, ProductOrder } from '../../../models'
-import { RotatingLines } from 'react-loader-spinner'
-import { useGetClientOrderExportModelQuery } from '../../../services/api/ClientApi/ClientOrderApi'
+import { useBulkDeleteClientOrderMutation, useGetClientOrderExportModelQuery } from '../../../services/api/ClientApi/ClientOrderApi'
 import { CSVLink } from "react-csv";
 import { useGetStatusQuery } from '../../../services/api/ClientApi/ClientStatusApi'
+import InfiniteScroll from 'react-infinite-scroll-component';
+import TableWrapper from './TableWrapper'
+import Row from './Row'
+import './styles.css'
 
 type Order = {
     code: Number;
@@ -134,6 +135,8 @@ interface TableHeaderProps {
 const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
+            <DeleteBulkOrder id_orders={id_orders} refetch={refetch} />
+            <EditBulkOrder id_orders={id_orders} refetch={refetch} />
             <AddOrderBtn setShowModal={setShowModal} />
             <ImportBtn id_orders={id_orders} />
             <SearchBar _skip={_skip} setOrderQueryData={setOrderQueryData} refetch={refetch} />
@@ -184,6 +187,60 @@ const ImportBtn = ({ id_orders }: ImportBtnProps): JSX.Element => {
     )
 }
 
+interface DeleteBulkOrderProps {
+    id_orders: number[] | undefined
+    refetch: () => any
+}
+const DeleteBulkOrder = ({ id_orders, refetch }: DeleteBulkOrderProps): JSX.Element => {
+
+    const [bulkDelete] = useBulkDeleteClientOrderMutation()
+
+    const handleDestroyOrder = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+        e.preventDefault()
+        id_orders && bulkDelete({ id_orders: id_orders }).then(res => {
+            console.log(res)
+            refetch()
+        })
+    }
+
+    return (
+        <RiDeleteBin6Fill
+            size={25}
+            className={id_orders && id_orders?.length > 0 ? 'del-order-hov' : ''}
+            color={id_orders && id_orders?.length > 0 ? 'red' : 'gray'}
+            onClick={handleDestroyOrder}
+        />
+    )
+}
+
+interface EditBulkOrderProps {
+    id_orders: number[] | undefined
+    refetch: () => any
+}
+const EditBulkOrder = ({ id_orders, refetch }: EditBulkOrderProps): JSX.Element => {
+
+    const [showModal, setShowModal] = useState<boolean>(false)
+
+    const handleDestroyOrder = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+        e.preventDefault()
+        if(!id_orders || id_orders?.length <= 0) return
+
+        setShowModal(true)
+    }
+
+    return (
+        <>
+            { showModal && <BulkEditAgentModal id_orders={id_orders} showModal={showModal} setShowModal={setShowModal} refetch={refetch} />}
+            <FaUserEdit
+                size={25}
+                className={id_orders && id_orders?.length > 0 ? 'del-order-hov' : ''}
+                color={id_orders && id_orders?.length > 0 ? 'black' : 'gray'}
+                onClick={handleDestroyOrder}
+            />
+        </>
+    )
+}
+
 interface SearchBarProps {
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
     _skip: number,
@@ -217,7 +274,7 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip }: Props): JSX
 
         const { value } = e.target
 
-        setOrderQueryData({ status: value, search: '', _skip: 0, _limit: _skip  })
+        setOrderQueryData({ status: value, search: '', _skip: 0, _limit: _skip })
         refetch()
     }
 

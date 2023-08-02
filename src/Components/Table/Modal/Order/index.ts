@@ -4,6 +4,7 @@ import AddProductOrderModal from "./AddProductOrderModal";
 import HistoryOrderModal from "./HistoryOrderModal";
 import ReportOrderModal from "./ReportOrderModal";
 import DeleteOrderModal from "./DeleteOrderModal";
+import BulkEditAgentModal from "./BulkEditAgentModal";
 
 export {
     AddOrderModal,
@@ -11,5 +12,6 @@ export {
     AddProductOrderModal,
     HistoryOrderModal,
     ReportOrderModal,
-    DeleteOrderModal
+    DeleteOrderModal,
+    BulkEditAgentModal
 }
