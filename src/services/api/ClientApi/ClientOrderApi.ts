@@ -1,17 +1,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { ClientOrderModel, GetClientOrderModel, PatchClientOrderModel, ProductOrder, OrderQueryModel } from '../../../models'
-import { CLIENT_ORDER_URL } from '../../url/API_URL'
+import { CLIENT_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')
 
 export const ClientOrderApi = createApi({
     reducerPath: 'ClientOrderApi',
-    baseQuery: fetchBaseQuery({baseUrl: CLIENT_ORDER_URL}),
+    baseQuery: fetchBaseQuery({baseUrl: CLIENT_URL}),
     endpoints: (builder) =>({
         getClientOrder : builder.query<{code: Number, data:GetClientOrderModel[], order: {id: number, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, SheetId: string, reportedDate: string, isSendLivo: string, telDuplicate: boolean}[]}, OrderQueryModel>({
             query:(arg) => ({
                 method: 'GET',
-                url: '/',
+                url: 'order/',
                 headers: { Authorization: `Bear ${token}` },
                 params: arg
             })
@@ -20,7 +20,7 @@ export const ClientOrderApi = createApi({
         getSheetOrder : builder.query<{}, void>({
             query:() => ({
                 method: 'GET',
-                url: '/sheet',
+                url: 'order/sheet',
                 headers: { Authorization: `Bear ${token}` }
             })
         }),
@@ -28,7 +28,7 @@ export const ClientOrderApi = createApi({
         addClientOrder : builder.mutation<void, ClientOrderModel>({
             query : (data: ClientOrderModel) => ({
                 method : 'POST',
-                url : '/',
+                url : 'order/',
                 body : data,
                 headers: { Authorization: `Bear ${token}` },
             })
@@ -37,7 +37,7 @@ export const ClientOrderApi = createApi({
         patchClientOrder : builder.mutation<void, PatchClientOrderModel>({
             query : (data: PatchClientOrderModel) => ({
                 method : 'PATCH',
-                url : `/${data.id}`,
+                url : `order/${data.id}`,
                 body : data,
                 headers: { Authorization: `Bear ${token}` },
             })
@@ -46,7 +46,25 @@ export const ClientOrderApi = createApi({
         deleteClientOrder : builder.mutation<void, any>({
             query : (id: any) => ({
                 method : 'DELETE',
-                url : `/${id}`,
+                url : `order/${id}`,
+                headers: { Authorization: `Bear ${token}` },
+            })
+        }),
+
+        bulkDeleteClientOrder : builder.mutation<void, {id_orders : number[]}>({
+            query : (data: {id_orders : number[]}) => ({
+                method : 'DELETE',
+                body : data,
+                url : `bulk/order`,
+                headers: { Authorization: `Bear ${token}` },
+            })
+        }),
+
+        bulkEditClientOrder : builder.mutation<void, {new_id_team: number, id_orders : number[]}>({
+            query : (data: {new_id_team: number, id_orders : number[]}) => ({
+                method : 'POST',
+                body : data,
+                url : `bulk/edit`,
                 headers: { Authorization: `Bear ${token}` },
             })
         }),
@@ -54,7 +72,7 @@ export const ClientOrderApi = createApi({
         getClientOrderExportModel : builder.query<{code: Number, data:{}[], header: {label: string, key: string}[]}, {id_orders: string}>({
             query:(arg) => ({
                 method: 'GET',
-                url: '/export',
+                url: 'order/export',
                 headers: { Authorization: `Bear ${token}` },
                 params: arg
             })
@@ -63,7 +81,7 @@ export const ClientOrderApi = createApi({
         getOrderHistory : builder.query<{code: Number, data:{message: string, createdAt: string}[]}, {id_order: string}>({
             query:(arg) => ({
                 method: 'GET',
-                url: '/history',
+                url: 'order/history',
                 headers: { Authorization: `Bear ${token}` },
                 params: arg
             })
@@ -72,4 +90,10 @@ export const ClientOrderApi = createApi({
     })
 })
 
-export const { useAddClientOrderMutation, useGetClientOrderQuery, useDeleteClientOrderMutation, usePatchClientOrderMutation, useGetClientOrderExportModelQuery, useGetSheetOrderQuery, useGetOrderHistoryQuery }  = ClientOrderApi;
+export const { 
+    useAddClientOrderMutation, useGetClientOrderQuery, 
+    useDeleteClientOrderMutation, usePatchClientOrderMutation, 
+    useGetClientOrderExportModelQuery, useGetSheetOrderQuery, 
+    useGetOrderHistoryQuery, useBulkDeleteClientOrderMutation,
+    useBulkEditClientOrderMutation
+}  = ClientOrderApi;
