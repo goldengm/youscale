@@ -42,7 +42,16 @@ export const ClientApi = createApi({
                 headers: { Authorization: `Bear ${token}` },
             })
         }),
+
+        loginAsTeam : builder.mutation<void, { email : string }>({
+            query : (data: { email : string } ) => ({
+                method : 'POST',
+                url : `/loginas/team`,
+                body : data,
+                headers: { Authorization: `Bear ${token}` },
+            })
+        }),
     })
 })
 
-export const { useGetClientQuery, usePatchClientMutation, useSaveResponseMutation, useChossePackMutation }  = ClientApi;
+export const { useGetClientQuery, usePatchClientMutation, useSaveResponseMutation, useChossePackMutation, useLoginAsTeamMutation }  = ClientApi;

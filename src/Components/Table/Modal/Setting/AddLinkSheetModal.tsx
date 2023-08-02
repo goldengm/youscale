@@ -9,6 +9,7 @@ import { useGetColumnQuery, usePatchColumnMutation } from '../../../../services/
 import ModalWrapper from '../ModalWrapper'
 import * as yup from "yup";
 import './styles.css'
+import { showToastSucces } from '../../../../services/toast/showToastSucces';
 
 type Inputs = {
     spreadsheetId: string
@@ -73,7 +74,7 @@ export default function AddLinkSheetModal({ showModal, setShowModal }: Props): J
 
     return (
         <ModalWrapper showModal={showModal} title={'API integration'} setShowModal={setShowModal} id='AddOrderModal'>
-            <ChangeColumn />
+            <ChangeColumn handleCloseModal={handleCloseModal} />
             <p style={{ display: 'grid' }}>
                 You need to share your spread sheet with this address:
                 <code>appsheet@fluent-edition-339019.iam.gserviceaccount.com</code>
@@ -82,7 +83,7 @@ export default function AddLinkSheetModal({ showModal, setShowModal }: Props): J
             {row.map(dt => <FormBody handleCloseModal={handleCloseModal} data={dt} refetch={refetch} />)}
 
             <br />
-            <a href='/load/SheetIntegration.xlsx' className="btn btn-outline-primary btn-xs export-btn">Copier le model</a>
+            <a href='/cus_img/model_ys.jpg' target='_blank' className="btn btn-outline-primary btn-xs export-btn">Voir le model</a>
         </ModalWrapper>
     )
 }
@@ -172,7 +173,10 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
     )
 }
 
-const ChangeColumn = (): JSX.Element => {
+interface ChangeColumnProps{
+    handleCloseModal: () => any
+}
+const ChangeColumn = ({ handleCloseModal }: ChangeColumnProps): JSX.Element => {
 
     const { data, refetch } = useGetColumnQuery()
     const [alias, setAlias] = useState<string>()
@@ -201,7 +205,9 @@ const ChangeColumn = (): JSX.Element => {
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         patchColumn({ id, alias }).unwrap().then(() => {
-           
+            showToastSucces('Your alias is added')
+            handleCloseModal()
+            refetch()
         }).catch((err) => {
             console.log(err)
         })

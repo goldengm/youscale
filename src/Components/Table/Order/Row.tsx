@@ -334,7 +334,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Date') return <td>{row['Date']}</td>
 
-                        return <td>{row[formatDtName]}</td>
+                        return <td style={{width: '160px'}}>{row[formatDtName]}</td>
                     }
                 })
             }
