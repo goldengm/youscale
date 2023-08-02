@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
 import { FaPen } from 'react-icons/fa'
-import PerformanceCard from './PerformanceCard'
-import EarningCard from './EarningCard'
+import { RiLoginCircleFill } from 'react-icons/ri'
 import { CustomHist } from '../../Chart'
 import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
 import { EarningTable, GetTeamMemberModel, TeamDashbordQueryModel } from '../../../models'
 import { useGetTeamMemberQuery, usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 import { useGetTeamDashbordQuery } from '../../../services/api/ClientApi/ClientTeamDashbordApi'
 import { showToastError } from '../../../services/toast/showToastError'
+import PerformanceCard from './PerformanceCard'
+import EarningCard from './EarningCard'
 import './team.style.css'
 
-import { GetRole } from '../../../services/storageFunc'
+import { GetRole, SetRole } from '../../../services/storageFunc'
+import { useLoginAsTeamMutation } from '../../../services/api/ClientApi/ClientApi'
+import { setToken } from '../../../services/auth/setToken'
+import { setUserData } from '../../../services/auth/setUserData'
 
 export default function Team(): JSX.Element {
     const userData = localStorage.getItem('userData')
@@ -113,6 +117,8 @@ interface PropsTeamRow {
 }
 const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow): JSX.Element => {
 
+    const [loginAsTeam] = useLoginAsTeamMutation()
+
     const [patchTeamMember, { error, isError }] = usePatchTeamMemberMutation()
 
     const handleEditSatus = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
@@ -131,6 +137,22 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
         setShowEditTeamModal(true)
     }
 
+    const handleLoginAsTeam = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+        e.preventDefault()
+
+        loginAsTeam({ email: item.email ?? '' }).unwrap()
+            .then((res: any) => {
+                localStorage.removeItem('STEP')
+
+                setToken(res.token)
+                setUserData(res.team)
+                SetRole('TEAM')
+
+                window.location.href = '/login'
+            })
+            .catch(err => console.error(err))
+    }
+
     return (
         <div className="d-flex align-items-end mt-2 pb-3 justify-content-between">
             <div className="fs-18 card-info">
@@ -139,6 +161,7 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
             </div>
 
             <div className="fs-18 card-edit">
+                <RiLoginCircleFill onClick={handleLoginAsTeam} size={22} color={'black'} style={{ marginRight: 12 }} className='login-as-team-btn' />
                 <FaPen
                     onClick={handleShowEdit}
                     className='edit-team-pencil'
