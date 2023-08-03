@@ -9,7 +9,7 @@ export default function TableWrapper({ children, column, handleCheckAll }:Props)
     return (
         <div className="card-body">
             <div className="table-responsive responsive-cus">
-                <table id="example3" className="display table-custum">
+                <table id="example3" className="table table-responsive-sm display table-custum">
                     <thead>
                         <tr>
                             <th>
