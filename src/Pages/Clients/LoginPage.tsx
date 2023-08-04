@@ -75,7 +75,7 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }:LoginProps) => {
                 console.log(step)
                 window.location.href = '/'
             }
-            if (GetRole() === 'TEAM') window.location.href = '/'
+            if (GetRole() === 'TEAM') window.location.href = '/order'
         }
 
         if (isVerified === false) {
@@ -128,6 +128,7 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }:LoginProps) => {
                             name='password'
                             error={errors.password}
                         />
+                         <p className="auth-link">Forgot password? <a className="underline" href="/forgotpwd">Click here</a></p>
                         <button className="submit-button">Se connecter</button>
                     </form>
                     <p className="auth-link">Don't have an account? <a className="underline" href="/register">Sign up</a></p>

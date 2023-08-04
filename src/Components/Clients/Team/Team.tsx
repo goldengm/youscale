@@ -148,7 +148,7 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
                 setUserData(res.team)
                 SetRole('TEAM')
 
-                window.location.href = '/login'
+                window.location.href = '/order'
             })
             .catch(err => console.error(err))
     }
