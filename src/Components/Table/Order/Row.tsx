@@ -128,7 +128,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         var newArr: CityModel[] = []
 
         for (let i = 0; i < data.length; i++) {
-            if (data[i].isFromSheet === true || order?.id_city === data[i].City_User?.id) {
+            if (data[i].isFromSheet === true || order?.id_city ===  data[i].id) {
                 newArr.push(data[i])
             }
         }
