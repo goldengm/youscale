@@ -128,7 +128,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         var newArr: CityModel[] = []
 
         for (let i = 0; i < data.length; i++) {
-            if (data[i].isFromSheet === true) {
+            if (data[i].isFromSheet === true || order?.id_city === data[i].City_User?.id) {
                 newArr.push(data[i])
             }
         }
@@ -202,7 +202,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Telephone') {
                             return (
-                                <td>
+                                <td style={{width: '130px'}}>
                                     <IoLogoWhatsapp className='io-logo' onClick={() => handleClick('+212' + row[formatDtName])} size={25} color={'green'} />
                                     {order?.telDuplicate && <BsTelephoneXFill size={11} color={'red'}/>}
                                     <a href={`tel:+212${row[formatDtName]}`}>
@@ -334,7 +334,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Date') return <td>{row['Date']}</td>
 
-                        return <td style={{width: '160px'}}>{row[formatDtName]}</td>
+                        return <td style={{width: '130px'}}>{row[formatDtName]}</td>
                     }
                 })
             }
