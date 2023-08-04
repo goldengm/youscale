@@ -157,7 +157,12 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
     const FormatCity = (data: CityModel[]) => {
         var options: { label: string, value: string | number }[] = []
 
-        data.map((dt) => !dt.isDeleted && options.push({ label: dt.name, value: dt.id || 0 }))
+        data.map((dt) => {
+            if(order?.id_city ===  dt.id) options.push({ label: dt.name, value: dt.id || 0 })
+            if(!dt.isDeleted && !dt.isFromSheet ){
+                if(order?.id_city !==  dt.id) options.push({ label: dt.name, value: dt.id || 0 })
+            }
+        })
 
         return options
     }
@@ -274,7 +279,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         if (formatDtName === 'Ville') {
                             return (
                                 <td>
-                                    <CustumDropdown refetch={refetch} options={FormatCity(order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : [])} name='id_city' data={order?.SheetId ? GetCityWhosFromSheet(dataCity?.data) : dataCity ? dataCity.data : []} order={order && order} />
+                                    <CustumDropdown refetch={refetch} options={FormatCity(dataCity ? dataCity.data : [])} name='id_city' data={dataCity ? dataCity.data : []} order={order && order} />
                                 </td>
                             )
                         }
