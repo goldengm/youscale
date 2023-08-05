@@ -46,12 +46,12 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         const { value } = e.target
 
         patchOrder({ id: order?.id, status: value }).unwrap().then(() => refetch && refetch())
-        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-            if (err.data) {
-                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                else if ('message' in err.data) showToastError(err.data.message);
-            }
-        })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
 
         if (value === 'Reporte') setShowReportModal(true)
     }
@@ -60,60 +60,60 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         const { value } = e.target
 
         patchOrder({ id: order?.id, source: value }).then(() => refetch())
-        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-            if (err.data) {
-                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                else if ('message' in err.data) showToastError(err.data.message);
-            }
-        })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     const handleChangeTeam = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, id_team: Number(value), prev_id_team: order ? order.id_team : 0 }).unwrap().then(() => refetch && refetch())
-        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-            if (err.data) {
-                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                else if ('message' in err.data) showToastError(err.data.message);
-            }
-        })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     const handleChangeOuvrir = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, ouvrir: value }).unwrap().then(() => refetch && refetch())
-        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-            if (err.data) {
-                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                else if ('message' in err.data) showToastError(err.data.message);
-            }
-        })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     const handleChangeChanger = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, changer: value }).unwrap().then(() => refetch && refetch())
-        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-            if (err.data) {
-                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                else if ('message' in err.data) showToastError(err.data.message);
-            }
-        })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     const handleChangeUpDown = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
         patchOrder({ id: order?.id, updownsell: value }).unwrap().then(() => refetch && refetch())
-        .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-            if (err.data) {
-                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                else if ('message' in err.data) showToastError(err.data.message);
-            }
-        })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
     }
 
     const FilterStatusData = (data: StatusModel[] | undefined) => {
@@ -128,7 +128,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         var newArr: CityModel[] = []
 
         for (let i = 0; i < data.length; i++) {
-            if (data[i].isFromSheet === true || order?.id_city ===  data[i].id) {
+            if (data[i].isFromSheet === true || order?.id_city === data[i].id) {
                 newArr.push(data[i])
             }
         }
@@ -136,18 +136,18 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         return newArr
     }
 
-    const getRowColor = (currentData: GetClientOrderModel) : string | undefined =>{
+    const getRowColor = (currentData: GetClientOrderModel): string | undefined => {
         const statusData = FilterStatusData(dataStatus?.data)
 
-        
+
         const color = statusData.filter(
             (dt) => {
-                if(dt.name.toUpperCase().replace(' ','') == currentData.Status.toUpperCase().replace(' ','')){
+                if (dt.name.toUpperCase().replace(' ', '') == currentData.Status.toUpperCase().replace(' ', '')) {
                     return dt.color
                 }
             })
 
-            return color[0]?.color
+        return color[0]?.color
     }
 
     const handleClick = (phone_number: string) => {
@@ -158,9 +158,9 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
         var options: { label: string, value: string | number }[] = []
 
         data.map((dt) => {
-            if(order?.id_city ===  dt.id) options.push({ label: dt.name, value: dt.id || 0 })
-            if(!dt.isDeleted && !dt.isFromSheet ){
-                if(order?.id_city !==  dt.id) options.push({ label: dt.name, value: dt.id || 0 })
+            if (order?.id_city === dt.id) options.push({ label: dt.name, value: dt.id || 0 })
+            if (!dt.isDeleted && !dt.isFromSheet) {
+                if (order?.id_city !== dt.id) options.push({ label: dt.name, value: dt.id || 0 })
             }
         })
 
@@ -175,13 +175,21 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
             {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
             {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
 
-            <td>
+            <td style={{ width: '90px', color: 'black' }}>
                 <input
                     onChange={() => handleCheckRow(order?.id || 0)}
                     checked={order?.checked}
                     className='case'
                     type="checkbox"
                 />
+                {
+                    order?.isSendLivo === 'not_send' ?
+                        <TbPointFilled size={17} color={'gray'} />
+                        : order?.isSendLivo === 'error_send' ?
+                            <TbPointFilled size={17} color={'red'} />
+                            :
+                            <TbPointFilled size={17} color={'green'} />
+                }
             </td>
 
             {
@@ -191,15 +199,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Order_id') {
                             return (
-                                <td>
-                                    {
-                                        order?.isSendLivo === 'not_send' ? 
-                                            <TbPointFilled size={17} color={'gray'} />
-                                        : order?.isSendLivo === 'error_send' ? 
-                                            <TbPointFilled size={17} color={'red'} />
-                                        : 
-                                            <TbPointFilled size={17} color={'green'} />
-                                    }
+                                <td style={{ color: 'black' }}>
                                     {order?.SheetId ?? row[formatDtName]}
                                 </td>
                             )
@@ -207,20 +207,20 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Telephone') {
                             return (
-                                <td style={{width: '130px'}}>
+                                <td style={{ width: '130px', color: 'black' }}>
                                     <IoLogoWhatsapp className='io-logo' onClick={() => handleClick('+212' + row[formatDtName])} size={25} color={'green'} />
-                                    {order?.telDuplicate && <BsTelephoneXFill size={11} color={'red'}/>}
+                                    {order?.telDuplicate && <BsTelephoneXFill size={11} color={'red'} />}
                                     <a href={`tel:+212${row[formatDtName]}`}>
-                                        <strong>{row[formatDtName]}</strong>
+                                        <strong style={{ color: 'black' }}>{row[formatDtName]}</strong>
                                     </a>
-                                    
+
                                 </td>
                             )
                         }
 
                         if (formatDtName === 'Agent') {
                             return (
-                                <td>
+                                <td style={{ color: 'black' }}>
                                     <DisplayTeamMember
                                         onChange={handleChangeTeam}
                                         data={dataTeamMember?.data}
@@ -232,7 +232,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Up/Downsell') {
                             return (
-                                <td>
+                                <td style={{ color: 'black' }}>
                                     <DisplayUpDown
                                         onChange={handleChangeUpDown}
                                         currentData={row}
@@ -243,7 +243,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Source') {
                             return (
-                                <td>
+                                <td style={{ color: 'black' }}>
                                     <DisplaySource
                                         onChange={handleChangeSource}
                                         currentData={row}
@@ -254,7 +254,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Changer') {
                             return (
-                                <td>
+                                <td style={{ color: 'black' }}>
                                     <DisplayChangeOuvrir
                                         name='changer'
                                         onChange={handleChangeChanger}
@@ -266,7 +266,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Ouvrir') {
                             return (
-                                <td>
+                                <td style={{ color: 'black' }}>
                                     <DisplayChangeOuvrir
                                         name='ouvrir'
                                         onChange={handleChangeOuvrir}
@@ -278,7 +278,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Ville') {
                             return (
-                                <td>
+                                <td style={{ color: 'black' }}>
                                     <CustumDropdown refetch={refetch} options={FormatCity(dataCity ? dataCity.data : [])} name='id_city' data={dataCity ? dataCity.data : []} order={order && order} />
                                 </td>
                             )
@@ -286,7 +286,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Status') {
                             return (
-                                <td>
+                                <td style={{ color: 'black' }}>
                                     <div className="tooltip-order">
                                         <DisplayStatus
                                             currentData={row}
@@ -302,7 +302,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Commentaire') {
                             return (
-                                <td>
+                                <td style={{ color: 'black' }}>
                                     <div className="tooltip-order"><BiMessageRoundedDetail
                                         size={30}
                                         data-bs-container="body"
@@ -321,8 +321,9 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Produit') {
                             return (
-                                <td>
+                                <td style={{ color: 'black' }}>
                                     <a
+                                        style={{ color: 'black' }}
                                         onClick={() => setShowOrderModal(true)}
                                         href="#addProductToOrder"
                                         className="badge badge-outline-dark"
@@ -337,9 +338,9 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                             )
                         }
 
-                        if (formatDtName === 'Date') return <td>{row['Date']}</td>
+                        if (formatDtName === 'Date') return <td style={{ color: 'black' }}>{row['Date']}</td>
 
-                        return <td style={{width: '130px'}}>{row[formatDtName]}</td>
+                        return <td style={{ width: '130px', color: 'black' }}>{row[formatDtName]}</td>
                     }
                 })
             }
