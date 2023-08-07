@@ -18,6 +18,27 @@ export default function TableWrapper({ children, column, handleCheckAll }: Props
         e.preventDefault()
         scl.scrollLeft -= 200
     }
+
+    document.onkeydown = checkKey;
+
+function checkKey(e: any) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+        // up arrow
+    }
+    else if (e.keyCode == '40') {
+        // down arrow
+    }
+    else if (e.keyCode == '37') {
+        scl.scrollLeft-= 200
+    }
+    else if (e.keyCode == '39') {
+        scl.scrollLeft += 200
+    }
+
+}
     
     return (
         <div className="card-body">
@@ -38,7 +59,6 @@ export default function TableWrapper({ children, column, handleCheckAll }: Props
                                 />
                             </th>
                             {column.map((col: string, key: number) => <th key={key}>{col}</th>)}
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>

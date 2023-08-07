@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { IoLogoWhatsapp } from 'react-icons/io5'
 import { CiEdit } from 'react-icons/ci'
+import { AiFillEye } from 'react-icons/ai'
 import { BsTelephoneXFill } from 'react-icons/bs'
 import { TbPointFilled } from 'react-icons/tb'
 import { DisplayChangeOuvrir, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
@@ -214,7 +215,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                                     <a href={`tel:+212${row[formatDtName]}`}>
                                         <strong style={{ color: 'black' }}>{row[formatDtName]}</strong>
                                     </a>
-
+                                    <CiEdit onClick={() => setShowEditModal(true)} color={'black'} size={18} />
                                 </td>
                             )
                         }
@@ -339,7 +340,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                             )
                         }
 
-                        if (formatDtName === 'Date') return <td style={{ color: 'black' }}>{row['Date']}</td>
+                        if (formatDtName === 'Date') return <td style={{ width: '130px', color: 'black' }}>{row['Date']}</td>
 
                         return <td onClick={() => setShowEditModal(true)} style={{ width: '130px', color: 'black' }}>
                                 {row[formatDtName]}
@@ -349,16 +350,14 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                 })
             }
 
-            <td style={{ width: '130px', color: 'black' }}>
-                <a
+            <td style={{ width: '30px', color: 'black' }}>
+                <AiFillEye
                     onClick={() => setShowHistoryModal(true)}
-                    href="javascript:void(0);"
-                >
-                    <strong>View</strong>
-                </a>
+                    size={25}
+                />
             </td>
 
-            <td style={{ width: '130px', color: 'black' }}>
+            {/* <td style={{ width: '130px', color: 'black' }}>
                 <div className="d-flex">
                     <a
                         onClick={() => setShowEditModal(true)}
@@ -375,7 +374,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                         <i className="fa fa-trash" />
                     </a>
                 </div>
-            </td>
+            </td> */}
         </tr>
     )
 }
