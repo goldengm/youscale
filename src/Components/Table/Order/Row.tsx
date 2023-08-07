@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { BiMessageRoundedDetail } from 'react-icons/bi'
 import { IoLogoWhatsapp } from 'react-icons/io5'
+import { CiEdit } from 'react-icons/ci'
 import { BsTelephoneXFill } from 'react-icons/bs'
 import { TbPointFilled } from 'react-icons/tb'
-import { DisplayChangeOuvrir, DisplayCity, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
+import { DisplayChangeOuvrir, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
 import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal, DeleteOrderModal } from '../Modal/Order'
 import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel, ErrorModel } from '../../../models'
 import { CustumDropdown } from '../../Input'
@@ -199,7 +200,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Order_id') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{ width: '130px', color: 'black' }}>
                                     {order?.SheetId ?? row[formatDtName]}
                                 </td>
                             )
@@ -220,7 +221,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Agent') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{ width: '130px', color: 'black' }}>
                                     <DisplayTeamMember
                                         onChange={handleChangeTeam}
                                         data={dataTeamMember?.data}
@@ -278,7 +279,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Ville') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{ width: '130px', color: 'black' }}>
                                     <CustumDropdown refetch={refetch} options={FormatCity(dataCity ? dataCity.data : [])} name='id_city' data={dataCity ? dataCity.data : []} order={order && order} />
                                 </td>
                             )
@@ -286,7 +287,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Status') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{  width: '130px', color: 'black' }}>
                                     <div className="tooltip-order">
                                         <DisplayStatus
                                             currentData={row}
@@ -302,7 +303,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Commentaire') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{ width: '130px', color: 'black' }}>
                                     <div className="tooltip-order"><BiMessageRoundedDetail
                                         size={30}
                                         data-bs-container="body"
@@ -321,7 +322,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Produit') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{  width: '130px', color: 'black' }}>
                                     <a
                                         style={{ color: 'black' }}
                                         onClick={() => setShowOrderModal(true)}
@@ -340,12 +341,15 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Date') return <td style={{ color: 'black' }}>{row['Date']}</td>
 
-                        return <td style={{ width: '130px', color: 'black' }}>{row[formatDtName]}</td>
+                        return <td onClick={() => setShowEditModal(true)} style={{ width: '130px', color: 'black' }}>
+                                {row[formatDtName]}
+                                <CiEdit color={'black'} size={18} />
+                            </td>
                     }
                 })
             }
 
-            <td>
+            <td style={{ width: '130px', color: 'black' }}>
                 <a
                     onClick={() => setShowHistoryModal(true)}
                     href="javascript:void(0);"
@@ -354,7 +358,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                 </a>
             </td>
 
-            <td>
+            <td style={{ width: '130px', color: 'black' }}>
                 <div className="d-flex">
                     <a
                         onClick={() => setShowEditModal(true)}
