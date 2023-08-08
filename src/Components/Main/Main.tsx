@@ -17,7 +17,7 @@ interface Props {
   urlVideo: string
 }
 export default function Main({ children, name, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, urlVideo }: Props): JSX.Element {
-  const [showMenu, setShowMenu] = useState<boolean>(false)
+  const [showMenu, setShowMenu] = useState<boolean>(true)
 
   return (
     <div id="main-wrapper" className={showMenu ? 'show menu-toggle' : 'show'}>
