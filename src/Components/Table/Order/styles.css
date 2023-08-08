@@ -61,7 +61,7 @@
 }
 
 .responsive-cus {
-    overflow: hidden !important;
+    overflow: hidden;
     height: auto !important;
 }
 
@@ -95,4 +95,10 @@ table td:first-child {
 
 .back-scroll-order:hover{
     cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+    .responsive-cus {
+        overflow: scroll !important;
+    }
 }

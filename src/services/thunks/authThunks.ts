@@ -5,6 +5,7 @@ import { ClientLoginModel, AdminLoginModel, ClientRegisterModel, AdminRegisterMo
 export const clientLoginThunk = createAsyncThunk(
     'auth/clientlogin',
     async (user:ClientLoginModel, thunkAPI) => {
+      console.log(user)
       try {
         return await authService.clientLogin(user);
       } catch (error : any) {

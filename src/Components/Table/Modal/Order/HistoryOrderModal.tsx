@@ -33,7 +33,7 @@ export default function HistoryOrderModal({ showModal, setShowModal, id_order }:
   }, [])
 
   return (
-    <ModalWrapper title={'History'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
+    <ModalWrapper title={'History'} showModal={showModal} setShowModal={setShowModal} id='HistoryOrderModal'>
       <FormBody data={data?.data} />
     </ModalWrapper>
   )
