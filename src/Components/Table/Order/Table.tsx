@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AddOrderModal, BulkEditAgentModal } from '../Modal/Order'
+import { AddOrderModal, BulkEditAgentModal, EditOrderModal } from '../Modal/Order'
 import { RiDeleteBin6Fill } from 'react-icons/ri'
 import { FaUserEdit } from 'react-icons/fa'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
@@ -28,6 +28,7 @@ type Order = {
     }[];
 } | undefined
 
+
 const GetColumn = (col: ColumnModel[] | undefined): string[] => {
     if (!col) return []
 
@@ -35,24 +36,29 @@ const GetColumn = (col: ColumnModel[] | undefined): string[] => {
 
     col.map(dt => dt.active && column.push(dt.alias || dt.name))
 
-    return [...column, 'history']
+    return [...column ]
 }
 
 interface TableProps {
     data: Order,
-    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
+    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
+    setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     _skip: number,
     _setSkip: React.Dispatch<React.SetStateAction<number>>,
     isLoading: boolean,
     refetch: () => any
 }
-export default function Table({ data, refetch, setOrderQueryData, isLoading, _skip, _setSkip }: TableProps): JSX.Element {
+export default function Table({ data, refetch, setOrderQueryData, isLoading, _skip, _setSkip, setStatus }: TableProps): JSX.Element {
+
+    const [editData, setEditData] = useState<GetClientOrderModel>({ } as GetClientOrderModel)
+    const [idOrder, setIdOrder] = useState<string>('0')
 
     const fetchData = async () => {
         _setSkip(_skip + 50)
     }
 
-    const [showOrderModal, setShowOrderModal] = React.useState(false)
+    const [showOrderModal, setShowOrderModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const { data: ColumnData } = useGetColumnQuery()
 
     const [id_orders, setIdOrders] = useState<number[]>()
@@ -96,9 +102,10 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
     return (
         <div className="col-12">
             {showOrderModal && <AddOrderModal refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
+            {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={idOrder} />}
 
             <div className="card">
-                <TableHeader setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} />
+                <TableHeader setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
                 <InfiniteScroll
                     dataLength={data?.data.length || 0}
                     next={fetchData}
@@ -112,6 +119,9 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
                                 handleCheckRow={handleCheckRow}
                                 row={dt}
                                 setIdOrders={setIdOrders}
+                                setIdOrder={setIdOrder}
+                                setEditData={setEditData}
+                                setShowEditModal={setShowEditModal}
                                 refetch={refetch}
                                 order={rowData ? rowData[index] : undefined}
                                 column={ColumnData?.data}
@@ -126,13 +136,14 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
 }
 
 interface TableHeaderProps {
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
+    setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     _skip: number,
     refetch: () => any,
     id_orders: number[] | undefined
 }
-const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip }: TableHeaderProps): JSX.Element => {
+const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
             <DeleteBulkOrder id_orders={id_orders} refetch={refetch} />
@@ -140,7 +151,7 @@ const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _ski
             <AddOrderBtn setShowModal={setShowModal} />
             <ImportBtn id_orders={id_orders} />
             <SearchBar _skip={_skip} setOrderQueryData={setOrderQueryData} refetch={refetch} />
-            <StatusDropdown _skip={_skip} name="Status" setOrderQueryData={setOrderQueryData} refetch={refetch} />
+            <StatusDropdown _skip={_skip} name="Status" setOrderQueryData={setOrderQueryData} setStatus={setStatus} refetch={refetch} />
         </div>
     )
 }
@@ -262,11 +273,12 @@ const SearchBar = ({ setOrderQueryData, refetch, _skip }: SearchBarProps): JSX.E
 
 interface Props {
     name: string,
-    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>,
+    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
+    setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     _skip: number,
     refetch: any
 }
-const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip }: Props): JSX.Element => {
+const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus }: Props): JSX.Element => {
     const { data: dataStatus, isSuccess } = useGetStatusQuery()
 
     const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -274,6 +286,7 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip }: Props): JSX
 
         const { value } = e.target
 
+        setStatus(value)
         setOrderQueryData({ status: value, search: '', _skip: 0, _limit: _skip })
         refetch()
     }

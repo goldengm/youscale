@@ -22,10 +22,13 @@ interface RowProps {
     order: { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string, telDuplicate: boolean } | undefined,
     refetch: () => void,
     column: ColumnModel[] | undefined,
-    setIdOrders: React.Dispatch<React.SetStateAction<number[] | undefined>>,
+    setIdOrders: React.Dispatch<React.SetStateAction<number[] | undefined>>
+    setIdOrder: React.Dispatch<React.SetStateAction<string>>
+    setEditData: React.Dispatch<React.SetStateAction<GetClientOrderModel>>
+    setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>
     handleCheckRow: (id: number) => void
 }
-export default function Row({ row, order, refetch, column, handleCheckRow }: RowProps): JSX.Element {
+export default function Row({ row, order, refetch, column, handleCheckRow, setIdOrder, setEditData, setShowEditModal }: RowProps): JSX.Element {
 
     const [patchOrder] = usePatchClientOrderMutation()
 
@@ -39,7 +42,6 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
     }, [])
 
     const [showOrderModal, setShowOrderModal] = useState<boolean>(false)
-    const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false)
     const [showReportModal, setShowReportModal] = useState<boolean>(false)
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
@@ -168,11 +170,17 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
         return options
     }
+    
+    const onEdit = () =>{
+        setIdOrder(String(order?.id ?? 0))
+        setEditData(row)
+        setShowEditModal(true)
+    }
 
     return (
         <tr className='tr-custum' style={{ backgroundColor: getRowColor(row) ?? 'transparent' }}>
             {showOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
-            {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={row} id_order={String(order?.id ?? 0)} />}
+            
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} id_order={String(order?.id ?? 0)} />}
             {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
             {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
@@ -203,6 +211,10 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                             return (
                                 <td style={{ width: '130px', color: 'black' }}>
                                     {order?.SheetId ?? row[formatDtName]}
+                                    <AiFillEye
+                                        onClick={() => setShowHistoryModal(true)}
+                                        size={25}
+                                    />
                                 </td>
                             )
                         }
@@ -215,7 +227,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
                                     <a href={`tel:+212${row[formatDtName]}`}>
                                         <strong style={{ color: 'black' }}>{row[formatDtName]}</strong>
                                     </a>
-                                    <CiEdit onClick={() => setShowEditModal(true)} color={'black'} size={18} />
+                                    <CiEdit onClick={() => onEdit()} color={'black'} size={18} />
                                 </td>
                             )
                         }
@@ -234,7 +246,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Up/Downsell') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{ width: '130px',color: 'black' }}>
                                     <DisplayUpDown
                                         onChange={handleChangeUpDown}
                                         currentData={row}
@@ -245,7 +257,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Source') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{ width: '130px',color: 'black' }}>
                                     <DisplaySource
                                         onChange={handleChangeSource}
                                         currentData={row}
@@ -256,7 +268,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Changer') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{ width: '130px',color: 'black' }}>
                                     <DisplayChangeOuvrir
                                         name='changer'
                                         onChange={handleChangeChanger}
@@ -268,7 +280,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Ouvrir') {
                             return (
-                                <td style={{ color: 'black' }}>
+                                <td style={{ width: '130px',color: 'black' }}>
                                     <DisplayChangeOuvrir
                                         name='ouvrir'
                                         onChange={handleChangeOuvrir}
@@ -288,7 +300,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Status') {
                             return (
-                                <td style={{  width: '130px', color: 'black' }}>
+                                <td style={{ width: '130px', color: 'black' }}>
                                     <div className="tooltip-order">
                                         <DisplayStatus
                                             currentData={row}
@@ -323,7 +335,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Produit') {
                             return (
-                                <td style={{  width: '130px', color: 'black' }}>
+                                <td style={{ width: '130px', color: 'black' }}>
                                     <a
                                         style={{ color: 'black' }}
                                         onClick={() => setShowOrderModal(true)}
@@ -342,21 +354,13 @@ export default function Row({ row, order, refetch, column, handleCheckRow }: Row
 
                         if (formatDtName === 'Date') return <td style={{ width: '130px', color: 'black' }}>{row['Date']}</td>
 
-                        return <td onClick={() => setShowEditModal(true)} style={{ width: '130px', color: 'black' }}>
-                                {row[formatDtName]}
-                                <CiEdit color={'black'} size={18} />
-                            </td>
+                        return <td onClick={() => onEdit()} style={{ width: '130px', color: 'black' }}>
+                            {row[formatDtName]}
+                            <CiEdit color={'black'} size={18} />
+                        </td>
                     }
                 })
             }
-
-            <td style={{ width: '30px', color: 'black' }}>
-                <AiFillEye
-                    onClick={() => setShowHistoryModal(true)}
-                    size={25}
-                />
-            </td>
-
             {/* <td style={{ width: '130px', color: 'black' }}>
                 <div className="d-flex">
                     <a
