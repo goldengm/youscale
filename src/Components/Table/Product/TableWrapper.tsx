@@ -7,22 +7,23 @@ interface Props {
     children: JSX.Element | JSX.Element[] | any,
     column: string[],
     AddBtn: JSX.Element
-    refetch: () => any
-    item: GetProductModel | undefined
-    showAddProductModal: boolean
-    showEditProductModal: boolean
-    showDeleteProductModal: boolean
-    setShowAddProductModal: React.Dispatch<React.SetStateAction<boolean>>
-    setShowEditProductModal: React.Dispatch<React.SetStateAction<boolean>>
-    setShowDeleteProductModal: React.Dispatch<React.SetStateAction<boolean>>
+    refetch?: () => any
+    item?: GetProductModel | undefined
+    showAddProductModal?: boolean
+    showEditProductModal?: boolean
+    showDeleteProductModal?: boolean
+    setShowAddProductModal?: React.Dispatch<React.SetStateAction<boolean>>
+    setShowEditProductModal?: React.Dispatch<React.SetStateAction<boolean>>
+    setShowDeleteProductModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
 export default function TableWrapper({ children, title, column, item, AddBtn, refetch, showAddProductModal, showEditProductModal, showDeleteProductModal, setShowAddProductModal, setShowEditProductModal, setShowDeleteProductModal }: Props): JSX.Element {
 
+    const never = (): any => { }
     return (
         <div className="col-lg-12 product-table">
-            {showAddProductModal ? <AddProductModal refetch={refetch} showModal={showAddProductModal} setShowModal={setShowAddProductModal} /> : <></>}
-            {showEditProductModal ? <EditProductModal refetch={refetch} showModal={showEditProductModal} setShowModal={setShowEditProductModal} item={item} /> : <></>}
-            {showDeleteProductModal ? <DeleteProductModal refetch={refetch} showModal={showDeleteProductModal} setShowModal={setShowDeleteProductModal} item={item} /> : <></>}
+            {showAddProductModal ? <AddProductModal refetch={refetch ?? never()} showModal={showAddProductModal} setShowModal={setShowAddProductModal ?? never()} /> : <></>}
+            {showEditProductModal ? <EditProductModal refetch={refetch ?? never()} showModal={showEditProductModal} setShowModal={setShowEditProductModal ?? never()} item={item} /> : <></>}
+            {showDeleteProductModal ? <DeleteProductModal refetch={refetch ?? never()} showModal={showDeleteProductModal} setShowModal={setShowDeleteProductModal ?? never()} item={item} /> : <></>}
 
             <div className="card">
                 <div className="card-header">
