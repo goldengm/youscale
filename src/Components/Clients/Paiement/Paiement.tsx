@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import Main from '../../Main'
 import { MdAttachMoney, MdDeleteForever } from 'react-icons/md'
 import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
 import { AddPerteModal, DeletePerteModal } from '../../Table/Modal/Paiement'
-import './paiement.style.css'
 import { DashbordQueryModel, DetailsOfSpendingModel, TransactionModel } from '../../../models'
 import { useGetPaiementDashbordQuery } from '../../../services/api/ClientApi/ClientPaiementDashbord'
 import { useAddGoalMutation, useGetGoalQuery } from '../../../services/api/ClientApi/ClientGoalApi'
+import Main from '../../Main'
+import './paiement.style.css'
 
 export default function Paiement() {
 
@@ -20,7 +20,7 @@ export default function Paiement() {
     const [date, setDate] = useState<string[]>([])
     const [usingDate, setUsingDate] = useState<boolean>(false)
     const [OrderQueryData, setOrderQueryData] = useState<DashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
-    const { data, isLoading, refetch } = useGetPaiementDashbordQuery(OrderQueryData)
+    const { data, refetch } = useGetPaiementDashbordQuery(OrderQueryData)
 
     useEffect(() => { refetch() }, [])
 

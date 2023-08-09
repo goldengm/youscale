@@ -1,14 +1,29 @@
 import React from 'react'
+import { AddProductModal, DeleteProductModal, EditProductModal } from '../Modal/Product'
+import { GetProductModel } from '../../../models'
 
-interface Props{
+interface Props {
     title: string,
     children: JSX.Element | JSX.Element[] | any,
     column: string[],
     AddBtn: JSX.Element
+    refetch: () => any
+    item: GetProductModel | undefined
+    showAddProductModal: boolean
+    showEditProductModal: boolean
+    showDeleteProductModal: boolean
+    setShowAddProductModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowEditProductModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowDeleteProductModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function TableWrapper({ children, title, column, AddBtn }:Props): JSX.Element {
+export default function TableWrapper({ children, title, column, item, AddBtn, refetch, showAddProductModal, showEditProductModal, showDeleteProductModal, setShowAddProductModal, setShowEditProductModal, setShowDeleteProductModal }: Props): JSX.Element {
+
     return (
         <div className="col-lg-12 product-table">
+            {showAddProductModal ? <AddProductModal refetch={refetch} showModal={showAddProductModal} setShowModal={setShowAddProductModal} /> : <></>}
+            {showEditProductModal ? <EditProductModal refetch={refetch} showModal={showEditProductModal} setShowModal={setShowEditProductModal} item={item} /> : <></>}
+            {showDeleteProductModal ? <DeleteProductModal refetch={refetch} showModal={showDeleteProductModal} setShowModal={setShowDeleteProductModal} item={item} /> : <></>}
+
             <div className="card">
                 <div className="card-header">
                     <h4 className="card-title">{title}</h4>
@@ -20,7 +35,7 @@ export default function TableWrapper({ children, title, column, AddBtn }:Props):
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    { column.map((col: string, key: number)=> <th key={key}>{col}</th>) }
+                                    {column.map((col: string, key: number) => <th key={key}>{col}</th>)}
                                     <th></th>
                                 </tr>
                             </thead>
