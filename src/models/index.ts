@@ -820,6 +820,7 @@ export interface DashbordModel {
     costPerLead: number;
     orderInProgress: number;
     stock: number;
+    totalOrder: number;
     costPerDelivred: number;
     rateOfConfirmed: number;
     rateOfDelivred: number;

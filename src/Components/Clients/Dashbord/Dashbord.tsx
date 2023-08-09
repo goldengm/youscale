@@ -4,6 +4,7 @@ import './style.css'
 import { MdAttachMoney } from 'react-icons/md'
 import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
+import { AiFillThunderbolt } from 'react-icons/ai'
 import { TbTruckDelivery } from 'react-icons/tb'
 import { BsFillPatchCheckFill, BsPatchQuestion } from 'react-icons/bs'
 import { CustomPie, CustomLine } from '../../Chart'
@@ -29,6 +30,7 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                     <DisplayCard costPerLead={data.costPerLead} orderInProgress={data.orderInProgress}
                         costPerDelivred={data.costPerDelivred} rateOfConfirmed={data.rateOfConfirmed}
                         rateOfDelivred={data.rateOfDelivred} earningNet={data.earningNet} stock={data.stock}
+                        totalOrder={data.totalOrder}
                     />
                     <div>
                         <div className="row">
@@ -55,8 +57,9 @@ interface DisplayCardProps {
     rateOfDelivred: number;
     earningNet: number;
     stock: number;
+    totalOrder: number;
 }
-const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet, stock }: DisplayCardProps): JSX.Element => {
+const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet, stock, totalOrder }: DisplayCardProps): JSX.Element => {
     return (
         <div className="row invoice-card-row">
 
@@ -71,6 +74,8 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
             <Card bg={'secondary'} value={rateOfDelivred} title={'Rate of delivred'} icon={<TbTruckDelivery size={35} color={'white'} />} />
 
             <Card bg={'success'} value={stock} title={'Stock'} icon={<FiShoppingCart size={35} color={'white'} />} />
+
+            <Card bg={'info'} value={totalOrder} title={'Total order'} icon={<AiFillThunderbolt size={35} color={'white'} />} />
         </div>
     )
 }

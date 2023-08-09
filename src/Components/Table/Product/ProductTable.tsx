@@ -10,18 +10,25 @@ export default function ProductTable(): JSX.Element {
     const [showAddProductModal, setShowAddProductModal] = useState<boolean>(false)
     const [showEditProductModal, setShowEditProductModal] = useState<boolean>(false)
     const [showDeleteProductModal, setShowDeleteProductModal] = useState<boolean>(false)
-    
+
     const { data, isSuccess, refetch } = useGetProductQuery()
-    const [ item, setItem ] = useState<GetProductModel>()
+    const [item, setItem] = useState<GetProductModel>()
 
     return (
-        <TableWrapper title='Product' column={['Nom', 'Prix']} AddBtn={<AddProductBtn setShowModal={setShowAddProductModal} />}>
-            
-            { showAddProductModal ? <AddProductModal refetch={refetch} showModal={showAddProductModal} setShowModal={setShowAddProductModal}  /> : <></> }
-            { showEditProductModal ? <EditProductModal refetch={refetch} showModal={showEditProductModal} setShowModal={setShowEditProductModal} item={item}  /> : <></> }
-            { showDeleteProductModal ? <DeleteProductModal refetch={refetch} showModal={showDeleteProductModal} setShowModal={setShowDeleteProductModal} item={item}  /> : <></> }
-
-            { isSuccess && data.data.map((dt, key) => !dt.isDeleted && <ProductRow data={dt} key={key} setShowDeleteModal={setShowDeleteProductModal} setShowEditModal={setShowEditProductModal} setItem={setItem} /> ) }
+        <TableWrapper
+            item={item}
+            title='Product'
+            column={['Nom', 'Prix']}
+            refetch={refetch}
+            AddBtn={<AddProductBtn setShowModal={setShowAddProductModal} />}
+            showAddProductModal={showAddProductModal}
+            showEditProductModal={showEditProductModal}
+            showDeleteProductModal={showDeleteProductModal}
+            setShowAddProductModal={setShowAddProductModal}
+            setShowEditProductModal={setShowEditProductModal}
+            setShowDeleteProductModal={setShowDeleteProductModal}
+        >
+            {isSuccess && data.data.map((dt, key) => !dt.isDeleted && <ProductRow data={dt} key={key} setShowDeleteModal={setShowDeleteProductModal} setShowEditModal={setShowEditProductModal} setItem={setItem} />)}
         </TableWrapper>
     )
 }
@@ -30,13 +37,13 @@ export default function ProductTable(): JSX.Element {
 interface AddProductBtnProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const AddProductBtn = ( { setShowModal }: AddProductBtnProps ): JSX.Element => {
+const AddProductBtn = ({ setShowModal }: AddProductBtnProps): JSX.Element => {
     return (
-        <a 
-            onClick={ () => setShowModal(true) }
-            type="button" 
-            className="btn btn-primary mb-2" 
-            >Add product
+        <a
+            onClick={() => setShowModal(true)}
+            type="button"
+            className="btn btn-primary mb-2"
+        >Add product
         </a>
     )
 }

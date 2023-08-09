@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AddOrderModal, BulkEditAgentModal, EditOrderModal } from '../Modal/Order'
+import { AddOrderModal, AddProductOrderModal, BulkEditAgentModal, EditOrderModal } from '../Modal/Order'
 import { RiDeleteBin6Fill } from 'react-icons/ri'
 import { FaUserEdit } from 'react-icons/fa'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
@@ -11,6 +11,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import TableWrapper from './TableWrapper'
 import Row from './Row'
 import './styles.css'
+
+interface OrderModel { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string, telDuplicate: boolean }
 
 type Order = {
     code: Number;
@@ -51,12 +53,13 @@ interface TableProps {
 export default function Table({ data, refetch, setOrderQueryData, isLoading, _skip, _setSkip, setStatus }: TableProps): JSX.Element {
 
     const [editData, setEditData] = useState<GetClientOrderModel>({ } as GetClientOrderModel)
-    const [idOrder, setIdOrder] = useState<string>('0')
+    const [order, setOrder] = useState<OrderModel | undefined>()
 
     const fetchData = async () => {
         _setSkip(_skip + 50)
     }
 
+    const [showProductOrderModal, setShowProductOrderModal] = useState(false)
     const [showOrderModal, setShowOrderModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const { data: ColumnData } = useGetColumnQuery()
@@ -102,7 +105,8 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
     return (
         <div className="col-12">
             {showOrderModal && <AddOrderModal refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
-            {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={idOrder} />}
+            {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={String(order?.id)} />}
+            {showProductOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showProductOrderModal} setShowModal={setShowProductOrderModal} />}
 
             <div className="card">
                 <TableHeader setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
@@ -119,9 +123,10 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
                                 handleCheckRow={handleCheckRow}
                                 row={dt}
                                 setIdOrders={setIdOrders}
-                                setIdOrder={setIdOrder}
+                                setOrder={setOrder}
                                 setEditData={setEditData}
                                 setShowEditModal={setShowEditModal}
+                                setShowOrderModal={setShowProductOrderModal}
                                 refetch={refetch}
                                 order={rowData ? rowData[index] : undefined}
                                 column={ColumnData?.data}

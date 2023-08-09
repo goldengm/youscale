@@ -40,12 +40,12 @@ const FormatDataOption = (data: GetProductModel[] | undefined) => {
     var objArr: { label: string, value: string }[] = []
 
     for (let i = 0; i < data.length; i++) {
-      if (!data[i].isDeleted)
-        objArr.push({ label: data[i].name, value: String(data[i].id) })
+        if (!data[i].isDeleted)
+            objArr.push({ label: data[i].name, value: String(data[i].id) })
     }
 
     return objArr
-  }
+}
 
 const schema = yup.object().shape({
     dateFrom: yup.string().required('Ce champ est obligatoire'),
@@ -111,22 +111,41 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
     const { data: perteCategorieData } = useGetClientPerteCategorieQuery()
     const { data: productData } = useGetProductQuery()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors }, getValues } = useForm<Inputs>({
         resolver: yupResolver(schema),
     });
 
     const onSubmit = (values: Inputs) => {
-        addPerte(values).unwrap()
-            .then(res => {
-                refetch()
-                handleCloseModal()
-            })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-                if (err.data) {
-                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                    else if ('message' in err.data) showToastError(err.data.message);
-                }
-            })
+        if (values.dateFrom <= values.dateTo) {
+            addPerte(values).unwrap()
+                .then(res => {
+                    refetch()
+                    handleCloseModal()
+                })
+                .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                    if (err.data) {
+                        if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                        else if ('message' in err.data) showToastError(err.data.message);
+                    }
+                })
+        } else {
+            var temp = values.dateTo
+            values.dateTo = values.dateFrom
+            values.dateFrom = temp
+
+            addPerte(values).unwrap()
+                .then(res => {
+                    refetch()
+                    handleCloseModal()
+                })
+                .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                    if (err.data) {
+                        if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                        else if ('message' in err.data) showToastError(err.data.message);
+                    }
+                })
+        }
+
     }
 
     return (

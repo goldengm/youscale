@@ -17,18 +17,21 @@ import { useGetTeamMemberQuery } from '../../../services/api/ClientApi/ClientTea
 import { showToastError } from '../../../services/toast/showToastError'
 import './styles.css'
 
+interface OrderModel { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string, telDuplicate: boolean }
+
 interface RowProps {
     row: GetClientOrderModel,
-    order: { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string, telDuplicate: boolean } | undefined,
+    order: OrderModel | undefined
     refetch: () => void,
     column: ColumnModel[] | undefined,
     setIdOrders: React.Dispatch<React.SetStateAction<number[] | undefined>>
-    setIdOrder: React.Dispatch<React.SetStateAction<string>>
+    setOrder: React.Dispatch<React.SetStateAction<OrderModel | undefined>>
     setEditData: React.Dispatch<React.SetStateAction<GetClientOrderModel>>
     setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>
     handleCheckRow: (id: number) => void
+    setShowOrderModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function Row({ row, order, refetch, column, handleCheckRow, setIdOrder, setEditData, setShowEditModal }: RowProps): JSX.Element {
+export default function Row({ row, order, refetch, column, handleCheckRow, setOrder, setEditData, setShowEditModal, setShowOrderModal }: RowProps): JSX.Element {
 
     const [patchOrder] = usePatchClientOrderMutation()
 
@@ -41,7 +44,6 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setId
         RefetchStatus()
     }, [])
 
-    const [showOrderModal, setShowOrderModal] = useState<boolean>(false)
     const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false)
     const [showReportModal, setShowReportModal] = useState<boolean>(false)
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
@@ -172,15 +174,18 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setId
     }
     
     const onEdit = () =>{
-        setIdOrder(String(order?.id ?? 0))
+        setOrder(order)
         setEditData(row)
         setShowEditModal(true)
+    }
+        
+    const onShowProductEdit = () =>{
+        setOrder(order)
+        setShowOrderModal(true)
     }
 
     return (
         <tr className='tr-custum' style={{ backgroundColor: getRowColor(row) ?? 'transparent' }}>
-            {showOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
-            
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} id_order={String(order?.id ?? 0)} />}
             {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
             {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
@@ -246,7 +251,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setId
 
                         if (formatDtName === 'Up/Downsell') {
                             return (
-                                <td style={{ width: '130px',color: 'black' }}>
+                                <td style={{ width: '80px',color: 'black' }}>
                                     <DisplayUpDown
                                         onChange={handleChangeUpDown}
                                         currentData={row}
@@ -338,7 +343,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setId
                                 <td style={{ width: '130px', color: 'black' }}>
                                     <a
                                         style={{ color: 'black' }}
-                                        onClick={() => setShowOrderModal(true)}
+                                        onClick={() => onShowProductEdit()}
                                         href="#addProductToOrder"
                                         className="badge badge-outline-dark"
                                     >
