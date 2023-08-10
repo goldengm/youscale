@@ -41,7 +41,7 @@ export default function Paiement() {
             <div className="content-body">
                 <div className="container-fluid">
                     <DisplayCard earning_net={data?.data.earningNet || 0} chff_affaire={data?.data.ChffAffaire || 0} spending={data?.data.spending || 0} />
-                    <div className="row"><Goal /></div>
+                    {/* <div className="row"><Goal /></div> */}
                     <div className="row">
                         <Transaction data={data?.data.transaction} setShowAddPerteModal={setShowAddPerteModal} setItem={setItem} setShowDeletePerteModal={setShowDeletePerteModal} />
                         <DetailsOfSpending data={data?.data.detailOfSpending} />

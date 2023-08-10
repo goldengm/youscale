@@ -61,3 +61,7 @@
 .bg-cancelled{
     background: #E53935!important;
 }
+
+.bg-deleted{
+    background: #630200!important;
+}

@@ -901,6 +901,7 @@ export interface EarningTable {
 
 export interface TeamDashbordModel {
     performance: Performance;
+    performance_rate: Performance;
     earning: Earning;
     earning_table: EarningTable;
 }
