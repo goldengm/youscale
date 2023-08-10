@@ -30,6 +30,11 @@ export default function Team(): JSX.Element {
     const [performance, setPerformance] = useState<Performance | undefined>(teamData?.data.performance)
 
     useEffect(() => {
+        setPerformance(teamData?.data.performance)
+    }, [])
+    
+
+    useEffect(() => {
         setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined })
         refetchTeamData()
     }, [date, usingDate])
@@ -63,9 +68,9 @@ export default function Team(): JSX.Element {
                     <div className="team-header">
                         <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} />
                         {
-                            performance &&
+                            teamData?.data.performance &&
                             <PerformanceCard setPerformance={setPerformance} perf={teamData?.data.performance} perf_rate={teamData?.data.performance_rate}>
-                                <CustomHist data={performance} options={option} />
+                                <CustomHist data={performance ?? teamData?.data.performance} options={option} />
                             </PerformanceCard>
                         }
                     </div>
