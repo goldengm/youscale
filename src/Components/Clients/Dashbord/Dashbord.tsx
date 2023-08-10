@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
-import './style.css'
 import { MdAttachMoney } from 'react-icons/md'
 import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
@@ -10,6 +9,7 @@ import { BsFillPatchCheckFill, BsPatchQuestion } from 'react-icons/bs'
 import { CustomPie, CustomLine } from '../../Chart'
 import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity } from '../../../models'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
+import './style.css'
 
 interface Props {
     data: DashbordModel,
@@ -175,12 +175,17 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                                
                                 <li>
                                     <span className="bg-pending-2 circle" />
-                                    Pending(2)<span>{data.data.datasets[0].data[2]}</span>
+                                    Injoignable<span>{data.data.datasets[0].data[2]}</span>
                                 </li>
 
                                 <li>
                                     <span className="bg-cancelled circle" />
                                     Cancelled<span>{data.data.datasets[0].data[3]}</span>
+                                </li>
+
+                                <li>
+                                    <span className="bg-deleted circle" />
+                                    Deleted<span>{data.data.datasets[0].data[4]}</span>
                                 </li>
                                 <li>
                                     <span className="bg-light circle" />

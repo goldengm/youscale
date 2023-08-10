@@ -51,7 +51,7 @@ export default function TableWrapper({ children, column, handleCheckAll }: Props
                                     onChange={handleCheckAll}
                                 />
                             </th>
-                            {column.map((col: string, key: number) => <th key={key}>{truncateString(col, 10)}</th>)}
+                            {column.map((col: string, key: number) => <th key={key}>{truncateString(col, 15)}</th>)}
                         </tr>
                     </thead>
                     <tbody>
