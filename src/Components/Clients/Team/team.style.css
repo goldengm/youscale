@@ -92,10 +92,6 @@ input:checked+.slider:before {
     flex-wrap: wrap;
 }
 
-.earning-card{
-    width: 100% !important;
-}
-
 .login-as-team-btn:hover{
     cursor: pointer;
     opacity: 0.7;

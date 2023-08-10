@@ -4,7 +4,7 @@ import { FaPen } from 'react-icons/fa'
 import { RiLoginCircleFill } from 'react-icons/ri'
 import { CustomHist } from '../../Chart'
 import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
-import { EarningTable, GetTeamMemberModel, TeamDashbordQueryModel } from '../../../models'
+import { EarningTable, GetTeamMemberModel, Performance, TeamDashbordQueryModel } from '../../../models'
 import { useGetTeamMemberQuery, usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 import { useGetTeamDashbordQuery } from '../../../services/api/ClientApi/ClientTeamDashbordApi'
 import { showToastError } from '../../../services/toast/showToastError'
@@ -21,12 +21,13 @@ export default function Team(): JSX.Element {
     const userData = localStorage.getItem('userData')
 
     const { data, refetch } = useGetTeamMemberQuery()
-
     const [date, setDate] = useState<string[]>([])
     const [idTeam, setIdTeam] = useState<number>(GetRole() === 'TEAM' ? JSON.parse(userData || '{id: 0}').id : 0)
     const [usingDate, setUsingDate] = useState<boolean>(false)
     const [OrderQueryData, setOrderQueryData] = useState<TeamDashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
     const { data: teamData, refetch: refetchTeamData } = useGetTeamDashbordQuery(OrderQueryData)
+
+    const [performance, setPerformance] = useState<Performance | undefined>(teamData?.data.performance)
 
     useEffect(() => {
         setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined })
@@ -62,16 +63,18 @@ export default function Team(): JSX.Element {
                     <div className="team-header">
                         <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} />
                         {
-                            teamData &&
-                            <PerformanceCard>
-                                <CustomHist data={teamData.data.performance} options={option} />
+                            performance &&
+                            <PerformanceCard setPerformance={setPerformance} perf={teamData?.data.performance} perf_rate={teamData?.data.performance_rate}>
+                                <CustomHist data={performance} options={option} />
                             </PerformanceCard>
                         }
                     </div>
-                    <EarningCard>
-                        {teamData && <CustomHist data={teamData.data.earning} options={option} />}
+                    <div className="row">
                         <EarningTale earningTable={teamData?.data.earning_table} />
-                    </EarningCard>
+                        <EarningCard>
+                            {teamData && <CustomHist data={teamData.data.earning} options={option} />}
+                        </EarningCard>
+                    </div>
                 </div>
             </div>
         </Main>
@@ -215,7 +218,7 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
     }
 
     return (
-        <div className="col-lg-12">
+        <div className="col-lg-6">
             <div className="card">
                 <div className="card-body">
                     <div className="table-responsive">
