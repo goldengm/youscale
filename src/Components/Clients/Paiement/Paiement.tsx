@@ -40,7 +40,17 @@ export default function Paiement() {
             {showDeletePerteModal && <DeletePerteModal refetch={refetch} id_perte={String(item?.id) ?? ''} setShowModal={setShowDeletePerteModal} showModal={showDeletePerteModal} />}
             <div className="content-body">
                 <div className="container-fluid">
-                    <DisplayCard earning_net={data?.data.earningNet || 0} chff_affaire={data?.data.ChffAffaire || 0} spending={data?.data.spending || 0} />
+                    <DisplayCard 
+                        earning_net={data?.data.earningNet || 0} 
+                        chff_affaire={data?.data.ChffAffaire || 0} 
+                        spending={data?.data.spending || 0} 
+                        spending_ads={data?.data.spending_ads || 0} 
+                        spending_product={data?.data.spending_product || 0} 
+                        spending_city={data?.data.spending_city || 0} 
+                        spending_commission={data?.data.spending_commission || 0} 
+                        spending_landing_design={data?.data.spending_landing_design || 0} 
+                        spending_autre={data?.data.spending_autre || 0} 
+                    />
                     {/* <div className="row"><Goal /></div> */}
                     <div className="row">
                         <Transaction data={data?.data.transaction} setShowAddPerteModal={setShowAddPerteModal} setItem={setItem} setShowDeletePerteModal={setShowDeletePerteModal} />
@@ -56,13 +66,26 @@ interface DisplayCardProps {
     earning_net: string | number,
     chff_affaire: string | number,
     spending: string | number
+    spending_ads: string | number
+    spending_product: string | number
+    spending_city: string | number
+    spending_commission: string | number
+    spending_landing_design: string | number
+    spending_autre: string | number
 }
-const DisplayCard = ({ earning_net, chff_affaire, spending }: DisplayCardProps): JSX.Element => {
+const DisplayCard = ({ earning_net, chff_affaire, spending, spending_ads, spending_product, spending_city, spending_commission, spending_landing_design, spending_autre }: DisplayCardProps): JSX.Element => {
     return (
         <div className="row invoice-card-row">
             <Card bg={'warning'} value={earning_net} title={'Earning net'} icon={<MdAttachMoney size={35} color={'white'} />} />
             <Card bg={'success'} value={chff_affaire} title={'Chiffre d\'affaire'} icon={<FiShoppingCart size={35} color={'white'} />} />
             <Card bg={'info'} value={spending} title={'Spendings'} icon={<FaTruckMoving size={35} color={'white'} />} />
+
+            <Card bg={'info'} value={spending_ads} title={'Spending Ads'} icon={<FaTruckMoving size={35} color={'white'} />} />
+            <Card bg={'info'} value={spending_product} title={'Spending Product'} icon={<FaTruckMoving size={35} color={'white'} />} />
+            <Card bg={'info'} value={spending_city} title={'Spending City'} icon={<FaTruckMoving size={35} color={'white'} />} />
+            <Card bg={'info'} value={spending_commission} title={'Spending Commission'} icon={<FaTruckMoving size={35} color={'white'} />} />
+            <Card bg={'info'} value={spending_landing_design} title={'Spending Landing/design'} icon={<FaTruckMoving size={35} color={'white'} />} />
+            <Card bg={'info'} value={spending_autre} title={'Spending Autre'} icon={<FaTruckMoving size={35} color={'white'} />} />
         </div>
     )
 }
