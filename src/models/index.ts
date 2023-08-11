@@ -919,6 +919,12 @@ export interface VariantModel {
 export interface DashbordPaiementModel {
     ChffAffaire: number;
     spending: number;
+    spending_ads: number;
+    spending_product: number;
+    spending_city: number;
+    spending_commission: number;
+    spending_landing_design: number;
+    spending_autre: number;
     earningNet: number;
     transaction: TransactionModel[];
     detailOfSpending: DetailsOfSpendingModel[];
