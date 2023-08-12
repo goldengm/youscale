@@ -356,3 +356,13 @@
 .pack-choose-list .col-xl-4{
     width: 300px !important;
 }
+
+@media screen and (max-width: 965px) {
+    .ys-login-page {
+        justify-content: center;
+    }
+    
+    .ys-login-sect-video {
+        display: none;
+    }
+}

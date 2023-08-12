@@ -148,7 +148,7 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
     }
 
     return (
-        <div className="col-xl-4 col-xxl-6 col-6">
+        <div className="col-xl-4 col-xxl-6 col-6 status-lst">
             <div className="form-check custom-checkbox mb-3">
                 <input
                     onClick={handleStatusCheckbox}
@@ -263,7 +263,7 @@ const Column = ({ title, className, data }: ColumnProps): JSX.Element => {
             <div className="card-content">
                 <div className="nestable">
                     <div className="dd" id="nestable">
-                        <h3>{title}</h3>
+                        <h3 style={{ textAlign: 'center'}}>{title}</h3>
                         <ol className={`dd-list ${className}`}>
                             {
                                 data?.map((dt, index) =>

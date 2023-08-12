@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CustumInput } from '../../../Forms'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useGetLinkSheetQuery, useIntegrateSheetMutation, usePatchSheetMutation } from '../../../../services/api/ClientApi/ClientIntegrateSheetApi';
+import { useDeleteSheetMutation, useGetLinkSheetQuery, useIntegrateSheetMutation, usePatchSheetMutation } from '../../../../services/api/ClientApi/ClientIntegrateSheetApi';
 import { showToastError } from '../../../../services/toast/showToastError';
 import { ErrorModel, GetSheetIntegrationModel } from '../../../../models';
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../../services/api/ClientApi/ClientColumnApi';
@@ -97,6 +97,7 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
 
     const [integrateSheet] = useIntegrateSheetMutation();
     const [patchSheet] = usePatchSheetMutation();
+    const [deleteSheet] = useDeleteSheetMutation();
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(schema),
@@ -127,6 +128,18 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
                 }
             })
         }
+    }
+
+    const onDeleteSheet = () =>{
+        deleteSheet({id: data?.id || 0}).unwrap().then((result: any) => {
+            handleCloseModal()
+            refetch()
+        }).catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+            if (err.data) {
+                if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                else if ('message' in err.data) showToastError(err.data.message);
+            }
+        })
     }
 
     return (
@@ -167,6 +180,7 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
                     />
 
                     <button type="submit" className="badge badge-md badge-success">Ajouter</button>
+                    <a href='#' onClick={()=> onDeleteSheet()} className="badge badge-md badge-danger">Supprimer</a>
                 </form>
             </div>
         </div>

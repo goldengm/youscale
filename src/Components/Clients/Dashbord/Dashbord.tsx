@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
+import Popup from 'reactjs-popup';
 import { MdAttachMoney } from 'react-icons/md'
 import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
@@ -9,6 +10,7 @@ import { BsFillPatchCheckFill, BsPatchQuestion } from 'react-icons/bs'
 import { CustomPie, CustomLine } from '../../Chart'
 import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity } from '../../../models'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
+import 'reactjs-popup/dist/index.css';
 import './style.css'
 
 interface Props {
@@ -76,6 +78,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
             <Card bg={'success'} value={stock} title={'Stock'} icon={<FiShoppingCart size={35} color={'white'} />} />
 
             <Card bg={'info'} value={totalOrder} title={'Total order'} icon={<AiFillThunderbolt size={35} color={'white'} />} />
+
         </div>
     )
 }
@@ -101,11 +104,11 @@ const Card = ({ bg, value, title, icon, orderInProgress }: CardProps): JSX.Eleme
                         {orderInProgress && <span className="text-white fs-18">Order in progress:{orderInProgress}</span>}
                     </div>
 
-                    
 
-                    <div className="tooltip-card"><BsPatchQuestion size={30} color={'white'} />
-                        <span className="tooltiptext-card" >Formule here</span>
-                    </div>
+                    <Popup trigger={<button className='info-btn'><BsPatchQuestion size={30} color={'white'} /></button>}
+                        position="bottom center">
+                        <div>Formule here</div>
+                    </Popup>
                     {/* <div className="tooltip-icon">
                         <BsPatchQuestion size={30} color={'white'} />
                     </div> */}
@@ -172,7 +175,7 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                                     <span className="bg-pending-1 circle" />
                                     Pending<span>{data.data.datasets[0].data[1]}</span>
                                 </li>
-                               
+
                                 <li>
                                     <span className="bg-pending-2 circle" />
                                     Injoignable<span>{data.data.datasets[0].data[2]}</span>
