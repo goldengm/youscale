@@ -234,7 +234,7 @@ const ChangeColumn = ({ handleCloseModal }: ChangeColumnProps): JSX.Element => {
                     <div className="basic-form">
                         <form>
                             <div className="mb-3">
-                                <label className="form-label">Add alias to column</label>
+                                <label className="form-label">changer la nomination de la colonne</label>
                                 <select
                                     name={'alias'}
                                     onChange={handleChangeSelect}

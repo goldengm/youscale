@@ -63,7 +63,7 @@ const TarifItems = ({ name, price, currently, items, date_expiration, id_subscri
                 <div className="card-body cust-pack-card">
                     <div className="basic-list-group">
                         <ul className="list-group">
-                            {items.map((item, index) => <li key={index} className="list-group-item">{`${title[index]}: ${item}`}</li>)}
+                            {items.map((item, index) => <li key={index} style={{opacity: item ? 1 : 0.2}} className="list-group-item">{`${title[index]}: ${item}`}</li>)}
                         </ul>
                     </div>
 
@@ -73,7 +73,7 @@ const TarifItems = ({ name, price, currently, items, date_expiration, id_subscri
                                 <button type="button" className="btn btn-secondary btn-xs pack-btn">
                                     Currently using
                                 </button>
-                                <p className='mb-0 subtitle expire-txt'>Plan expires: {String(date_expiration)}</p>
+                                {/* <p className='mb-0 subtitle expire-txt'>Plan expires: {String(date_expiration)}</p> */}
                             </>
                             :
                             <>

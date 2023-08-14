@@ -79,7 +79,7 @@ export default function EditStockModal({ showModal, setShowModal, refetch, item 
   }
 
   return (
-    <ModalWrapper title={'Edit stock'} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
+    <ModalWrapper title={'modifier stock'} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
       <FormBody handleCloseModal={handleCloseModal} refetch={refetch} item={item} />
     </ModalWrapper>
   )
