@@ -32,7 +32,7 @@ const MenuNav = [
     name: 'produit'
   },
   {
-    title: 'Team',
+    title: 'Equipe',
     path: '/team',
     icon: <AiOutlineTeam size={35} color={'gray'} />,
     cName: 'nav-text',
@@ -46,7 +46,7 @@ const MenuNav = [
     name: 'payment'
   },
   {
-    title: 'Setting',
+    title: 'Paramètre',
     path: '/setting',
     icon: <FcSettings size={35} color={'gray'} />,
     cName: 'nav-text',

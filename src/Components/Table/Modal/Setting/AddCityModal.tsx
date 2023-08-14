@@ -80,7 +80,7 @@ export default function AddCityModal({ showModal, setShowModal, refetch }: Props
     }
 
     return (
-        <ModalWrapper showModal={showModal} title={'Add city'} setShowModal={setShowModal} id='AddOrderModal'>
+        <ModalWrapper showModal={showModal} title={'ajouter ville'} setShowModal={setShowModal} id='AddOrderModal'>
             <FormBody refetch={refetch} handleCloseModal={handleCloseModal} />
         </ModalWrapper>
     )

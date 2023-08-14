@@ -232,7 +232,7 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
                                 <tr>
                                     <th></th>
                                     <th>Nombre de commande</th>
-                                    <th>Her earning</th>
+                                    <th>Profit</th>
                                 </tr>
                             </thead>
                             <tbody>

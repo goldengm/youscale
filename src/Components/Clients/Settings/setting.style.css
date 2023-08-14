@@ -52,3 +52,12 @@
 .export-btn{
     margin-top: 10px;
 }
+
+.status-lst{
+    display: flex;
+    align-items: center;
+}
+
+.color-cont {
+    margin-left: 10px;
+}

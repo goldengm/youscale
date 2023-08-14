@@ -199,11 +199,11 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
                 />
                 {
                     order?.isSendLivo === 'not_send' ?
-                        <TbPointFilled size={17} color={'gray'} />
+                        <TbPointFilled size={40} color={'gray'} />
                         : order?.isSendLivo === 'error_send' ?
-                            <TbPointFilled size={17} color={'red'} />
+                            <TbPointFilled size={40} color={'red'} />
                             :
-                            <TbPointFilled size={17} color={'green'} />
+                            <TbPointFilled size={40} color={'green'} />
                 }
             </td>
 

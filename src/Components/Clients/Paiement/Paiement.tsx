@@ -76,7 +76,7 @@ interface DisplayCardProps {
 const DisplayCard = ({ earning_net, chff_affaire, spending, spending_ads, spending_product, spending_city, spending_commission, spending_landing_design, spending_autre }: DisplayCardProps): JSX.Element => {
     return (
         <div className="row invoice-card-row">
-            <Card bg={'warning'} value={earning_net} title={'Earning net'} icon={<MdAttachMoney size={35} color={'white'} />} />
+            <Card bg={'warning'} value={earning_net} title={'gain net'} icon={<MdAttachMoney size={35} color={'white'} />} />
             <Card bg={'success'} value={chff_affaire} title={'Chiffre d\'affaire'} icon={<FiShoppingCart size={35} color={'white'} />} />
             <Card bg={'info'} value={spending} title={'Spendings'} icon={<FaTruckMoving size={35} color={'white'} />} />
 

@@ -135,7 +135,7 @@ const FormBody = ({ item, refetch, handleCloseModal }: FormBodyProps) => {
                             name={'name'}
                             error={errors.name}
                             type={'text'}
-                            label={"Name"}
+                            label={"Nom"}
                             placeholder={'Nivea'}
                         />
 
@@ -145,7 +145,7 @@ const FormBody = ({ item, refetch, handleCloseModal }: FormBodyProps) => {
                             name={'price_selling'}
                             error={errors.price_selling}
                             type={'text'}
-                            label={"Price of buying"}
+                            label={"prix d'achat"}
                             placeholder={'12.55'}
                         />
                     </div>
