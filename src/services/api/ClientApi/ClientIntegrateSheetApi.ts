@@ -26,6 +26,14 @@ export const ClientIntegrateSheetApi = createApi({
             })
         }),
 
+        deleteSheet : builder.mutation<void, {id: number}>({
+            query : (data: {id: number}) => ({
+                method : 'DELETE',
+                url : `/${data.id}`,
+                headers: { Authorization: `Bear ${token}` }
+            })
+        }),
+
         getLinkSheet : builder.query<{code: Number, data:GetSheetIntegrationModel[]}, void>({
             query:() => ({
                 method: 'GET',
@@ -36,4 +44,4 @@ export const ClientIntegrateSheetApi = createApi({
     })
 })
 
-export const { useIntegrateSheetMutation, useGetLinkSheetQuery, usePatchSheetMutation }  = ClientIntegrateSheetApi;
+export const { useIntegrateSheetMutation, useGetLinkSheetQuery, usePatchSheetMutation, useDeleteSheetMutation }  = ClientIntegrateSheetApi;

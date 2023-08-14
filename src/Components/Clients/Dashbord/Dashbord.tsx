@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
+import Popup from 'reactjs-popup';
 import { MdAttachMoney } from 'react-icons/md'
 import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
@@ -9,6 +10,7 @@ import { BsFillPatchCheckFill, BsPatchQuestion } from 'react-icons/bs'
 import { CustomPie, CustomLine } from '../../Chart'
 import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity } from '../../../models'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
+import 'reactjs-popup/dist/index.css';
 import './style.css'
 
 interface Props {
@@ -63,19 +65,20 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
     return (
         <div className="row invoice-card-row">
 
-            <Card bg={'warning'} value={earningNet} orderInProgress={orderInProgress} title={'Earning net'} icon={<MdAttachMoney size={35} color={'white'} />} />
+            <Card bg={'warning'} value={earningNet} orderInProgress={orderInProgress} title={'gain net'} icon={<MdAttachMoney size={35} color={'white'} />} />
 
-            <Card bg={'success'} value={costPerLead} title={'Cost per lead'} icon={<FiShoppingCart size={35} color={'white'} />} />
+            <Card bg={'success'} value={costPerLead} title={'cout par lead'} icon={<FiShoppingCart size={35} color={'white'} />} />
 
-            <Card bg={'info'} value={costPerDelivred} title={'Cost per delivered'} icon={<FaTruckMoving size={35} color={'white'} />} />
+            <Card bg={'info'} value={costPerDelivred} title={'cout par livraison'} icon={<FaTruckMoving size={35} color={'white'} />} />
 
-            <Card bg={'secondary'} value={rateOfConfirmed} title={'Rate of confirmed'} icon={<BsFillPatchCheckFill size={35} color={'white'} />} />
+            <Card bg={'secondary'} value={rateOfConfirmed} title={'taux de confirmé'} icon={<BsFillPatchCheckFill size={35} color={'white'} />} />
 
-            <Card bg={'secondary'} value={rateOfDelivred} title={'Rate of delivred'} icon={<TbTruckDelivery size={35} color={'white'} />} />
+            <Card bg={'secondary'} value={rateOfDelivred} title={'taux de livraison'} icon={<TbTruckDelivery size={35} color={'white'} />} />
 
             <Card bg={'success'} value={stock} title={'Stock'} icon={<FiShoppingCart size={35} color={'white'} />} />
 
             <Card bg={'info'} value={totalOrder} title={'Total order'} icon={<AiFillThunderbolt size={35} color={'white'} />} />
+
         </div>
     )
 }
@@ -101,11 +104,11 @@ const Card = ({ bg, value, title, icon, orderInProgress }: CardProps): JSX.Eleme
                         {orderInProgress && <span className="text-white fs-18">Order in progress:{orderInProgress}</span>}
                     </div>
 
-                    
 
-                    <div className="tooltip-card"><BsPatchQuestion size={30} color={'white'} />
-                        <span className="tooltiptext-card" >Formule here</span>
-                    </div>
+                    <Popup trigger={<button className='info-btn'><BsPatchQuestion size={30} color={'white'} /></button>}
+                        position="bottom center">
+                        <div>Formule here</div>
+                    </Popup>
                     {/* <div className="tooltip-icon">
                         <BsPatchQuestion size={30} color={'white'} />
                     </div> */}
@@ -166,13 +169,13 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                             <ul className="card-list mt-4">
                                 <li>
                                     <span className="bg-delivered circle" />
-                                    Delivered<span>{data.data.datasets[0].data[0]}</span>
+                                    livré<span>{data.data.datasets[0].data[0]}</span>
                                 </li>
                                 <li>
                                     <span className="bg-pending-1 circle" />
-                                    Pending<span>{data.data.datasets[0].data[1]}</span>
+                                    en attente<span>{data.data.datasets[0].data[1]}</span>
                                 </li>
-                               
+
                                 <li>
                                     <span className="bg-pending-2 circle" />
                                     Injoignable<span>{data.data.datasets[0].data[2]}</span>
@@ -180,7 +183,7 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
 
                                 <li>
                                     <span className="bg-cancelled circle" />
-                                    Cancelled<span>{data.data.datasets[0].data[3]}</span>
+                                    annulé<span>{data.data.datasets[0].data[3]}</span>
                                 </li>
 
                                 <li>
@@ -189,7 +192,7 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                                 </li>
                                 <li>
                                     <span className="bg-light circle" />
-                                    Total order <span>{data.total}</span>
+                                    total des commandes <span>{data.total}</span>
                                 </li>
                             </ul>
                         </div>
@@ -236,7 +239,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
             <div className="card">
                 <div className="card-header d-block d-sm-flex border-0">
                     <div className="me-3">
-                        <h4 className="card-title mb-2">Report</h4>
+                        <h4 className="card-title mb-2">statistique</h4>
                     </div>
                     <div className="card-tabs mt-3 mt-sm-0">
                         <ul className="nav nav-tabs" role="tablist">
@@ -251,7 +254,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                                     href="#Order"
                                     role="tab"
                                 >
-                                    Order
+                                    commande
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -265,7 +268,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                                     href="#Earning"
                                     role="tab"
                                 >
-                                    Earning
+                                    profit
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -279,7 +282,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                                     href="#Rate"
                                     role="tab"
                                 >
-                                    Rate
+                                    taux
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -293,7 +296,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                                     href="#Cost"
                                     role="tab"
                                 >
-                                    Cost
+                                    prix
                                 </a>
                             </li>
                         </ul>
@@ -317,7 +320,7 @@ const BestSellingProductCard = ({ data }: BestSellingProductProps): JSX.Element 
             <div className="card">
                 <div className="card-header border-0 pb-0">
                     <div>
-                        <h4 className="card-title mb-2">Best Selling Products</h4>
+                        <h4 className="card-title mb-2">meilleur produit vendu</h4>
                     </div>
                 </div>
                 <div className="card-body">
@@ -354,7 +357,7 @@ const BestCityCardComponent = ({ data }: BestCityCardProps): JSX.Element => {
             <div className="card">
                 <div className="card-header border-0 pb-0">
                     <div>
-                        <h4 className="card-title mb-2">Best Cities</h4>
+                        <h4 className="card-title mb-2">meilleur ville</h4>
                     </div>
                 </div>
                 <div className="card-body">

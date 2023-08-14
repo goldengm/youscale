@@ -170,7 +170,7 @@ const AddOrderBtn = ({ setShowModal }: AddOrderBtnProps): JSX.Element => {
             onClick={() => setShowModal(true)}
             type="button"
             className="btn btn-primary mb-2"
-        >Add order
+        >ajouter commande
         </a>
     )
 }
@@ -198,7 +198,7 @@ const ImportBtn = ({ id_orders }: ImportBtnProps): JSX.Element => {
             <span className="btn-icon-start text-warning">
                 <i className="fa fa-download color-warning" />
             </span>
-            <CSVLink separator={';'} filename={'youscale_order.csv'} className="all-status-txt" data={exportData ? exportData?.data : []} headers={exportData ? exportData?.header : headers}>Export data</CSVLink>
+            <CSVLink separator={';'} filename={'youscale_order.csv'} className="all-status-txt" data={exportData ? exportData?.data : []} headers={exportData ? exportData?.header : headers}>export de données</CSVLink>
         </button>
     )
 }

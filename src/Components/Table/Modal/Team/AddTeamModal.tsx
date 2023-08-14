@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import ModalWrapper from '../ModalWrapper'
 import { CustumInput } from '../../../Forms'
 import { MultiSelectElement } from '../../../Input'
-import ModalWrapper from '../ModalWrapper'
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form/dist/types/form'
 import { FieldError } from 'react-hook-form/dist/types/errors'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
-import './team.style.css'
 import { useGetColumnQuery } from '../../../../services/api/ClientApi/ClientColumnApi'
 import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi'
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi'
@@ -15,6 +13,8 @@ import { useGetPageQuery } from '../../../../services/api/ClientApi/ClientPageAp
 import { useAddTeamMemberMutation } from '../../../../services/api/ClientApi/ClientTeamMemberApi'
 import { showToastError } from '../../../../services/toast/showToastError'
 import { ErrorModel } from '../../../../models'
+import './team.style.css'
+import * as yup from "yup";
 
 type Inputs = {
     name: string,
@@ -172,7 +172,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             name={'name'}
                             error={errors.name}
                             type={'text'}
-                            label={"Name"}
+                            label={"Nom"}
                             placeholder={'Patrick Doe'}
                         />
 
@@ -263,7 +263,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             name={'max_order'}
                             error={errors.max_order}
                             type={'number'}
-                            label={"Max order pending"}
+                            label={"commande max en attente"}
                             placeholder={'2'}
                             defaultValue={0}
                         />
@@ -279,7 +279,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                                 id="customCheckBox2"
                             />
                             <label className="form-check-label" htmlFor="customCheckBox2">
-                                {'Can delete orders'}
+                                {'peut supprimer commande'}
                             </label>
                         </div>
 
@@ -292,7 +292,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                                 id="customCheckBox2"
                             />
                             <label className="form-check-label" htmlFor="customCheckBox2">
-                                {'Can edit orders'}
+                                {'peut modifier commande'}
                             </label>
                         </div>
                     </div>
@@ -305,7 +305,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             name={'all_column_access'}
                             column={'column_access'}
                             error={errors.all_column_access}
-                            label={'All columns'}
+                            label={'toutes les collones'}
                         />
 
                         <AllAccess
@@ -315,7 +315,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             name={'all_cities_access'}
                             error={errors.all_cities_access}
                             column={'cities_access'}
-                            label={'All cities'}
+                            label={'toutes les villes'}
                         />
 
                         <AllAccess
@@ -325,7 +325,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             name={'all_product_access'}
                             column={'product_access'}
                             error={errors.all_product_access}
-                            label={'All products'}
+                            label={'tout les produits'}
                         />
 
                         <AllAccess
@@ -335,7 +335,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                             name={'all_page_access'}
                             error={errors.all_page_access}
                             column={'page_access'}
-                            label={'All pages'}
+                            label={'toutes les pages'}
                         />
                     </div>
 

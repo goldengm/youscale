@@ -119,7 +119,7 @@ export default function AddOrderModal({ showModal, setShowModal, refetch }: Prop
   }
 
   return (
-    <ModalWrapper showModal={showModal} title={'Add order'} setShowModal={setShowModal} id='AddOrderModal'>
+    <ModalWrapper showModal={showModal} title={'ajouter commande'} setShowModal={setShowModal} id='AddOrderModal'>
       <FormBody refetch={refetch} handleCloseModal={handleCloseModal} />
     </ModalWrapper>
   )

@@ -95,7 +95,7 @@ export default function AddStockModal({ showModal, setShowModal, refetch }: Prop
   }
 
   return (
-    <ModalWrapper title={'Add stock'} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
+    <ModalWrapper title={'ajout de stock'} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
       <FormBody handleCloseModal={handleCloseModal} refetch={refetch} />
     </ModalWrapper>
   )

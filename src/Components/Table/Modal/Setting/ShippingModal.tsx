@@ -161,7 +161,7 @@ const CSVExport = ({ statusData, refetchStatus }: CSVExportProps): JSX.Element =
         <div className="col-xl-6 col-lg-6 alias-lg-100">
             <div className="card">
                 <div className="card-header">
-                    <h4 className="card-title">Export csv column</h4>
+                    <h4 className="card-title">selectionner les colonnes</h4>
                 </div>
                 <div className="card-body">
                     <div className="row">

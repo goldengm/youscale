@@ -22,7 +22,7 @@ export default function MultiSelectElement({ options, selected, onChange, classN
             options={options}
             value={selected}
             onChange={onChange}
-            labelledBy="Select"
+            labelledBy="Sélectionner"
         />
     )
 }

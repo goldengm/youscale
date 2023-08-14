@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import './pack.style.css'
 import Main from '../../Main'
 import { Tarif } from './Tarif'
 import { Account } from './Account'
@@ -8,6 +7,7 @@ import { PaymentMethod } from './PaymentMethod'
 import { useGetClientPaymentMethodQuery } from '../../../services/api/ClientApi/ClientPaymentMethodApi'
 import { useGetClientPackQuery } from '../../../services/api/ClientApi/ClientPackApi'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
+import './pack.style.css'
 
 interface Bank {
     id: number;
@@ -43,7 +43,11 @@ export default function PackContainer() {
         <Main urlVideo={'https://www.youtube.com/watch?v=Y2eNJGFfhVY'} name='Pack'>
             <div className="content-body">
                 <div className="container-fluid">
-                    {dataPack?.data && <PackTitlte title={`Pack <p class='expire-txt'>your pack will expire in ${computeDateDifference(new Date(dataPack.data.Subscription.date_subscription), new Date())} days</p>`} />}
+                    {
+                        dataPack?.data &&
+                        computeDateDifference(new Date(dataPack.data.Subscription.date_subscription), new Date()) > 0 &&
+                        <PackTitlte title={`Pack <p class='expire-txt'>your pack will expire in ${computeDateDifference(new Date(dataPack.data.Subscription.date_subscription), new Date())} days</p>`} />
+                    }
                     <Tarif data={dataPack} isLoading={isLoading} refetch={refetch} />
                     <PackTitlte title='Payment methods' />
                     <Account />

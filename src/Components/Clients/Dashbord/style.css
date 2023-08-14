@@ -65,3 +65,10 @@
 .bg-deleted{
     background: #630200!important;
 }
+
+.info-btn{
+    border: none;
+    background-color: transparent;
+    width: 80px;
+    height: 80px;
+}

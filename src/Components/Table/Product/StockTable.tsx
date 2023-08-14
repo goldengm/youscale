@@ -40,7 +40,7 @@ const AddStockBtn = ( { setShowModal }: AddStockBtnProps ): JSX.Element => {
             onClick={ () => setShowModal(true) }
             type="button" 
             className="btn btn-primary mb-2" 
-            >Add stock
+            >ajout de stock
         </a>
     )
 }
