@@ -8,6 +8,7 @@ import { useGetClientPaymentMethodQuery } from '../../../services/api/ClientApi/
 import { useGetClientPackQuery } from '../../../services/api/ClientApi/ClientPackApi'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
 import './pack.style.css'
+import { useGetClientQuery } from '../../../services/api/ClientApi/ClientApi'
 
 interface Bank {
     id: number;
@@ -16,11 +17,14 @@ interface Bank {
     rib: string;
 }
 export default function PackContainer() {
+    const { data: client } = useGetClientQuery()
     const { data: dataPack, isLoading, refetch } = useGetClientPackQuery()
     const { data: dataSetting } = useGetSettingQuery()
 
     const { data } = useGetClientPaymentMethodQuery()
     const [currentBank, setCurrentBank] = useState<Bank | undefined>()
+
+    console.log('client', client)
 
     useEffect(() => {
         setCurrentBank(data?.data[0] ? data?.data[0].Bank_Information : undefined)

@@ -109,7 +109,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
     const [addPerte] = useAddClientPerteMutation()
 
     const { data: perteCategorieData } = useGetClientPerteCategorieQuery()
-    const { data: productData } = useGetProductQuery()
+    const { data: productData } = useGetProductQuery({ isHidden: false })
 
     const { register, handleSubmit, formState: { errors }, getValues } = useForm<Inputs>({
         resolver: yupResolver(schema),

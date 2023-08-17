@@ -226,7 +226,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
 
     const { data: ColumnData } = useGetColumnQuery()
     const { data: CityData } = useGetCityQuery()
-    const { data: ProductData } = useGetProductQuery()
+    const { data: ProductData } = useGetProductQuery({ isHidden: false })
     const { data: PageData } = useGetPageQuery()
 
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({

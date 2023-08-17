@@ -109,7 +109,7 @@ const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
 
   const [adderStock] = useAddStockMutation()
 
-  const { data: productData } = useGetProductQuery()
+  const { data: productData } = useGetProductQuery({ isHidden: false })
 
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
     resolver: yupResolver(schema),
