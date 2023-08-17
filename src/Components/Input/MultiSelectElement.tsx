@@ -8,7 +8,6 @@ type OptionsType = {
     variant?: string[];
     allVariant?: string[] | undefined;
 }[]
-
 interface MultiSelectElementProps {
     options: { label: string, value: string, allVariant?: string[] }[],
     selected: OptionsType,

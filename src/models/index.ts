@@ -95,8 +95,8 @@ export interface ClientModel {
 
 export interface ProductModel {
     id?: number,
-    name?: string,
-    price_selling?: string,
+    name: string,
+    price_selling: string,
     price_buying?: string,
     isHidden?: boolean
     price_best_selling?: string,
