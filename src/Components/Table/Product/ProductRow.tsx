@@ -35,7 +35,9 @@ export default function ProductRow({ setShowEditModal, setShowDeleteModal, data,
 
         patchProd({
             id: data?.id || 0,
-            isHidden: !data?.isHidden || false
+            isHidden: !data?.isHidden || false,
+            name: data?.name ?? '',
+            price_selling: String(data?.price_selling) ?? ''
         }).unwrap().then((res)=> {
             showToastSucces(data?.isHidden ? 'Your product has ben showed' : 'Your product has ben hidden')
             refetch()
