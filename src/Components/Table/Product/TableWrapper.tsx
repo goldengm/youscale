@@ -7,6 +7,7 @@ interface Props {
     children: JSX.Element | JSX.Element[] | any,
     column: string[],
     AddBtn: JSX.Element
+    HideBtn?: JSX.Element
     refetch?: () => any
     item?: GetProductModel | undefined
     showAddProductModal?: boolean
@@ -16,7 +17,7 @@ interface Props {
     setShowEditProductModal?: React.Dispatch<React.SetStateAction<boolean>>
     setShowDeleteProductModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function TableWrapper({ children, title, column, item, AddBtn, refetch, showAddProductModal, showEditProductModal, showDeleteProductModal, setShowAddProductModal, setShowEditProductModal, setShowDeleteProductModal }: Props): JSX.Element {
+export default function TableWrapper({ children, title, column, item, AddBtn, HideBtn, refetch, showAddProductModal, showEditProductModal, showDeleteProductModal, setShowAddProductModal, setShowEditProductModal, setShowDeleteProductModal }: Props): JSX.Element {
 
     const never = (): any => { }
     return (
@@ -28,6 +29,7 @@ export default function TableWrapper({ children, title, column, item, AddBtn, re
             <div className="card">
                 <div className="card-header">
                     <h4 className="card-title">{title}</h4>
+                    { HideBtn && HideBtn }
                     {AddBtn}
                 </div>
                 <div className="card-body">

@@ -8,11 +8,12 @@ export const ClientProductApi = createApi({
     reducerPath: 'ClientProduitApi',
     baseQuery: fetchBaseQuery({baseUrl: CLIENT_PRODUIT_URL}),
     endpoints: (builder) =>({
-        getProduct : builder.query<{code: Number, data:GetProductModel[]}, void>({
-            query:() => ({
+        getProduct : builder.query<{code: Number, data:GetProductModel[]}, {isHidden : boolean}>({
+            query:(arg) => ({
                 method: 'GET',
                 url: '/',
                 headers: { Authorization: `Bear ${token}` },
+                params: arg
             })
         }),
         

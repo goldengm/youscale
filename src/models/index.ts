@@ -42,6 +42,8 @@ export interface Error {
 export interface Cient {
     fullname?: string
     livoToken?: string
+    trialAt?: null
+    trialPeriod?: 0
 }
 
 export interface AdminRegisterModel {
@@ -93,9 +95,10 @@ export interface ClientModel {
 
 export interface ProductModel {
     id?: number,
-    name: string,
-    price_selling: string,
+    name?: string,
+    price_selling?: string,
     price_buying?: string,
+    isHidden?: boolean
     price_best_selling?: string,
     variant?: string[]
 }
@@ -104,6 +107,7 @@ export interface GetProductModel {
     id: number,
     name: string,
     isDeleted: boolean,
+    isHidden: boolean
     variant: string[],
     price_selling: number,
     price_buying: number,
