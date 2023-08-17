@@ -62,7 +62,7 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
 
 export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu, urlVideo }: Props): JSX.Element {
 
-  const { data: productData } = useGetProductQuery()
+  const { data: productData } = useGetProductQuery({ isHidden: false })
   const { data: teamData } = useGetTeamMemberQuery()
   const { data, isSuccess } = useGetAnnoucementQuery()
 

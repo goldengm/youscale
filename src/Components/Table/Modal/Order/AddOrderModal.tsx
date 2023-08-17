@@ -136,7 +136,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
   const [showReporte, setShowReporte] = useState<boolean>(false)
 
   const { data: CityData } = useGetCityQuery()
-  const { data: ProductData, isSuccess: ProductSuccess } = useGetProductQuery()
+  const { data: ProductData, isSuccess: ProductSuccess } = useGetProductQuery({ isHidden: false })
   const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({

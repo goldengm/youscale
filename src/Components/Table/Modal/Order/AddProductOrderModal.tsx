@@ -17,7 +17,7 @@ interface Props {
 export default function AddProductOrderModal({ id, showModal, setShowModal, refetch, editData }: Props): JSX.Element {
 
   const [patchOrder] = usePatchClientOrderMutation()
-  const { data: ProductData, isSuccess } = useGetProductQuery()
+  const { data: ProductData, isSuccess } = useGetProductQuery({ isHidden: false })
 
   const FormatDataOption = (data: GetProductModel[]) => {
     var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
