@@ -6,7 +6,7 @@ import { AiFillEye } from 'react-icons/ai'
 import { BsTelephoneXFill } from 'react-icons/bs'
 import { TbPointFilled } from 'react-icons/tb'
 import { DisplayChangeOuvrir, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
-import { AddProductOrderModal, EditOrderModal, HistoryOrderModal, ReportOrderModal, DeleteOrderModal } from '../Modal/Order'
+import { HistoryOrderModal, ReportOrderModal, DeleteOrderModal, CommentOrderModal } from '../Modal/Order'
 import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel, ErrorModel } from '../../../models'
 import { CustumDropdown } from '../../Input'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
@@ -45,6 +45,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
     }, [])
 
     const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false)
+    const [showCommentModal, setShowCommentModal] = useState<boolean>(false)
     const [showReportModal, setShowReportModal] = useState<boolean>(false)
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
 
@@ -189,6 +190,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} id_order={String(order?.id ?? 0)} />}
             {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
             {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
+            {showCommentModal && <CommentOrderModal showModal={showCommentModal} setShowModal={setShowCommentModal} id_order={String(order?.id ?? 0)} />}
 
             <td style={{ width: '90px', color: 'black' }}>
                 <input
@@ -322,7 +324,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
                         if (formatDtName === 'Commentaire') {
                             return (
                                 <td style={{ width: '130px', color: 'black' }}>
-                                    <div className="tooltip-order"><BiMessageRoundedDetail
+                                    <div onClick={() => setShowCommentModal(true)} className="tooltip-order"><BiMessageRoundedDetail
                                         size={30}
                                         data-bs-container="body"
                                         data-bs-toggle="popover"

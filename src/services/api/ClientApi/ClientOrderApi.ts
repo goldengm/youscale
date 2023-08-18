@@ -104,6 +104,24 @@ export const ClientOrderApi = createApi({
             })
         }),
 
+        getOrderComment : builder.query<{code: Number, data:{message: string, createdAt: string}[]}, {id_order: string}>({
+            query:(arg) => ({
+                method: 'GET',
+                url: 'order/comment',
+                headers: { Authorization: `Bear ${token}` },
+                params: arg
+            })
+        }),
+
+        makeOrderComment : builder.mutation<void, {message: string, id_order : number}>({
+            query : (data:  { message: string, id_order : number }) => ({
+                method : 'POST',
+                body : data,
+                url : `order/comment`,
+                headers: { Authorization: `Bear ${token}` },
+            })
+        }),
+
     })
 })
 
@@ -113,5 +131,5 @@ export const {
     useGetClientOrderExportModelQuery, useGetSheetOrderQuery, 
     useGetOrderHistoryQuery, useBulkDeleteClientOrderMutation,
     useBulkEditClientOrderMutation, useGetClientOrderByIdQuery,
-    useGetAllOrderIdQuery
+    useGetAllOrderIdQuery, useGetOrderCommentQuery, useMakeOrderCommentMutation
 }  = ClientOrderApi;

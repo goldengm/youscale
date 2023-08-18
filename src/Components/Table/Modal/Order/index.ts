@@ -6,6 +6,7 @@ import ReportOrderModal from "./ReportOrderModal";
 import DeleteOrderModal from "./DeleteOrderModal";
 import BulkEditAgentModal from "./BulkEditAgentModal";
 import ConfirmationModal from "./ConfirmationModal";
+import CommentOrderModal from "./CommentOrderModal";
 
 export {
     AddOrderModal,
@@ -15,5 +16,6 @@ export {
     ReportOrderModal,
     DeleteOrderModal,
     BulkEditAgentModal,
-    ConfirmationModal
+    ConfirmationModal,
+    CommentOrderModal
 }

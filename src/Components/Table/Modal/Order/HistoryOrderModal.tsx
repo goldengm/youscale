@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import ModalWrapper from '../ModalWrapper'
-import './modal.style.css'
 import { useGetOrderHistoryQuery } from '../../../../services/api/ClientApi/ClientOrderApi'
+import './modal.style.css'
 
 type HistoryType = {
   message: string;
@@ -52,16 +52,6 @@ const FormBody = ({ data }:FormBodyProps) => {
         <ul className="timeline">
           {data && data.map(dt => <Event description={dt.message} date={dt.createdAt} />)}
         </ul>
-        <div className="ps__rail-x" style={{ left: 0, bottom: 0 }}>
-          <div className="ps__thumb-x" tabIndex={0} style={{ left: 0, width: 0 }} />
-        </div>
-        <div className="ps__rail-y" style={{ top: 0, height: 370, right: 0 }}>
-          <div
-            className="ps__thumb-y"
-            tabIndex={0}
-            style={{ top: 0, height: 248 }}
-          />
-        </div>
       </div>
     </div>
   )
