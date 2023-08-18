@@ -1,3 +1,9 @@
 .custum-time-line{
     overflow-y: scroll !important;
 }
+
+.comment-input{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}

@@ -5,11 +5,16 @@ import { ClientOrderApi, useGetClientOrderQuery, useGetSheetOrderQuery } from '.
 import { OrderQueryModel } from '../../../models'
 import { useDispatch } from 'react-redux'
 import { GetRole } from '../../../services/storageFunc'
+import { CLIENT_URL } from '../../../services/url/API_URL'
+import axios from 'axios'
+import { number } from 'yup'
 
+const token = localStorage.getItem('token')
 export default function Order(): JSX.Element {
 
   const userData = localStorage.getItem('userData')
 
+  const [id_orders, setIdOrders] = useState<number[]>([])
   const [_skip, _setSkip] = useState<number>(10);
 
   const { data: sheetData } = useGetSheetOrderQuery()
@@ -29,6 +34,20 @@ export default function Order(): JSX.Element {
     dispatch(ClientOrderApi.util.resetApiState())
     RefetchOrderClient()
   }, [])
+
+  let config = {
+    headers: {
+      'Authorization': 'Bear ' + token
+    }
+  }
+
+  useEffect(() => {
+    axios.get(`${CLIENT_URL}/getallid`, config).then((response) => {
+      setIdOrders(response.data.data)
+    })
+      .catch()
+  }, [])
+
 
   useEffect(() => {
     setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], search: undefined, status: status, id_product_array: product ?? undefined, id_team: idTeam !== -1 ? idTeam : undefined, _skip: 0, _limit: _skip })
@@ -54,15 +73,16 @@ export default function Order(): JSX.Element {
     <Main name={'Order'} urlVideo={'https://www.youtube.com/watch?v=t_d1cKerFUc'} showTeamFilter={true} setIdTeam={setIdTeam} setProduct={setProduct} usingDate={usingDate} showProductFilter={true} setDate={setDate} setUsingDate={setUsingDate} showDateFilter={true}>
       <div className="content-body">
         <div className="container-fluid">
-            <Table 
-              _skip={_skip}
-              _setSkip={_setSkip}
-              setStatus={setStatus}
-              data={OrderClient} 
-              refetch={RefetchOrderClient} 
-              setOrderQueryData={setOrderQueryData} 
-              isLoading={isLoading} 
-            />
+          <Table
+            _skip={_skip}
+            _setSkip={_setSkip}
+            orders_id={id_orders}
+            setStatus={setStatus}
+            data={OrderClient}
+            refetch={RefetchOrderClient}
+            setOrderQueryData={setOrderQueryData}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     </Main>
