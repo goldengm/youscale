@@ -35,6 +35,10 @@
     border-bottom: 1px dotted black;
 }
 
+.tooltip-order:hover{
+    cursor: pointer;
+}
+
 .tooltip-order .tooltiptext {
     visibility: hidden;
     width: 120px;

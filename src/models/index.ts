@@ -18,6 +18,24 @@ export interface ShippingModel {
     updatedAt: string
 }
 
+export interface OrderOnlyModel{
+    id: number
+    id_city: number,
+    date: string,
+    nom: string,
+    telephone: string,
+    status: string
+    prix: string
+    adresse: string
+    id_team: number
+    Product_Orders: ProductOrder[]
+    createdAt: Date
+    SheetId: string
+    reportedDate: string
+    isSendLivo: string
+    telDuplicate: boolean
+}
+
 export interface ShippingCitiesModel {
     id: number
     id_user: number
