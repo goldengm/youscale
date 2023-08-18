@@ -4,10 +4,10 @@ import ModalWrapper from '../ModalWrapper'
 import { ErrorModel, GetClientOrderModel, StatusModel } from '../../../../models'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
 import { useGetStatusQuery } from '../../../../services/api/ClientApi/ClientStatusApi';
 import { usePatchClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi';
 import { showToastError } from '../../../../services/toast/showToastError';
+import * as yup from "yup";
 
 type SelectType = {
   label: string,
@@ -96,7 +96,6 @@ interface FormBodyProps {
 
 const FormBody = ({ dataEdit, handleCloseModal, refetch, id_order }: FormBodyProps) => {
 
-  console.log('ed: ',dataEdit)
   const [patchOrder] = usePatchClientOrderMutation()
 
   const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()

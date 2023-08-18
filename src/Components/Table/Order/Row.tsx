@@ -366,24 +366,6 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
                     }
                 })
             }
-            {/* <td style={{ width: '130px', color: 'black' }}>
-                <div className="d-flex">
-                    <a
-                        onClick={() => setShowEditModal(true)}
-                        href="#"
-                        className="btn btn-primary shadow btn-xs sharp me-1"
-                    >
-                        <i className="fas fa-pencil-alt" />
-                    </a>
-                    <a
-                        onClick={() => setShowDeleteModal(true)}
-                        href="#"
-                        className="btn btn-danger shadow btn-xs sharp"
-                    >
-                        <i className="fa fa-trash" />
-                    </a>
-                </div>
-            </td> */}
         </tr>
     )
 }

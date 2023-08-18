@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { AddOrderModal, AddProductOrderModal, BulkEditAgentModal, EditOrderModal } from '../Modal/Order'
+import { AddOrderModal, AddProductOrderModal, BulkEditAgentModal, EditOrderModal, ConfirmationModal } from '../Modal/Order'
 import { RiDeleteBin6Fill } from 'react-icons/ri'
 import { FaUserEdit } from 'react-icons/fa'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
 import { ColumnModel, GetClientOrderModel, OrderQueryModel, ProductOrder } from '../../../models'
-import { useBulkDeleteClientOrderMutation, useGetClientOrderExportModelQuery } from '../../../services/api/ClientApi/ClientOrderApi'
+import { useBulkDeleteClientOrderMutation, useGetAllOrderIdQuery, useGetClientOrderExportModelQuery } from '../../../services/api/ClientApi/ClientOrderApi'
 import { CSVLink } from "react-csv";
 import { useGetStatusQuery } from '../../../services/api/ClientApi/ClientStatusApi'
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -46,11 +46,12 @@ interface TableProps {
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     _skip: number,
-    _setSkip: React.Dispatch<React.SetStateAction<number>>,
+    _setSkip: React.Dispatch<React.SetStateAction<number>>
+    orders_id: number[]
     isLoading: boolean,
     refetch: () => any
 }
-export default function Table({ data, refetch, setOrderQueryData, isLoading, _skip, _setSkip, setStatus }: TableProps): JSX.Element {
+export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id }: TableProps): JSX.Element {
 
     const [editData, setEditData] = useState<GetClientOrderModel>({ } as GetClientOrderModel)
     const [order, setOrder] = useState<OrderModel | undefined>()
@@ -61,6 +62,7 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
 
     const [showProductOrderModal, setShowProductOrderModal] = useState(false)
     const [showOrderModal, setShowOrderModal] = useState(false)
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const { data: ColumnData } = useGetColumnQuery()
 
@@ -105,11 +107,12 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
     return (
         <div className="col-12">
             {showOrderModal && <AddOrderModal refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
+            {showConfirmationModal && <ConfirmationModal refetch={refetch} showModal={showConfirmationModal} setShowModal={setShowConfirmationModal} id_orders={orders_id ?? []} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={String(order?.id)} />}
             {showProductOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showProductOrderModal} setShowModal={setShowProductOrderModal} />}
 
             <div className="card">
-                <TableHeader setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
+                <TableHeader setShowConfirmationModal={setShowConfirmationModal} setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
                 <InfiniteScroll
                     dataLength={data?.data.length || 0}
                     next={fetchData}
@@ -142,17 +145,19 @@ export default function Table({ data, refetch, setOrderQueryData, isLoading, _sk
 
 interface TableHeaderProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowConfirmationModal: React.Dispatch<React.SetStateAction<boolean>>
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     _skip: number,
     refetch: () => any,
     id_orders: number[] | undefined
 }
-const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus }: TableHeaderProps): JSX.Element => {
+const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus, setShowConfirmationModal }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
             <DeleteBulkOrder id_orders={id_orders} refetch={refetch} />
             <EditBulkOrder id_orders={id_orders} refetch={refetch} />
+            <StartConfirmationBtn setShowModal={setShowConfirmationModal} />
             <AddOrderBtn setShowModal={setShowModal} />
             <ImportBtn id_orders={id_orders} />
             <SearchBar _skip={_skip} setOrderQueryData={setOrderQueryData} refetch={refetch} />
@@ -171,6 +176,17 @@ const AddOrderBtn = ({ setShowModal }: AddOrderBtnProps): JSX.Element => {
             type="button"
             className="btn btn-primary mb-2"
         >ajouter commande
+        </a>
+    )
+}
+
+const StartConfirmationBtn = ({ setShowModal }: AddOrderBtnProps): JSX.Element => {
+    return (
+        <a
+            onClick={() => setShowModal(true)}
+            type="button"
+            className="btn btn-primary mb-2"
+        >commencer confirmation
         </a>
     )
 }

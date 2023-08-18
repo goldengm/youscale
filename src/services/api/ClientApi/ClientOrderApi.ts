@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ClientOrderModel, GetClientOrderModel, PatchClientOrderModel, ProductOrder, OrderQueryModel } from '../../../models'
+import { ClientOrderModel, GetClientOrderModel, PatchClientOrderModel, ProductOrder, OrderQueryModel, OrderOnlyModel } from '../../../models'
 import { CLIENT_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')
@@ -14,6 +14,23 @@ export const ClientOrderApi = createApi({
                 url: 'order/',
                 headers: { Authorization: `Bear ${token}` },
                 params: arg
+            })
+        }),
+
+        getClientOrderById : builder.query<{code: Number, data:GetClientOrderModel, order: OrderOnlyModel[]}, { id: number }>({
+            query:(arg) => ({
+                method: 'GET',
+                url: 'order/byid',
+                headers: { Authorization: `Bear ${token}` },
+                params: arg
+            })
+        }),
+
+        getAllOrderId : builder.query<{ code: Number, data: number[] }, void>({
+            query:() => ({
+                method: 'GET',
+                url: '/getallid',
+                headers: { Authorization: `Bear ${token}` }
             })
         }),
 
@@ -95,5 +112,6 @@ export const {
     useDeleteClientOrderMutation, usePatchClientOrderMutation, 
     useGetClientOrderExportModelQuery, useGetSheetOrderQuery, 
     useGetOrderHistoryQuery, useBulkDeleteClientOrderMutation,
-    useBulkEditClientOrderMutation
+    useBulkEditClientOrderMutation, useGetClientOrderByIdQuery,
+    useGetAllOrderIdQuery
 }  = ClientOrderApi;
