@@ -14,6 +14,7 @@ export default function Order(): JSX.Element {
 
   const userData = localStorage.getItem('userData')
 
+  const [statusConfirmation, setStatusConfirmation] = useState<string>()
   const [id_orders, setIdOrders] = useState<number[]>([])
   const [_skip, _setSkip] = useState<number>(10);
 
@@ -42,11 +43,11 @@ export default function Order(): JSX.Element {
   }
 
   useEffect(() => {
-    axios.get(`${CLIENT_URL}/getallid`, config).then((response) => {
+    axios.get(`${CLIENT_URL}/getallid/${statusConfirmation ? `?status=${statusConfirmation}` : `` }`, config).then((response) => {
       setIdOrders(response.data.data)
     })
       .catch()
-  }, [])
+  }, [statusConfirmation])
 
 
   useEffect(() => {
@@ -78,6 +79,7 @@ export default function Order(): JSX.Element {
             _setSkip={_setSkip}
             orders_id={id_orders}
             setStatus={setStatus}
+            setStatusConfirmation={setStatusConfirmation}
             data={OrderClient}
             refetch={RefetchOrderClient}
             setOrderQueryData={setOrderQueryData}

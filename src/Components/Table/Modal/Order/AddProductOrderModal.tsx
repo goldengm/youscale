@@ -14,6 +14,15 @@ interface Props {
   refetch: () => any,
   editData?: ProductOrder[] | undefined
 }
+
+interface selectedProductModel {
+  label: string;
+  value: number | undefined | string;
+  quantity: number;
+  variant: string[];
+  allVariant: string[] | undefined;
+}
+
 export default function AddProductOrderModal({ id, showModal, setShowModal, refetch, editData }: Props): JSX.Element {
 
   const [patchOrder] = usePatchClientOrderMutation()
@@ -41,9 +50,14 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
     return objArr
   }
 
-  const [selectedProduct, setSelectedProduct] = useState((editData) ? editData?.map((dt) => {
-    return { label: dt.Product.name, value: dt.Product.id, quantity: dt.quantity, variant: dt.variant, allVariant: dt.Product.variant }
-  }) : []);
+  const [selectedProduct, setSelectedProduct] = useState<selectedProductModel[]>([]);
+
+  useEffect(() => {
+    setSelectedProduct((editData) ? editData?.map((dt) => {
+      return { label: dt.Product.name, value: dt.Product.id ? String(dt.Product.id) : '', quantity: dt.quantity, variant: dt.variant, allVariant: dt.Product.variant }
+    }) : [])
+  }, [])
+  
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
