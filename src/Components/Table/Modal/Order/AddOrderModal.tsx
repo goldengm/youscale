@@ -132,7 +132,7 @@ interface FormBodyProps {
 const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
   const [addOrder, { isLoading }] = useAddClientOrderMutation()
 
-  const [selectedProduct, setSelectedProduct] = useState<{ label: string, value: number | undefined, quantity: number, variant: string[], allVariant: string[] | undefined }[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<{ label: string, value: number | undefined | string, quantity: number, variant: string[], allVariant: string[] | undefined }[]>([]);
   const [showReporte, setShowReporte] = useState<boolean>(false)
 
   const { data: CityData } = useGetCityQuery()
