@@ -44,6 +44,7 @@ const GetColumn = (col: ColumnModel[] | undefined): string[] => {
 interface TableProps {
     data: Order,
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
+    setStatusConfirmation: React.Dispatch<React.SetStateAction<string | undefined>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     _skip: number,
     _setSkip: React.Dispatch<React.SetStateAction<number>>
@@ -51,7 +52,7 @@ interface TableProps {
     isLoading: boolean,
     refetch: () => any
 }
-export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id }: TableProps): JSX.Element {
+export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id, setStatusConfirmation }: TableProps): JSX.Element {
 
     const [editData, setEditData] = useState<GetClientOrderModel>({ } as GetClientOrderModel)
     const [order, setOrder] = useState<OrderModel | undefined>()
@@ -107,7 +108,7 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
     return (
         <div className="col-12">
             {showOrderModal && <AddOrderModal refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
-            {showConfirmationModal && <ConfirmationModal refetch={refetch} showModal={showConfirmationModal} setShowModal={setShowConfirmationModal} id_orders={orders_id ?? []} />}
+            {showConfirmationModal && <ConfirmationModal refetch={refetch} setStatus={setStatusConfirmation} showModal={showConfirmationModal} setShowModal={setShowConfirmationModal} id_orders={orders_id ?? []} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={String(order?.id)} />}
             {showProductOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showProductOrderModal} setShowModal={setShowProductOrderModal} />}
 

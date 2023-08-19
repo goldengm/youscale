@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { CustumInput, CustumSelectForm } from '../../../Forms'
-import { CityModel, ErrorModel, GetClientOrderModel, GetProductModel, OrderOnlyModel, ProductOrder, StatusModel } from '../../../../models'
+import { CityModel, ErrorModel, GetClientOrderModel, GetProductModel, OrderOnlyModel, ProductOrder, StatusModel, countOrderByStatusModel } from '../../../../models'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetStatusQuery } from '../../../../services/api/ClientApi/ClientStatusApi';
@@ -13,9 +13,27 @@ import ModalWrapper from '../ModalWrapper'
 import * as yup from "yup";
 import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi';
 
+const FilterStatusData = (data: StatusModel[] | undefined): SelectType[] => {
+    if (!data) return []
+
+    var newArr: SelectType[] = []
+
+    data.filter((dt: StatusModel) => {
+        if (dt.checked === true) newArr.push({ label: dt.name, value: dt.name })
+    })
+
+    return newArr
+}
+
 type SelectType = {
     label: string,
     value: string | number
+}
+
+interface GetStatusModel {
+    code: Number;
+    data: StatusModel[];
+    countOrderByStatus: countOrderByStatusModel[];
 }
 
 type Inputs = {
@@ -48,17 +66,27 @@ interface Props {
     id_orders: number[],
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     refetch: () => any
 }
-export default function ConfirmationModal({ showModal, setShowModal, refetch, id_orders }: Props): JSX.Element {
+export default function ConfirmationModal({ showModal, setShowModal, refetch, id_orders, setStatus }: Props): JSX.Element {
+
+    const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
 
     const [index, setIndex] = useState<number>(0)
     const { data: currentOrder, isSuccess, refetch: refetchCurrentOrder } = useGetClientOrderByIdQuery({ id: id_orders[index] })
+    
 
     useEffect(() => {
         refetchCurrentOrder()
     }, [index])
 
+    const onSelectStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        e.preventDefault()
+        const { value } = e.target
+        console.log(value)
+        setStatus(value)
+    }
 
     useEffect(() => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -91,17 +119,29 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
         }
     }
 
+    if(id_orders.length === 0){
+        setStatus(undefined)
+        handleCloseModal()
+    }
+
     return (
-        isSuccess ?
+        (isSuccess && id_orders.length > 0) ?
             <ModalWrapper title={'Confirmation'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
+                <SelectStatusComponent data={FilterStatusData(StatusData?.data)} label={'Status'} name={'status'} Onchange={onSelectStatus} />
+                <div className="order-id-date">
+                    <div>Order Id: {currentOrder.order[0].id}</div>
+                    <div>Date: {new Date(currentOrder.order[0].date).toISOString().split('T')[0]}</div>
+                </div>
                 <EditProductSection refetch={refetch} id={id_orders[index]} editData={currentOrder.order[0].Product_Orders} />
-                <FormBody handleCloseModal={handleCloseModal} currentOrder={currentOrder} refetch={refetch} setIndex={setIndex} id_orders={id_orders} index={index} />
+                <FormBody handleCloseModal={handleCloseModal} RefetchStatus={RefetchStatus} currentOrder={currentOrder} StatusData={StatusData} refetch={refetch} setIndex={setIndex} id_orders={id_orders} index={index} />
             </ModalWrapper> :
             <p>Ooops, something appened try again</p>
     )
 }
 
 interface FormBodyProps {
+    StatusData: GetStatusModel | undefined
+    RefetchStatus: () => void
     id_orders: number[]
     index: number
     handleCloseModal: () => void
@@ -114,28 +154,14 @@ interface FormBodyProps {
     }
 }
 
-const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, currentOrder }: FormBodyProps) => {
+const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, currentOrder, StatusData, RefetchStatus }: FormBodyProps) => {
 
     const { data: dataCity } = useGetCityQuery()
     const [patchOrder] = usePatchClientOrderMutation()
 
-    const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
-
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(schema),
     });
-
-    const FilterStatusData = (data: StatusModel[] | undefined): SelectType[] => {
-        if (!data) return []
-
-        var newArr: SelectType[] = []
-
-        data.filter((dt: StatusModel) => {
-            if (dt.checked === true) newArr.push({ label: dt.name, value: dt.name })
-        })
-
-        return newArr
-    }
 
     const [upDownData] = useState<SelectType[]>([
         { label: 'none', value: 'none' },
@@ -143,10 +169,6 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
         { label: 'DownSell', value: 'UpSell' },
         { label: 'CrossSell', value: 'UpSell' }
     ])
-
-    useEffect(() => {
-        RefetchStatus()
-    }, [])
 
     const FormatCity = (data: CityModel[]) => {
         var options: { label: string, value: string | number }[] = []
@@ -170,8 +192,12 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
 
         patchOrder(data).unwrap()
             .then(res => {
-                console.log(res)
                 refetch()
+                if (id_orders.length === index) {
+                    handleCloseModal()
+                    return
+                }
+
                 setIndex(prevIndex => prevIndex + 1)
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
@@ -186,10 +212,8 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
         <div className="card-body">
             <div className="basic-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row">
-                        <p>Order Id: {currentOrder.order[0].id} - Date: {currentOrder.order[0].date}</p>
-                        <p>restant: {id_orders.length - index}</p>
-                    </div>
+
+                    <div className='restant-txt'>restant: {id_orders.length - index}</div>
 
                     <div className="row">
 
@@ -272,6 +296,15 @@ interface EditProductSectionProps {
     refetch: () => any
     editData?: ProductOrder[] | undefined
 }
+
+interface selectedProductModel {
+    label: string;
+    value: number | undefined | string;
+    quantity: number;
+    variant: string[];
+    allVariant: string[] | undefined;
+}
+
 const EditProductSection = ({ editData, refetch, id }: EditProductSectionProps): JSX.Element => {
     const [patchOrder] = usePatchClientOrderMutation()
     const { data: ProductData, isSuccess } = useGetProductQuery({ isHidden: false })
@@ -298,9 +331,14 @@ const EditProductSection = ({ editData, refetch, id }: EditProductSectionProps):
         return objArr
     }
 
-    const [selectedProduct, setSelectedProduct] = useState((editData) ? editData?.map((dt) => {
-        return { label: dt.Product.name, value: dt.Product.id, quantity: dt.quantity, variant: dt.variant, allVariant: dt.Product.variant }
-    }) : []);
+    const [selectedProduct, setSelectedProduct] = useState<selectedProductModel[]>([]);
+
+    useEffect(() => {
+        setSelectedProduct((editData) ? editData?.map((dt) => {
+            return { label: dt.Product.name, value: dt.Product.id ? String(dt.Product.id) : '', quantity: dt.quantity, variant: dt.variant, allVariant: dt.Product.variant }
+        }) : [])
+    }, [])
+
 
     const onSubmit = () => {
         if (selectedProduct.length === 0) {
@@ -340,6 +378,28 @@ const EditProductSection = ({ editData, refetch, id }: EditProductSectionProps):
             )}
 
             <SendButton value='Modifier les produits' onClick={onSubmit} />
+        </div>
+    )
+}
+
+interface SelectStatusComponentProps {
+    data: SelectType[]
+    name: string
+    label: string
+    Onchange: (e: React.ChangeEvent<HTMLSelectElement>) => any
+}
+const SelectStatusComponent = ({ data, label, name, Onchange }: SelectStatusComponentProps) => {
+    return (
+        <div className="mb-3 col-md-4">
+            <label className="form-label">{label}</label>
+            <select
+                onChange={Onchange}
+                name={name}
+                className="me-sm-2 default-select form-control wide"
+                id="inlineFormCustomSelect"
+            >
+                {data.map((dt) => <option value={dt.value}>{dt.label}</option>)}
+            </select>
         </div>
     )
 }

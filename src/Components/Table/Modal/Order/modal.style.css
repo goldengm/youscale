@@ -7,3 +7,14 @@
     position: absolute;
     bottom: 0;
 }
+
+.order-id-date{
+    display: flex;
+    justify-content: space-around;
+}
+
+.restant-txt{
+    margin: 20px;
+    font-weight: 700;
+    font-size: 17px;
+}

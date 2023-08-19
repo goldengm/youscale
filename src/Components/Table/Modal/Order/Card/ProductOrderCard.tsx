@@ -8,7 +8,7 @@ interface Props {
     
     React.Dispatch<React.SetStateAction<{
         label: string;
-        value: number | undefined;
+        value: number | undefined | string;
         quantity: number;
         variant: string[];
         allVariant: string[] | undefined;
@@ -16,14 +16,14 @@ interface Props {
     ,
     selectedProduct: {
         label: string;
-        value: number | undefined;
+        value: number | undefined | string;
         quantity: number;
         variant: string[];
         allVariant: string[] | undefined;
     }[],
     dt: {
         label: string;
-        value: number | undefined;
+        value: number | undefined | string;
         quantity: number;
         variant: string[];
         allVariant: string[] | undefined;

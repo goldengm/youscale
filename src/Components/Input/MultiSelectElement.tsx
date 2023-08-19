@@ -15,6 +15,8 @@ interface MultiSelectElementProps {
     className?: string
 }
 export default function MultiSelectElement({ options, selected, onChange, className }: MultiSelectElementProps): JSX.Element {
+    
+  console.log(selected)
     return (
         <MultiSelect
             className={className}
