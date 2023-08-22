@@ -15,13 +15,29 @@ interface Props {
   showTeamFilter?: boolean,
   setProduct?: React.Dispatch<React.SetStateAction<string>>
   urlVideo: string
+  showTutorial: boolean
+  closeTutorial: () => void
 }
-export default function Main({ children, name, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, urlVideo }: Props): JSX.Element {
+export default function Main({ children, name, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, urlVideo, showTutorial, closeTutorial }: Props): JSX.Element {
   const [showMenu, setShowMenu] = useState<boolean>(true)
 
   return (
     <div id="main-wrapper" className={showMenu ? 'show menu-toggle' : 'show'}>
-      <Header name={name} urlVideo={urlVideo} showMenu={showMenu} setShowMenu={setShowMenu} setProduct={setProduct} showProductFilter={showProductFilter} setDate={setDate} setIdTeam={setIdTeam} showTeamFilter={showTeamFilter} setUsingDate={setUsingDate} showDateFilter={showDateFilter} />
+      <Header
+        name={name}
+        urlVideo={urlVideo}
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        setProduct={setProduct}
+        showProductFilter={showProductFilter}
+        setDate={setDate}
+        setIdTeam={setIdTeam}
+        showTeamFilter={showTeamFilter}
+        setUsingDate={setUsingDate}
+        showDateFilter={showDateFilter}
+        showTutorial={showTutorial}
+        closeTutorial={closeTutorial}
+      />
       <Menu />
       {children}
       <Footer />

@@ -90,7 +90,7 @@ const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProp
 
     return (
         <div className="col-xl-6 col-lg-6">
-            <div className="card">
+            <div className="card status_card">
                 <div className="card-header">
                     <h4 className="card-title">Status</h4>
                 </div>
@@ -236,7 +236,7 @@ const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Elemen
     })
 
     return (
-        <div className="col-12">
+        <div className="col-12 column_card">
             <div className="card">
                 <div className="card-header">
                     <h4 className="card-title">Column</h4>
@@ -299,7 +299,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
                     <a
                         onClick={() => setShowAddCityModal(true)}
                         type="button"
-                        className="btn btn-primary mb-2"
+                        className="btn btn-primary mb-2 add-city-btn"
                     >
                         Add city
                     </a>
@@ -329,7 +329,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
 
                         <div className="col-md-6">
                             <DragAndDropFile refetch={refetch} />
-                            <a href='/load/model.csv' className="btn btn-outline-primary btn-xs export-btn">Copier le model</a>
+                            <a href='/load/model.csv' className="btn btn-outline-primary btn-xs export-btn copy-model-btn">Copier le model</a>
                         </div>
                     </div>
                 </div>
@@ -523,7 +523,7 @@ const ConfSetting = ({ setShowEditPasswordModal }: ConfSettingProps): JSX.Elemen
 
 
     return (
-        <div className="col-12">
+        <div className="col-12 configuration">
             <div className="card">
                 <div className="card-header">
                     <h4 className="card-title">Configuration</h4>

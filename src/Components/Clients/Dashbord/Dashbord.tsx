@@ -10,6 +10,8 @@ import { BsFillPatchCheckFill, BsPatchQuestion } from 'react-icons/bs'
 import { CustomPie, CustomLine } from '../../Chart'
 import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity } from '../../../models'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 import 'reactjs-popup/dist/index.css';
 import './style.css'
 
@@ -23,10 +25,81 @@ interface Props {
     showProductFilter: boolean,
     usingDate: boolean,
     showTeamFilter: boolean
+    showTutorial: boolean
+    closeTutorial: () => void
 }
-export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, usingDate }: Props): JSX.Element {
+const see_tutorial = localStorage.getItem('see_tutorial')
+const hasAlreadyViewTutorial = see_tutorial ? JSON.parse(see_tutorial) : false
+export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, usingDate, showTutorial, closeTutorial }: Props): JSX.Element {
+
+    const driverObj = driver({
+        onNextClick: () => {
+            if (driverObj.getActiveIndex() === 0) {
+                const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
+                if (response) {
+                    localStorage.setItem('see_tutorial', JSON.stringify(true))
+                    driverObj.destroy();
+                } else {
+                    //
+                }
+            }
+        },
+        nextBtnText: 'Suivant',
+        prevBtnText: 'Retour',
+        doneBtnText: 'Terminer le tutoriel',
+        popoverClass: "driverjs-theme",
+        stagePadding: 4,
+        showProgress: true,
+        allowClose: false,
+        steps: [
+            { element: '.menu-step:nth-child(7)', popover: { title: 'Setting', description: 'Description for setting page', side: "right", align: 'start' } }
+        ]
+    });
+
+    if (!hasAlreadyViewTutorial) {
+        driverObj.highlight({
+            popover: {
+                description: `
+                    <div class='welcome-box'>
+                        <img src='/images/welcome-animation.svg' alt='welcome-animation' style='height: 100px; width: 200px;' />
+                        <p class='welcome-txt'>Bienvenue sur youscale, démarrer avec nous</p>
+                        <a class='start-tuto' href='#' style='font-size: 17px; display: block; margin-top: 10px; text-align: center;'>Commencer le tutoriel</a>
+                    </div>
+                `,
+            }
+        })
+    }
+
+
+    useEffect(() => {
+        document.addEventListener('click', (event: Event) => {
+            const target = event.target as HTMLElement;
+            if (target && target.classList.contains('start-tuto')) {
+                event.preventDefault();
+                startTutorial();
+            }
+        });
+    }, [])
+
+    function startTutorial() {
+        driverObj.drive();
+    }
+
     return (
-        <Main name={'Dashbord'} showTeamFilter={showTeamFilter} urlVideo={'https://www.youtube.com/watch?v=vKl4nbql6ao'} setIdTeam={setIdTeam} setProduct={setProduct} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate} showProductFilter={showProductFilter} showDateFilter={showDateFilter}>
+        <Main
+            name={'Dashbord'}
+            showTeamFilter={showTeamFilter}
+            urlVideo={'https://www.youtube.com/watch?v=vKl4nbql6ao'}
+            setIdTeam={setIdTeam}
+            setProduct={setProduct}
+            usingDate={usingDate}
+            setDate={setDate}
+            setUsingDate={setUsingDate}
+            showProductFilter={showProductFilter}
+            showDateFilter={showDateFilter}
+            showTutorial={showTutorial}
+            closeTutorial={closeTutorial}
+        >
             <div className="content-body">
                 <div className="container-fluid">
                     <DisplayCard costPerLead={data.costPerLead} orderInProgress={data.orderInProgress}
@@ -63,7 +136,7 @@ interface DisplayCardProps {
 }
 const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet, stock, totalOrder }: DisplayCardProps): JSX.Element => {
     return (
-        <div className="row invoice-card-row">
+        <div className="row invoice-card-row stats">
 
             <Card bg={'warning'} value={earningNet} orderInProgress={orderInProgress} title={'gain net'} icon={<MdAttachMoney size={35} color={'white'} />} />
 
@@ -92,7 +165,7 @@ interface CardProps {
 }
 const Card = ({ bg, value, title, icon, orderInProgress }: CardProps): JSX.Element => {
     return (
-        <div className="col-xl-3 col-xxl-3 col-sm-6">
+        <div className="col-xl-3 col-xxl-3 col-sm-6 card-stats">
             <div className={`card bg-${bg} invoice-card`}>
                 <div className="card-body d-flex">
                     <div className="icon me-3">

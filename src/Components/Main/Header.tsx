@@ -22,6 +22,8 @@ interface Props {
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>,
   name: string
   urlVideo: string
+  showTutorial: boolean
+  closeTutorial: () => void
 }
 
 type dataType = {
@@ -60,7 +62,7 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
 
 }
 
-export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu, urlVideo }: Props): JSX.Element {
+export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu, urlVideo, showTutorial, closeTutorial }: Props): JSX.Element {
 
   const { data: productData } = useGetProductQuery({ isHidden: false })
   const { data: teamData } = useGetTeamMemberQuery()
@@ -89,7 +91,7 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
 
   return (
     <>
-      { showVideo && <VideoModal setShowModal={setShowVideo} showModal={showVideo} urlVideo={urlVideo} />}
+      { showVideo && <VideoModal setShowModal={setShowVideo} showModal={showVideo} urlVideo={urlVideo} closeTutorial={closeTutorial} />}
       <div className="nav-header">
         <a href="/" className="brand-logo">
           <img src="/cus_img/Group15.png" alt="logo" className="brand-title" width="124px" height="33px" />
