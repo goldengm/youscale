@@ -25,6 +25,18 @@ const FilterStatusData = (data: StatusModel[] | undefined): SelectType[] => {
     return newArr
 }
 
+const FilterStatusWithOrder = (data: countOrderByStatusModel[] | undefined): SelectType[] => {
+    if (!data) return []
+
+    var newArr: SelectType[] = []
+
+    data.filter((dt: countOrderByStatusModel) => {
+        if (dt.count > 0) newArr.push({ label: dt.name, value: dt.name })
+    })
+
+    return newArr
+}
+
 type SelectType = {
     label: string,
     value: string | number
@@ -75,7 +87,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
 
     const [index, setIndex] = useState<number>(0)
     const { data: currentOrder, isSuccess, refetch: refetchCurrentOrder } = useGetClientOrderByIdQuery({ id: id_orders[index] })
-    
+
 
     useEffect(() => {
         refetchCurrentOrder()
@@ -119,7 +131,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
         }
     }
 
-    if(id_orders.length === 0){
+    if (id_orders.length === 0) {
         setStatus(undefined)
         handleCloseModal()
     }
@@ -127,7 +139,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
     return (
         (isSuccess && id_orders.length > 0) ?
             <ModalWrapper title={'Confirmation'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
-                <SelectStatusComponent data={FilterStatusData(StatusData?.data)} label={'Status'} name={'status'} Onchange={onSelectStatus} />
+                <SelectStatusComponent data={FilterStatusWithOrder(StatusData?.countOrderByStatus)} label={'Status'} name={'status'} Onchange={onSelectStatus} />
                 <div className="order-id-date">
                     <div>Order Id: {currentOrder.order[0].id}</div>
                     <div>Date: {new Date(currentOrder.order[0].date).toISOString().split('T')[0]}</div>
@@ -135,7 +147,9 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
                 <EditProductSection refetch={refetch} id={id_orders[index]} editData={currentOrder.order[0].Product_Orders} />
                 <FormBody handleCloseModal={handleCloseModal} RefetchStatus={RefetchStatus} currentOrder={currentOrder} StatusData={StatusData} refetch={refetch} setIndex={setIndex} id_orders={id_orders} index={index} />
             </ModalWrapper> :
-            <p>Ooops, something appened try again</p>
+            <ModalWrapper title={'Confirmation'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
+                <div>Impossible</div>
+            </ModalWrapper>
     )
 }
 
@@ -193,7 +207,8 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
         patchOrder(data).unwrap()
             .then(res => {
                 refetch()
-                if (id_orders.length === index) {
+                console.log({ id_orders: id_orders.length, index: index + 1 })
+                if (id_orders.length === (index + 1)) {
                     handleCloseModal()
                     return
                 }

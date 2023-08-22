@@ -7,19 +7,25 @@ import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
 import { EarningTable, GetTeamMemberModel, Performance, TeamDashbordQueryModel } from '../../../models'
 import { useGetTeamMemberQuery, usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 import { useGetTeamDashbordQuery } from '../../../services/api/ClientApi/ClientTeamDashbordApi'
-import { showToastError } from '../../../services/toast/showToastError'
-import PerformanceCard from './PerformanceCard'
-import EarningCard from './EarningCard'
-import './team.style.css'
-
 import { GetRole, SetRole } from '../../../services/storageFunc'
 import { useLoginAsTeamMutation } from '../../../services/api/ClientApi/ClientApi'
 import { setToken } from '../../../services/auth/setToken'
 import { setUserData } from '../../../services/auth/setUserData'
+import { showToastError } from '../../../services/toast/showToastError'
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import PerformanceCard from './PerformanceCard'
+import EarningCard from './EarningCard'
+import './team.style.css'
 
+
+const pageName = 'team'
+const see_tutorial = localStorage.getItem('see_tutorial')
+const hasAlreadyViewTutorial = see_tutorial ? JSON.parse(see_tutorial) : false
 export default function Team(): JSX.Element {
     const userData = localStorage.getItem('userData')
 
+    const [showTutorial, setShowTutorial] = useState<boolean>(false);
     const { data, refetch } = useGetTeamMemberQuery()
     const [date, setDate] = useState<string[]>([])
     const [idTeam, setIdTeam] = useState<number>(GetRole() === 'TEAM' ? JSON.parse(userData || '{id: 0}').id : 0)
@@ -29,10 +35,47 @@ export default function Team(): JSX.Element {
 
     const [performance, setPerformance] = useState<Performance | undefined>(teamData?.data.performance)
 
+    const driverObj = driver({
+        onNextClick: () => {
+            if (driverObj.getActiveIndex() === 1) {
+                const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
+                if (response) {
+                    localStorage.setItem('see_tutorial', JSON.stringify(true))
+                    driverObj.destroy();
+                }
+            } else {
+                driverObj.moveNext()
+            }
+        },
+        nextBtnText: 'Suivant',
+        prevBtnText: 'Retour',
+        doneBtnText: 'Terminer le tutoriel',
+        showProgress: true,
+        allowClose: false,
+        steps: [
+            { element: '.add-team', popover: { title: 'Add your team', description: 'Add your team here', side: "right", align: 'start' } },
+            { element: '.menu-step:nth-child(4)', popover: { title: 'Product', description: 'Description for your product page', side: "right", align: 'start' } }
+        ]
+    });
+
     useEffect(() => {
         setPerformance(teamData?.data.performance)
+        !hasAlreadyViewTutorial && driverObj.drive();
     }, [])
-    
+
+    useEffect(() => {
+        const hasSeenTutorial = localStorage.getItem(`tutorial_${pageName}`);
+        if (hasSeenTutorial) {
+            setShowTutorial(!JSON.parse(hasSeenTutorial));
+        } else {
+            setShowTutorial(true);
+        }
+    }, []);
+
+    const closeTutorial = () => {
+        localStorage.setItem(`tutorial_${pageName}`, JSON.stringify(true));
+        setShowTutorial(false);
+    };
 
     useEffect(() => {
         setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam ?? undefined })
@@ -60,7 +103,18 @@ export default function Team(): JSX.Element {
     }
 
     return (
-        <Main name={'Team'} urlVideo={'https://www.youtube.com/watch?v=Y2eNJGFfhVY'} showTeamFilter={GetRole() === 'TEAM' ? false : true} setIdTeam={setIdTeam} showDateFilter={true} usingDate={usingDate} setDate={setDate} setUsingDate={setUsingDate}>
+        <Main
+            name={'Team'}
+            urlVideo={'https://www.youtube.com/watch?v=Y2eNJGFfhVY'}
+            showTeamFilter={GetRole() === 'TEAM' ? false : true}
+            setIdTeam={setIdTeam}
+            showDateFilter={true}
+            usingDate={usingDate}
+            setDate={setDate}
+            setUsingDate={setUsingDate}
+            showTutorial={showTutorial}
+            closeTutorial={closeTutorial}
+        >
             {showAddTeamModal && <AddTeamModal refetch={refetch} showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} />}
             {showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} dataEdit={item} refetch={refetch} />}
             <div className="content-body">
@@ -105,7 +159,7 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                     <a
                         onClick={() => setShowAddTeamModal(true)}
                         type="button"
-                        className="btn btn-primary mb-2">
+                        className="btn btn-primary mb-2 add-team">
                         Add team
                     </a>
                 </div>

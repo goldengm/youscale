@@ -16,7 +16,9 @@ interface Bank {
     bank: string;
     rib: string;
 }
+const pageName = 'pack'
 export default function PackContainer() {
+    const [showTutorial, setShowTutorial] = useState<boolean>(false);
     const { data: client } = useGetClientQuery()
     const { data: dataPack, isLoading, refetch } = useGetClientPackQuery()
     const { data: dataSetting } = useGetSettingQuery()
@@ -24,7 +26,19 @@ export default function PackContainer() {
     const { data } = useGetClientPaymentMethodQuery()
     const [currentBank, setCurrentBank] = useState<Bank | undefined>()
 
-    console.log('client', client)
+    useEffect(() => {
+        const hasSeenTutorial = localStorage.getItem(`tutorial_${pageName}`);
+        if (hasSeenTutorial) {
+            setShowTutorial(!JSON.parse(hasSeenTutorial));
+        }else{
+            setShowTutorial(true);
+          }
+    }, []);
+
+    const closeTutorial = () => {
+        localStorage.setItem(`tutorial_${pageName}`, JSON.stringify(true));
+        setShowTutorial(false);
+    };
 
     useEffect(() => {
         setCurrentBank(data?.data[0] ? data?.data[0].Bank_Information : undefined)
@@ -44,7 +58,12 @@ export default function PackContainer() {
     }
 
     return (
-        <Main urlVideo={'https://www.youtube.com/watch?v=Y2eNJGFfhVY'} name='Pack'>
+        <Main
+            urlVideo={'https://www.youtube.com/watch?v=Y2eNJGFfhVY'}
+            name='Pack'
+            showTutorial={showTutorial}
+            closeTutorial={closeTutorial}
+        >
             <div className="content-body">
                 <div className="container-fluid">
                     {

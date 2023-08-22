@@ -6,11 +6,16 @@ import { AddPerteModal, DeletePerteModal } from '../../Table/Modal/Paiement'
 import { DashbordQueryModel, DetailsOfSpendingModel, TransactionModel } from '../../../models'
 import { useGetPaiementDashbordQuery } from '../../../services/api/ClientApi/ClientPaiementDashbord'
 import { useAddGoalMutation, useGetGoalQuery } from '../../../services/api/ClientApi/ClientGoalApi'
+import { driver } from "driver.js";
 import Main from '../../Main'
+import "driver.js/dist/driver.css";
 import './paiement.style.css'
 
+const pageName = 'paiement'
+const see_tutorial = localStorage.getItem('see_tutorial')
+const hasAlreadyViewTutorial = see_tutorial ? JSON.parse(see_tutorial) : false
 export default function Paiement() {
-
+    const [showTutorial, setShowTutorial] = useState<boolean>(false);
     const [item, setItem] = useState<TransactionModel>()
 
     const [showAddPerteModal, setShowAddPerteModal] = useState<boolean>(false)
@@ -21,6 +26,44 @@ export default function Paiement() {
     const [usingDate, setUsingDate] = useState<boolean>(false)
     const [OrderQueryData, setOrderQueryData] = useState<DashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
     const { data, refetch } = useGetPaiementDashbordQuery(OrderQueryData)
+
+    const driverObj = driver({
+        onNextClick: () => {
+            if (driverObj.getActiveIndex() === 1) {
+                const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
+                if (response) {
+                    localStorage.setItem('see_tutorial', JSON.stringify(true))
+                    driverObj.destroy();
+                }
+            } else {
+                driverObj.moveNext()
+            }
+        },
+        nextBtnText: 'Suivant',
+        prevBtnText: 'Retour',
+        doneBtnText: 'Terminer le tutoriel',
+        showProgress: true,
+        allowClose: false,
+        steps: [
+            { element: '.add-perte', popover: { title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start' } },
+            { element: '.menu-step:nth-child(3)', popover: { title: 'Order page', description: 'Description for order page', side: "right", align: 'start' } }
+        ]
+    });
+
+    useEffect(() => {
+        const hasSeenTutorial = localStorage.getItem(`tutorial_${pageName}`);
+        if (hasSeenTutorial) {
+            setShowTutorial(!JSON.parse(hasSeenTutorial));
+        } else {
+            setShowTutorial(true);
+        }
+        !hasAlreadyViewTutorial && driverObj.drive()
+    }, []);
+
+    const closeTutorial = () => {
+        localStorage.setItem(`tutorial_${pageName}`, JSON.stringify(true));
+        setShowTutorial(false);
+    };
 
     useEffect(() => { refetch() }, [])
 
@@ -35,21 +78,32 @@ export default function Paiement() {
     }, [product])
 
     return (
-        <Main name='Paiement' urlVideo={'https://www.youtube.com/watch?v=HSz6xMB5G50'} setProduct={setProduct} usingDate={usingDate} showProductFilter={true} setDate={setDate} setUsingDate={setUsingDate} showDateFilter={true}>
+        <Main
+            name='Paiement'
+            urlVideo={'https://www.youtube.com/watch?v=HSz6xMB5G50'}
+            setProduct={setProduct}
+            usingDate={usingDate}
+            showProductFilter={true}
+            setDate={setDate}
+            setUsingDate={setUsingDate}
+            showDateFilter={true}
+            showTutorial={showTutorial}
+            closeTutorial={closeTutorial}
+        >
             {showAddPerteModal && <AddPerteModal refetch={refetch} setShowModal={setShowAddPerteModal} showModal={showAddPerteModal} />}
             {showDeletePerteModal && <DeletePerteModal refetch={refetch} id_perte={String(item?.id) ?? ''} setShowModal={setShowDeletePerteModal} showModal={showDeletePerteModal} />}
             <div className="content-body">
                 <div className="container-fluid">
-                    <DisplayCard 
-                        earning_net={data?.data.earningNet || 0} 
-                        chff_affaire={data?.data.ChffAffaire || 0} 
-                        spending={data?.data.spending || 0} 
-                        spending_ads={data?.data.spending_ads || 0} 
-                        spending_product={data?.data.spending_product || 0} 
-                        spending_city={data?.data.spending_city || 0} 
-                        spending_commission={data?.data.spending_commission || 0} 
-                        spending_landing_design={data?.data.spending_landing_design || 0} 
-                        spending_autre={data?.data.spending_autre || 0} 
+                    <DisplayCard
+                        earning_net={data?.data.earningNet || 0}
+                        chff_affaire={data?.data.ChffAffaire || 0}
+                        spending={data?.data.spending || 0}
+                        spending_ads={data?.data.spending_ads || 0}
+                        spending_product={data?.data.spending_product || 0}
+                        spending_city={data?.data.spending_city || 0}
+                        spending_commission={data?.data.spending_commission || 0}
+                        spending_landing_design={data?.data.spending_landing_design || 0}
+                        spending_autre={data?.data.spending_autre || 0}
                     />
                     {/* <div className="row"><Goal /></div> */}
                     <div className="row">
@@ -184,7 +238,7 @@ const Transaction = ({ setShowAddPerteModal, data, setItem, setShowDeletePerteMo
                     <a
                         onClick={() => setShowAddPerteModal(true)}
                         type="button"
-                        className="btn btn-danger mb-2">
+                        className="btn btn-danger mb-2 add-perte">
                         Add perte
                     </a>
                 </div>
@@ -272,7 +326,7 @@ const SpendingRow = ({ item }: SpendingRowProps): JSX.Element => {
                     <h5 className="mb-1"><strong>{item.categoryName}</strong></h5>
                 </div>
                 <div className="dropdown">
-                    { item.products.map((pr, key)=> <p key={key} className='table-price'>{pr.name} - {pr.amount}dhs</p>) }    
+                    {item.products.map((pr, key) => <p key={key} className='table-price'>{pr.name} - {pr.amount}dhs</p>)}
                 </div>
             </div>
         </li>

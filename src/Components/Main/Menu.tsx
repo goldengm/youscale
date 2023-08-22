@@ -127,7 +127,7 @@ export default function Menu(): JSX.Element {
             GetRole() === 'CLIENT' ?
               MenuNav.map((item, index) => {
                 return (
-                  <li key={index}>
+                  <li className='menu-step' key={index}>
                     <Link to={item.path} onClick={(e) => {
                       Navigate({ to: item.path })
                       e.preventDefault()
@@ -148,7 +148,7 @@ export default function Menu(): JSX.Element {
                           Navigate({ to: item.path })
                           e.preventDefault()
 
-                        }} className="ai-icon" aria-expanded="false">
+                        }} className="ai-icon menu-step" aria-expanded="false">
                           {item.icon}
                           <span className={item.cName}>{item.title}</span>
                         </Link>
@@ -164,7 +164,7 @@ export default function Menu(): JSX.Element {
                           Navigate({ to: item.path })
                           e.preventDefault()
 
-                        }} className="ai-icon" aria-expanded="false">
+                        }} className="ai-icon menu-step" aria-expanded="false">
                           {item.icon}
                           <span className={item.cName}>{item.title}</span>
                         </Link>

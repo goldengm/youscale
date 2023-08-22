@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom';
-import Routing from './routes/Routing';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { store } from './store';
 import { setToken } from './services/auth/setToken';
 import { setUserData } from './services/auth/setUserData';
+import Routing from './routes/Routing';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App(): JSX.Element {
 
