@@ -175,7 +175,7 @@ const AddOrderBtn = ({ setShowModal }: AddOrderBtnProps): JSX.Element => {
         <a
             onClick={() => setShowModal(true)}
             type="button"
-            className="btn btn-primary mb-2"
+            className="btn btn-primary mb-2 add-order"
         >ajouter commande
         </a>
     )
@@ -186,7 +186,7 @@ const StartConfirmationBtn = ({ setShowModal }: AddOrderBtnProps): JSX.Element =
         <a
             onClick={() => setShowModal(true)}
             type="button"
-            className="btn btn-primary mb-2"
+            className="btn btn-primary mb-2 start-confirmation"
         >commencer confirmation
         </a>
     )

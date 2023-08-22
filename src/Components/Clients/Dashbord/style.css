@@ -72,3 +72,25 @@
     width: 80px;
     height: 80px;
 }
+
+.start-tuto{
+    background-color: black;
+    color: white;
+    height: 30px;
+    padding: 5px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.welcome-box{
+    height: 300px;
+    width: 270px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-txt{
+    text-align: center;
+}

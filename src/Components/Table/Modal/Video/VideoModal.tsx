@@ -3,10 +3,11 @@ import ModalWrapper from '../ModalWrapper'
 
 interface Props {
   showModal: boolean,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
   urlVideo: string
+  closeTutorial: () => void
 }
-export default function VideoModal({ showModal, setShowModal, urlVideo }: Props): JSX.Element {
+export default function VideoModal({ showModal, setShowModal, urlVideo, closeTutorial }: Props): JSX.Element {
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
@@ -35,12 +36,13 @@ export default function VideoModal({ showModal, setShowModal, urlVideo }: Props)
 
       if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
 
+      closeTutorial()
       setShowModal(false)
     }
   }
 
   return (
-    <ModalWrapper title={'Video'} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
+    <ModalWrapper title={'Video'} closeModal={handleCloseModal} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
       <FormBody handleCloseModal={handleCloseModal} urlVideo={urlVideo} />
     </ModalWrapper>
   )

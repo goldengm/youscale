@@ -4,29 +4,35 @@ interface ModalWrapperProps {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
     children: JSX.Element | JSX.Element[] | any,
+    closeModal?: () => void
     title: string,
     id: string
 }
-export default function ModalWrapper({ showModal, setShowModal, children, id, title }: ModalWrapperProps): JSX.Element {
-    
+export default function ModalWrapper({ showModal, setShowModal, children, id, title, closeModal }: ModalWrapperProps): JSX.Element {
+
     const handleCloseModal = () => {
         var body = document.querySelector<HTMLBodyElement>('body');
 
-        if (body) {
-            body.classList.remove('modal-open');
-            body.style.overflow = '';
-            body.style.paddingRight = '';
+        if (closeModal) {
+            closeModal()
+        } else {
+            if (body) {
+                body.classList.remove('modal-open');
+                body.style.overflow = '';
+                body.style.paddingRight = '';
 
-            var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
-        
-            if (existingBackdrop) existingBackdrop.forEach(it=> it.remove());
+                var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
 
-            setShowModal(false)
+                if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
+
+
+                setShowModal(false)
+            }
         }
     }
 
     return (
-        <div style={{display: 'block'}} className={"modal fade show"} id={id}>
+        <div style={{ display: 'block' }} className={"modal fade show"} id={id}>
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">

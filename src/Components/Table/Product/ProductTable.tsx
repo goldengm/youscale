@@ -48,7 +48,7 @@ const AddProductBtn = ({ setShowModal }: AddProductBtnProps): JSX.Element => {
         <a
             onClick={() => setShowModal(true)}
             type="button"
-            className="btn btn-primary mb-2"
+            className="btn btn-primary mb-2 add-product"
         >Add product
         </a>
     )
