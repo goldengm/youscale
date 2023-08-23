@@ -12,6 +12,7 @@ export default function DisplayTeamMember({ data, order, onChange }: Props): JSX
       onChange={onChange}
       className="select-custum"
     >
+      <option value={0}>Aucun</option>
       {
         (data && order) &&
         data.map(

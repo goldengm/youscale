@@ -366,3 +366,7 @@
         display: none;
     }
 }
+
+.menu-step{
+    height: 60px;
+}

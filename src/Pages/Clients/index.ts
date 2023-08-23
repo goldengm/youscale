@@ -11,6 +11,7 @@ import OPTVerificationPage from "./OPTVerificationPage";
 import ForgotPasswordPage from "./ForgotPasswordPage";
 import QuestionPage from "./QuestionPage";
 import ChoosePackPage from "./ChoosePackPage";
+import SupportPage from "./SupportPage";
 
 export { 
     DashbordPage,
@@ -25,5 +26,6 @@ export {
     OPTVerificationPage,
     ForgotPasswordPage,
     QuestionPage,
-    ChoosePackPage
+    ChoosePackPage,
+    SupportPage
  };

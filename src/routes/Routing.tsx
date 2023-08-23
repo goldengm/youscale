@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Redirect from './Redirect';
 import Error403 from '../Pages/Errors/Error403';
-import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage, LoginPage, RegisterPage, OPTVerificationPage, ForgotPasswordPage, QuestionPage, ChoosePackPage } from '../Pages/Clients';
+import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage, LoginPage, RegisterPage, OPTVerificationPage, ForgotPasswordPage, QuestionPage, ChoosePackPage, SupportPage } from '../Pages/Clients';
 import { useGetClientTeamMemberPageQuery } from '../services/api/ClientTeamApi/ClientTeamPageApi';
 import { GetRole } from '../services/storageFunc';
 import { logOut } from '../services/auth/logout';
@@ -92,6 +92,8 @@ const Routing = (): JSX.Element => {
             <Route path="/setting" element={AuthComponent({ Component: SettingPage, pageAccess: data?.data ?? [], name: 'setting' })} />
 
             <Route path="/pack" element={AuthComponent({ Component: PackPage, pageAccess: data?.data ?? [] })} />
+
+            <Route path="/support" element={AuthComponent({ Component: SupportPage, pageAccess: data?.data ?? [] })} />
 
         </Routes>
     )
