@@ -2,21 +2,24 @@ import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
 import { Table } from '../../Table/Order'
 import { ClientOrderApi, useGetClientOrderQuery, useGetSheetOrderQuery } from '../../../services/api/ClientApi/ClientOrderApi'
-import { OrderQueryModel } from '../../../models'
+import { Cient, OrderQueryModel } from '../../../models'
 import { useDispatch } from 'react-redux'
 import { GetRole } from '../../../services/storageFunc'
 import { CLIENT_URL } from '../../../services/url/API_URL'
+import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi'
 import { driver } from "driver.js";
 import axios from 'axios'
 import "driver.js/dist/driver.css";
 
+interface Props {
+  client: Cient | undefined
+}
 const pageName = 'order'
 const token = localStorage.getItem('token')
-const see_tutorial = localStorage.getItem('see_tutorial')
-const hasAlreadyViewTutorial = see_tutorial ? JSON.parse(see_tutorial) : false
-export default function Order(): JSX.Element {
+export default function Order({ client }: Props): JSX.Element {
 
   const userData = localStorage.getItem('userData')
+  const [patchClient] = usePatchClientMutation()
 
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
   const [statusConfirmation, setStatusConfirmation] = useState<string>()
@@ -39,10 +42,12 @@ export default function Order(): JSX.Element {
       if (driverObj.getActiveIndex() === 1) {
         const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
         if (response) {
-          localStorage.setItem('see_tutorial', JSON.stringify(true))
+          patchClient({ isBeginner: false }).unwrap()
+            .then(res => console.log(res))
+            .catch(err => console.warn(err))
           driverObj.destroy();
         }
-      }else {
+      } else {
         driverObj.moveNext()
       }
     },
@@ -58,15 +63,8 @@ export default function Order(): JSX.Element {
   });
 
   useEffect(() => {
-    const hasSeenTutorial = localStorage.getItem(`tutorial_${pageName}`);
-    console.log(hasSeenTutorial)
-    if (hasSeenTutorial) {
-      setShowTutorial(!JSON.parse(hasSeenTutorial));
-    } else {
-      setShowTutorial(true);
-    }
-    !hasAlreadyViewTutorial && driverObj.drive()
-  }, []);
+    client?.isBeginner && driverObj.drive()
+  }, [client]);
 
   const closeTutorial = () => {
     localStorage.setItem(`tutorial_${pageName}`, JSON.stringify(true));

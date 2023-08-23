@@ -8,12 +8,13 @@ import { AiFillThunderbolt } from 'react-icons/ai'
 import { TbTruckDelivery } from 'react-icons/tb'
 import { BsFillPatchCheckFill, BsPatchQuestion } from 'react-icons/bs'
 import { CustomPie, CustomLine } from '../../Chart'
-import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity } from '../../../models'
+import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity, Cient } from '../../../models'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import 'reactjs-popup/dist/index.css';
 import './style.css'
+import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
 
 interface Props {
     data: DashbordModel,
@@ -27,17 +28,19 @@ interface Props {
     showTeamFilter: boolean
     showTutorial: boolean
     closeTutorial: () => void
+    client: Cient | undefined
 }
-const see_tutorial = localStorage.getItem('see_tutorial')
-const hasAlreadyViewTutorial = see_tutorial ? JSON.parse(see_tutorial) : false
-export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, usingDate, showTutorial, closeTutorial }: Props): JSX.Element {
+export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, usingDate, showTutorial, closeTutorial, client }: Props): JSX.Element {
 
+    const [patchClient] = usePatchClientMutation()
     const driverObj = driver({
         onNextClick: () => {
             if (driverObj.getActiveIndex() === 0) {
                 const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
                 if (response) {
-                    localStorage.setItem('see_tutorial', JSON.stringify(true))
+                    patchClient({ isBeginner: false }).unwrap()
+                    .then(res=> console.log(res))
+                    .catch(err=> console.warn(err))
                     driverObj.destroy();
                 } else {
                     //
@@ -52,11 +55,11 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
         showProgress: true,
         allowClose: false,
         steps: [
-            { element: '.menu-step:nth-child(7)', popover: { title: 'Setting', description: 'Description for setting page', side: "right", align: 'start' } }
+            { element: '.menu-step:nth-child(8)', popover: { title: 'Setting', description: 'Description for setting page', side: "right", align: 'start' } }
         ]
     });
 
-    if (!hasAlreadyViewTutorial) {
+    if (client?.isBeginner) {
         driverObj.highlight({
             popover: {
                 description: `
