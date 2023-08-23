@@ -3,20 +3,23 @@ import { MdAttachMoney, MdDeleteForever } from 'react-icons/md'
 import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
 import { AddPerteModal, DeletePerteModal } from '../../Table/Modal/Paiement'
-import { DashbordQueryModel, DetailsOfSpendingModel, TransactionModel } from '../../../models'
+import { Cient, DashbordQueryModel, DetailsOfSpendingModel, TransactionModel } from '../../../models'
 import { useGetPaiementDashbordQuery } from '../../../services/api/ClientApi/ClientPaiementDashbord'
 import { useAddGoalMutation, useGetGoalQuery } from '../../../services/api/ClientApi/ClientGoalApi'
+import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi'
 import { driver } from "driver.js";
 import Main from '../../Main'
 import "driver.js/dist/driver.css";
 import './paiement.style.css'
 
+interface Props {
+    client: Cient | undefined
+}
 const pageName = 'paiement'
-const see_tutorial = localStorage.getItem('see_tutorial')
-const hasAlreadyViewTutorial = see_tutorial ? JSON.parse(see_tutorial) : false
-export default function Paiement() {
+export default function Paiement({ client }: Props) {
     const [showTutorial, setShowTutorial] = useState<boolean>(false);
     const [item, setItem] = useState<TransactionModel>()
+    const [patchClient] = usePatchClientMutation()
 
     const [showAddPerteModal, setShowAddPerteModal] = useState<boolean>(false)
     const [showDeletePerteModal, setShowDeletePerteModal] = useState<boolean>(false)
@@ -32,7 +35,9 @@ export default function Paiement() {
             if (driverObj.getActiveIndex() === 1) {
                 const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
                 if (response) {
-                    localStorage.setItem('see_tutorial', JSON.stringify(true))
+                    patchClient({ isBeginner: false }).unwrap()
+                        .then(res => console.log(res))
+                        .catch(err => console.warn(err))
                     driverObj.destroy();
                 }
             } else {
@@ -51,14 +56,8 @@ export default function Paiement() {
     });
 
     useEffect(() => {
-        const hasSeenTutorial = localStorage.getItem(`tutorial_${pageName}`);
-        if (hasSeenTutorial) {
-            setShowTutorial(!JSON.parse(hasSeenTutorial));
-        } else {
-            setShowTutorial(true);
-        }
-        !hasAlreadyViewTutorial && driverObj.drive()
-    }, []);
+        client?.isBeginner && driverObj.drive();
+    }, [client]);
 
     const closeTutorial = () => {
         localStorage.setItem(`tutorial_${pageName}`, JSON.stringify(true));

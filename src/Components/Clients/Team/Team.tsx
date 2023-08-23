@@ -4,11 +4,11 @@ import { FaPen } from 'react-icons/fa'
 import { RiLoginCircleFill } from 'react-icons/ri'
 import { CustomHist } from '../../Chart'
 import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
-import { EarningTable, GetTeamMemberModel, Performance, TeamDashbordQueryModel } from '../../../models'
+import { Cient, EarningTable, GetTeamMemberModel, Performance, TeamDashbordQueryModel } from '../../../models'
 import { useGetTeamMemberQuery, usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 import { useGetTeamDashbordQuery } from '../../../services/api/ClientApi/ClientTeamDashbordApi'
 import { GetRole, SetRole } from '../../../services/storageFunc'
-import { useLoginAsTeamMutation } from '../../../services/api/ClientApi/ClientApi'
+import { useLoginAsTeamMutation, usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi'
 import { setToken } from '../../../services/auth/setToken'
 import { setUserData } from '../../../services/auth/setUserData'
 import { showToastError } from '../../../services/toast/showToastError'
@@ -18,12 +18,13 @@ import PerformanceCard from './PerformanceCard'
 import EarningCard from './EarningCard'
 import './team.style.css'
 
-
+interface Props {
+    client: Cient | undefined
+}
 const pageName = 'team'
-const see_tutorial = localStorage.getItem('see_tutorial')
-const hasAlreadyViewTutorial = see_tutorial ? JSON.parse(see_tutorial) : false
-export default function Team(): JSX.Element {
+export default function Team({ client }: Props): JSX.Element {
     const userData = localStorage.getItem('userData')
+    const [patchClient] = usePatchClientMutation()
 
     const [showTutorial, setShowTutorial] = useState<boolean>(false);
     const { data, refetch } = useGetTeamMemberQuery()
@@ -40,7 +41,9 @@ export default function Team(): JSX.Element {
             if (driverObj.getActiveIndex() === 1) {
                 const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
                 if (response) {
-                    localStorage.setItem('see_tutorial', JSON.stringify(true))
+                    patchClient({ isBeginner: false }).unwrap()
+                        .then(res => console.log(res))
+                        .catch(err => console.warn(err))
                     driverObj.destroy();
                 }
             } else {
@@ -60,17 +63,11 @@ export default function Team(): JSX.Element {
 
     useEffect(() => {
         setPerformance(teamData?.data.performance)
-        !hasAlreadyViewTutorial && driverObj.drive();
     }, [])
 
     useEffect(() => {
-        const hasSeenTutorial = localStorage.getItem(`tutorial_${pageName}`);
-        if (hasSeenTutorial) {
-            setShowTutorial(!JSON.parse(hasSeenTutorial));
-        } else {
-            setShowTutorial(true);
-        }
-    }, []);
+        client?.isBeginner && driverObj.drive();
+    }, [client]);
 
     const closeTutorial = () => {
         localStorage.setItem(`tutorial_${pageName}`, JSON.stringify(true));
