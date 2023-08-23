@@ -3,7 +3,7 @@ import Dashbord from '../../Components/Clients/Dashbord/Dashbord'
 import { DashbordQueryModel } from '../../models'
 import { useGetClientDashbordQuery } from '../../services/api/ClientApi/ClientDashbordApi'
 import { RotatingLines } from 'react-loader-spinner'
-
+import { useGetClientQuery } from '../../services/api/ClientApi/ClientApi'
 
 const pageName = 'dashbord'
 export default function DashbordPage(): JSX.Element {
@@ -14,6 +14,7 @@ export default function DashbordPage(): JSX.Element {
   const [usingDate, setUsingDate] = useState<boolean>(false)
   const [OrderQueryData, setOrderQueryData] = useState<DashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
   const { data, refetch } = useGetClientDashbordQuery(OrderQueryData)
+  const { data: clientData } = useGetClientQuery()
 
   useEffect(() => {
     const hasSeenTutorial = localStorage.getItem(`tutorial_${pageName}`);
@@ -23,8 +24,6 @@ export default function DashbordPage(): JSX.Element {
       setShowTutorial(true);
     }
   }, []);
-
-
 
   const closeTutorial = () => {
     localStorage.setItem(`tutorial_${pageName}`, JSON.stringify(true));
@@ -68,5 +67,6 @@ export default function DashbordPage(): JSX.Element {
     showDateFilter={true}
     showTutorial={showTutorial}
     closeTutorial={closeTutorial}
+    client={clientData?.data}
   />
 }

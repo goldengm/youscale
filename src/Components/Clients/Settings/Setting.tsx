@@ -2,22 +2,28 @@ import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
 import API from './API'
 import OrderSetting from './OrderSetting'
+import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
 import { driver } from "driver.js";
+import { Cient } from '../../../models';
 import "driver.js/dist/driver.css";
 import './setting.style.css'
 
+interface Props {
+    client: Cient | undefined
+}
 const pageName = 'setting'
-const see_tutorial = localStorage.getItem('see_tutorial')
-const hasAlreadyViewTutorial = see_tutorial ? JSON.parse(see_tutorial) : false
-export default function Setting() {
+export default function Setting({ client }: Props) {
     const [showTutorial, setShowTutorial] = useState<boolean>(false);
+    const [patchClient] = usePatchClientMutation()
 
     const driverObj = driver({
         onNextClick: () => {
             if (driverObj.getActiveIndex() === 7) {
                 const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
                 if (response) {
-                    localStorage.setItem('see_tutorial', JSON.stringify(true))
+                    patchClient({ isBeginner: false }).unwrap()
+                        .then(res => console.log(res))
+                        .catch(err => console.warn(err))
                     driverObj.destroy();
                 }
             } else {
@@ -42,15 +48,8 @@ export default function Setting() {
     });
 
     useEffect(() => {
-        const hasSeenTutorial = localStorage.getItem(`tutorial_${pageName}`);
-        if (hasSeenTutorial) {
-            setShowTutorial(!JSON.parse(hasSeenTutorial));
-        } else {
-            setShowTutorial(true);
-        }
-
-        !hasAlreadyViewTutorial && driverObj.drive();
-    }, []);
+        client?.isBeginner && driverObj.drive();
+    }, [client]);
 
     const closeTutorial = () => {
         localStorage.setItem(`tutorial_${pageName}`, JSON.stringify(true));

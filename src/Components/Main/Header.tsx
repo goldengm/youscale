@@ -9,6 +9,7 @@ import { useGetAnnoucementQuery } from '../../services/api/ClientApi/ClientAnnou
 import { VideoModal } from '../Table/Modal/Video'
 import { GetProductModel, GetTeamMemberModel } from '../../models'
 import './styles.css'
+import { usePatchClientMutation } from '../../services/api/ClientApi/ClientApi'
 
 interface Props {
   setDate?: React.Dispatch<React.SetStateAction<string[]>>,
@@ -50,7 +51,7 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
 
   if (!data) return []
 
-  var out: dataType = [{label: 'Aucun', value: String(0)}]
+  var out: dataType = [{ label: 'Aucun', value: String(0) }]
 
   data.map(dt => {
     if (dt.active) {
@@ -63,7 +64,7 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
 }
 
 export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu, urlVideo, showTutorial, closeTutorial }: Props): JSX.Element {
-
+  const [patchClient] = usePatchClientMutation()
   const { data: productData } = useGetProductQuery({ isHidden: false })
   const { data: teamData } = useGetTeamMemberQuery()
   const { data, isSuccess } = useGetAnnoucementQuery()
@@ -73,12 +74,21 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
   const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
-    if (value === 'all'){
+    if (value === 'all') {
       setIdTeam && setIdTeam(-1)
       return
     }
 
     setIdTeam && setIdTeam(Number(value))
+  }
+
+  const RenitilizeStep = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault()
+    patchClient({ isBeginner: true }).unwrap()
+      .then(res => console.log(res))
+      .catch(err => console.warn(err))
+
+      window.location.reload()
   }
 
   const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -91,7 +101,7 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
 
   return (
     <>
-      { showVideo && <VideoModal setShowModal={setShowVideo} showModal={showVideo} urlVideo={urlVideo} closeTutorial={closeTutorial} />}
+      {showVideo && <VideoModal setShowModal={setShowVideo} showModal={showVideo} urlVideo={urlVideo} closeTutorial={closeTutorial} />}
       <div className="nav-header">
         <a href="/" className="brand-logo">
           <img src="/cus_img/Group15.png" alt="logo" className="brand-title" width="124px" height="33px" />
@@ -117,6 +127,10 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
               </div>
               <p className='annoucement-txt'>{data?.data && data?.data.text}</p>
               <ul className="navbar-nav header-right">
+                <li className="nav-item">
+                  <a onClick={RenitilizeStep} href="#">Reprendre le tutoriel</a>
+                </li>
+
                 <li className="nav-item">
                   {showProductFilter && <CustumSelect name='Product' data={convertProduct(productData?.data)} onChange={handleProductChange} />}
                 </li>
@@ -160,7 +174,7 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
                       setShowVideo(true)
                     }}
                   >
-                   <RxVideo size={30}/>
+                    <RxVideo size={30} />
                   </Link>
                 </li>
               </ul>

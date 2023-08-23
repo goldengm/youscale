@@ -62,6 +62,7 @@ export interface Cient {
     livoToken?: string
     trialAt?: null
     trialPeriod?: 0
+    isBeginner?: boolean
 }
 
 export interface AdminRegisterModel {
