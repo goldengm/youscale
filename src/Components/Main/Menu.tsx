@@ -3,6 +3,7 @@ import { Link, Navigate } from 'react-router-dom'
 import { RxDashboard } from 'react-icons/rx'
 import { IoMdListBox } from 'react-icons/io'
 import { MdProductionQuantityLimits, MdOutlinePayments } from 'react-icons/md'
+import { BiSupport } from 'react-icons/bi'
 import { AiOutlineTeam } from 'react-icons/ai'
 import { FcSettings } from 'react-icons/fc'
 import { logOut } from '../../services/auth/logout'
@@ -13,42 +14,49 @@ const MenuNav = [
   {
     title: 'Dashboard',
     path: '/',
-    icon: <RxDashboard size={35} color={'gray'} />,
+    icon: <RxDashboard size={20} color={'gray'} />,
     cName: 'nav-text',
     name: 'dashbord'
   },
   {
     title: 'Order',
     path: '/order',
-    icon: <IoMdListBox size={35} color={'gray'} />,
+    icon: <IoMdListBox size={20} color={'gray'} />,
     cName: 'nav-text',
     name: 'order'
   },
   {
     title: 'Produit',
     path: '/product',
-    icon: <MdProductionQuantityLimits size={35} color={'gray'} />,
+    icon: <MdProductionQuantityLimits size={20} color={'gray'} />,
     cName: 'nav-text',
     name: 'produit'
   },
   {
     title: 'Equipe',
     path: '/team',
-    icon: <AiOutlineTeam size={35} color={'gray'} />,
+    icon: <AiOutlineTeam size={20} color={'gray'} />,
     cName: 'nav-text',
     name: 'team'
   },
   {
+    title: 'Support',
+    path: '/support',
+    icon: <BiSupport size={20} color={'gray'} />,
+    cName: 'nav-text',
+    name: 'support'
+  },
+  {
     title: 'Paiement',
     path: '/paiement',
-    icon: <MdOutlinePayments size={35} color={'gray'} />,
+    icon: <MdOutlinePayments size={20} color={'gray'} />,
     cName: 'nav-text',
     name: 'payment'
   },
   {
     title: 'Paramètre',
     path: '/setting',
-    icon: <FcSettings size={35} color={'gray'} />,
+    icon: <FcSettings size={20} color={'gray'} />,
     cName: 'nav-text',
     name: 'setting'
   },

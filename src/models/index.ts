@@ -982,3 +982,14 @@ export interface GetSheetIntegrationModel {
     range_: string;
     name: string;
 }
+
+export interface Support {
+    id?: number
+    subject: string
+    description: string
+    attachment: any
+    status?: string
+    id_user?: number
+    id_team?: number
+    createdAt?: string
+}
