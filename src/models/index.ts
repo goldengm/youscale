@@ -58,6 +58,7 @@ export interface Error {
 }
 
 export interface Cient {
+    id?: number
     fullname?: string
     livoToken?: string
     trialAt?: null
@@ -992,5 +993,13 @@ export interface Support {
     status?: string
     id_user?: number
     id_team?: number
+    createdAt?: string
+}
+
+export interface ChatMessage {
+    id?: number
+    message: string
+    id_support?: number
+    id_user?: number
     createdAt?: string
 }
