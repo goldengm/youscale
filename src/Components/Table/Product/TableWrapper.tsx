@@ -7,7 +7,7 @@ interface Props {
     children: JSX.Element | JSX.Element[] | any,
     column: string[],
     AddBtn: JSX.Element
-    HideBtn?: JSX.Element
+    setShowHidden?: React.Dispatch<React.SetStateAction<boolean>>
     refetch?: () => any
     item?: GetProductModel | undefined
     showAddProductModal?: boolean
@@ -17,7 +17,7 @@ interface Props {
     setShowEditProductModal?: React.Dispatch<React.SetStateAction<boolean>>
     setShowDeleteProductModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function TableWrapper({ children, title, column, item, AddBtn, HideBtn, refetch, showAddProductModal, showEditProductModal, showDeleteProductModal, setShowAddProductModal, setShowEditProductModal, setShowDeleteProductModal }: Props): JSX.Element {
+export default function TableWrapper({ children, title, column, item, AddBtn, setShowHidden, refetch, showAddProductModal, showEditProductModal, showDeleteProductModal, setShowAddProductModal, setShowEditProductModal, setShowDeleteProductModal }: Props): JSX.Element {
 
     const never = (): any => { }
     return (
@@ -29,7 +29,30 @@ export default function TableWrapper({ children, title, column, item, AddBtn, Hi
             <div className="card">
                 <div className="card-header">
                     <h4 className="card-title">{title}</h4>
-                    { HideBtn && HideBtn }
+                    {
+                        setShowHidden &&
+                        <div className="card-tabs mt-3 mt-sm-0">
+                            <ul className="nav nav-tabs" role="tablist">
+                                <li className="nav-item">
+                                    <a
+                                        onClick={() => setShowHidden(false)}
+                                        className="nav-link active"
+                                        data-bs-toggle="tab"
+                                        href="#Order"
+                                        role="tab"
+                                    >
+                                        All
+                                    </a>
+                                </li>
+                                <li className="nav-item">
+                                    <a onClick={() => setShowHidden(true)} className="nav-link" data-bs-toggle="tab" href="#Rate" role="tab">
+                                        Hidden
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+
                     {AddBtn}
                 </div>
                 <div className="card-body">

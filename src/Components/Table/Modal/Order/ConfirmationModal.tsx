@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CustumInput, CustumSelectForm } from '../../../Forms'
 import { CityModel, ErrorModel, GetClientOrderModel, GetProductModel, OrderOnlyModel, ProductOrder, StatusModel, countOrderByStatusModel } from '../../../../models'
+import { TbPointFilled } from 'react-icons/tb'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetStatusQuery } from '../../../../services/api/ClientApi/ClientStatusApi';
@@ -295,6 +296,14 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                             label={"Status"}
                             name={'status'}
                         />
+                        {
+                            currentOrder.order[0].isSendLivo === 'not_send' ?
+                                <TbPointFilled size={40} color={'gray'} />
+                                : currentOrder.order[0].isSendLivo === 'error_send' ?
+                                    <TbPointFilled size={40} color={'red'} />
+                                    :
+                                    <TbPointFilled size={40} color={'green'} />
+                        }
                     </div>
                     <button type="submit" className="btn btn-primary">
                         Suivant

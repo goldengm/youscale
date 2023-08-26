@@ -26,7 +26,7 @@ export default function ProductTable(): JSX.Element {
             column={['Nom', 'Prix']}
             refetch={refetch}
             AddBtn={<AddProductBtn setShowModal={setShowAddProductModal} />}
-            HideBtn={<HideProductBtn setShowHidden={setShowHidden} showHidden={showHidden} />}
+            setShowHidden={setShowHidden}
             showAddProductModal={showAddProductModal}
             showEditProductModal={showEditProductModal}
             showDeleteProductModal={showDeleteProductModal}
