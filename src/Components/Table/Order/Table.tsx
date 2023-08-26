@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AddOrderModal, AddProductOrderModal, BulkEditAgentModal, EditOrderModal, ConfirmationModal } from '../Modal/Order'
+import { AddOrderModal, AddProductOrderModal, BulkEditAgentModal, EditOrderModal, ConfirmationModal, DeleteOrderModal } from '../Modal/Order'
 import { RiDeleteBin6Fill } from 'react-icons/ri'
 import { FaUserEdit } from 'react-icons/fa'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
@@ -61,6 +61,7 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
         _setSkip(_skip + 50)
     }
 
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [showProductOrderModal, setShowProductOrderModal] = useState(false)
     const [showOrderModal, setShowOrderModal] = useState(false)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
@@ -107,13 +108,14 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
 
     return (
         <div className="col-12">
+            {showDeleteModal && <DeleteOrderModal refetch={refetch} showModal={showDeleteModal} setShowModal={setShowDeleteModal} id_orders={id_orders} />}
             {showOrderModal && <AddOrderModal refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
             {showConfirmationModal && <ConfirmationModal refetch={refetch} setStatus={setStatusConfirmation} showModal={showConfirmationModal} setShowModal={setShowConfirmationModal} id_orders={orders_id ?? []} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={String(order?.id)} />}
             {showProductOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showProductOrderModal} setShowModal={setShowProductOrderModal} />}
 
             <div className="card">
-                <TableHeader setShowConfirmationModal={setShowConfirmationModal} setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
+                <TableHeader setShowConfirmationModal={setShowConfirmationModal} setShowDeleteModal={setShowDeleteModal} setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
                 <InfiniteScroll
                     dataLength={data?.data.length || 0}
                     next={fetchData}
@@ -146,6 +148,7 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
 
 interface TableHeaderProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>
     setShowConfirmationModal: React.Dispatch<React.SetStateAction<boolean>>
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
@@ -153,10 +156,10 @@ interface TableHeaderProps {
     refetch: () => any,
     id_orders: number[] | undefined
 }
-const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus, setShowConfirmationModal }: TableHeaderProps): JSX.Element => {
+const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus, setShowConfirmationModal, setShowDeleteModal }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
-            <DeleteBulkOrder id_orders={id_orders} refetch={refetch} />
+            <DeleteBulkOrder id_orders={id_orders} refetch={refetch} setShowDeleteModal={setShowDeleteModal} />
             <EditBulkOrder id_orders={id_orders} refetch={refetch} />
             <StartConfirmationBtn setShowModal={setShowConfirmationModal} />
             <AddOrderBtn setShowModal={setShowModal} />
@@ -222,18 +225,14 @@ const ImportBtn = ({ id_orders }: ImportBtnProps): JSX.Element => {
 
 interface DeleteBulkOrderProps {
     id_orders: number[] | undefined
+    setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>
     refetch: () => any
 }
-const DeleteBulkOrder = ({ id_orders, refetch }: DeleteBulkOrderProps): JSX.Element => {
-
-    const [bulkDelete] = useBulkDeleteClientOrderMutation()
+const DeleteBulkOrder = ({ id_orders, setShowDeleteModal }: DeleteBulkOrderProps): JSX.Element => {
 
     const handleDestroyOrder = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
         e.preventDefault()
-        id_orders && bulkDelete({ id_orders: id_orders }).then(res => {
-            console.log(res)
-            refetch()
-        })
+        setShowDeleteModal(true)
     }
 
     return (
