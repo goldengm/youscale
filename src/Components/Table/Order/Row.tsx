@@ -6,7 +6,7 @@ import { AiFillEye } from 'react-icons/ai'
 import { BsTelephoneXFill } from 'react-icons/bs'
 import { TbPointFilled } from 'react-icons/tb'
 import { DisplayChangeOuvrir, DisplaySource, DisplayTeamMember, DisplayUpDown, DisplayStatus } from './OrderRowElement'
-import { HistoryOrderModal, ReportOrderModal, DeleteOrderModal, CommentOrderModal } from '../Modal/Order'
+import { HistoryOrderModal, ReportOrderModal, CommentOrderModal } from '../Modal/Order'
 import { CityModel, ColumnModel, GetClientOrderModel, ProductOrder, StatusModel, ErrorModel } from '../../../models'
 import { CustumDropdown } from '../../Input'
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi'
@@ -189,7 +189,6 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
         <tr className='tr-custum' style={{ backgroundColor: getRowColor(row) ?? 'transparent' }}>
             {showHistoryModal && <HistoryOrderModal showModal={showHistoryModal} setShowModal={setShowHistoryModal} id_order={String(order?.id ?? 0)} />}
             {showReportModal && <ReportOrderModal showModal={showReportModal} setShowModal={setShowReportModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
-            {showDeleteModal && <DeleteOrderModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} refetch={refetch} id_order={String(order?.id ?? 0)} />}
             {showCommentModal && <CommentOrderModal showModal={showCommentModal} setShowModal={setShowCommentModal} id_order={String(order?.id ?? 0)} />}
 
             <td style={{ width: '90px', color: 'black' }}>
