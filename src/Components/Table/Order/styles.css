@@ -106,3 +106,9 @@ table td:first-child {
         overflow: scroll !important;
     }
 }
+
+.table-footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
