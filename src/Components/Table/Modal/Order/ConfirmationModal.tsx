@@ -87,7 +87,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
     const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
 
     const [index, setIndex] = useState<number>(0)
-    const { data: currentOrder, isSuccess, refetch: refetchCurrentOrder } = useGetClientOrderByIdQuery({ id: id_orders[index] })
+    const { data: currentOrder, isSuccess, refetch: refetchCurrentOrder, isFetching } = useGetClientOrderByIdQuery({ id: id_orders[index] })
 
 
     useEffect(() => {
@@ -146,7 +146,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
                     <div>Date: {new Date(currentOrder.order[0].date).toISOString().split('T')[0]}</div>
                 </div>
                 <EditProductSection refetch={refetch} id={id_orders[index]} editData={currentOrder.order[0].Product_Orders} />
-                <FormBody handleCloseModal={handleCloseModal} RefetchStatus={RefetchStatus} currentOrder={currentOrder} StatusData={StatusData} refetch={refetch} setIndex={setIndex} id_orders={id_orders} index={index} />
+                {isFetching  ? <p>Chargement</p> : <FormBody handleCloseModal={handleCloseModal} RefetchStatus={RefetchStatus} currentOrder={currentOrder} StatusData={StatusData} refetch={refetch} setIndex={setIndex} id_orders={id_orders} index={index} />}
             </ModalWrapper> :
             <ModalWrapper title={'Confirmation'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
                 <div>Impossible</div>
@@ -174,7 +174,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
     const { data: dataCity } = useGetCityQuery()
     const [patchOrder] = usePatchClientOrderMutation()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>({
         resolver: yupResolver(schema),
     });
 
@@ -214,6 +214,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                     return
                 }
 
+                reset()
                 setIndex(prevIndex => prevIndex + 1)
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
@@ -224,13 +225,13 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
             })
     }
 
+    console.log(currentOrder.order[0].nom)
+
     return (
         <div className="card-body">
             <div className="basic-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
-
                     <div className='restant-txt'>restant: {id_orders.length - index}</div>
-
                     <div className="row">
 
                         <CustumSelectForm

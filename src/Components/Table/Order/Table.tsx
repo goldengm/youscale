@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { AddOrderModal, AddProductOrderModal, BulkEditAgentModal, EditOrderModal, ConfirmationModal, DeleteOrderModal } from '../Modal/Order'
 import { RiDeleteBin6Fill } from 'react-icons/ri'
+import { BsArrowDownCircleFill } from 'react-icons/bs'
 import { FaUserEdit } from 'react-icons/fa'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
 import { ColumnModel, GetClientOrderModel, OrderQueryModel, ProductOrder } from '../../../models'
@@ -38,7 +39,7 @@ const GetColumn = (col: ColumnModel[] | undefined): string[] => {
 
     col.map(dt => dt.active && column.push(dt.alias || dt.name))
 
-    return [...column ]
+    return [...column]
 }
 
 interface TableProps {
@@ -54,7 +55,7 @@ interface TableProps {
 }
 export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id, setStatusConfirmation }: TableProps): JSX.Element {
 
-    const [editData, setEditData] = useState<GetClientOrderModel>({ } as GetClientOrderModel)
+    const [editData, setEditData] = useState<GetClientOrderModel>({} as GetClientOrderModel)
     const [order, setOrder] = useState<OrderModel | undefined>()
 
     const fetchData = async () => {
@@ -124,23 +125,29 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
                     endMessage={<p>No more data to load.</p>}
                 >
                     <TableWrapper column={GetColumn(ColumnData?.data)} handleCheckAll={handleCheckAll}>
-                        {
-                            data ? data?.data.map((dt, index) => <Row
-                                handleCheckRow={handleCheckRow}
-                                row={dt}
-                                setIdOrders={setIdOrders}
-                                setOrder={setOrder}
-                                setEditData={setEditData}
-                                setShowEditModal={setShowEditModal}
-                                setShowOrderModal={setShowProductOrderModal}
-                                refetch={refetch}
-                                order={rowData ? rowData[index] : undefined}
-                                column={ColumnData?.data}
-                            />) : <></>
-                        }
-
+                        <>
+                            {
+                                data ? data?.data.map((dt, index) => <Row
+                                    handleCheckRow={handleCheckRow}
+                                    row={dt}
+                                    setIdOrders={setIdOrders}
+                                    setOrder={setOrder}
+                                    setEditData={setEditData}
+                                    setShowEditModal={setShowEditModal}
+                                    setShowOrderModal={setShowProductOrderModal}
+                                    refetch={refetch}
+                                    order={rowData ? rowData[index] : undefined}
+                                    column={ColumnData?.data}
+                                />) : <></>
+                            }
+                        </>
                     </TableWrapper>
                 </InfiniteScroll>
+            </div>
+            <div className='table-footer'>
+                <a onClick={ async ()=> await fetchData()} href="#">
+                    <BsArrowDownCircleFill size={25} />
+                </a>
             </div>
         </div>
     )
@@ -255,14 +262,14 @@ const EditBulkOrder = ({ id_orders, refetch }: EditBulkOrderProps): JSX.Element 
 
     const handleDestroyOrder = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
         e.preventDefault()
-        if(!id_orders || id_orders?.length <= 0) return
+        if (!id_orders || id_orders?.length <= 0) return
 
         setShowModal(true)
     }
 
     return (
         <>
-            { showModal && <BulkEditAgentModal id_orders={id_orders} showModal={showModal} setShowModal={setShowModal} refetch={refetch} />}
+            {showModal && <BulkEditAgentModal id_orders={id_orders} showModal={showModal} setShowModal={setShowModal} refetch={refetch} />}
             <FaUserEdit
                 size={25}
                 className={id_orders && id_orders?.length > 0 ? 'del-order-hov' : ''}
