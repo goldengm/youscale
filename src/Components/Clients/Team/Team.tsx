@@ -319,7 +319,7 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
                                 <tr>
                                     <td>Upsell</td>
                                     <td>{earningTable?.upsell.nb_commande}</td>
-                                    <td>{(earningTable?.upsell.her_earning ?? 0 * 100) / (earningTable?.upsell.nb_commande ?? 1)}</td>
+                                    <td>{earningTable?.upsell.her_earning}</td>
                                 </tr>
                                 <tr>
                                     <td>Downsell</td>
@@ -329,7 +329,7 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
                                 <tr>
                                     <td>CrossSell</td>
                                     <td>{earningTable?.crosssell.nb_commande}</td>
-                                    <td>{(earningTable?.crosssell.her_earning ?? 0 * 100) / (earningTable?.crosssell.nb_commande ?? 1)}</td>
+                                    <td>{earningTable?.crosssell.her_earning}</td>
                                 </tr>
                                 <tr>
                                     <td>Salaire</td>
