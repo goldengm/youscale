@@ -4,7 +4,12 @@ import TableWrapper from './TableWrapper'
 import { useGetProductQuery } from '../../../services/api/ClientApi/ClientProductApi'
 import { GetProductModel } from '../../../models'
 
-export default function ProductTable(): JSX.Element {
+interface Props {
+    driverObj: {
+        moveNext: () => void
+    }
+}
+export default function ProductTable({ driverObj }:Props): JSX.Element {
 
     const [showHidden, setShowHidden] = useState<boolean>(false)
     const [showAddProductModal, setShowAddProductModal] = useState<boolean>(false)
@@ -25,7 +30,8 @@ export default function ProductTable(): JSX.Element {
             title='Product'
             column={['Nom', 'Prix']}
             refetch={refetch}
-            AddBtn={<AddProductBtn setShowModal={setShowAddProductModal} />}
+            AddBtn={<AddProductBtn setShowModal={setShowAddProductModal} driverObj={driverObj} />}
+            driverObj={driverObj}
             setShowHidden={setShowHidden}
             showAddProductModal={showAddProductModal}
             showEditProductModal={showEditProductModal}
@@ -42,11 +48,24 @@ export default function ProductTable(): JSX.Element {
 
 interface AddProductBtnProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    driverObj: {
+        moveNext: () => void
+    }
 }
-const AddProductBtn = ({ setShowModal }: AddProductBtnProps): JSX.Element => {
+const AddProductBtn = ({ setShowModal, driverObj }: AddProductBtnProps): JSX.Element => {
+
+    const handleShowProductModal=(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>)=>{
+        e.preventDefault()
+        
+        setShowModal(true)
+        setTimeout(() => {
+            driverObj.moveNext()
+        }, 1000);
+    }
+
     return (
         <a
-            onClick={() => setShowModal(true)}
+            onClick={handleShowProductModal}
             type="button"
             className="btn btn-primary mb-2 add-product"
         >Add product

@@ -31,8 +31,11 @@ const schema = yup.object().shape({
 interface Props {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    driverObj: {
+        moveNext: () => void
+    }
 }
-export default function AddLinkSheetModal({ showModal, setShowModal }: Props): JSX.Element {
+export default function AddLinkSheetModal({ showModal, setShowModal, driverObj }: Props): JSX.Element {
 
     const { data, refetch } = useGetLinkSheetQuery();
     const [row, setRow] = useState<GetSheetIntegrationModel[]>([])
@@ -69,11 +72,12 @@ export default function AddLinkSheetModal({ showModal, setShowModal }: Props): J
             if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
 
             setShowModal(false)
+            driverObj.moveNext()
         }
     }
 
     return (
-        <ModalWrapper showModal={showModal} title={'API integration'} setShowModal={setShowModal} id='AddOrderModal'>
+        <ModalWrapper showModal={showModal} title={'API integration'} closeModal={handleCloseModal} setShowModal={setShowModal} id='AddLinkSheetModal'>
             <ChangeColumn handleCloseModal={handleCloseModal} />
             <p style={{ display: 'grid' }}>
                 You need to share your spread sheet with this address:

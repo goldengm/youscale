@@ -16,13 +16,16 @@ interface Props {
     setShowAddProductModal?: React.Dispatch<React.SetStateAction<boolean>>
     setShowEditProductModal?: React.Dispatch<React.SetStateAction<boolean>>
     setShowDeleteProductModal?: React.Dispatch<React.SetStateAction<boolean>>
+    driverObj: {
+        moveNext: () => void
+    }
 }
-export default function TableWrapper({ children, title, column, item, AddBtn, setShowHidden, refetch, showAddProductModal, showEditProductModal, showDeleteProductModal, setShowAddProductModal, setShowEditProductModal, setShowDeleteProductModal }: Props): JSX.Element {
+export default function TableWrapper({ children, title, column, item, AddBtn, setShowHidden, refetch, showAddProductModal, showEditProductModal, showDeleteProductModal, setShowAddProductModal, setShowEditProductModal, setShowDeleteProductModal, driverObj }: Props): JSX.Element {
 
     const never = (): any => { }
     return (
         <div className="col-lg-12 product-table">
-            {showAddProductModal ? <AddProductModal refetch={refetch ?? never()} showModal={showAddProductModal} setShowModal={setShowAddProductModal ?? never()} /> : <></>}
+            {showAddProductModal ? <AddProductModal refetch={refetch ?? never()} driverObj={driverObj} showModal={showAddProductModal} setShowModal={setShowAddProductModal ?? never()} /> : <></>}
             {showEditProductModal ? <EditProductModal refetch={refetch ?? never()} showModal={showEditProductModal} setShowModal={setShowEditProductModal ?? never()} item={item} /> : <></>}
             {showDeleteProductModal ? <DeleteProductModal refetch={refetch ?? never()} showModal={showDeleteProductModal} setShowModal={setShowDeleteProductModal ?? never()} item={item} /> : <></>}
 

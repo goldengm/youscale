@@ -37,8 +37,11 @@ interface Props {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
     refetch: () => any
+    driverObj: {
+        moveNext: () => void
+    }
 }
-export default function AddProductModal({ showModal, setShowModal, refetch }: Props): JSX.Element {
+export default function AddProductModal({ showModal, setShowModal, refetch, driverObj }: Props): JSX.Element {
 
     useEffect(() => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -68,11 +71,12 @@ export default function AddProductModal({ showModal, setShowModal, refetch }: Pr
             if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
 
             setShowModal(false)
+            driverObj.moveNext()
         }
     }
 
     return (
-        <ModalWrapper title={'Add Product'} showModal={showModal} setShowModal={setShowModal} id='AddProductModal'>
+        <ModalWrapper title={'Add Product'} showModal={showModal} closeModal={handleCloseModal} setShowModal={setShowModal} id='AddProductModal'>
             <FormBody handleCloseModal={handleCloseModal} refetch={refetch} setShowModal={setShowModal} />
         </ModalWrapper>
     )

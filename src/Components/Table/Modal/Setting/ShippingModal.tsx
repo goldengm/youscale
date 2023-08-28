@@ -21,8 +21,11 @@ const schema = yup.object().shape({
 interface Props {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    driverObj: {
+        moveNext: () => void
+    }
 }
-export default function ShippingModal({ showModal, setShowModal }: Props): JSX.Element {
+export default function ShippingModal({ showModal, setShowModal, driverObj }: Props): JSX.Element {
 
     useEffect(() => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -52,11 +55,12 @@ export default function ShippingModal({ showModal, setShowModal }: Props): JSX.E
             if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
 
             setShowModal(false)
+            driverObj.moveNext()
         }
     }
 
     return (
-        <ModalWrapper showModal={showModal} title={'Shipping companies'} setShowModal={setShowModal} id='AddOrderModal'>
+        <ModalWrapper showModal={showModal} title={'Shipping companies'} closeModal={handleCloseModal} setShowModal={setShowModal} id='ShippingModal'>
             <FormBody handleCloseModal={handleCloseModal} />
         </ModalWrapper>
     )
