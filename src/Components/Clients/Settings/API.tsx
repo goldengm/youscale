@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import { AddLinkSheetModal, ShippingModal } from '../../Table/Modal/Setting'
 
-export default function API(): JSX.Element {
+interface Props{
+    driverObj: {
+        moveNext: () => void
+    }
+}
+export default function API({ driverObj }:Props): JSX.Element {
 
     const [showAddLinkSheetModal, setShowAddLinkSheetModal] = useState<boolean>(false)
     const [showShippingModal, setShowShippingModal] = useState<boolean>(false)
@@ -9,17 +14,23 @@ export default function API(): JSX.Element {
     const handleShowSheetModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         setShowAddLinkSheetModal(true)
+        setTimeout(() => {
+            driverObj.moveNext()
+        }, 1000);
     }
 
     const handleShowShippingModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         setShowShippingModal(true)
+        setTimeout(() => {
+            driverObj.moveNext()
+        }, 1000);
     }
 
     return (
         <div className="row">
-            {showAddLinkSheetModal && <AddLinkSheetModal showModal={showAddLinkSheetModal} setShowModal={setShowAddLinkSheetModal} />}
-            {showShippingModal && <ShippingModal showModal={showShippingModal} setShowModal={setShowShippingModal} />}
+            {showAddLinkSheetModal && <AddLinkSheetModal showModal={showAddLinkSheetModal} driverObj={driverObj} setShowModal={setShowAddLinkSheetModal} />}
+            {showShippingModal && <ShippingModal showModal={showShippingModal} driverObj={driverObj} setShowModal={setShowShippingModal} />}
 
             <h3 className="mt-4 mb-3">API</h3>
             <div className="row">

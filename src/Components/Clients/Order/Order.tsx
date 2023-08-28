@@ -39,7 +39,7 @@ export default function Order({ client }: Props): JSX.Element {
 
   const driverObj = driver({
     onNextClick: () => {
-      if (driverObj.getActiveIndex() === 1) {
+      if (driverObj.getActiveIndex() === 2) {
         const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
         if (response) {
           patchClient({ isBeginner: false }).unwrap()
@@ -57,8 +57,22 @@ export default function Order({ client }: Props): JSX.Element {
     showProgress: true,
     allowClose: false,
     steps: [
-      { element: '.add-order', popover: { title: 'Add Order', description: 'Add your order here', side: "bottom", align: 'start' } },
-      { element: '.start-confirmation', popover: { title: 'Start Confirmation', description: 'Start your Confirmation here', side: "bottom", align: 'start' } }
+      {
+        element: '.add-order', popover: {
+          title: 'Add Order', description: 'Add your order here', side: "bottom", align: 'start',
+          onNextClick: (drvHks) => {
+            driverObj.moveTo(2)
+          }
+        }
+      },
+      { element: '.modal-content', popover: { title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start' } },
+      {
+        element: '.start-confirmation', popover: {
+          title: 'Start Confirmation', description: 'Start your Confirmation here', side: "bottom", align: 'start', onPrevClick: (drvHks) => {
+            driverObj.moveTo(0)
+          },
+        }
+      }
     ]
   });
 
@@ -134,6 +148,7 @@ export default function Order({ client }: Props): JSX.Element {
             _setSkip={_setSkip}
             orders_id={id_orders}
             setStatus={setStatus}
+            driverObj={driverObj}
             setStatusConfirmation={setStatusConfirmation}
             data={OrderClient}
             refetch={RefetchOrderClient}

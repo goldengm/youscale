@@ -38,7 +38,7 @@ export default function Team({ client }: Props): JSX.Element {
 
     const driverObj = driver({
         onNextClick: () => {
-            if (driverObj.getActiveIndex() === 1) {
+            if (driverObj.getActiveIndex() === 2) {
                 const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
                 if (response) {
                     patchClient({ isBeginner: false }).unwrap()
@@ -56,8 +56,22 @@ export default function Team({ client }: Props): JSX.Element {
         showProgress: true,
         allowClose: false,
         steps: [
-            { element: '.add-team', popover: { title: 'Add your team', description: 'Add your team here', side: "right", align: 'start' } },
-            { element: '.menu-step:nth-child(4)', popover: { title: 'Product', description: 'Description for your product page', side: "right", align: 'start' } }
+            {
+                element: '.add-team', popover: {
+                    title: 'Add your team', description: 'Add your team here', side: "right", align: 'start',
+                    onNextClick: (drvHks) => {
+                        driverObj.moveTo(2)
+                    }
+                }
+            },
+            { element: '.modal-content', popover: { title: 'Add your team', description: 'Add your team here', side: "bottom", align: 'start' } },
+            {
+                element: '.menu-step:nth-child(4)', popover: {
+                    title: 'Product', description: 'Description for your product page', side: "right", align: 'start', onPrevClick: (drvHks) => {
+                        driverObj.moveTo(0)
+                    },
+                }
+            }
         ]
     });
 
@@ -112,12 +126,12 @@ export default function Team({ client }: Props): JSX.Element {
             showTutorial={showTutorial}
             closeTutorial={closeTutorial}
         >
-            {showAddTeamModal && <AddTeamModal refetch={refetch} showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} />}
+            {showAddTeamModal && <AddTeamModal refetch={refetch} showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} driverObj={driverObj} />}
             {showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} dataEdit={item} refetch={refetch} />}
             <div className="content-body">
                 <div className="container-fluid">
                     <div className="team-header">
-                        <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} />
+                        <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} driverObj={driverObj} />
                         {
                             teamData?.data.performance &&
                             <PerformanceCard setPerformance={setPerformance} perf={teamData?.data.performance} perf_rate={teamData?.data.performance_rate}>
@@ -143,9 +157,19 @@ interface PropsTeamCard {
     data: GetTeamMemberModel[] | undefined;
     setItem: React.Dispatch<React.SetStateAction<GetTeamMemberModel | undefined>>
     refetch: () => any
+    driverObj: {
+        moveNext: () => void
+    }
 }
-const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, setItem }: PropsTeamCard): JSX.Element => {
+const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, setItem, driverObj }: PropsTeamCard): JSX.Element => {
 
+    const handleShowTeamModal =(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>)=>{
+        e.preventDefault()
+        setShowAddTeamModal(true)
+        setTimeout(() => {
+            driverObj.moveNext()
+        }, 1000);
+    }
     return (
         <div className="col-xl-3 col-xxl-5 col-xl-custum">
             <div className="card">
@@ -154,7 +178,7 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                         <h4 className="card-title mb-2">Team</h4>
                     </div>
                     <a
-                        onClick={() => setShowAddTeamModal(true)}
+                        onClick={handleShowTeamModal}
                         type="button"
                         className="btn btn-primary mb-2 add-team">
                         Add team
@@ -295,7 +319,7 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
                                 <tr>
                                     <td>Upsell</td>
                                     <td>{earningTable?.upsell.nb_commande}</td>
-                                    <td>{earningTable?.upsell.her_earning}</td>
+                                    <td>{(earningTable?.upsell.her_earning ?? 0 * 100) / (earningTable?.upsell.nb_commande ?? 1)}</td>
                                 </tr>
                                 <tr>
                                     <td>Downsell</td>
@@ -305,7 +329,7 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
                                 <tr>
                                     <td>CrossSell</td>
                                     <td>{earningTable?.crosssell.nb_commande}</td>
-                                    <td>{earningTable?.crosssell.her_earning}</td>
+                                    <td>{(earningTable?.crosssell.her_earning ?? 0 * 100) / (earningTable?.crosssell.nb_commande ?? 1)}</td>
                                 </tr>
                                 <tr>
                                     <td>Salaire</td>

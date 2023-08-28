@@ -52,8 +52,11 @@ interface TableProps {
     orders_id: number[]
     isLoading: boolean,
     refetch: () => any
+    driverObj: {
+        moveNext: () => void
+    }
 }
-export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id, setStatusConfirmation }: TableProps): JSX.Element {
+export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id, setStatusConfirmation, driverObj }: TableProps): JSX.Element {
 
     const [editData, setEditData] = useState<GetClientOrderModel>({} as GetClientOrderModel)
     const [order, setOrder] = useState<OrderModel | undefined>()
@@ -110,13 +113,13 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
     return (
         <div className="col-12">
             {showDeleteModal && <DeleteOrderModal refetch={refetch} showModal={showDeleteModal} setShowModal={setShowDeleteModal} id_orders={id_orders} />}
-            {showOrderModal && <AddOrderModal refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
-            {showConfirmationModal && <ConfirmationModal refetch={refetch} setStatus={setStatusConfirmation} showModal={showConfirmationModal} setShowModal={setShowConfirmationModal} id_orders={orders_id ?? []} />}
+            {showOrderModal && <AddOrderModal driverObj={driverObj} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
+            {showConfirmationModal && <ConfirmationModal driverObj={driverObj} refetch={refetch} setStatus={setStatusConfirmation} showModal={showConfirmationModal} setShowModal={setShowConfirmationModal} id_orders={orders_id ?? []} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={String(order?.id)} />}
             {showProductOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showProductOrderModal} setShowModal={setShowProductOrderModal} />}
 
             <div className="card">
-                <TableHeader setShowConfirmationModal={setShowConfirmationModal} setShowDeleteModal={setShowDeleteModal} setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
+                <TableHeader setShowConfirmationModal={setShowConfirmationModal} driverObj={driverObj} setShowDeleteModal={setShowDeleteModal} setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
                 <InfiniteScroll
                     dataLength={data?.data.length || 0}
                     next={fetchData}
@@ -145,7 +148,7 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
                 </InfiniteScroll>
             </div>
             <div className='table-footer'>
-                <a onClick={ async ()=> await fetchData()} href="#">
+                <a onClick={async () => await fetchData()} href="#">
                     <BsArrowDownCircleFill size={25} />
                 </a>
             </div>
@@ -162,14 +165,17 @@ interface TableHeaderProps {
     _skip: number,
     refetch: () => any,
     id_orders: number[] | undefined
+    driverObj: {
+        moveNext: () => void
+    }
 }
-const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus, setShowConfirmationModal, setShowDeleteModal }: TableHeaderProps): JSX.Element => {
+const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus, setShowConfirmationModal, setShowDeleteModal, driverObj }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
             <DeleteBulkOrder id_orders={id_orders} refetch={refetch} setShowDeleteModal={setShowDeleteModal} />
             <EditBulkOrder id_orders={id_orders} refetch={refetch} />
-            <StartConfirmationBtn setShowModal={setShowConfirmationModal} />
-            <AddOrderBtn setShowModal={setShowModal} />
+            <StartConfirmationBtn setShowModal={setShowConfirmationModal} driverObj={driverObj} />
+            <AddOrderBtn setShowModal={setShowModal} driverObj={driverObj} />
             <ImportBtn id_orders={id_orders} />
             <SearchBar _skip={_skip} setOrderQueryData={setOrderQueryData} refetch={refetch} />
             <StatusDropdown _skip={_skip} name="Status" setOrderQueryData={setOrderQueryData} setStatus={setStatus} refetch={refetch} />
@@ -179,11 +185,23 @@ const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _ski
 
 interface AddOrderBtnProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    driverObj: {
+        moveNext: () => void
+    }
 }
-const AddOrderBtn = ({ setShowModal }: AddOrderBtnProps): JSX.Element => {
+const AddOrderBtn = ({ setShowModal, driverObj }: AddOrderBtnProps): JSX.Element => {
+
+    const handleShowTeamModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault()
+        setShowModal(true)
+        setTimeout(() => {
+            driverObj.moveNext()
+        }, 1000);
+    }
+
     return (
         <a
-            onClick={() => setShowModal(true)}
+            onClick={handleShowTeamModal}
             type="button"
             className="btn btn-primary mb-2 add-order"
         >ajouter commande
@@ -191,10 +209,19 @@ const AddOrderBtn = ({ setShowModal }: AddOrderBtnProps): JSX.Element => {
     )
 }
 
-const StartConfirmationBtn = ({ setShowModal }: AddOrderBtnProps): JSX.Element => {
+const StartConfirmationBtn = ({ setShowModal, driverObj }: AddOrderBtnProps): JSX.Element => {
+
+    const handleShowTeamModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault()
+        setShowModal(true)
+        setTimeout(() => {
+            driverObj.moveNext()
+        }, 1000);
+    }
+
     return (
         <a
-            onClick={() => setShowModal(true)}
+            onClick={handleShowTeamModal}
             type="button"
             className="btn btn-primary mb-2 start-confirmation"
         >commencer confirmation
@@ -314,8 +341,9 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus }: 
 
         const { value } = e.target
 
-        setStatus(value)
-        setOrderQueryData({ status: value, search: '', _skip: 0, _limit: _skip })
+        var search = value === 'Status' ? undefined : value
+        setStatus(search)
+        setOrderQueryData({ status: search, search: '', _skip: 0, _limit: _skip })
         refetch()
     }
 
@@ -326,7 +354,7 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus }: 
                 className="me-sm-2 form-control wide"
                 id="inlineFormCustomSelect"
             >
-                <option selected={true}>{name}</option>
+                <option value={name} selected={true}>{'All status'}</option>
                 {isSuccess && dataStatus.countOrderByStatus.map((status, index) => status.checked && <option value={status.name}>{status.name} ({status.count})</option>)}
             </select>
         </div>

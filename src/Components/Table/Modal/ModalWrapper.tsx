@@ -32,7 +32,7 @@ export default function ModalWrapper({ showModal, setShowModal, children, id, ti
     }
 
     return (
-        <div style={{ display: 'block' }} className={"modal fade show"} id={id}>
+        <div style={{ display: 'block' }} className={`modal fade show ${id}`} id={id}>
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">

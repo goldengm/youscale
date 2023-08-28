@@ -50,8 +50,22 @@ export default function Paiement({ client }: Props) {
         showProgress: true,
         allowClose: false,
         steps: [
-            { element: '.add-perte', popover: { title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start' } },
-            { element: '.menu-step:nth-child(3)', popover: { title: 'Order page', description: 'Description for order page', side: "right", align: 'start' } }
+            {
+                element: '.add-perte', popover: {
+                    title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        driverObj.moveTo(2)
+                    }
+                }
+            },
+            { element: '.modal-content', popover: { title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start' } },
+            {
+                element: '.menu-step:nth-child(3)', popover: {
+                    title: 'Order page', description: 'Description for order page', side: "right", align: 'start', onPrevClick: (drvHks) => {
+                        driverObj.moveTo(0)
+                    },
+                }
+            }
         ]
     });
 
@@ -89,7 +103,7 @@ export default function Paiement({ client }: Props) {
             showTutorial={showTutorial}
             closeTutorial={closeTutorial}
         >
-            {showAddPerteModal && <AddPerteModal refetch={refetch} setShowModal={setShowAddPerteModal} showModal={showAddPerteModal} />}
+            {showAddPerteModal && <AddPerteModal refetch={refetch} setShowModal={setShowAddPerteModal} showModal={showAddPerteModal} driverObj={driverObj} />}
             {showDeletePerteModal && <DeletePerteModal refetch={refetch} id_perte={String(item?.id) ?? ''} setShowModal={setShowDeletePerteModal} showModal={showDeletePerteModal} />}
             <div className="content-body">
                 <div className="container-fluid">
@@ -106,7 +120,7 @@ export default function Paiement({ client }: Props) {
                     />
                     {/* <div className="row"><Goal /></div> */}
                     <div className="row">
-                        <Transaction data={data?.data.transaction} setShowAddPerteModal={setShowAddPerteModal} setItem={setItem} setShowDeletePerteModal={setShowDeletePerteModal} />
+                        <Transaction data={data?.data.transaction} setShowAddPerteModal={setShowAddPerteModal} driverObj={driverObj} setItem={setItem} setShowDeletePerteModal={setShowDeletePerteModal} />
                         <DetailsOfSpending data={data?.data.detailOfSpending} />
                     </div>
                 </div>
@@ -227,15 +241,27 @@ interface TransactionProps {
     setShowDeletePerteModal: React.Dispatch<React.SetStateAction<boolean>>,
     setItem: React.Dispatch<React.SetStateAction<TransactionModel | undefined>>,
     data: TransactionModel[] | undefined
+    driverObj: {
+        moveNext: () => void
+    }
 }
-const Transaction = ({ setShowAddPerteModal, data, setItem, setShowDeletePerteModal }: TransactionProps): JSX.Element => {
+const Transaction = ({ setShowAddPerteModal, data, setItem, setShowDeletePerteModal, driverObj }: TransactionProps): JSX.Element => {
+
+    const handleShowTeamModal =(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>)=>{
+        e.preventDefault()
+        setShowAddPerteModal(true)
+        setTimeout(() => {
+            driverObj.moveNext()
+        }, 1000);
+    }
+
     return (
         <div className="col-xl-4 col-xxl-6 col-lg-6">
             <div className="card">
                 <div className="card-header border-0 pb-0 table-header">
                     <h4 className="card-title">TRANSACTIONS</h4>
                     <a
-                        onClick={() => setShowAddPerteModal(true)}
+                        onClick={handleShowTeamModal}
                         type="button"
                         className="btn btn-danger mb-2 add-perte">
                         Add perte
