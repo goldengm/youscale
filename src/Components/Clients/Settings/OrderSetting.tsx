@@ -45,8 +45,12 @@ const SplitActiveInnactive = (data: ColumnModel[] | undefined) => {
 
     return obj
 }
-
-export default function OrderSetting() {
+interface Props{
+    driverObj: {
+        moveNext: () => void
+    }
+}
+export default function OrderSetting({ driverObj }:Props) {
     const [showAddStatusModal, setShowAddStatusModal] = useState<boolean>(false)
     const [showAddCityModal, setShowAddCityModal] = useState<boolean>(false)
     const [showEditCityModal, setShowEditCityModal] = useState<boolean>(false)
@@ -67,7 +71,7 @@ export default function OrderSetting() {
         <div className="row">
             {showAddStatusModal && <AddStatusModal setShowModal={setShowAddStatusModal} showModal={showAddStatusModal} refetch={refetchStatus} />}
 
-            {showAddCityModal && <AddCityModal setShowModal={setShowAddCityModal} refetch={refetchData} showModal={showAddCityModal} />}
+            {showAddCityModal && <AddCityModal setShowModal={setShowAddCityModal} refetch={refetchData} showModal={showAddCityModal} driverObj={driverObj} />}
             {showEditCityModal && <EditCityModal item={item} setShowModal={setShowEditCityModal} refetch={refetchData} showModal={showEditCityModal} />}
             {showDeleteCityModal && <DeleteCityModal id_city={item?.id ? String(item?.id) : ''} setShowModal={setShowDeleteCityModal} refetch={refetchData} showModal={showDeleteCityModal} />}
             {showEditPasswordModal && <EditPasswordModal setShowModal={setShowEditPasswordModal} showModal={showEditPasswordModal} />}
@@ -75,7 +79,7 @@ export default function OrderSetting() {
             <h3 className="mt-4 mb-3">Order Settings</h3>
             <Status setShowAddStatusModal={setShowAddStatusModal} statusData={statusData?.data} refetchStatus={refetchStatus} />
             <ColumnOfOrder objData={objData} refetch={refetch} />
-            <City setShowAddCityModal={setShowAddCityModal} refetch={refetchData} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} data={cityData?.data} setItem={setItem} />
+            <City setShowAddCityModal={setShowAddCityModal} refetch={refetchData} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} data={cityData?.data} setItem={setItem} driverObj={driverObj} />
             <ConfSetting setShowEditPasswordModal={setShowEditPasswordModal} />
         </div>
     )
@@ -287,8 +291,20 @@ interface CityProps {
     setItem: React.Dispatch<React.SetStateAction<CityModel | undefined>>,
     refetch: () => any
     data: CityModel[] | undefined
+    driverObj: {
+        moveNext: () => void
+    }
 }
-const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModal, setItem, data, refetch }: CityProps): JSX.Element => {
+const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModal, setItem, data, refetch, driverObj }: CityProps): JSX.Element => {
+
+    const handleShowCityModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
+        e.preventDefault()
+
+        setShowAddCityModal(true)
+        setTimeout(() => {
+            driverObj.moveNext()
+        }, 1000);
+    }
 
     return (
         <div className="col-12">
@@ -297,7 +313,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
                     <h4 className="card-title">City</h4>
 
                     <a
-                        onClick={() => setShowAddCityModal(true)}
+                        onClick={handleShowCityModal}
                         type="button"
                         className="btn btn-primary mb-2 add-city-btn"
                     >

@@ -60,8 +60,11 @@ interface Props {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
     refetch: () => any
+    driverObj: {
+        moveNext: () => void
+    }
 }
-export default function AddPerteModal({ showModal, setShowModal, refetch }: Props): JSX.Element {
+export default function AddPerteModal({ showModal, setShowModal, refetch, driverObj }: Props): JSX.Element {
 
     useEffect(() => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -91,11 +94,12 @@ export default function AddPerteModal({ showModal, setShowModal, refetch }: Prop
             if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
 
             setShowModal(false)
+            driverObj.moveNext()
         }
     }
 
     return (
-        <ModalWrapper showModal={showModal} title={'Add perte'} setShowModal={setShowModal} id='AddOrderModal'>
+        <ModalWrapper showModal={showModal} title={'Add perte'} closeModal={handleCloseModal} setShowModal={setShowModal} id='AddOrderModal'>
             <FormBody refetch={refetch} handleCloseModal={handleCloseModal} />
         </ModalWrapper>
     )

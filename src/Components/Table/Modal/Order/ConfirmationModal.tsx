@@ -81,8 +81,11 @@ interface Props {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     refetch: () => any
+    driverObj: {
+        moveNext: () => void
+    }
 }
-export default function ConfirmationModal({ showModal, setShowModal, refetch, id_orders, setStatus }: Props): JSX.Element {
+export default function ConfirmationModal({ showModal, setShowModal, refetch, id_orders, setStatus, driverObj }: Props): JSX.Element {
 
     const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
 
@@ -129,6 +132,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
             if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
 
             setShowModal(false)
+            driverObj.moveNext()
         }
     }
 
@@ -139,14 +143,14 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
 
     return (
         (isSuccess && id_orders.length > 0) ?
-            <ModalWrapper title={'Confirmation'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
+            <ModalWrapper title={'Confirmation'} showModal={showModal} closeModal={handleCloseModal} setShowModal={setShowModal} id='EditOrderModal'>
                 <SelectStatusComponent data={FilterStatusWithOrder(StatusData?.countOrderByStatus)} label={'Status'} name={'status'} Onchange={onSelectStatus} />
                 <div className="order-id-date">
                     <div>Order Id: {currentOrder.order[0].id}</div>
                     <div>Date: {new Date(currentOrder.order[0].date).toISOString().split('T')[0]}</div>
                 </div>
                 <EditProductSection refetch={refetch} id={id_orders[index]} editData={currentOrder.order[0].Product_Orders} />
-                {isFetching  ? <p>Chargement</p> : <FormBody handleCloseModal={handleCloseModal} RefetchStatus={RefetchStatus} currentOrder={currentOrder} StatusData={StatusData} refetch={refetch} setIndex={setIndex} id_orders={id_orders} index={index} />}
+                {isFetching ? <p>Chargement</p> : <FormBody handleCloseModal={handleCloseModal} RefetchStatus={RefetchStatus} currentOrder={currentOrder} StatusData={StatusData} refetch={refetch} setIndex={setIndex} id_orders={id_orders} index={index} />}
             </ModalWrapper> :
             <ModalWrapper title={'Confirmation'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
                 <div>Impossible</div>

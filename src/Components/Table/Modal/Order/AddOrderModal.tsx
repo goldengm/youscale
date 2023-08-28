@@ -84,8 +84,11 @@ interface Props {
   showModal: boolean,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
   refetch: () => any
+  driverObj: {
+    moveNext: () => void
+  }
 }
-export default function AddOrderModal({ showModal, setShowModal, refetch }: Props): JSX.Element {
+export default function AddOrderModal({ showModal, setShowModal, refetch, driverObj }: Props): JSX.Element {
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
@@ -115,11 +118,12 @@ export default function AddOrderModal({ showModal, setShowModal, refetch }: Prop
       if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
 
       setShowModal(false)
+      driverObj.moveNext()
     }
   }
 
   return (
-    <ModalWrapper showModal={showModal} title={'ajouter commande'} setShowModal={setShowModal} id='AddOrderModal'>
+    <ModalWrapper showModal={showModal} title={'ajouter commande'} closeModal={handleCloseModal} setShowModal={setShowModal} id='AddOrderModal'>
       <FormBody refetch={refetch} handleCloseModal={handleCloseModal} />
     </ModalWrapper>
   )

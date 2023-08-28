@@ -35,9 +35,34 @@ export default function Product({ client }: Props): JSX.Element {
         showProgress: true,
         allowClose: false,
         steps: [
-            { element: '.add-product', popover: { title: 'Add product', description: 'Add your product here.', side: "bottom", align: 'start' } },
-            { element: '.add-stock', popover: { title: 'Add product', description: 'Add your product here.', side: "bottom", align: 'start' } },
-            { element: '.menu-step:nth-child(7)', popover: { title: 'Paiement Page', description: 'Description for paiement page', side: "right", align: 'start' } }
+            {
+                element: '.add-product', popover: {
+                    title: 'Add product', description: 'Add your product here.', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        driverObj.moveTo(2)
+                    }
+                }
+            },
+            { element: '.modal-content', popover: { title: 'Add product', description: 'Add your product here.', side: "bottom", align: 'start' } },
+            {
+                element: '.add-stock', popover: {
+                    title: 'Add product', description: 'Add your product here.', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        driverObj.moveTo(4)
+                    },
+                    onPrevClick: (drvHks) => {
+                        driverObj.moveTo(0)
+                    },
+                }
+            },
+            { element: '.modal-content', popover: { title: 'Add your team', description: 'Add your team here', side: "bottom", align: 'start' } },
+            {
+                element: '.menu-step:nth-child(7)', popover: {
+                    title: 'Add your team', description: 'Add your team here', side: "right", align: 'start', onPrevClick: (drvHks) => {
+                        driverObj.moveTo(2)
+                    },
+                }
+            }
         ]
     });
 
@@ -64,8 +89,8 @@ export default function Product({ client }: Props): JSX.Element {
             <div className="content-body">
                 <div className="container-fluid">
                     <div className="display-product-content">
-                        <ProductTable />
-                        <StockTable />
+                        <ProductTable driverObj={driverObj} />
+                        <StockTable driverObj={driverObj} />
                     </div>
                 </div>
             </div>
