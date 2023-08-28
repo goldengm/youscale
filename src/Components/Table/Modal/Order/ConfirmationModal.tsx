@@ -136,11 +136,12 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
         }
     }
 
-    if (id_orders.length === 0) {
-        setStatus(undefined)
-        handleCloseModal()
-    }
+    // if (id_orders.length === 0) {
+    //     setStatus(undefined)
+    //     handleCloseModal()
+    // }
 
+    console.log(id_orders.length)
     return (
         (isSuccess && id_orders.length > 0) ?
             <ModalWrapper title={'Confirmation'} showModal={showModal} closeModal={handleCloseModal} setShowModal={setShowModal} id='EditOrderModal'>
@@ -228,8 +229,6 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                 }
             })
     }
-
-    console.log(currentOrder.order[0].nom)
 
     return (
         <div className="card-body">
