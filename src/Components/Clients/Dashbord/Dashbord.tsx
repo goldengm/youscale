@@ -39,8 +39,8 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                 const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
                 if (response) {
                     patchClient({ isBeginner: false }).unwrap()
-                    .then(res=> console.log(res))
-                    .catch(err=> console.warn(err))
+                        .then(res => console.log(res))
+                        .catch(err => console.warn(err))
                     driverObj.destroy();
                 } else {
                     //
@@ -108,7 +108,7 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                     <DisplayCard costPerLead={data.costPerLead} orderInProgress={data.orderInProgress}
                         costPerDelivred={data.costPerDelivred} rateOfConfirmed={data.rateOfConfirmed}
                         rateOfDelivred={data.rateOfDelivred} earningNet={data.earningNet} stock={data.stock}
-                        totalOrder={data.totalOrder}
+                        totalOrder={data.totalOrder} upsellRate={data.upsellRate} crosssellRate={data.crosssellRate}
                     />
                     <div>
                         <div className="row">
@@ -136,8 +136,10 @@ interface DisplayCardProps {
     earningNet: number;
     stock: number;
     totalOrder: number;
+    upsellRate: number;
+    crosssellRate: number;
 }
-const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet, stock, totalOrder }: DisplayCardProps): JSX.Element => {
+const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet, stock, totalOrder, upsellRate, crosssellRate }: DisplayCardProps): JSX.Element => {
     return (
         <div className="row invoice-card-row stats">
 
@@ -155,6 +157,9 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
 
             <Card bg={'info'} value={totalOrder} title={'Total order'} icon={<AiFillThunderbolt size={35} color={'white'} />} />
 
+            <Card bg={'info'} value={upsellRate} title={'taux de upsell'} icon={<FaTruckMoving size={35} color={'white'} />} />
+
+            <Card bg={'secondary'} value={crosssellRate} title={'taux de crosssell'} icon={<BsFillPatchCheckFill size={35} color={'white'} />} />
         </div>
     )
 }

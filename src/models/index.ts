@@ -843,6 +843,8 @@ export interface DataLine {
 export interface DashbordModel {
     costPerLead: number;
     orderInProgress: number;
+    upsellRate: number;
+    crosssellRate: number;
     stock: number;
     totalOrder: number;
     costPerDelivred: number;

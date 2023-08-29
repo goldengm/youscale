@@ -347,6 +347,20 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus }: 
         refetch()
     }
 
+    const getTotalStatus = (): number => {
+        var sum: number = 0
+
+        {
+            isSuccess && dataStatus.countOrderByStatus.map((status, index) => {
+                if (status.checked) {
+                    sum += status.count
+                }
+            })
+        }
+
+        return sum
+    }
+
     return (
         <div className="col-auto my-1">
             <select
@@ -354,7 +368,7 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus }: 
                 className="me-sm-2 form-control wide"
                 id="inlineFormCustomSelect"
             >
-                <option value={name} selected={true}>{'All status'}</option>
+                <option value={name} selected={true}>{`All status (${getTotalStatus()})`}</option>
                 {isSuccess && dataStatus.countOrderByStatus.map((status, index) => status.checked && <option value={status.name}>{status.name} ({status.count})</option>)}
             </select>
         </div>
