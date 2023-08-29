@@ -68,9 +68,7 @@ export default function ProductRow({ setShowEditModal, setShowDeleteModal, data,
                         className="btn btn-danger shadow btn-xs sharp">
                         <i className="fa fa-trash" />
                     </a>
-                    {
-                        data?.isHidden ? <AiOutlineEyeInvisible onClick={SwitchHideProduct} size={25} /> : <AiOutlineEye onClick={SwitchHideProduct} size={25} />
-                    }
+                    { data?.isHidden ? <AiOutlineEyeInvisible onClick={SwitchHideProduct} size={25} /> : <AiOutlineEye onClick={SwitchHideProduct} size={25} /> }
                 </div>
             </td>
         </tr>

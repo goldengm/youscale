@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
 import { FaPen } from 'react-icons/fa'
 import { RiLoginCircleFill } from 'react-icons/ri'
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { CustomHist } from '../../Chart'
 import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
 import { Cient, EarningTable, GetTeamMemberModel, Performance, TeamDashbordQueryModel } from '../../../models'
@@ -17,6 +18,7 @@ import "driver.js/dist/driver.css";
 import PerformanceCard from './PerformanceCard'
 import EarningCard from './EarningCard'
 import './team.style.css'
+import { showToastSucces } from '../../../services/toast/showToastSucces'
 
 interface Props {
     client: Cient | undefined
@@ -26,8 +28,9 @@ export default function Team({ client }: Props): JSX.Element {
     const userData = localStorage.getItem('userData')
     const [patchClient] = usePatchClientMutation()
 
+    const [showHidden, setShowHidden] = useState<boolean>(false)
     const [showTutorial, setShowTutorial] = useState<boolean>(false);
-    const { data, refetch } = useGetTeamMemberQuery()
+    const { data, refetch } = useGetTeamMemberQuery({ isHidden: showHidden })
     const [date, setDate] = useState<string[]>([])
     const [idTeam, setIdTeam] = useState<number>(GetRole() === 'TEAM' ? JSON.parse(userData || '{id: 0}').id : 0)
     const [usingDate, setUsingDate] = useState<boolean>(false)
@@ -74,6 +77,10 @@ export default function Team({ client }: Props): JSX.Element {
             }
         ]
     });
+
+    useEffect(() => {
+        refetch()
+    }, [showHidden])
 
     useEffect(() => {
         setPerformance(teamData?.data.performance)
@@ -131,7 +138,7 @@ export default function Team({ client }: Props): JSX.Element {
             <div className="content-body">
                 <div className="container-fluid">
                     <div className="team-header">
-                        <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} driverObj={driverObj} />
+                        <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowHidden={setShowHidden} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} driverObj={driverObj} />
                         {
                             teamData?.data.performance &&
                             <PerformanceCard setPerformance={setPerformance} perf={teamData?.data.performance} perf_rate={teamData?.data.performance_rate}>
@@ -156,14 +163,15 @@ interface PropsTeamCard {
     setShowEditTeamModal: React.Dispatch<React.SetStateAction<boolean>>,
     data: GetTeamMemberModel[] | undefined;
     setItem: React.Dispatch<React.SetStateAction<GetTeamMemberModel | undefined>>
+    setShowHidden: React.Dispatch<React.SetStateAction<boolean>>
     refetch: () => any
     driverObj: {
         moveNext: () => void
     }
 }
-const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, setItem, driverObj }: PropsTeamCard): JSX.Element => {
+const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, setItem, driverObj, setShowHidden }: PropsTeamCard): JSX.Element => {
 
-    const handleShowTeamModal =(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>)=>{
+    const handleShowTeamModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
         setShowAddTeamModal(true)
         setTimeout(() => {
@@ -177,6 +185,28 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                     <div>
                         <h4 className="card-title mb-2">Team</h4>
                     </div>
+                    {
+                        <div className="card-tabs mt-3 mt-sm-0">
+                            <ul className="nav nav-tabs" role="tablist">
+                                <li className="nav-item">
+                                    <a
+                                        onClick={() => setShowHidden(false)}
+                                        className="nav-link active"
+                                        data-bs-toggle="tab"
+                                        href="#Order"
+                                        role="tab"
+                                    >
+                                        All
+                                    </a>
+                                </li>
+                                <li className="nav-item">
+                                    <a onClick={() => setShowHidden(true)} className="nav-link" data-bs-toggle="tab" href="#Rate" role="tab">
+                                        Hidden
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
                     <a
                         onClick={handleShowTeamModal}
                         type="button"
@@ -211,6 +241,22 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
                 refetch()
             })
             .catch((err: any) => showToastError(err.data.message))
+    }
+
+
+    const SwitchHideProduct = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+        e.preventDefault()
+
+        patchTeamMember({
+            id: item?.id || 0,
+            isHidden: !item?.isHidden || false
+        }).unwrap().then((res) => {
+            showToastSucces(item?.isHidden ? 'Your team has ben showed' : 'Your team has ben hidden')
+            refetch()
+        }).catch(err => {
+            console.log(err)
+            showToastError('Ooops, something happen try again')
+        })
     }
 
     const handleShowEdit = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
@@ -250,6 +296,8 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
                     className='edit-team-pencil'
                     style={{ marginRight: 12 }}
                 />
+
+                {item?.isHidden ? <AiOutlineEyeInvisible onClick={SwitchHideProduct} size={25} /> : <AiOutlineEye onClick={SwitchHideProduct} size={25} />}
 
                 <Switch active={item.active} onClick={handleEditSatus} />
             </div>
