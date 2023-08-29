@@ -267,6 +267,7 @@ export interface GetTeamMemberModel {
     crosssell?: string,
     max_order?: string
     active?: boolean,
+    isHidden?: boolean,
     Team_Client_Column_Acces?: ColumnAccessModel[],
     Team_Client_City_Acces?: CityAccessModel[],
     Team_Client_Page_Acces?: PageAccessModel[],

@@ -100,8 +100,8 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
     const onSelectStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault()
         const { value } = e.target
-        
-        setStatus( value === "0" ? undefined : value)
+
+        setStatus(value === "0" ? undefined : value)
     }
 
     useEffect(() => {
@@ -220,7 +220,6 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                 }
 
                 reset()
-                setIndex(prevIndex => prevIndex + 1)
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -228,6 +227,12 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
+    }
+
+    const onNext =(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>)=>{
+        e.preventDefault()
+
+        setIndex(prevIndex => prevIndex + 1)
     }
 
     return (
@@ -310,8 +315,11 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                         }
                     </div>
                     <button type="submit" className="btn btn-primary">
-                        Suivant
+                        Enregistrer
                     </button>
+                    <a href='#' onClick={onNext} className="btn light btn-light next-btn">
+                        Suivant
+                    </a>
                 </form>
             </div>
         </div>
@@ -427,7 +435,7 @@ const SelectStatusComponent = ({ data, label, name, Onchange, statusConfirmation
                 className="me-sm-2 default-select form-control wide"
                 id="inlineFormCustomSelect"
             >
-                 <option value={"0"}>{"All status"}</option>
+                <option value={"0"}>{"All status"}</option>
                 {data.map((dt) => <option selected={statusConfirmation === dt.value} value={dt.value}>{dt.label}</option>)}
             </select>
         </div>
