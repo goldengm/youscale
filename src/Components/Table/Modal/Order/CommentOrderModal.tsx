@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { ElementRef, useEffect, useRef, useState } from 'react'
 import ModalWrapper from '../ModalWrapper'
 import { useGetOrderCommentQuery, useMakeOrderCommentMutation } from '../../../../services/api/ClientApi/ClientOrderApi'
+import { BsFillSendFill } from 'react-icons/bs'
 import './modal.style.css'
-import { number } from 'yup';
 
 type HistoryType = {
     message: string;
@@ -48,6 +48,7 @@ interface FormBodyProps {
 const FormBody = ({ data, id_order, refetch }: FormBodyProps) => {
     const [comment, { isLoading }] = useMakeOrderCommentMutation()
     const [message, setMessage] = useState<string>('')
+    const sendBtnRef = useRef<ElementRef<"a">>(null)
 
     const onWrite = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
@@ -70,23 +71,41 @@ const FormBody = ({ data, id_order, refetch }: FormBodyProps) => {
         setMessage('')
     }
 
+    const onKeyPress=(event: React.KeyboardEvent<HTMLInputElement>)=>{
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendBtnRef.current?.click()
+          }
+    }
+
     return (
-        <div className="card-body">
-            <div
-                id="dlab_W_TimeLine"
-                className="widget-timeline dlab-scroll height370 ps ps--active-y custum-time-line"
-            >
-                <ul className="timeline">
-                    {data && data.map(dt => <Event description={dt.message} date={dt.createdAt} />)}
-                </ul>
-            </div>
-            {
-                isLoading ? 'Traitement' :
-                    <div className="comment-input">
-                        <input onChange={onWrite} value={message} className="form-control" style={{ width: '80%'}} type="text" />
-                        <a onClick={MakeComment} href="#">Commenter</a>
+        <div>
+            <div className="container-msg">
+                <div className="chat-page">
+                    <div className="msg-inbox">
+                        <div className="chats">
+                            <div className="msg-page">
+                                {data && data.map(dt => <OutgoingMsg description={dt.message} date={dt.createdAt} />)}
+                            </div>
+                        </div>
+                        <div className="msg-bottom">
+                            <div className="input-group-msg">
+                                <input
+                                    onChange={onWrite}
+                                    value={message}
+                                    onKeyDown={onKeyPress}
+                                    type="text"
+                                    className="form-control-msg chat-input"
+                                    placeholder="Ecrivez votre message..."
+                                />
+                                <a onClick={MakeComment} ref={sendBtnRef} className="input-group-text-msg send-icon">
+                                    <BsFillSendFill className="bi bi-send" />
+                                </a>
+                            </div>
+                        </div>
                     </div>
-            }
+                </div>
+            </div>
         </div>
     )
 }
@@ -95,16 +114,17 @@ interface EventProps {
     description: string,
     date: string
 }
-const Event = ({ description, date }: EventProps): JSX.Element => {
+const OutgoingMsg = ({ description, date }: EventProps): JSX.Element => {
     return (
-        <li>
-            <div className="timeline-badge primary" />
-            <a className="timeline-panel text-muted" href="#">
-                <span>{date}</span>
-                <h6 className="mb-0">
-                    {description}
-                </h6>
-            </a>
-        </li>
+        <div className="outgoing-chats">
+            <div className="outgoing-msg">
+                <div className="outgoing-chats-msg">
+                    <p>
+                        {description}
+                    </p>
+                    <span className="time">You | {date.toString().slice(0, 10)}</span>
+                </div>
+            </div>
+        </div>
     )
 }
