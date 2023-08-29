@@ -92,7 +92,6 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
     const [index, setIndex] = useState<number>(0)
     const { data: currentOrder, isSuccess, refetch: refetchCurrentOrder, isFetching } = useGetClientOrderByIdQuery({ id: id_orders[index] })
 
-
     useEffect(() => {
         refetchCurrentOrder()
     }, [index])
@@ -100,8 +99,8 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
     const onSelectStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault()
         const { value } = e.target
-        console.log(value)
-        setStatus(value)
+        
+        setStatus( value === "0" ? undefined : value)
     }
 
     useEffect(() => {
@@ -426,6 +425,7 @@ const SelectStatusComponent = ({ data, label, name, Onchange }: SelectStatusComp
                 className="me-sm-2 default-select form-control wide"
                 id="inlineFormCustomSelect"
             >
+                 <option value={"0"}>{"All status"}</option>
                 {data.map((dt) => <option value={dt.value}>{dt.label}</option>)}
             </select>
         </div>
