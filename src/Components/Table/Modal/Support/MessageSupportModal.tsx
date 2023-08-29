@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef, ElementRef } from 'react'
 import ModalWrapper from '../ModalWrapper'
 import io from 'socket.io-client'
 import { ChatMessage, Cient, Support } from '../../../../models';
 import { useGetClientQuery } from '../../../../services/api/ClientApi/ClientApi';
 import { useGetSupportMessageQuery } from '../../../../services/api/ClientApi/ClientSupportApi';
 import { BASE_URL } from '../../../../services/url/API_URL';
+import { BsFillSendFill } from 'react-icons/bs'
+import "./chat.css"
+
 
 const socket = io(BASE_URL, { transports: ['websocket'] })
 interface Props {
@@ -47,6 +50,7 @@ interface FormBodyProps {
 }
 const FormBody = ({ data, client, messageList, refetchMessage }: FormBodyProps) => {
     const [message, setMessage] = useState<string>('')
+    const sendBtnRef = useRef<ElementRef<"a">>(null)
 
     const onWrite = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
@@ -57,29 +61,55 @@ const FormBody = ({ data, client, messageList, refetchMessage }: FormBodyProps) 
 
     useEffect(() => {
         socket.on(String(data?.id) ?? '', (orderOption: {}) => {
-            console.log('new message')
             refetchMessage()
         })
     }, [])
 
     const sendMessage = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault()
+        if(message==='') return
         socket.emit('message', { 'text': message, 'chatId': data.id, 'ClientId': client?.id ?? 0 })
+        setMessage('')
+    }
+
+    const onKeyPress=(event: React.KeyboardEvent<HTMLInputElement>)=>{
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendBtnRef.current?.click()
+          }
     }
 
     return (
-        <div className="card-body">
-            <div
-                id="dlab_W_TimeLine"
-                className="widget-timeline dlab-scroll height370 ps ps--active-y custum-time-line"
-            >
-                <ul className="timeline">
-                    <Event description={data.description} attachement={data.attachment} idUser={data.id_user ?? 0} date={data.createdAt ?? ''} />
-                    {messageList && messageList.map((msg, index) => <Event key={index} idUser={msg.id_user ?? 0} description={msg.message} date={msg.createdAt ?? ''} />)}
-                </ul>
-            </div>
-            <div className="comment-input">
-                <input onChange={onWrite} value={message} placeholder='Ecrivez votre message ici' className="form-control" style={{ width: '80%' }} type="text" />
-                <a onClick={sendMessage} href="#">Envoyer</a>
+        <div>
+            <div className="container-msg">
+                <div className="chat-page">
+                    <div className="msg-inbox">
+                        <div className="chats">
+                            <div className="msg-page">
+                                <OutgoingMsg description={data.description} attachement={data.attachment} idUser={data.id_user ?? 0} date={data.createdAt ?? ''} />
+                                {messageList && messageList.map((msg, index) => msg.id_user ?
+                                    <OutgoingMsg key={index} idUser={msg.id_user ?? 0} description={msg.message} date={msg.createdAt ?? ''} /> :
+                                    <ReceivedMsg key={index} idUser={msg.id_user ?? 0} description={msg.message} date={msg.createdAt ?? ''} />
+                                )}
+                            </div>
+                        </div>
+                        <div className="msg-bottom">
+                            <div className="input-group-msg">
+                                <input
+                                    onChange={onWrite}
+                                    value={message}
+                                    onKeyDown={onKeyPress}
+                                    type="text"
+                                    className="form-control-msg chat-input"
+                                    placeholder="Ecrivez votre message..."
+                                />
+                                <a onClick={sendMessage} ref={sendBtnRef} className="input-group-text-msg send-icon">
+                                    <BsFillSendFill className="bi bi-send" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -91,16 +121,34 @@ interface EventProps {
     idUser: number
     date: string
 }
-const Event = ({ description, date, attachement, idUser }: EventProps): JSX.Element => {
+const ReceivedMsg = ({ description, date, attachement, idUser }: EventProps): JSX.Element => {
     return (
-        <li>
-            <a className={`timeline-panel text-muted ${!idUser && 'admin-msg'}`} href="#">
-                {attachement && <img src={attachement} alt="attachement" className='chat-attachement' />}
-                <span>{date.toString().slice(0, 10)}</span>
-                <h6 className="mb-0">
-                    {!idUser && 'admin: '} {description}
-                </h6>
-            </a>
-        </li>
+        <div className="received-chats">
+            <div className="received-msg">
+                <div className="received-msg-inbox">
+                    {attachement && <img src={attachement} alt="attachement" className='chat-attachement' />}
+                    <p>
+                        {description}
+                    </p>
+                    <span className="time">Admin | {date.toString().slice(0, 10)}</span>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const OutgoingMsg = ({ description, date, attachement, idUser }: EventProps): JSX.Element => {
+    return (
+        <div className="outgoing-chats">
+            <div className="outgoing-msg">
+                <div className="outgoing-chats-msg">
+                    <p>
+                        {attachement && <img src={attachement} alt="attachement" className='chat-attachement' />}
+                        {description}
+                    </p>
+                    <span className="time">You | {date.toString().slice(0, 10)}</span>
+                </div>
+            </div>
+        </div>
     )
 }

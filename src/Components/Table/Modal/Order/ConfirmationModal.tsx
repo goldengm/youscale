@@ -80,12 +80,13 @@ interface Props {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
+    statusConfirmation: string | undefined
     refetch: () => any
     driverObj: {
         moveNext: () => void
     }
 }
-export default function ConfirmationModal({ showModal, setShowModal, refetch, id_orders, setStatus, driverObj }: Props): JSX.Element {
+export default function ConfirmationModal({ showModal, setShowModal, refetch, id_orders, setStatus, driverObj, statusConfirmation }: Props): JSX.Element {
 
     const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
 
@@ -144,7 +145,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
     return (
         (isSuccess && id_orders.length > 0) ?
             <ModalWrapper title={'Confirmation'} showModal={showModal} closeModal={handleCloseModal} setShowModal={setShowModal} id='EditOrderModal'>
-                <SelectStatusComponent data={FilterStatusWithOrder(StatusData?.countOrderByStatus)} label={'Status'} name={'status'} Onchange={onSelectStatus} />
+                <SelectStatusComponent data={FilterStatusWithOrder(StatusData?.countOrderByStatus)} label={'Status'} name={'status'} Onchange={onSelectStatus} statusConfirmation={statusConfirmation} />
                 <div className="order-id-date">
                     <div>Order Id: {currentOrder.order[0].id}</div>
                     <div>Date: {new Date(currentOrder.order[0].date).toISOString().split('T')[0]}</div>
@@ -414,8 +415,9 @@ interface SelectStatusComponentProps {
     name: string
     label: string
     Onchange: (e: React.ChangeEvent<HTMLSelectElement>) => any
+    statusConfirmation: string | undefined
 }
-const SelectStatusComponent = ({ data, label, name, Onchange }: SelectStatusComponentProps) => {
+const SelectStatusComponent = ({ data, label, name, Onchange, statusConfirmation }: SelectStatusComponentProps) => {
     return (
         <div className="mb-3 col-md-4">
             <label className="form-label">{label}</label>
@@ -426,7 +428,7 @@ const SelectStatusComponent = ({ data, label, name, Onchange }: SelectStatusComp
                 id="inlineFormCustomSelect"
             >
                  <option value={"0"}>{"All status"}</option>
-                {data.map((dt) => <option value={dt.value}>{dt.label}</option>)}
+                {data.map((dt) => <option selected={statusConfirmation === dt.value} value={dt.value}>{dt.label}</option>)}
             </select>
         </div>
     )

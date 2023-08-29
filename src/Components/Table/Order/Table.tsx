@@ -47,6 +47,7 @@ interface TableProps {
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
     setStatusConfirmation: React.Dispatch<React.SetStateAction<string | undefined>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
+    statusConfirmation: string | undefined
     _skip: number,
     _setSkip: React.Dispatch<React.SetStateAction<number>>
     orders_id: number[]
@@ -56,7 +57,7 @@ interface TableProps {
         moveNext: () => void
     }
 }
-export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id, setStatusConfirmation, driverObj }: TableProps): JSX.Element {
+export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id, setStatusConfirmation, driverObj, statusConfirmation }: TableProps): JSX.Element {
 
     const [editData, setEditData] = useState<GetClientOrderModel>({} as GetClientOrderModel)
     const [order, setOrder] = useState<OrderModel | undefined>()
@@ -114,7 +115,7 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
         <div className="col-12">
             {showDeleteModal && <DeleteOrderModal refetch={refetch} showModal={showDeleteModal} setShowModal={setShowDeleteModal} id_orders={id_orders} />}
             {showOrderModal && <AddOrderModal driverObj={driverObj} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
-            {showConfirmationModal && <ConfirmationModal driverObj={driverObj} refetch={refetch} setStatus={setStatusConfirmation} showModal={showConfirmationModal} setShowModal={setShowConfirmationModal} id_orders={orders_id ?? []} />}
+            {showConfirmationModal && <ConfirmationModal driverObj={driverObj} statusConfirmation={statusConfirmation} refetch={refetch} setStatus={setStatusConfirmation} showModal={showConfirmationModal} setShowModal={setShowConfirmationModal} id_orders={orders_id ?? []} />}
             {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={String(order?.id)} />}
             {showProductOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showProductOrderModal} setShowModal={setShowProductOrderModal} />}
 
