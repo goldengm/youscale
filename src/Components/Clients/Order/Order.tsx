@@ -150,6 +150,7 @@ export default function Order({ client }: Props): JSX.Element {
             setStatus={setStatus}
             driverObj={driverObj}
             setStatusConfirmation={setStatusConfirmation}
+            statusConfirmation={statusConfirmation}
             data={OrderClient}
             refetch={RefetchOrderClient}
             setOrderQueryData={setOrderQueryData}
