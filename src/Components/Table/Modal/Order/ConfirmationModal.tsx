@@ -10,9 +10,10 @@ import { showToastError } from '../../../../services/toast/showToastError';
 import { CustumDropdown, MultiSelectElement, SendButton } from '../../../Input';
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi';
 import { ProductOrderCard } from './Card';
+import { Spinner4Bar } from '../../../Loader';
+import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi';
 import ModalWrapper from '../ModalWrapper'
 import * as yup from "yup";
-import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi';
 
 const FilterStatusData = (data: StatusModel[] | undefined): SelectType[] => {
     if (!data) return []
@@ -141,7 +142,6 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
     //     handleCloseModal()
     // }
 
-    console.log(id_orders.length)
     return (
         (isSuccess && id_orders.length > 0) ?
             <ModalWrapper title={'Confirmation'} showModal={showModal} closeModal={handleCloseModal} setShowModal={setShowModal} id='EditOrderModal'>
@@ -151,7 +151,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
                     <div>Date: {new Date(currentOrder.order[0].date).toISOString().split('T')[0]}</div>
                 </div>
                 <EditProductSection refetch={refetch} id={id_orders[index]} editData={currentOrder.order[0].Product_Orders} />
-                {isFetching ? <p>Chargement</p> : <FormBody handleCloseModal={handleCloseModal} RefetchStatus={RefetchStatus} currentOrder={currentOrder} StatusData={StatusData} refetch={refetch} setIndex={setIndex} id_orders={id_orders} index={index} />}
+                {isFetching ? <p>Chargement</p> : <FormBody handleCloseModal={handleCloseModal} RefetchStatus={RefetchStatus} currentOrder={currentOrder} StatusData={StatusData} refetch={refetchCurrentOrder} setIndex={setIndex} id_orders={id_orders} index={index} />}
             </ModalWrapper> :
             <ModalWrapper title={'Confirmation'} showModal={showModal} setShowModal={setShowModal} id='EditOrderModal'>
                 <div>Impossible</div>
@@ -177,7 +177,7 @@ interface FormBodyProps {
 const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, currentOrder, StatusData, RefetchStatus }: FormBodyProps) => {
 
     const { data: dataCity } = useGetCityQuery()
-    const [patchOrder] = usePatchClientOrderMutation()
+    const [patchOrder, { isLoading }] = usePatchClientOrderMutation()
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>({
         resolver: yupResolver(schema),
@@ -219,7 +219,6 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                     return
                 }
 
-                reset()
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -229,7 +228,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
             })
     }
 
-    const onNext =(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>)=>{
+    const onNext = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
 
         setIndex(prevIndex => prevIndex + 1)
@@ -314,12 +313,19 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                                     <TbPointFilled size={40} color={'green'} />
                         }
                     </div>
-                    <button type="submit" className="btn btn-primary">
-                        Enregistrer
-                    </button>
-                    <a href='#' onClick={onNext} className="btn light btn-light next-btn">
-                        Suivant
-                    </a>
+                    {
+                        isLoading ? <Spinner4Bar /> :
+                            <>
+                                <button type="submit" className="btn btn-primary">
+                                    Enregistrer
+                                </button>
+                                <a href='#' onClick={onNext} className="btn light btn-light next-btn">
+                                    Suivant
+                                </a>
+                            </>
+                    }
+
+
                 </form>
             </div>
         </div>
