@@ -8,11 +8,12 @@ export const ClientTeamMemberApi = createApi({
     reducerPath: 'ClientTeamMemmberApi',
     baseQuery: fetchBaseQuery({baseUrl: CLIENT_TEAMMEMBER_URL}),
     endpoints: (builder) =>({
-        getTeamMember : builder.query<{code: Number, data:GetTeamMemberModel[]}, void>({
-            query:() => ({
+        getTeamMember : builder.query<{code: Number, data:GetTeamMemberModel[]}, {isHidden? : boolean}>({
+            query:(arg) => ({
                 method: 'GET',
                 url: '/',
                 headers: { Authorization: `Bear ${token}` },
+                params: arg
             })
         }),
         

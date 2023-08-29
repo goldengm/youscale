@@ -23,7 +23,6 @@ export default function ProductTable({ driverObj }:Props): JSX.Element {
         refetch()
     }, [showHidden])
     
-    
     return (
         <TableWrapper
             item={item}
@@ -69,21 +68,6 @@ const AddProductBtn = ({ setShowModal, driverObj }: AddProductBtnProps): JSX.Ele
             type="button"
             className="btn btn-primary mb-2 add-product"
         >Add product
-        </a>
-    )
-}
-
-interface HideProductBtnProps {
-    setShowHidden: React.Dispatch<React.SetStateAction<boolean>>
-    showHidden: boolean
-}
-
-const HideProductBtn = ({ setShowHidden, showHidden }: HideProductBtnProps): JSX.Element => {
-    return (
-        <a
-            onClick={() => setShowHidden(!showHidden)}
-            type="button"
-        >{ showHidden ? 'Show product' : 'Show hidden'}
         </a>
     )
 }
