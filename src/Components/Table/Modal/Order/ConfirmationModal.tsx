@@ -3,6 +3,7 @@ import { CustumInput, CustumSelectForm } from '../../../Forms'
 import { CityModel, ErrorModel, GetClientOrderModel, GetProductModel, OrderOnlyModel, ProductOrder, StatusModel, countOrderByStatusModel } from '../../../../models'
 import { TbPointFilled } from 'react-icons/tb'
 import { useForm } from 'react-hook-form';
+import { IoLogoWhatsapp, IoCallOutline } from 'react-icons/io5'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetStatusQuery } from '../../../../services/api/ClientApi/ClientStatusApi';
 import { useGetClientOrderByIdQuery, usePatchClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi';
@@ -14,6 +15,7 @@ import { Spinner4Bar } from '../../../Loader';
 import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi';
 import ModalWrapper from '../ModalWrapper'
 import * as yup from "yup";
+import { useGetSettingQuery } from '../../../../services/api/ClientApi/ClientSettingApi';
 
 const FilterStatusData = (data: StatusModel[] | undefined): SelectType[] => {
     if (!data) return []
@@ -177,6 +179,7 @@ interface FormBodyProps {
 
 const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, currentOrder, StatusData, RefetchStatus }: FormBodyProps) => {
 
+    const { data: dataSetting } = useGetSettingQuery()
     const { data: dataCity } = useGetCityQuery()
     const [patchOrder, { isLoading }] = usePatchClientOrderMutation()
 
@@ -235,14 +238,18 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
         setIndex(prevIndex => prevIndex + 1)
     }
 
+    const handleClick = (phone_number: string) => {
+        window.open(`https://wa.me/${phone_number}?text=${encodeURI(dataSetting?.data.automated_msg || '')}`, "_blank");
+    };
+
     return (
         <div className="card-body">
             <div className="basic-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className='restant-txt'>restant: {id_orders.length - index}</div>
                     <div className="row">
-
                         <CustumSelectForm
+                            className={'lg-input-cus'}
                             defaultSelected={currentOrder.data['Up/Downsell']}
                             data={upDownData}
                             register={register}
@@ -254,6 +261,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
 
                     <div className="row">
                         <CustumInput
+                            className={'lg-input-cus'}
                             defaultValue={currentOrder.order[0].nom}
                             register={register}
                             name={'nom'}
@@ -262,8 +270,11 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                             label={"Destinataire"}
                             placeholder={'Patrick Doe'}
                         />
+                    </div>
 
+                    <div className="row">
                         <CustumInput
+                            className={'lg-input-cus'}
                             defaultValue={currentOrder.order[0].telephone}
                             register={register}
                             name={'telephone'}
@@ -272,6 +283,15 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                             label={"Telephone"}
                             placeholder={'778143610'}
                         />
+                        <div className="call-ws-media">
+                            <IoLogoWhatsapp className='io-logo' onClick={() => handleClick('+212' + currentOrder.order[0].telephone)} size={25} color={'green'} />
+                            <a href={`tel:+212${currentOrder.order[0].telephone}`}>
+                                <IoCallOutline className='io-logo' size={25} color={'green'} />
+                            </a>
+                        </div>
+                    </div>
+
+                    <div className="row">
 
                         <CustumDropdown refetch={refetch} options={FormatCity(dataCity ? dataCity.data : [])} name='id_city' data={dataCity ? dataCity.data : []} order={{ id: currentOrder.order[0].id, id_city: currentOrder.order[0].id_city, id_team: currentOrder.order[0].id_team, createdAt: currentOrder.order[0].createdAt }} />
 
@@ -298,6 +318,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
 
                     <div className="row">
                         <CustumSelectForm
+                            className={'lg-input-cus'}
                             defaultSelected={currentOrder.order[0].status}
                             data={FilterStatusData(StatusData?.data)}
                             register={register}
@@ -434,7 +455,7 @@ interface SelectStatusComponentProps {
 }
 const SelectStatusComponent = ({ data, label, name, Onchange, statusConfirmation }: SelectStatusComponentProps) => {
     return (
-        <div className="mb-3 col-md-4">
+        <div className="mb-3 col-md-4 lg-input-cus">
             <label className="form-label">{label}</label>
             <select
                 onChange={Onchange}

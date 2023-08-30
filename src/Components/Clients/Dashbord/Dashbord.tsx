@@ -42,6 +42,7 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                         .then(res => console.log(res))
                         .catch(err => console.warn(err))
                     driverObj.destroy();
+                    window.location.reload()
                 } else {
                     //
                 }
@@ -67,6 +68,7 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                         <img src='/images/welcome-animation.svg' alt='welcome-animation' style='height: 100px; width: 200px;' />
                         <p class='welcome-txt'>Bienvenue sur youscale, démarrer avec nous</p>
                         <a class='start-tuto' href='#' style='font-size: 17px; display: block; margin-top: 10px; text-align: center;'>Commencer le tutoriel</a>
+                        <a class='done-tuto' href='#' style='font-size: 17px; display: block; margin-top: 10px; text-align: center;'>Terminer</a>
                     </div>
                 `,
             }
@@ -80,6 +82,21 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
             if (target && target.classList.contains('start-tuto')) {
                 event.preventDefault();
                 startTutorial();
+            }
+        });
+
+        document.addEventListener('click', (event: Event) => {
+            const target = event.target as HTMLElement;
+            if (target && target.classList.contains('done-tuto')) {
+                event.preventDefault();
+                const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
+                if (response) {
+                    patchClient({ isBeginner: false }).unwrap()
+                        .then(res => console.log(res))
+                        .catch(err => console.warn(err))
+                    driverObj.destroy();
+                    window.location.reload()
+                }
             }
         });
     }, [])

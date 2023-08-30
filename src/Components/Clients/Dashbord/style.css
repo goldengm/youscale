@@ -82,6 +82,15 @@
     text-decoration: none;
 }
 
+.done-tuto{
+    background-color: rgb(101, 14, 14);
+    color: white;
+    height: 30px;
+    padding: 5px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
 .welcome-box{
     height: 300px;
     width: 270px;

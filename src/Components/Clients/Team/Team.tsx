@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
 import { FaPen } from 'react-icons/fa'
 import { RiLoginCircleFill } from 'react-icons/ri'
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { CustomHist } from '../../Chart'
 import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
 import { Cient, EarningTable, GetTeamMemberModel, Performance, TeamDashbordQueryModel } from '../../../models'
@@ -14,11 +13,12 @@ import { setToken } from '../../../services/auth/setToken'
 import { setUserData } from '../../../services/auth/setUserData'
 import { showToastError } from '../../../services/toast/showToastError'
 import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
 import PerformanceCard from './PerformanceCard'
 import EarningCard from './EarningCard'
-import './team.style.css'
 import { showToastSucces } from '../../../services/toast/showToastSucces'
+import { Spinner4Bar } from '../../Loader'
+import './team.style.css'
+import "driver.js/dist/driver.css";
 
 interface Props {
     client: Cient | undefined
@@ -28,16 +28,19 @@ export default function Team({ client }: Props): JSX.Element {
     const userData = localStorage.getItem('userData')
     const [patchClient] = usePatchClientMutation()
 
-    const [showHidden, setShowHidden] = useState<boolean>(false)
+    const [showHidden, setShowHidden] = useState<boolean>(true)
     const [showTutorial, setShowTutorial] = useState<boolean>(false);
-    const { data, refetch } = useGetTeamMemberQuery({ isHidden: showHidden })
+    const { data, refetch, isLoading, isFetching } = useGetTeamMemberQuery({ isHidden: showHidden })
     const [date, setDate] = useState<string[]>([])
     const [idTeam, setIdTeam] = useState<number>(GetRole() === 'TEAM' ? JSON.parse(userData || '{id: 0}').id : 0)
     const [usingDate, setUsingDate] = useState<boolean>(false)
     const [OrderQueryData, setOrderQueryData] = useState<TeamDashbordQueryModel>({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
     const { data: teamData, refetch: refetchTeamData } = useGetTeamDashbordQuery(OrderQueryData)
-
     const [performance, setPerformance] = useState<Performance | undefined>(teamData?.data.performance)
+
+    useEffect(() => {
+        refetch()
+    }, [showHidden])
 
     const driverObj = driver({
         onNextClick: () => {
@@ -77,10 +80,6 @@ export default function Team({ client }: Props): JSX.Element {
             }
         ]
     });
-
-    useEffect(() => {
-        refetch()
-    }, [showHidden])
 
     useEffect(() => {
         setPerformance(teamData?.data.performance)
@@ -138,7 +137,7 @@ export default function Team({ client }: Props): JSX.Element {
             <div className="content-body">
                 <div className="container-fluid">
                     <div className="team-header">
-                        <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowHidden={setShowHidden} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} driverObj={driverObj} />
+                        <TeamCard data={data?.data} setItem={setItem} setShowAddTeamModal={setShowAddTeamModal} setShowHidden={setShowHidden} isLoading={isFetching} setShowEditTeamModal={setShowEditTeamModal} refetch={refetch} driverObj={driverObj} />
                         {
                             teamData?.data.performance &&
                             <PerformanceCard setPerformance={setPerformance} perf={teamData?.data.performance} perf_rate={teamData?.data.performance_rate}>
@@ -164,12 +163,13 @@ interface PropsTeamCard {
     data: GetTeamMemberModel[] | undefined;
     setItem: React.Dispatch<React.SetStateAction<GetTeamMemberModel | undefined>>
     setShowHidden: React.Dispatch<React.SetStateAction<boolean>>
+    isLoading: boolean
     refetch: () => any
     driverObj: {
         moveNext: () => void
     }
 }
-const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, setItem, driverObj, setShowHidden }: PropsTeamCard): JSX.Element => {
+const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, setItem, driverObj, setShowHidden, isLoading }: PropsTeamCard): JSX.Element => {
 
     const handleShowTeamModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
@@ -178,6 +178,7 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
             driverObj.moveNext()
         }, 1000);
     }
+
     return (
         <div className="col-xl-3 col-xxl-5 col-xl-custum">
             <div className="card">
@@ -190,7 +191,7 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                             <ul className="nav nav-tabs" role="tablist">
                                 <li className="nav-item">
                                     <a
-                                        onClick={() => setShowHidden(false)}
+                                        onClick={() => setShowHidden(true)}
                                         className="nav-link active"
                                         data-bs-toggle="tab"
                                         href="#Order"
@@ -200,7 +201,7 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                                     </a>
                                 </li>
                                 <li className="nav-item">
-                                    <a onClick={() => setShowHidden(true)} className="nav-link" data-bs-toggle="tab" href="#Rate" role="tab">
+                                    <a onClick={() => setShowHidden(false)} className="nav-link" data-bs-toggle="tab" href="#Rate" role="tab">
                                         Hidden
                                     </a>
                                 </li>
@@ -215,7 +216,9 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                     </a>
                 </div>
                 <div className="card-body">
-                    {data && data.map((dt, index) => <TeamRow key={index} refetch={refetch} item={dt} setShowEditTeamModal={setShowEditTeamModal} setItem={setItem} />)}
+                    {
+                        isLoading ? <Spinner4Bar /> : data && data.map((dt, index) => <TeamRow key={index} refetch={refetch} item={dt} setShowEditTeamModal={setShowEditTeamModal} setItem={setItem} />)
+                    }
                 </div>
             </div>
         </div>
@@ -238,25 +241,10 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
 
         patchTeamMember({ id: item.id, active: !item.active }).unwrap()
             .then((res: any) => {
+                showToastSucces(item?.isHidden ? 'Your team has ben showed' : 'Your team has ben hidden')
                 refetch()
             })
             .catch((err: any) => showToastError(err.data.message))
-    }
-
-
-    const SwitchHideProduct = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
-        e.preventDefault()
-
-        patchTeamMember({
-            id: item?.id || 0,
-            isHidden: !item?.isHidden || false
-        }).unwrap().then((res) => {
-            showToastSucces(item?.isHidden ? 'Your team has ben showed' : 'Your team has ben hidden')
-            refetch()
-        }).catch(err => {
-            console.log(err)
-            showToastError('Ooops, something happen try again')
-        })
     }
 
     const handleShowEdit = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
@@ -296,8 +284,6 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
                     className='edit-team-pencil'
                     style={{ marginRight: 12 }}
                 />
-
-                {item?.isHidden ? <AiOutlineEyeInvisible onClick={SwitchHideProduct} size={25} /> : <AiOutlineEye onClick={SwitchHideProduct} size={25} />}
 
                 <Switch active={item.active} onClick={handleEditSatus} />
             </div>
