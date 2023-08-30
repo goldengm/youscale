@@ -22,3 +22,10 @@
 .next-btn{
     margin-left: 15px;
 }
+
+.call-ws-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
