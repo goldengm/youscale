@@ -132,6 +132,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
 
             if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
 
+            setStatus(undefined)
             setShowModal(false)
             driverObj.moveNext()
         }
