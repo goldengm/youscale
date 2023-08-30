@@ -12,9 +12,12 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import TableWrapper from './TableWrapper'
 import Row from './Row'
 import './styles.css'
+import { GetRole } from '../../../services/storageFunc'
+import { GetCurrTeamMember } from '../../../services/auth/GetCurrTeamMember'
 
 interface OrderModel { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string, telDuplicate: boolean }
 
+var currentTeam = GetCurrTeamMember()
 type Order = {
     code: Number;
     data: GetClientOrderModel[];
@@ -173,8 +176,16 @@ interface TableHeaderProps {
 const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus, setShowConfirmationModal, setShowDeleteModal, driverObj }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
-            <DeleteBulkOrder id_orders={id_orders} refetch={refetch} setShowDeleteModal={setShowDeleteModal} />
-            <EditBulkOrder id_orders={id_orders} refetch={refetch} />
+            {
+                GetRole() === "TEAM" ?
+                    currentTeam.can_delete_order ? <DeleteBulkOrder id_orders={id_orders} refetch={refetch} setShowDeleteModal={setShowDeleteModal} /> : <></>
+                    : <DeleteBulkOrder id_orders={id_orders} refetch={refetch} setShowDeleteModal={setShowDeleteModal} />
+            }
+            {
+                GetRole() === "TEAM" ?
+                    currentTeam.can_edit_order ? <EditBulkOrder id_orders={id_orders} refetch={refetch} /> : <></>
+                    : <EditBulkOrder id_orders={id_orders} refetch={refetch} />
+            }
             <StartConfirmationBtn setShowModal={setShowConfirmationModal} driverObj={driverObj} />
             <AddOrderBtn setShowModal={setShowModal} driverObj={driverObj} />
             <ImportBtn id_orders={id_orders} />
