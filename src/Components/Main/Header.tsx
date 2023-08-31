@@ -88,7 +88,7 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
       .then(res => console.log(res))
       .catch(err => console.warn(err))
 
-      window.location.reload()
+    window.location.reload()
   }
 
   const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

@@ -106,6 +106,7 @@ export interface ClientModel {
     id: number,
     reference: string,
     fullname: string,
+    picture: string,
     email: string,
     telephone: string,
     password: string,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Redirect from './Redirect';
 import Error403 from '../Pages/Errors/Error403';
-import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage, LoginPage, RegisterPage, OPTVerificationPage, ForgotPasswordPage, QuestionPage, ChoosePackPage, SupportPage } from '../Pages/Clients';
+import { DashbordPage, OrderPage, ProductPage, TeamPage, PaiementPage, SettingPage, PackPage, LoginPage, RegisterPage, OPTVerificationPage, ForgotPasswordPage, QuestionPage, ChoosePackPage, SupportPage, SuccessPage, ErrorPage } from '../Pages/Clients';
 import { useGetClientTeamMemberPageQuery } from '../services/api/ClientTeamApi/ClientTeamPageApi';
 import { GetRole } from '../services/storageFunc';
 import { logOut } from '../services/auth/logout';
@@ -18,14 +18,14 @@ const AuthComponent = ({ Component, pageAccess, name }: WithAuthTeamProps) => {
 
     const user: any = localStorage.getItem('userData') ? JSON.parse(String(localStorage.getItem('userData'))) : null;
     const step = localStorage.getItem("STEP")
-    
-    if(step){
-        if(JSON.parse(step) == 'NOT_VERIFIED'){
+
+    if (step) {
+        if (JSON.parse(step) == 'NOT_VERIFIED') {
             logOut()
         }
-        if(JSON.parse(step) == "question") return <Navigate to="/question" />;
-        if(JSON.parse(step) == 'pack') return <Navigate to="/choose_pack" />;
-        if(JSON.parse(step) == 'completed') {
+        if (JSON.parse(step) == "question") return <Navigate to="/question" />;
+        if (JSON.parse(step) == 'pack') return <Navigate to="/choose_pack" />;
+        if (JSON.parse(step) == 'completed') {
             return <Component />
         }
 
@@ -60,6 +60,10 @@ const Routing = (): JSX.Element => {
                     <LoginPage />
                 </Redirect>
             } />
+
+            <Route path="/success" element={<SuccessPage />} />
+
+            <Route path="/failed" element={<ErrorPage />} />
 
             <Route path="/register" element={
                 <Redirect>

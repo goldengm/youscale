@@ -7,10 +7,11 @@ import { CustumAuthInput } from '../../Components/Forms';
 import { useForm } from 'react-hook-form';
 import { IoIosArrowBack } from 'react-icons/io'
 import { yupResolver } from '@hookform/resolvers/yup';
+import { BASE_URL } from '../../services/url/API_URL';
 import { RotatingLines } from 'react-loader-spinner'
-import axios from "axios";
 import * as yup from "yup";
 import './styles.css'
+
 
 const ParseTel = (contact: string): string => contact.trim()
 
@@ -26,21 +27,6 @@ const schema = yup.object().shape({
 
 export default function LoginPage() {
     const [showOtpSect, setSowOtpSect] = useState<boolean>(false)
-
-    const getUser = async () => {
-        try {
-            const url = `http://127.0.0.1:8500/login/success`;
-            const { data } = await axios.get(url, { withCredentials: true });
-
-            console.log(data.user._json);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    useEffect(() => {
-        getUser();
-    }, []);
 
     return (
         <div className='ys-login-page'>
@@ -105,7 +91,8 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }: LoginProps) => {
     }
 
     const googleAuth = () => {
-        window.open('http://127.0.0.1:8500/auth/google/callback', '_self')
+        
+        window.open(`${BASE_URL}/auth/google/callback`, '_self')
     }
 
     return (

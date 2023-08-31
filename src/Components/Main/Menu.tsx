@@ -9,6 +9,7 @@ import { FcSettings } from 'react-icons/fc'
 import { logOut } from '../../services/auth/logout'
 import { useGetClientTeamMemberPageQuery } from '../../services/api/ClientTeamApi/ClientTeamPageApi'
 import { GetRole } from '../../services/storageFunc'
+import { GetCurrUser } from '../../services/auth/GetCurrUser'
 
 const MenuNav = [
   {
@@ -72,6 +73,7 @@ function getActivePageArr(data: string[] | undefined): string[] {
 
 const DEFAULT_TEAM_PAGES_ACCESS = ['dashbord', 'order', 'produit', 'team', 'payment']
 
+const user = GetCurrUser()
 export default function Menu(): JSX.Element {
 
   const { data } = useGetClientTeamMemberPageQuery()
@@ -96,7 +98,9 @@ export default function Menu(): JSX.Element {
               role="button"
               data-bs-toggle="dropdown"
             >
-              <img src="images/profile/pic1.jpg" width={20} alt="" />
+              {
+                user.picture ? <img src={user.picture} width={20} alt="" /> :  <img src="images/profile/pic1.jpg" width={20} alt="" />
+              }
               <div className="header-info ms-3">
                 <span className="font-w600 ">
                   Hi,<b> {fullname || name}</b>
