@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { IoIosArrowBack } from 'react-icons/io'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RotatingLines } from 'react-loader-spinner'
+import axios from "axios";
 import * as yup from "yup";
 import './styles.css'
 
@@ -26,6 +27,21 @@ const schema = yup.object().shape({
 export default function LoginPage() {
     const [showOtpSect, setSowOtpSect] = useState<boolean>(false)
 
+    const getUser = async () => {
+        try {
+            const url = `http://127.0.0.1:8500/login/success`;
+            const { data } = await axios.get(url, { withCredentials: true });
+
+            console.log(data.user._json);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        getUser();
+    }, []);
+
     return (
         <div className='ys-login-page'>
             <section className="ys-login-sect-video">
@@ -35,16 +51,16 @@ export default function LoginPage() {
                 </div>
             </section>
 
-            { showOtpSect ? <VerifyNumberSection showOtpSect={showOtpSect} setSowOtpSect={setSowOtpSect} /> : <LoginSection showOtpSect={showOtpSect} setSowOtpSect={setSowOtpSect} /> }
+            {showOtpSect ? <VerifyNumberSection showOtpSect={showOtpSect} setSowOtpSect={setSowOtpSect} /> : <LoginSection showOtpSect={showOtpSect} setSowOtpSect={setSowOtpSect} />}
         </div>
     )
 }
 
-interface LoginProps{
+interface LoginProps {
     setSowOtpSect: React.Dispatch<React.SetStateAction<boolean>>
     showOtpSect: boolean
 }
-const LoginSection = ({ setSowOtpSect, showOtpSect }:LoginProps) => {
+const LoginSection = ({ setSowOtpSect, showOtpSect }: LoginProps) => {
     const dispatch = useDispatch<any>()
     const { message, isAuthenticated, isError, isVerified, step } = useSelector(selectAuth)
 
@@ -71,7 +87,7 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }:LoginProps) => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            if (GetRole() === 'CLIENT'){
+            if (GetRole() === 'CLIENT') {
                 console.log(step)
                 window.location.href = '/'
             }
@@ -86,6 +102,10 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }:LoginProps) => {
     const handleSend = (data: Inputs) => {
         if (GetRole() === 'CLIENT') dispatch(clientLoginThunk(data))
         if (GetRole() === 'TEAM') dispatch(clientTeamLoginThunk(data))
+    }
+
+    const googleAuth = () => {
+        window.open('http://127.0.0.1:8500/auth/google/callback', '_self')
     }
 
     return (
@@ -128,17 +148,18 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }:LoginProps) => {
                             name='password'
                             error={errors.password}
                         />
-                         <p className="auth-link">Forgot password? <a className="underline" href="/forgotpwd">Click here</a></p>
+                        <p className="auth-link">Forgot password? <a className="underline" href="/forgotpwd">Click here</a></p>
                         <button className="submit-button">Se connecter</button>
                     </form>
                     <p className="auth-link">Don't have an account? <a className="underline" href="/register">Sign up</a></p>
+                    <a className="underline" onClick={() => googleAuth()} href="#">Sign with google</a>
                 </div>
             </div>
         </section>
     )
 }
 
-const VerifyNumberSection = ({ setSowOtpSect }:LoginProps) => {
+const VerifyNumberSection = ({ setSowOtpSect }: LoginProps) => {
     const [code, setCode] = useState<string>()
 
     const dispatch = useDispatch<any>()
