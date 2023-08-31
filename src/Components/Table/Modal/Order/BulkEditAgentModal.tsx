@@ -79,7 +79,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders }: FormBodyProps) => {
 
     const [edit] = useBulkEditClientOrderMutation()
 
-    const { data: dataTeamMember } = useGetTeamMemberQuery({ isHidden: undefined })
+    const { data: dataTeamMember } = useGetTeamMemberQuery({ isHidden: true })
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(schema),
