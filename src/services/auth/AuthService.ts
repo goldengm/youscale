@@ -1,8 +1,8 @@
 import { setToken } from "./setToken";
 import { setUserData } from "./setUserData";
-import axios from "axios";
 import { ClientLoginModel, AdminLoginModel, ClientRegisterModel, AdminRegisterModel, ClientOTPModel, ForgotPwdModel } from "../../models";
 import { CLIENT_LOGIN_URL, CLIENT_REGISTER_URL, ADMIN_LOGIN_URL, ADMIN_REGISTER_URL, ADMIN_TEAM_LOGIN_URL, CLIENT_TEAM_LOGIN_URL, CLIENT_OTP_URL, CLIENT_FORGET_PASSWORD_URL, RESEND_OTP_URL } from "../url/API_URL";
+import axios from "axios";
 
 export const authService = {
     clientLogin: async (user: ClientLoginModel) => {

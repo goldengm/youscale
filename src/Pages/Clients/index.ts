@@ -12,6 +12,8 @@ import ForgotPasswordPage from "./ForgotPasswordPage";
 import QuestionPage from "./QuestionPage";
 import ChoosePackPage from "./ChoosePackPage";
 import SupportPage from "./SupportPage";
+import SuccessPage from "./SuccessPage";
+import ErrorPage from "./ErrorPage";
 
 export { 
     DashbordPage,
@@ -27,5 +29,7 @@ export {
     ForgotPasswordPage,
     QuestionPage,
     ChoosePackPage,
-    SupportPage
+    SupportPage,
+    SuccessPage,
+    ErrorPage
  };
