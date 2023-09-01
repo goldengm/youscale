@@ -58,7 +58,16 @@ export default function Paiement({ client }: Props) {
                     }
                 }
             },
-            { element: '.modal-content', popover: { title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start' } },
+            {
+                element: '.modal-content', popover: {
+                    title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        alert('Close your modal before')
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
             {
                 element: '.menu-step:nth-child(3)', popover: {
                     title: 'Order page', description: 'Description for order page', side: "right", align: 'start', onPrevClick: (drvHks) => {
@@ -247,7 +256,7 @@ interface TransactionProps {
 }
 const Transaction = ({ setShowAddPerteModal, data, setItem, setShowDeletePerteModal, driverObj }: TransactionProps): JSX.Element => {
 
-    const handleShowTeamModal =(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>)=>{
+    const handleShowTeamModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
         setShowAddPerteModal(true)
         setTimeout(() => {

@@ -65,7 +65,16 @@ export default function Order({ client }: Props): JSX.Element {
           }
         }
       },
-      { element: '.modal-content', popover: { title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start' } },
+      {
+        element: '.modal-content', popover: {
+          title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start',
+          onNextClick: (drvHks) => {
+            alert('Close your modal before')
+          }, onPrevClick: (drvHks) => {
+            alert('Close your modal before')
+          },
+        }
+      },
       {
         element: '.start-confirmation', popover: {
           title: 'Start Confirmation', description: 'Start your Confirmation here', side: "bottom", align: 'start', onPrevClick: (drvHks) => {
