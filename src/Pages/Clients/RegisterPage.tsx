@@ -97,49 +97,13 @@ const LoginSection = ({ setSowOtpSect }: LoginProps) => {
 
     return (
         <section className="ys-login-sect-content">
-            <div className="sect-content-auth">
-                <h2>Sign up to Youscale</h2>
+            <div className="sect-content-auth register-cont-wel">
+                <h2>Bienvenue sur Youscale, Inscrivez vous</h2>
 
                 <div className="content-auth-form">
-                    {isError && <span className="auth-error">{message}</span>}
-                    <form onSubmit={handleSubmit(handleSend)}>
-                        <CustumAuthInput
-                            label='Fullname'
-                            placeholder='John Doe'
-                            type='text'
-                            register={register}
-                            name='fullname'
-                            error={errors.fullname}
-                        />
-                        <CustumAuthInput
-                            label='Email'
-                            placeholder='hello@example.com'
-                            type='text'
-                            register={register}
-                            name='email'
-                            error={errors.email}
-                        />
-                        <CustumAuthInput
-                            label='Telephone'
-                            placeholder='(+237) 00 00 00 00 00'
-                            type='text'
-                            register={register}
-                            name='telephone'
-                            error={errors.telephone}
-                        />
-                        <CustumAuthInput
-                            label='Password'
-                            placeholder='*******'
-                            type='password'
-                            register={register}
-                            name='password'
-                            error={errors.password}
-                        />
-                        <button className="submit-button">S'inscrite</button>
-                    </form>
                     <p className="auth-link">already have an account? <a className="underline" href="/login">Sign in</a></p>
+                    <ConnectGoogleBtn onClick={googleAuth} />
                 </div>
-                <ConnectGoogleBtn onClick={googleAuth} />
             </div>
         </section>
     )
