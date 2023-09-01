@@ -70,7 +70,16 @@ export default function Team({ client }: Props): JSX.Element {
                     }
                 }
             },
-            { element: '.modal-content', popover: { title: 'Add your team', description: 'Add your team here', side: "bottom", align: 'start' } },
+            {
+                element: '.modal-content', popover: {
+                    title: 'Add your team', description: 'Add your team here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        alert('Close your modal before')
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
             {
                 element: '.menu-step:nth-child(4)', popover: {
                     title: 'Product', description: 'Description for your product page', side: "right", align: 'start', onPrevClick: (drvHks) => {

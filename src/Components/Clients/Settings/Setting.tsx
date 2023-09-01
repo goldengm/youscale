@@ -45,7 +45,16 @@ export default function Setting({ client }: Props) {
                     }
                 }
             },
-            { element: '.modal-content', popover: { title: 'Google Sheet', description: 'Integrate google sheet.', side: "bottom", align: 'start' } },
+            {
+                element: '.modal-content', popover: {
+                    title: 'Google Sheet', description: 'Integrate google sheet.', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        alert('Close your modal before')
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
             {
                 element: '.row .api_card:nth-child(3)', popover: {
                     title: 'Shipping Company', description: 'Add your shipping company here', side: "right", align: 'start', onPrevClick: (drvHks) => {
@@ -56,7 +65,16 @@ export default function Setting({ client }: Props) {
                     }
                 }
             },
-            { element: '.modal-content', popover: { title: 'Shipping Company', description: 'Add your shipping company here', side: "bottom", align: 'start' } },
+            {
+                element: '.modal-content', popover: {
+                    title: 'Shipping Company', description: 'Add your shipping company here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        alert('Close your modal before')
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
             {
                 element: '.status_card', popover: {
                     title: 'Status', description: 'You can manage your status here', side: "right", align: 'start', onPrevClick: (drvHks) => {
@@ -73,7 +91,16 @@ export default function Setting({ client }: Props) {
                     }
                 }
             },
-            { element: '.modal-content', popover: { title: 'Add City', description: 'You can add your city here', side: "bottom", align: 'start' } },
+            {
+                element: '.modal-content', popover: {
+                    title: 'Add City', description: 'You can add your city here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        alert('Close your modal before')
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
             {
                 element: '.copy-model-btn', popover: {
                     title: 'Copy Model', description: 'You can copy the model for import your city', side: "right", align: 'end', onPrevClick: (drvHks) => {
