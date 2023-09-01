@@ -11,6 +11,8 @@ import { RotatingLines } from 'react-loader-spinner'
 import { showToastError } from '../../services/toast/showToastError';
 import * as yup from "yup";
 import './styles.css'
+import { BASE_URL } from '../../services/url/API_URL';
+import { ConnectGoogleBtn } from '../../Components/Input';
 
 const ParseTel = (contact: string): string => contact.trim()
 
@@ -89,6 +91,10 @@ const LoginSection = ({ setSowOtpSect }: LoginProps) => {
         }
     }, [isAuthenticated, isVerified])
 
+    const googleAuth = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        window.open(`${BASE_URL}/auth/google/callback`, '_self')
+    }
+
     return (
         <section className="ys-login-sect-content">
             <div className="sect-content-auth">
@@ -133,6 +139,7 @@ const LoginSection = ({ setSowOtpSect }: LoginProps) => {
                     </form>
                     <p className="auth-link">already have an account? <a className="underline" href="/login">Sign in</a></p>
                 </div>
+                <ConnectGoogleBtn onClick={googleAuth} />
             </div>
         </section>
     )

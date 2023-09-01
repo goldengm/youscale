@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { SetRole, GetRole } from '../../services/storageFunc'
 import { selectAuth } from '../../services/slice/authSlice'
 import { clientLoginThunk, clientOTPVerifyThunk, clientTeamLoginThunk, resendOTPThunk } from '../../services/thunks/authThunks';
+import { ConnectGoogleBtn } from '../../Components/Input';
 import { useDispatch, useSelector } from "react-redux";
 import { CustumAuthInput } from '../../Components/Forms';
 import { useForm } from 'react-hook-form';
@@ -90,8 +91,7 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }: LoginProps) => {
         if (GetRole() === 'TEAM') dispatch(clientTeamLoginThunk(data))
     }
 
-    const googleAuth = () => {
-        
+    const googleAuth = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         window.open(`${BASE_URL}/auth/google/callback`, '_self')
     }
 
@@ -139,8 +139,8 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }: LoginProps) => {
                         <button className="submit-button">Se connecter</button>
                     </form>
                     <p className="auth-link">Don't have an account? <a className="underline" href="/register">Sign up</a></p>
-                    <a className="underline" onClick={() => googleAuth()} href="#">Sign with google</a>
                 </div>
+                <ConnectGoogleBtn onClick={googleAuth} />
             </div>
         </section>
     )
