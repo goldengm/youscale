@@ -39,10 +39,12 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                 const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
                 if (response) {
                     patchClient({ isBeginner: false }).unwrap()
-                        .then(res => console.log(res))
+                        .then(res => {
+                            console.log(res)
+                            driverObj.destroy();
+                            window.location.reload()
+                        })
                         .catch(err => console.warn(err))
-                    driverObj.destroy();
-                    window.location.reload()
                 } else {
                     //
                 }

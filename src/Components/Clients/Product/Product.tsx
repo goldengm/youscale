@@ -43,7 +43,16 @@ export default function Product({ client }: Props): JSX.Element {
                     }
                 }
             },
-            { element: '.modal-content', popover: { title: 'Add product', description: 'Add your product here.', side: "bottom", align: 'start' } },
+            {
+                element: '.modal-content', popover: {
+                    title: 'Add product', description: 'Add your product here.', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        alert('Close your modal before')
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
             {
                 element: '.add-stock', popover: {
                     title: 'Add product', description: 'Add your product here.', side: "bottom", align: 'start',
@@ -55,7 +64,16 @@ export default function Product({ client }: Props): JSX.Element {
                     },
                 }
             },
-            { element: '.modal-content', popover: { title: 'Add your team', description: 'Add your team here', side: "bottom", align: 'start' } },
+            {
+                element: '.modal-content', popover: {
+                    title: 'Add your team', description: 'Add your team here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        alert('Close your modal before')
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
             {
                 element: '.menu-step:nth-child(7)', popover: {
                     title: 'Add your team', description: 'Add your team here', side: "right", align: 'start', onPrevClick: (drvHks) => {
