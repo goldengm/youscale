@@ -495,3 +495,15 @@
     border-radius: 5px;
     color: whitesmoke;
 }
+
+.sect-content-auth h2{
+    text-align: center;
+}
+
+.register-cont-wel{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}

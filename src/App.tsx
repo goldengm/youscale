@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import { store } from './store';
 import { setToken } from './services/auth/setToken';
 import { setUserData } from './services/auth/setUserData';
+import { ErrorBoundary } from './Pages/Errors';
 import Routing from './routes/Routing';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,7 +18,7 @@ function App(): JSX.Element {
 
     var token = params.get("token");
     var userData = params.get("userData");
-    
+
     if (token && userData) {
       setToken(token)
       setUserData(JSON.parse(userData))
@@ -27,15 +28,17 @@ function App(): JSX.Element {
   useEffect(() => {
     parmsConnx()
   }, [])
-  
+
 
   return (
-    <Provider store={store}>
-      <ToastContainer />
-      <BrowserRouter>
-        <Routing />
-      </BrowserRouter>
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <ToastContainer />
+        <BrowserRouter>
+          <Routing />
+        </BrowserRouter>
+      </Provider>
+    </ErrorBoundary>
   )
 }
 
