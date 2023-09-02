@@ -115,32 +115,32 @@ const LoginSection = ({ setSowOtpSect, showOtpSect }: LoginProps) => {
                         Team
                     </button>
                 </div>
-
-                <div className="content-auth-form">
-                    {isError && <span className="auth-error">{message}</span>}
-                    <form onSubmit={handleSubmit(handleSend)}>
-                        <CustumAuthInput
-                            label='Email'
-                            placeholder='youscale@mail.com'
-                            type='text'
-                            register={register}
-                            name='email'
-                            error={errors.email}
-                        />
-                        <CustumAuthInput
-                            label='Password'
-                            placeholder='*******'
-                            type='password'
-                            register={register}
-                            name='password'
-                            error={errors.password}
-                        />
-                        <p className="auth-link">Forgot password? <a className="underline" href="/forgotpwd">Click here</a></p>
-                        <button className="submit-button">Se connecter</button>
-                    </form>
-                    <p className="auth-link">Don't have an account? <a className="underline" href="/register">Sign up</a></p>
-                </div>
-                <ConnectGoogleBtn onClick={googleAuth} />
+                {
+                    GetRole() === "TEAM" ?
+                        <div className="content-auth-form">
+                            {isError && <span className="auth-error">{message}</span>}
+                            <form onSubmit={handleSubmit(handleSend)}>
+                                <CustumAuthInput
+                                    label='Email'
+                                    placeholder='youscale@mail.com'
+                                    type='text'
+                                    register={register}
+                                    name='email'
+                                    error={errors.email}
+                                />
+                                <CustumAuthInput
+                                    label='Password'
+                                    placeholder='*******'
+                                    type='password'
+                                    register={register}
+                                    name='password'
+                                    error={errors.password}
+                                />
+                                <button className="submit-button">Se connecter</button>
+                            </form>
+                            <p className="auth-link">Don't have an account? <a className="underline" href="/register">Sign up</a></p>
+                        </div> : <ConnectGoogleBtn onClick={googleAuth} />
+                }
             </div>
         </section>
     )
