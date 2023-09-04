@@ -250,7 +250,7 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
 
         patchTeamMember({ id: item.id, active: !item.active }).unwrap()
             .then((res: any) => {
-                showToastSucces(item?.isHidden ? 'Your team has ben showed' : 'Your team has ben hidden')
+                showToastSucces(item?.active ? 'Your team has ben showed' : 'Your team has ben hidden')
                 refetch()
             })
             .catch((err: any) => showToastError(err.data.message))

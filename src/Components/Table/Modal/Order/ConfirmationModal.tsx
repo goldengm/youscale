@@ -140,13 +140,10 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
         }
     }
 
-    // if (id_orders.length === 0) {
-    //     setStatus(undefined)
-    //     handleCloseModal()
-    // }
+    console.log('id_orders: ', id_orders)
 
     return (
-        (isSuccess && id_orders.length > 0) ?
+        (isSuccess && id_orders.length > 0 ) ?
             <ModalWrapper title={'Confirmation'} showModal={showModal} closeModal={handleCloseModal} setShowModal={setShowModal} id='EditOrderModal'>
                 <SelectStatusComponent data={FilterStatusWithOrder(StatusData?.countOrderByStatus)} label={'Status'} name={'status'} Onchange={onSelectStatus} statusConfirmation={statusConfirmation} />
                 <div className="order-id-date">
@@ -217,7 +214,6 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
         patchOrder(data).unwrap()
             .then(res => {
                 refetch()
-                console.log({ id_orders: id_orders.length, index: index + 1 })
                 if (id_orders.length === (index + 1)) {
                     handleCloseModal()
                     return
@@ -235,6 +231,11 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
     const onNext = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
 
+        if (id_orders.length === (index + 1)) {
+            handleCloseModal()
+            return
+        }
+
         setIndex(prevIndex => prevIndex + 1)
     }
 
@@ -246,7 +247,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
         <div className="card-body">
             <div className="basic-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className='restant-txt'>restant: {id_orders.length - index}</div>
+                    <div className='restant-txt'>restant: {id_orders.length - (index+1)}</div>
                     <div className="row">
                         <CustumSelectForm
                             className={'lg-input-cus'}
