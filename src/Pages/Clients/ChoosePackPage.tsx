@@ -8,12 +8,13 @@ import { logOut } from '../../services/auth/logout'
 export default function ChoosePackPage(): JSX.Element {
     const { data } = useGetClientAllPackQuery()
     const [selected, setSelected] = useState<number>(0)
+    const [contact, setContact] = useState<string>()
     const [choosePack] = useChossePackMutation()
 
     const onSavePack = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
 
-        choosePack({ id_pack: selected }).unwrap()
+        choosePack({ id_pack: selected, contact: '+212'+contact ?? '+212000000000' }).unwrap()
             .then(res => {
                 window.location.href = '/'
                 localStorage.setItem('STEP', JSON.stringify('completed'))
@@ -21,22 +22,28 @@ export default function ChoosePackPage(): JSX.Element {
             .catch(err => console.log(err))
     }
 
+    const IsContactValid = (): boolean => contact?.length === 9 ? true : false
+
     return (
         <div>
             <div className='quest-header'>
                 <a onClick={() => logOut()} href="/" >Se deconnecter</a>
             </div>
-            <section className='question-sec'>
+            <div className='pack-sec'>
                 <h1>{'Choisissez votre pack'}</h1>
 
                 <div className="pack-choose-list">
                     {data && data.data.map(dt => <PackItems item={dt} setSelected={setSelected} selected={selected} />)}
                 </div>
 
-                <div className="ques-btn-list">
-                    <button onClick={onSavePack} className={`ques-btn next`}>{'Enregistrer'}</button>
-                </div>
-            </section>
+                <Input setContact={setContact} contact={contact} />
+                {
+                    !IsContactValid() ? <p className='error'>{"Vous devez saisir un contact valide avant de continuer"}</p> :
+                        <div className="ques-btn-list">
+                            <button onClick={onSavePack} disabled={!IsContactValid()} className={`ques-btn next`}>{'Enregistrer'}</button>
+                        </div>
+                }
+            </div>
         </div>
     )
 }
@@ -67,7 +74,6 @@ const PackItems = ({ item, selected, setSelected }: PackItemsProps): JSX.Element
                             {item.item_inclued.map((item, index) => <li key={index} className="list-group-item">{`${title[index]}: ${item}`}</li>)}
                         </ul>
                     </div>
-
                     <>
                         <button
                             type="button"
@@ -75,9 +81,30 @@ const PackItems = ({ item, selected, setSelected }: PackItemsProps): JSX.Element
                             Choisir
                         </button>
                     </>
-
-
                 </div>
+            </div>
+        </div>
+    )
+}
+
+interface InputProps {
+    setContact: React.Dispatch<React.SetStateAction<string | undefined>>
+    contact: string | undefined
+}
+const Input = ({ setContact, contact }: InputProps) => {
+    return (
+        <div className={`mb-3 col-md-6`}>
+            <label className="form-label">{'Votre contact'}</label>
+            <div className="cust-input-content">
+                <input
+                    role='presentation'
+                    autoComplete='off'
+                    value={contact}
+                    onChange={e => setContact(e.target.value)}
+                    type={'number'}
+                    className="form-control"
+                    placeholder={'0798227737'}
+                />
             </div>
         </div>
     )

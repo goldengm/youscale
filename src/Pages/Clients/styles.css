@@ -220,6 +220,14 @@
     align-items: center;
 }
 
+.pack-sec {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .goToNextAnim {
     animation-name: topTop;
     animation-duration: 3s;
@@ -239,6 +247,12 @@
 }
 
 .question-sec h1 {
+    font-weight: 700;
+    width: 20rem;
+    text-align: center;
+}
+
+.pack-sec h1 {
     font-weight: 700;
     width: 20rem;
     text-align: center;
@@ -337,8 +351,6 @@
 .pack-choose-list {
     display: flex;
     flex-wrap: wrap;
-    width: 100vw;
-    padding: 30px;
 }
 
 .pack-choose-list div {

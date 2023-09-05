@@ -224,7 +224,7 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                         Add team
                     </a>
                 </div>
-                <div className="card-body">
+                <div className="card-body display-scrll">
                     {
                         isLoading ? <Spinner4Bar /> : data && data.map((dt, index) => <TeamRow key={index} refetch={refetch} item={dt} setShowEditTeamModal={setShowEditTeamModal} setItem={setItem} />)
                     }
@@ -250,7 +250,7 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
 
         patchTeamMember({ id: item.id, active: !item.active }).unwrap()
             .then((res: any) => {
-                showToastSucces(item?.active ? 'Your team has ben showed' : 'Your team has ben hidden')
+                showToastSucces(item?.active ? 'Your team has ben hidden' : 'Your team has ben showed')
                 refetch()
             })
             .catch((err: any) => showToastError(err.data.message))
