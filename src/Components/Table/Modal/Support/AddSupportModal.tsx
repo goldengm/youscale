@@ -113,8 +113,6 @@ const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) =>
 
     const [createIssue] = useCreateSupportMutation()
 
-
-
     const onSubmit = (values: Inputs) => {
         const data = {
             ...values

@@ -34,8 +34,8 @@ export const ClientApi = createApi({
             })
         }),
 
-        chossePack : builder.mutation<void, { id_pack : number }>({
-            query : (data: { id_pack : number } ) => ({
+        chossePack : builder.mutation<void, { id_pack : number, contact: string }>({
+            query : (data: { id_pack : number, contact: string } ) => ({
                 method : 'POST',
                 url : `/choose_pack`,
                 body : data,
