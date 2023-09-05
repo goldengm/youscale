@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { setToken } from '../../services/auth/setToken';
 import { setUserData } from '../../services/auth/setUserData';
 import './styles.css'
 
 export default function SuccessPage() {
+
+    const [showBackBtn, setShowBackBtn] = useState<boolean>(false) 
+
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
 
@@ -20,6 +23,7 @@ export default function SuccessPage() {
                 localStorage.setItem('STEP', !verified ? JSON.stringify('NOT_VERIFIED') : step ? JSON.stringify(step) : JSON.stringify('completed'))
                 setToken(token)
                 setUserData(user)
+                setShowBackBtn(true)
             }, 3000);
         }
     }, []);
@@ -30,7 +34,7 @@ export default function SuccessPage() {
                 <div className="alert-body">
                     Success !
                 </div>
-                <a className='come-back' href="/">Revenir sur youscale</a>
+                { showBackBtn && <a className='come-back' href="/">Revenir sur youscale</a> }
             </div>
         </div>
     )

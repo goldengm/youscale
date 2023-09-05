@@ -10,6 +10,7 @@ import { VideoModal } from '../Table/Modal/Video'
 import { GetProductModel, GetTeamMemberModel } from '../../models'
 import './styles.css'
 import { usePatchClientMutation } from '../../services/api/ClientApi/ClientApi'
+import { GetRole } from '../../services/storageFunc'
 
 interface Props {
   setDate?: React.Dispatch<React.SetStateAction<string[]>>,
@@ -85,10 +86,11 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
   const RenitilizeStep = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault()
     patchClient({ isBeginner: true }).unwrap()
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        window.location.reload()
+      })
       .catch(err => console.warn(err))
-
-    window.location.reload()
   }
 
   const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -135,9 +137,13 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
                   {showProductFilter && <CustumSelect name='Product' data={convertProduct(productData?.data)} onChange={handleProductChange} />}
                 </li>
 
-                <li className="nav-item">
-                  {showTeamFilter && <CustumSelect name='Team member' data={convertTeamMember(teamData?.data)} onChange={handleTeamChange} />}
-                </li>
+                {
+                  GetRole() === "CLIENT" &&
+                  <li className="nav-item">
+                    {showTeamFilter && <CustumSelect name='Team member' data={convertTeamMember(teamData?.data)} onChange={handleTeamChange} />}
+                  </li>
+                }
+
 
                 <li className="nav-item">
                   {showDateFilter && <CustumDateRangePicker setDate={setDate} setUsingDate={setUsingDate} />}

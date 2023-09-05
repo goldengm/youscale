@@ -96,3 +96,9 @@ input:checked+.slider:before {
     cursor: pointer;
     opacity: 0.7;
 }
+
+.display-scrll{
+    overflow: scroll;
+    overflow-x: hidden;
+    max-height: 400px;
+}
