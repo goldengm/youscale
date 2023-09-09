@@ -1,3 +1,5 @@
+
+
 .ads-card {
     height: 50vh;
 }
@@ -102,4 +104,9 @@
 
 .welcome-txt{
     text-align: center;
+}
+
+.display-video{
+    height: 200px;
+    width: 200px;
 }

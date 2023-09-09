@@ -5,10 +5,11 @@ interface ModalWrapperProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
     children: JSX.Element | JSX.Element[] | any,
     closeModal?: () => void
+    isVideoModal?: boolean
     title: string,
     id: string
 }
-export default function ModalWrapper({ showModal, setShowModal, children, id, title, closeModal }: ModalWrapperProps): JSX.Element {
+export default function ModalWrapper({ showModal, setShowModal, children, id, title, closeModal, isVideoModal }: ModalWrapperProps): JSX.Element {
 
     const handleCloseModal = () => {
         var body = document.querySelector<HTMLBodyElement>('body');
@@ -44,19 +45,22 @@ export default function ModalWrapper({ showModal, setShowModal, children, id, ti
                             data-bs-dismiss="modal"
                         ></button>
                     </div>
-                    <div className="modal-body">
+                    <div className={isVideoModal ? '' : 'modal-body'}>
                         {children}
                     </div>
-                    <div className="modal-footer">
-                        <button
-                            onClick={handleCloseModal}
-                            type="button"
-                            className="btn btn-danger light"
-                            data-bs-dismiss="modal"
-                        >
-                            Fermer
-                        </button>
-                    </div>
+                    {
+                        isVideoModal ? <></> :
+                            <div className="modal-footer">
+                                <button
+                                    onClick={handleCloseModal}
+                                    type="button"
+                                    className="btn btn-danger light"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Fermer
+                                </button>
+                            </div>
+                    }
                 </div>
             </div>
         </div>

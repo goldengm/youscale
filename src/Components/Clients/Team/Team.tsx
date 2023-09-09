@@ -19,6 +19,7 @@ import { showToastSucces } from '../../../services/toast/showToastSucces'
 import { Spinner4Bar } from '../../Loader'
 import './team.style.css'
 import "driver.js/dist/driver.css";
+import { BottomRightStaticBtn } from '../../Tutorial'
 
 interface Props {
     client: Cient | undefined
@@ -28,6 +29,7 @@ export default function Team({ client }: Props): JSX.Element {
     const userData = localStorage.getItem('userData')
     const [patchClient] = usePatchClientMutation()
 
+    const [showVideo, setShowVideo] = useState<boolean>(false)
     const [showHidden, setShowHidden] = useState<boolean>(true)
     const [showTutorial, setShowTutorial] = useState<boolean>(false);
     const { data, refetch, isLoading, isFetching } = useGetTeamMemberQuery({ isHidden: showHidden })
@@ -138,8 +140,9 @@ export default function Team({ client }: Props): JSX.Element {
             usingDate={usingDate}
             setDate={setDate}
             setUsingDate={setUsingDate}
-            showTutorial={showTutorial}
             closeTutorial={closeTutorial}
+            showVideo={showVideo}
+            setShowVideo={setShowVideo}
         >
             {showAddTeamModal && <AddTeamModal refetch={refetch} showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} driverObj={driverObj} />}
             {showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} dataEdit={item} refetch={refetch} />}
@@ -162,6 +165,7 @@ export default function Team({ client }: Props): JSX.Element {
                     </div>
                 </div>
             </div>
+            <BottomRightStaticBtn setShowVideo={setShowVideo} />
         </Main>
     )
 }

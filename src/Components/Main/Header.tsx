@@ -24,8 +24,9 @@ interface Props {
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>,
   name: string
   urlVideo: string
-  showTutorial: boolean
   closeTutorial: () => void
+  setShowVideo: React.Dispatch<React.SetStateAction<boolean>>
+  showVideo: boolean
 }
 
 type dataType = {
@@ -64,13 +65,11 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
 
 }
 
-export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu, urlVideo, showTutorial, closeTutorial }: Props): JSX.Element {
+export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu, urlVideo, closeTutorial, setShowVideo, showVideo }: Props): JSX.Element {
   const [patchClient] = usePatchClientMutation()
   const { data: productData } = useGetProductQuery({ isHidden: false })
   const { data: teamData } = useGetTeamMemberQuery({ isHidden: true })
   const { data, isSuccess } = useGetAnnoucementQuery()
-
-  const [showVideo, setShowVideo] = useState<boolean>(false)
 
   const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target

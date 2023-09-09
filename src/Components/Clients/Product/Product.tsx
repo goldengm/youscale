@@ -6,12 +6,14 @@ import "driver.js/dist/driver.css";
 import './product.style.css'
 import { Cient } from '../../../models';
 import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
+import { BottomRightStaticBtn } from '../../Tutorial';
 
 interface Props {
     client: Cient | undefined
 }
 const pageName = 'product'
 export default function Product({ client }: Props): JSX.Element {
+    const [showVideo, setShowVideo] = useState<boolean>(false)
     const [showTutorial, setShowTutorial] = useState<boolean>(false);
     const [patchClient] = usePatchClientMutation()
 
@@ -101,8 +103,9 @@ export default function Product({ client }: Props): JSX.Element {
             showDateFilter={false}
             showProductFilter={false}
             showTeamFilter={false}
-            showTutorial={showTutorial}
             closeTutorial={closeTutorial}
+            showVideo={showVideo}
+            setShowVideo={setShowVideo}
         >
             <div className="content-body">
                 <div className="container-fluid">
@@ -112,6 +115,7 @@ export default function Product({ client }: Props): JSX.Element {
                     </div>
                 </div>
             </div>
+            <BottomRightStaticBtn setShowVideo={setShowVideo} />
         </Main>
     )
 }

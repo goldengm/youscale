@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
-import Popup from 'reactjs-popup';
 import { MdAttachMoney } from 'react-icons/md'
+import { BottomRightStaticBtn } from '../../Tutorial'
 import { FiShoppingCart } from 'react-icons/fi'
 import { FaTruckMoving } from 'react-icons/fa'
 import { AiFillThunderbolt } from 'react-icons/ai'
 import { TbTruckDelivery } from 'react-icons/tb'
-import { BsFillPatchCheckFill, BsPatchQuestion } from 'react-icons/bs'
+import { BsFillPatchCheckFill } from 'react-icons/bs'
 import { CustomPie, CustomLine } from '../../Chart'
 import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity, Cient } from '../../../models'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
@@ -15,13 +15,14 @@ import "driver.js/dist/driver.css";
 import 'reactjs-popup/dist/index.css';
 import './style.css'
 import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
+import HoverCard from './HoverCard';
 
 interface Props {
     data: DashbordModel,
-    setDate: React.Dispatch<React.SetStateAction<string[]>>,
-    setUsingDate: React.Dispatch<React.SetStateAction<boolean>>,
-    setIdTeam: React.Dispatch<React.SetStateAction<number>>,
-    setProduct: React.Dispatch<React.SetStateAction<string>>,
+    setDate: React.Dispatch<React.SetStateAction<string[]>>
+    setUsingDate: React.Dispatch<React.SetStateAction<boolean>>
+    setIdTeam: React.Dispatch<React.SetStateAction<number>>
+    setProduct: React.Dispatch<React.SetStateAction<string>>
     showDateFilter: boolean,
     showProductFilter: boolean,
     usingDate: boolean,
@@ -31,6 +32,7 @@ interface Props {
     client: Cient | undefined
 }
 export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, usingDate, showTutorial, closeTutorial, client }: Props): JSX.Element {
+    const [showVideo, setShowVideo] = useState<boolean>(false)
 
     const [patchClient] = usePatchClientMutation()
     const driverObj = driver({
@@ -77,7 +79,6 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
         })
     }
 
-
     useEffect(() => {
         document.addEventListener('click', (event: Event) => {
             const target = event.target as HTMLElement;
@@ -121,8 +122,9 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
             setUsingDate={setUsingDate}
             showProductFilter={showProductFilter}
             showDateFilter={showDateFilter}
-            showTutorial={showTutorial}
             closeTutorial={closeTutorial}
+            showVideo={showVideo}
+            setShowVideo={setShowVideo}
         >
             <div className="content-body">
                 <div className="container-fluid">
@@ -144,6 +146,8 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                     </div>
                 </div>
             </div>
+
+            <BottomRightStaticBtn setShowVideo={setShowVideo} />
         </Main>
     )
 }
@@ -194,27 +198,21 @@ interface CardProps {
 }
 const Card = ({ bg, value, title, icon, orderInProgress }: CardProps): JSX.Element => {
     return (
+
         <div className="col-xl-3 col-xxl-3 col-sm-6 card-stats">
             <div className={`card bg-${bg} invoice-card`}>
-                <div className="card-body d-flex">
-                    <div className="icon me-3">
-                        {icon}
+                <HoverCard>
+                    <div className="card-body d-flex">
+                        <div className="icon me-3">
+                            {icon}
+                        </div>
+                        <div>
+                            <h2 className="text-white invoice-num">{Number(value).toFixed(2)}</h2>
+                            <span className="text-white fs-18">{title}</span> <br />
+                            {orderInProgress && <span className="text-white fs-18">Order in progress:{orderInProgress}</span>}
+                        </div>
                     </div>
-                    <div>
-                        <h2 className="text-white invoice-num">{Number(value).toFixed(2)}</h2>
-                        <span className="text-white fs-18">{title}</span> <br />
-                        {orderInProgress && <span className="text-white fs-18">Order in progress:{orderInProgress}</span>}
-                    </div>
-
-
-                    <Popup trigger={<button className='info-btn'><BsPatchQuestion size={30} color={'white'} /></button>}
-                        position="bottom center">
-                        <div>Formule here</div>
-                    </Popup>
-                    {/* <div className="tooltip-icon">
-                        <BsPatchQuestion size={30} color={'white'} />
-                    </div> */}
-                </div>
+                </HoverCard>
             </div>
         </div>
     )

@@ -11,12 +11,15 @@ import { driver } from "driver.js";
 import Main from '../../Main'
 import "driver.js/dist/driver.css";
 import './paiement.style.css'
+import { BottomRightStaticBtn } from '../../Tutorial'
 
 interface Props {
     client: Cient | undefined
 }
 const pageName = 'paiement'
 export default function Paiement({ client }: Props) {
+
+    const [showVideo, setShowVideo] = useState<boolean>(false)
     const [showTutorial, setShowTutorial] = useState<boolean>(false);
     const [item, setItem] = useState<TransactionModel>()
     const [patchClient] = usePatchClientMutation()
@@ -109,7 +112,8 @@ export default function Paiement({ client }: Props) {
             setDate={setDate}
             setUsingDate={setUsingDate}
             showDateFilter={true}
-            showTutorial={showTutorial}
+            showVideo={showVideo}
+            setShowVideo={setShowVideo}
             closeTutorial={closeTutorial}
         >
             {showAddPerteModal && <AddPerteModal refetch={refetch} setShowModal={setShowAddPerteModal} showModal={showAddPerteModal} driverObj={driverObj} />}
@@ -134,6 +138,7 @@ export default function Paiement({ client }: Props) {
                     </div>
                 </div>
             </div>
+            <BottomRightStaticBtn setShowVideo={setShowVideo} />
         </Main>
     )
 }
