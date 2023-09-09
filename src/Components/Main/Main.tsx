@@ -15,10 +15,11 @@ interface Props {
   showTeamFilter?: boolean,
   setProduct?: React.Dispatch<React.SetStateAction<string>>
   urlVideo: string
-  showTutorial: boolean
   closeTutorial: () => void
+  setShowVideo: React.Dispatch<React.SetStateAction<boolean>>
+  showVideo: boolean
 }
-export default function Main({ children, name, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, urlVideo, showTutorial, closeTutorial }: Props): JSX.Element {
+export default function Main({ children, name, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, urlVideo, closeTutorial, setShowVideo, showVideo }: Props): JSX.Element {
   const [showMenu, setShowMenu] = useState<boolean>(true)
 
   return (
@@ -35,8 +36,9 @@ export default function Main({ children, name, setUsingDate, setDate, showDateFi
         showTeamFilter={showTeamFilter}
         setUsingDate={setUsingDate}
         showDateFilter={showDateFilter}
-        showTutorial={showTutorial}
         closeTutorial={closeTutorial}
+        setShowVideo={setShowVideo}
+        showVideo={showVideo}
       />
       <Menu />
       {children}

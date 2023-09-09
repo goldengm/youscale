@@ -18,6 +18,8 @@ interface Bank {
 }
 const pageName = 'pack'
 export default function PackContainer() {
+
+    const [showVideo, setShowVideo] = useState<boolean>(false)
     const [showTutorial, setShowTutorial] = useState<boolean>(false);
     const { data: client } = useGetClientQuery()
     const { data: dataPack, isLoading, refetch } = useGetClientPackQuery()
@@ -30,9 +32,9 @@ export default function PackContainer() {
         const hasSeenTutorial = localStorage.getItem(`tutorial_${pageName}`);
         if (hasSeenTutorial) {
             setShowTutorial(!JSON.parse(hasSeenTutorial));
-        }else{
+        } else {
             setShowTutorial(true);
-          }
+        }
     }, []);
 
     const closeTutorial = () => {
@@ -61,7 +63,8 @@ export default function PackContainer() {
         <Main
             urlVideo={'https://www.youtube.com/watch?v=Y2eNJGFfhVY'}
             name='Pack'
-            showTutorial={showTutorial}
+            showVideo={showVideo}
+            setShowVideo={setShowVideo}
             closeTutorial={closeTutorial}
         >
             <div className="content-body">

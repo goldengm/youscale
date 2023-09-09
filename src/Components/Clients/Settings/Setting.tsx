@@ -7,12 +7,15 @@ import { driver } from "driver.js";
 import { Cient } from '../../../models';
 import "driver.js/dist/driver.css";
 import './setting.style.css'
+import { BottomRightStaticBtn } from '../../Tutorial';
 
 interface Props {
     client: Cient | undefined
 }
 const pageName = 'setting'
 export default function Setting({ client }: Props) {
+
+    const [showVideo, setShowVideo] = useState<boolean>(false)
     const [showTutorial, setShowTutorial] = useState<boolean>(client?.isBeginner ?? false);
     const [patchClient] = usePatchClientMutation()
 
@@ -129,7 +132,8 @@ export default function Setting({ client }: Props) {
             showDateFilter={false}
             showProductFilter={false}
             showTeamFilter={false}
-            showTutorial={showTutorial}
+            showVideo={showVideo}
+            setShowVideo={setShowVideo}
             closeTutorial={closeTutorial}
         >
             <div className="content-body">
@@ -138,6 +142,8 @@ export default function Setting({ client }: Props) {
                     <OrderSetting driverObj={driverObj} />
                 </div>
             </div>
+
+            <BottomRightStaticBtn setShowVideo={setShowVideo} />
         </Main>
     )
 }

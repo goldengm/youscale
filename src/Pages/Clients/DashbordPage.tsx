@@ -7,6 +7,7 @@ import { useGetClientQuery } from '../../services/api/ClientApi/ClientApi'
 
 const pageName = 'dashbord'
 export default function DashbordPage(): JSX.Element {
+
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
   const [product, setProduct] = useState<string>('')
   const [date, setDate] = useState<string[]>([])
@@ -55,18 +56,21 @@ export default function DashbordPage(): JSX.Element {
       width="50"
       visible={true}
     />
-  </div> : <Dashbord
-    data={data?.data}
-    showTeamFilter={true}
-    setIdTeam={setIdTeam}
-    setProduct={setProduct}
-    usingDate={usingDate}
-    setDate={setDate}
-    setUsingDate={setUsingDate}
-    showProductFilter={true}
-    showDateFilter={true}
-    showTutorial={showTutorial}
-    closeTutorial={closeTutorial}
-    client={clientData?.data}
-  />
+  </div> :
+    <React.Fragment>
+      <Dashbord
+        data={data?.data}
+        showTeamFilter={true}
+        setIdTeam={setIdTeam}
+        setProduct={setProduct}
+        usingDate={usingDate}
+        setDate={setDate}
+        setUsingDate={setUsingDate}
+        showProductFilter={true}
+        showDateFilter={true}
+        showTutorial={showTutorial}
+        closeTutorial={closeTutorial}
+        client={clientData?.data}
+      />
+    </React.Fragment>
 }

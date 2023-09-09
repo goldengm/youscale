@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { SupportTable } from '../../Table/Support'
 import Main from '../../Main'
 
 export default function Support(): JSX.Element {
 
+    const [showVideo, setShowVideo] = useState<boolean>(false)
     const closeTutorial = () => { };
 
     return (
@@ -12,8 +14,9 @@ export default function Support(): JSX.Element {
             showDateFilter={false}
             showProductFilter={false}
             showTeamFilter={false}
-            showTutorial={false}
             closeTutorial={closeTutorial}
+            showVideo={showVideo}
+            setShowVideo={setShowVideo}
         >
             <div className="content-body">
                 <div className="container-fluid">

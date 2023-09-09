@@ -10,6 +10,7 @@ import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientAp
 import { driver } from "driver.js";
 import axios from 'axios'
 import "driver.js/dist/driver.css";
+import { BottomRightStaticBtn } from '../../Tutorial'
 
 interface Props {
   client: Cient | undefined
@@ -21,6 +22,7 @@ export default function Order({ client }: Props): JSX.Element {
   const userData = localStorage.getItem('userData')
   const [patchClient] = usePatchClientMutation()
 
+  const [showVideo, setShowVideo] = useState<boolean>(false)
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
   const [statusConfirmation, setStatusConfirmation] = useState<string>()
   const [id_orders, setIdOrders] = useState<number[]>([])
@@ -147,7 +149,8 @@ export default function Order({ client }: Props): JSX.Element {
       setDate={setDate}
       setUsingDate={setUsingDate}
       showDateFilter={true}
-      showTutorial={showTutorial}
+      showVideo={showVideo}
+      setShowVideo={setShowVideo}
       closeTutorial={closeTutorial}
     >
       <div className="content-body">
@@ -167,6 +170,8 @@ export default function Order({ client }: Props): JSX.Element {
           />
         </div>
       </div>
+
+      <BottomRightStaticBtn setShowVideo={setShowVideo} />
     </Main>
   )
 }
