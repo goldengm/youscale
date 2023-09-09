@@ -1,4 +1,5 @@
 import React from 'react'
+import { DisplayStatusBottom } from './Display';
 
 function truncateString(str: string, maxLength: number) {
     if (str.length > maxLength) {
@@ -58,6 +59,7 @@ export default function TableWrapper({ children, column, handleCheckAll }: Props
                         {children}
                     </tbody>
                 </table>
+                <DisplayStatusBottom />
             </div>
         </div>
     )

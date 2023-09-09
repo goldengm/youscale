@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import ModalWrapper from '../ModalWrapper'
+import ReactPlayer from 'react-player/youtube'
+import styles from './video.module.css'
 
 interface Props {
   showModal: boolean,
@@ -42,23 +44,21 @@ export default function VideoModal({ showModal, setShowModal, urlVideo, closeTut
   }
 
   return (
-    <ModalWrapper title={'Video'} closeModal={handleCloseModal} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
+    <ModalWrapper isVideoModal title={'Video'} closeModal={handleCloseModal} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
       <FormBody handleCloseModal={handleCloseModal} urlVideo={urlVideo} />
     </ModalWrapper>
   )
 }
 
-interface FormBodyProps{
+interface FormBodyProps {
   handleCloseModal: () => void
   urlVideo: string
 }
-const FormBody = ({ handleCloseModal, urlVideo }:FormBodyProps) => {
+const FormBody = ({ handleCloseModal, urlVideo }: FormBodyProps) => {
 
   return (
-    <div className="card-body">
-      <div className="basic-form">
-        <iframe width="390" height="315" src={urlVideo} allowFullScreen></iframe>
-      </div>
+    <div className={styles.video}>
+      <ReactPlayer width={460} height={330} controls={true} url={urlVideo} />
     </div>
   )
 }
