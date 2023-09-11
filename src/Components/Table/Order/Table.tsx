@@ -4,7 +4,7 @@ import { RiDeleteBin6Fill } from 'react-icons/ri'
 import { BsArrowDownCircleFill } from 'react-icons/bs'
 import { FaUserEdit } from 'react-icons/fa'
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi'
-import { ColumnModel, GetClientOrderModel, OrderQueryModel, ProductOrder } from '../../../models'
+import { ColumnModel, GetClientOrderModel, OrderQueryModel, ProductOrder, StatusModel, countOrderByStatusModel } from '../../../models'
 import { useBulkDeleteClientOrderMutation, useGetAllOrderIdQuery, useGetClientOrderExportModelQuery } from '../../../services/api/ClientApi/ClientOrderApi'
 import { CSVLink } from "react-csv";
 import { useGetStatusQuery } from '../../../services/api/ClientApi/ClientStatusApi'
@@ -48,6 +48,7 @@ const GetColumn = (col: ColumnModel[] | undefined): string[] => {
 interface TableProps {
     data: Order,
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
+    OrderQueryData: OrderQueryModel
     setStatusConfirmation: React.Dispatch<React.SetStateAction<string | undefined>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     statusConfirmation: string | undefined
@@ -60,8 +61,9 @@ interface TableProps {
         moveNext: () => void
     }
 }
-export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id, setStatusConfirmation, driverObj, statusConfirmation }: TableProps): JSX.Element {
+export default function Table({ data, refetch, setOrderQueryData, _skip, _setSkip, setStatus, orders_id, setStatusConfirmation, driverObj, statusConfirmation, OrderQueryData }: TableProps): JSX.Element {
 
+    const { data: dataStatus } = useGetStatusQuery(OrderQueryData)
     const [editData, setEditData] = useState<GetClientOrderModel>({} as GetClientOrderModel)
     const [order, setOrder] = useState<OrderModel | undefined>()
 
@@ -123,7 +125,7 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
             {showProductOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showProductOrderModal} setShowModal={setShowProductOrderModal} />}
 
             <div className="card">
-                <TableHeader setShowConfirmationModal={setShowConfirmationModal} driverObj={driverObj} setShowDeleteModal={setShowDeleteModal} setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
+                <TableHeader setShowConfirmationModal={setShowConfirmationModal} driverObj={driverObj} dataStatus={dataStatus} setShowDeleteModal={setShowDeleteModal} setShowModal={setShowOrderModal} id_orders={id_orders} refetch={refetch} _skip={_skip} setOrderQueryData={setOrderQueryData} setStatus={setStatus} />
                 <InfiniteScroll
                     dataLength={data?.data.length || 0}
                     next={fetchData}
@@ -131,7 +133,7 @@ export default function Table({ data, refetch, setOrderQueryData, _skip, _setSki
                     loader={<p>...</p>}
                     endMessage={<p>No more data to load.</p>}
                 >
-                    <TableWrapper column={GetColumn(ColumnData?.data)} handleCheckAll={handleCheckAll}>
+                    <TableWrapper column={GetColumn(ColumnData?.data)} dataStatus={dataStatus} setOrderQueryData={setOrderQueryData} refetch={refetch} setStatus={setStatus} handleCheckAll={handleCheckAll}>
                         <>
                             {
                                 data ? data?.data.map((dt, index) => <Row
@@ -172,8 +174,13 @@ interface TableHeaderProps {
     driverObj: {
         moveNext: () => void
     }
+    dataStatus: {
+        code: Number;
+        data: StatusModel[];
+        countOrderByStatus: countOrderByStatusModel[];
+    } | undefined
 }
-const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus, setShowConfirmationModal, setShowDeleteModal, driverObj }: TableHeaderProps): JSX.Element => {
+const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _skip, setStatus, setShowConfirmationModal, setShowDeleteModal, driverObj, dataStatus }: TableHeaderProps): JSX.Element => {
     return (
         <div className="card-header">
             {
@@ -190,7 +197,7 @@ const TableHeader = ({ setShowModal, refetch, id_orders, setOrderQueryData, _ski
             <AddOrderBtn setShowModal={setShowModal} driverObj={driverObj} />
             <ImportBtn id_orders={id_orders} />
             <SearchBar _skip={_skip} setOrderQueryData={setOrderQueryData} refetch={refetch} />
-            <StatusDropdown _skip={_skip} name="Status" setOrderQueryData={setOrderQueryData} setStatus={setStatus} refetch={refetch} />
+            <StatusDropdown _skip={_skip} name="Status" setOrderQueryData={setOrderQueryData} setStatus={setStatus} refetch={refetch} dataStatus={dataStatus} />
         </div>
     )
 }
@@ -342,11 +349,16 @@ interface Props {
     name: string,
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
-    _skip: number,
+    _skip: number
     refetch: any
+    dataStatus: {
+        code: Number;
+        data: StatusModel[];
+        countOrderByStatus: countOrderByStatusModel[];
+    } | undefined
 }
-const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus }: Props): JSX.Element => {
-    const { data: dataStatus, isSuccess } = useGetStatusQuery()
+const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus, dataStatus }: Props): JSX.Element => {
+    
 
     const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault()
@@ -363,7 +375,7 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus }: 
         var sum: number = 0
 
         {
-            isSuccess && dataStatus.countOrderByStatus.map((status, index) => {
+            dataStatus && dataStatus.countOrderByStatus.map((status, index) => {
                 if (status.checked) {
                     sum += status.count
                 }
@@ -381,7 +393,7 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus }: 
                 id="inlineFormCustomSelect"
             >
                 <option value={name} selected={true}>{`All status (${getTotalStatus()})`}</option>
-                {isSuccess && dataStatus.countOrderByStatus.map((status, index) => status.checked && <option value={status.name}>{status.name} ({status.count})</option>)}
+                {dataStatus && dataStatus.countOrderByStatus.map((status, index) => status.checked && <option value={status.name}>{status.name} ({status.count})</option>)}
             </select>
         </div>
     )

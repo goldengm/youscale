@@ -141,7 +141,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
 
   const { data: CityData } = useGetCityQuery()
   const { data: ProductData, isSuccess: ProductSuccess } = useGetProductQuery({ isHidden: false })
-  const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
+  const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({})
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({
     resolver: yupResolver(schema),

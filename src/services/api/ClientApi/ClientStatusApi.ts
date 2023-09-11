@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { StatusModel, StatusPatchModel, countOrderByStatusModel } from '../../../models'
+import { OrderQueryModel, StatusModel, StatusPatchModel, countOrderByStatusModel } from '../../../models'
 import { CLIENT_STATUS_URL } from '../../url/API_URL'
 
 const token =  localStorage.getItem('token')
@@ -8,11 +8,12 @@ export const ClientStatusApi = createApi({
     reducerPath: 'ClientStatusApi',
     baseQuery: fetchBaseQuery({baseUrl: CLIENT_STATUS_URL}),
     endpoints: (builder) =>({
-        getStatus : builder.query<{code: Number, data: StatusModel[], countOrderByStatus: countOrderByStatusModel[]}, void>({
-            query:() => ({
+        getStatus : builder.query<{code: Number, data: StatusModel[], countOrderByStatus: countOrderByStatusModel[]}, OrderQueryModel>({
+            query:(args) => ({
                 method: 'GET',
                 url: '/',
                 headers: { Authorization: `Bear ${token}` },
+                params: args
             })
         }),
         

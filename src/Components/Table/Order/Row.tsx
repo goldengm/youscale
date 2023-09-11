@@ -37,7 +37,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
     const { data: dataSetting } = useGetSettingQuery()
     const { data: dataCity } = useGetCityQuery()
-    const { data: dataStatus, refetch: RefetchStatus } = useGetStatusQuery()
+    const { data: dataStatus, refetch: RefetchStatus } = useGetStatusQuery({})
     const { data: dataTeamMember } = useGetTeamMemberQuery({ isHidden: true })
 
     useEffect(() => {

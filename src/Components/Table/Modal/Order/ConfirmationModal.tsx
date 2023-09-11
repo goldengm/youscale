@@ -91,7 +91,7 @@ interface Props {
 }
 export default function ConfirmationModal({ showModal, setShowModal, refetch, id_orders, setStatus, driverObj, statusConfirmation }: Props): JSX.Element {
 
-    const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
+    const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({})
 
     const [index, setIndex] = useState<number>(0)
     const { data: currentOrder, isSuccess, refetch: refetchCurrentOrder, isFetching } = useGetClientOrderByIdQuery({ id: id_orders[index] })
