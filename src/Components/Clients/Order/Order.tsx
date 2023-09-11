@@ -165,6 +165,7 @@ export default function Order({ client }: Props): JSX.Element {
             statusConfirmation={statusConfirmation}
             data={OrderClient}
             refetch={RefetchOrderClient}
+            OrderQueryData={OrderQueryData}
             setOrderQueryData={setOrderQueryData}
             isLoading={isLoading}
           />
