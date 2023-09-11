@@ -8,11 +8,12 @@ export const ClientSupportApi = createApi({
     reducerPath: 'ClientSupportApi',
     baseQuery: fetchBaseQuery({baseUrl: CLIENT_SUPPORT_URL }),
     endpoints: (builder) =>({
-        getSupport : builder.query<{code: Number, data:Support[]}, void>({
-            query:() => ({
+        getSupport : builder.query<{code: Number, data:Support[]}, { status?: string }>({
+            query:(args) => ({
                 method: 'GET',
                 url: '/',
-                headers: { Authorization: `Bear ${token}` }
+                headers: { Authorization: `Bear ${token}` },
+                params: args
             })
         }),
         

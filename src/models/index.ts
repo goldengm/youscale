@@ -62,6 +62,7 @@ export interface Cient {
     fullname?: string
     livoToken?: string
     trialAt?: null
+    isTrial?: boolean
     trialPeriod?: 0
     isBeginner?: boolean
 }

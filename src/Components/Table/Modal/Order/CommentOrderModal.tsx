@@ -1,7 +1,7 @@
 import React, { ElementRef, useEffect, useRef, useState } from 'react'
-import ModalWrapper from '../ModalWrapper'
 import { useGetOrderCommentQuery, useMakeOrderCommentMutation } from '../../../../services/api/ClientApi/ClientOrderApi'
 import { BsFillSendFill } from 'react-icons/bs'
+import ModalWrapper from '../ModalWrapper'
 import './modal.style.css'
 
 type HistoryType = {

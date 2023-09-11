@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, ElementRef } from 'react'
-import ModalWrapper from '../ModalWrapper'
-import io from 'socket.io-client'
+import { PreviewImagesModal } from '../Images';
 import { ChatMessage, Cient, Support } from '../../../../models';
 import { useGetClientQuery } from '../../../../services/api/ClientApi/ClientApi';
 import { useGetSupportMessageQuery } from '../../../../services/api/ClientApi/ClientSupportApi';
 import { BASE_URL } from '../../../../services/url/API_URL';
 import { BsFillSendFill } from 'react-icons/bs'
+import ModalWrapper from '../ModalWrapper'
+import io from 'socket.io-client'
 import "./chat.css"
 
 
@@ -49,6 +50,7 @@ interface FormBodyProps {
     refetchMessage: () => any
 }
 const FormBody = ({ data, client, messageList, refetchMessage }: FormBodyProps) => {
+    const [showImage, setShowImage] = useState<boolean>(false)
     const [message, setMessage] = useState<string>('')
     const sendBtnRef = useRef<ElementRef<"a">>(null)
 
@@ -67,26 +69,27 @@ const FormBody = ({ data, client, messageList, refetchMessage }: FormBodyProps) 
 
     const sendMessage = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
-        if(message==='') return
+        if (message === '') return
         socket.emit('message', { 'text': message, 'chatId': data.id, 'ClientId': client?.id ?? 0 })
         setMessage('')
     }
 
-    const onKeyPress=(event: React.KeyboardEvent<HTMLInputElement>)=>{
+    const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             event.preventDefault();
             sendBtnRef.current?.click()
-          }
+        }
     }
 
     return (
         <div>
+            <PreviewImagesModal attachement={data.attachment} setShowImage={setShowImage} showImage={showImage} />
             <div className="container-msg">
                 <div className="chat-page">
                     <div className="msg-inbox">
                         <div className="chats">
                             <div className="msg-page">
-                                <OutgoingMsg description={data.description} attachement={data.attachment} idUser={data.id_user ?? 0} date={data.createdAt ?? ''} />
+                                <OutgoingMsg description={data.description} attachement={data.attachment} setShowImage={setShowImage} idUser={data.id_user ?? 0} date={data.createdAt ?? ''} />
                                 {messageList && messageList.map((msg, index) => msg.id_user ?
                                     <OutgoingMsg key={index} idUser={msg.id_user ?? 0} description={msg.message} date={msg.createdAt ?? ''} /> :
                                     <ReceivedMsg key={index} idUser={msg.id_user ?? 0} description={msg.message} date={msg.createdAt ?? ''} />
@@ -118,6 +121,7 @@ const FormBody = ({ data, client, messageList, refetchMessage }: FormBodyProps) 
 interface EventProps {
     description: string
     attachement?: string
+    setShowImage?: React.Dispatch<React.SetStateAction<boolean>>
     idUser: number
     date: string
 }
@@ -137,13 +141,13 @@ const ReceivedMsg = ({ description, date, attachement, idUser }: EventProps): JS
     )
 }
 
-const OutgoingMsg = ({ description, date, attachement, idUser }: EventProps): JSX.Element => {
+const OutgoingMsg = ({ description, date, attachement, idUser, setShowImage }: EventProps): JSX.Element => {
     return (
         <div className="outgoing-chats">
             <div className="outgoing-msg">
                 <div className="outgoing-chats-msg">
                     <p>
-                        {attachement && <img src={attachement} alt="attachement" className='chat-attachement' />}
+                        {attachement && <img src={attachement} onClick={() => setShowImage && setShowImage(true)} alt="attachement" className='chat-attachement' />}
                         {description}
                     </p>
                     <span className="time">You | {date.toString().slice(0, 10)}</span>
