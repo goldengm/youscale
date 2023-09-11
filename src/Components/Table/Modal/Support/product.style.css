@@ -17,6 +17,11 @@
     width: 100px;
 }
 
+.chat-attachement:hover{
+    cursor: pointer;
+    opacity: 0.6;
+}
+
 .admin-msg{
     background-color: slateblue;
 }

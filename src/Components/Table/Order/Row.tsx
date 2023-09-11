@@ -51,7 +51,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
     const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
-        patchOrder({ id: order?.id, status: value }).unwrap().then(() => refetch && refetch())
+        patchOrder({ id: order?.id, status: value }).unwrap().then((res) => console.log(res))
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);

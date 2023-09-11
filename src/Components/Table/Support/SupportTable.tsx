@@ -7,14 +7,16 @@ import { useGetSupportQuery } from '../../../services/api/ClientApi/ClientSuppor
 
 export default function SupportTable(): JSX.Element {
 
+    const [query, setQuery] = useState<{ status?: string }>({ status: undefined })
     const [showCreateSupportModal, setShowCreateSupportModal] = useState<boolean>(false)
     const [showMessage, setShowMessage] = useState<boolean>(false)
     const [item, setItem] = useState<Support>()
 
-    const { data, isSuccess, refetch } = useGetSupportQuery()
-    
+    const { data, isSuccess, refetch } = useGetSupportQuery(query)
+
     return (
         <TableWrapper
+            setQuery={setQuery}
             item={item}
             title='Support'
             column={['subject', 'description', 'status']}
@@ -23,7 +25,7 @@ export default function SupportTable(): JSX.Element {
             showAddSupportModal={showCreateSupportModal}
             setShowCreateSupportModal={setShowCreateSupportModal}
         >
-            { showMessage && <MessageSupportModal item={item} showModal={showMessage} setShowModal={setShowMessage} />}
+            {showMessage && <MessageSupportModal item={item} showModal={showMessage} setShowModal={setShowMessage} />}
             {isSuccess && data.data.map((dt, key) => <SupportRow data={dt} key={key} setItem={setItem} setShowMessage={setShowMessage} />)}
         </TableWrapper>
     )
