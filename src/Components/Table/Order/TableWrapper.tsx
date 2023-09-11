@@ -1,4 +1,4 @@
-import React from 'react'
+import { OrderQueryModel, StatusModel, countOrderByStatusModel } from '../../../models';
 import { DisplayStatusBottom } from './Display';
 
 function truncateString(str: string, maxLength: number) {
@@ -10,11 +10,19 @@ function truncateString(str: string, maxLength: number) {
 }
 
 interface Props {
-    children: JSX.Element | JSX.Element[],
-    column: string[],
+    children: JSX.Element | JSX.Element[]
+    column: string[]
+    setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     handleCheckAll: () => void
+    dataStatus: {
+        code: Number;
+        data: StatusModel[];
+        countOrderByStatus: countOrderByStatusModel[];
+    } | undefined
+    setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
+    refetch: () => any
 }
-export default function TableWrapper({ children, column, handleCheckAll }: Props): JSX.Element {
+export default function TableWrapper({ children, column, handleCheckAll, dataStatus, setStatus, setOrderQueryData, refetch }: Props): JSX.Element {
     var scl = document.getElementsByClassName('table-responsive')[0]
 
     document.onkeydown = checkKey;
@@ -59,7 +67,12 @@ export default function TableWrapper({ children, column, handleCheckAll }: Props
                         {children}
                     </tbody>
                 </table>
-                <DisplayStatusBottom />
+                <DisplayStatusBottom 
+                    dataStatus={dataStatus} 
+                    setStatus={setStatus} 
+                    setOrderQueryData={setOrderQueryData}
+                    refetch={refetch}
+                />
             </div>
         </div>
     )

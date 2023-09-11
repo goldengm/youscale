@@ -98,7 +98,7 @@ const FormBody = ({ dataEdit, handleCloseModal, refetch, id_order }: FormBodyPro
 
   const [patchOrder] = usePatchClientOrderMutation()
 
-  const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery()
+  const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({})
 
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
     resolver: yupResolver(schema),
