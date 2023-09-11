@@ -59,7 +59,7 @@ export default function OrderSetting({ driverObj }:Props) {
 
     const [showEditPasswordModal, setShowEditPasswordModal] = useState<boolean>(false)
 
-    const { data: statusData, refetch: refetchStatus } = useGetStatusQuery()
+    const { data: statusData, refetch: refetchStatus } = useGetStatusQuery({})
     const { data, refetch } = useGetColumnQuery()
 
     const [item, setItem] = useState<CityModel>()
