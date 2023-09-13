@@ -394,6 +394,7 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus, da
             >
                 <option value={name} selected={true}>{`All status (${getTotalStatus()})`}</option>
                 {dataStatus && dataStatus.countOrderByStatus.map((status, index) => status.checked && <option value={status.name}>{status.name} ({status.count})</option>)}
+                <option value={'deleted'}>{'deleted'}</option>
             </select>
         </div>
     )

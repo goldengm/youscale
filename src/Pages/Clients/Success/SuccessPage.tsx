@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { setToken } from '../../services/auth/setToken';
-import { setUserData } from '../../services/auth/setUserData';
-import './styles.css'
+import { useEffect, useState } from 'react'
+import { setToken } from '../../../services/auth/setToken';
+import { setUserData } from '../../../services/auth/setUserData';
+import style from './styles.module.css'
 
 export default function SuccessPage() {
 
-    const [showBackBtn, setShowBackBtn] = useState<boolean>(false) 
+    const [showBackBtn, setShowBackBtn] = useState<boolean>(false)
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -29,12 +29,14 @@ export default function SuccessPage() {
     }, []);
 
     return (
-        <div className="box">
-            <div className="success alert">
-                <div className="alert-body">
-                    Success !
-                </div>
-                { showBackBtn && <a className='come-back' href="/">Revenir sur youscale</a> }
+        <div className={style.container}>
+            <div className={style.box}>
+                <div className={style.gif}></div>
+                {
+                    showBackBtn && <a href="/" className={style.button}>
+                        <p>Revenir sur Youscale</p>
+                    </a>
+                }
             </div>
         </div>
     )
