@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;700&family=Poppins:ital,wght@1,200&display=swap');
+
+.cardContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    width: 288px;
+    height: 146px;
+    border-radius: 30px;
+    position: relative;
+    padding: 20px;
+}
+
+.green {
+    background: #3DA824;
+}
+
+.orange {
+    background: #FF7A00;
+}
+
+.blue {
+    background: #4886FF;
+}
+
+.violet {
+    background: #8942FD;
+}
+
+.exclamation {
+    position: absolute;
+    top: 10px;
+    /* Déplacez le point d'exclamation en haut à gauche */
+    left: 10px;
+    /* Déplacez le point d'exclamation en haut à gauche */
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.tooltip {
+    display: flex;
+    width: 300px;
+    height: 75px;
+    padding: 10px 16px 11px 15px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background: #ffffffb9;
+    position: absolute;
+
+    /* Ajustez cette valeur pour positionner le tooltip correctement */
+    top: 40px;
+    left: 10px;
+    z-index: 1;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    cursor: default;
+}
+
+.displayCard {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.values {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.items {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.desc {
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    width: 100px;
+}
+
+.value {
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.progressOrderTxt {
+    text-align: center;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.progressOrderTxt span {
+    color: #000;
+    font-family: Poppins;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
