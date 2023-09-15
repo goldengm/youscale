@@ -14,6 +14,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import 'reactjs-popup/dist/index.css';
 import './style.css'
+import styles from './style.module.css'
 import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
 import HoverCard from './HoverCard';
 
@@ -166,23 +167,52 @@ interface DisplayCardProps {
 }
 const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet, stock, totalOrder, upsellRate, crosssellRate }: DisplayCardProps): JSX.Element => {
     return (
-        <div className="row invoice-card-row stats">
+        <div className={styles.displayCard}>
 
-            <Card bg={'warning'} value={earningNet} orderInProgress={orderInProgress} title={'gain net'} icon={<MdAttachMoney size={35} color={'white'} />} />
+            <Card
+                bg={'green'}
+                value={[
+                    { desc: 'Revenu Net', value: earningNet }
+                ]}
+                orderInProgress={orderInProgress}
+                icon={'dollard.svg'}
+            />
 
-            <Card bg={'success'} value={costPerLead} title={'cout par lead'} icon={<FiShoppingCart size={35} color={'white'} />} />
+            <Card
+                bg={'orange'}
+                value={[
+                    { desc: 'Confirmé', value: rateOfConfirmed },
+                    { desc: 'Livré', value: rateOfDelivred }
+                ]}
+                icon={'percent.svg'}
+            />
 
-            <Card bg={'info'} value={costPerDelivred} title={'cout par livraison'} icon={<FaTruckMoving size={35} color={'white'} />} />
+            <Card
+                bg={'blue'}
+                value={[
+                    { desc: 'Lead', value: costPerLead },
+                    { desc: 'Livré', value: costPerDelivred }
+                ]}
+                icon={'facebook.svg'}
+            />
 
-            <Card bg={'secondary'} value={rateOfConfirmed} title={'taux de confirmé'} icon={<BsFillPatchCheckFill size={35} color={'white'} />} />
+            <Card
+                bg={'violet'}
+                value={[
+                    { desc: 'Chiffre d’affaire', value: 0 },
+                    { desc: 'Dépense', value: 0 }
+                ]}
+                icon={'pie.svg'}
+            />
 
+            {/* 
             <Card bg={'secondary'} value={rateOfDelivred} title={'taux de livraison'} icon={<TbTruckDelivery size={35} color={'white'} />} />
 
             <Card bg={'success'} value={stock} title={'Stock'} icon={<FiShoppingCart size={35} color={'white'} />} />
 
             <Card bg={'info'} value={totalOrder} title={'Total order'} icon={<AiFillThunderbolt size={35} color={'white'} />} />
 
-            <Card bg={'info'} value={upsellRate + crosssellRate} title={'taux de upsell/crosssell'} icon={<FaTruckMoving size={35} color={'white'} />} />
+            <Card bg={'info'} value={upsellRate + crosssellRate} title={'taux de upsell/crosssell'} icon={<FaTruckMoving size={35} color={'white'} />} /> */}
 
             {/* <Card bg={'secondary'} value={crosssellRate} title={'taux de crosssell'} icon={<BsFillPatchCheckFill size={35} color={'white'} />} /> */}
         </div>
@@ -190,30 +220,57 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
 }
 
 interface CardProps {
-    bg: string,
-    value: number,
-    title: string,
-    icon: JSX.Element
+    bg: 'green' | 'orange' | 'blue' | 'violet'
+    value: { desc: string, value: string | number }[]
+    icon: string
     orderInProgress?: number
 }
-const Card = ({ bg, value, title, icon, orderInProgress }: CardProps): JSX.Element => {
-    return (
+const Card = ({ bg, value, icon, orderInProgress }: CardProps): JSX.Element => {
 
-        <div className="col-xl-3 col-xxl-3 col-sm-6 card-stats">
-            <div className={`card bg-${bg} invoice-card`}>
-                <HoverCard>
-                    <div className="card-body d-flex">
-                        <div className="icon me-3">
-                            {icon}
-                        </div>
-                        <div>
-                            <h2 className="text-white invoice-num">{Number(value).toFixed(2)}</h2>
-                            <span className="text-white fs-18">{title}</span> <br />
-                            {orderInProgress && <span className="text-white fs-18">Order in progress:{orderInProgress}</span>}
-                        </div>
+    const [showTooltip, setShowTooltip] = useState(false);
+
+    const toggleTooltip = () => {
+        setShowTooltip(!showTooltip);
+    };
+
+    return (
+        <div className={styles.cardContainer}>
+            <div className={`${styles.card} ${styles[bg]}`}>
+                <div className={styles.content}>
+                    <img src={`/cus_img/svg/${icon}`} alt="dollard" />
+                    <div className={styles.values}>
+                        {
+                            value.map((vlu, index) => {
+                                return (
+                                    <div key={index} className={styles.items}>
+                                        <div className={styles.desc}>{vlu.desc}</div>
+                                        <div className={styles.value}>{vlu.value}</div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
-                </HoverCard>
+                </div>
+                {
+                    orderInProgress ?
+                        <p className={styles.progressOrderTxt}>Commande en cours <span>{orderInProgress}</span></p>
+                        : <></>
+                }
+                {/* Point d'exclamation pour afficher le tooltip */}
+                <div
+                    className={styles.exclamation}
+                    onMouseEnter={toggleTooltip}
+                    onMouseLeave={toggleTooltip}
+                >
+                    <span>!</span>
+                </div>
             </div>
+            {showTooltip && (
+                <div className={styles.tooltip}>
+                    {/* Contenu du tooltip */}
+                    <p>Ceci est le tooltip.</p>
+                </div>
+            )}
         </div>
     )
 }

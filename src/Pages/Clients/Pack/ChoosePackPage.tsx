@@ -23,23 +23,49 @@ const splitPack = (data: Pack[] | undefined): splitResponse => {
 
 export default function ChoosePackPage(): JSX.Element {
 
-    const { data, isSuccess } = useGetClientAllPackQuery()
+    const [contact, setContact] = useState<string>()
     const [selected, setSelected] = useState<number>(0)
-    const [type, setType] = useState<'commande' | 'mensuel'>('commande')
+    const [mode, setMode] = useState<'pack' | 'contact'>('pack')
+
     const [choosePack] = useChossePackMutation()
 
-    const forfait = splitPack(data?.data)
-
-    const onSavePack = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const onSavePack = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault()
 
-        choosePack({ id_pack: selected, contact: '+212' + '' ?? '+212000000000' }).unwrap()
+        choosePack({ id_pack: selected, contact: '+212' + contact ?? '+212000000000' }).unwrap()
             .then(res => {
                 window.location.href = '/'
                 localStorage.setItem('STEP', JSON.stringify('completed'))
             })
             .catch(err => console.log(err))
     }
+
+    return (
+        mode === 'contact' ?
+            <ContactContainer
+                onSavePack={onSavePack}
+                contact={contact}
+                setContact={setContact}
+            /> :
+            <PackContainer
+                selected={selected}
+                setSelected={setSelected}
+                setMode={setMode}
+            />
+    )
+}
+
+interface PackContainerProps {
+    selected: number
+    setMode: React.Dispatch<React.SetStateAction<"pack" | "contact">>
+    setSelected: React.Dispatch<React.SetStateAction<number>>
+}
+const PackContainer = ({ selected, setSelected, setMode }: PackContainerProps): JSX.Element => {
+
+    const { data, isSuccess } = useGetClientAllPackQuery()
+    const [type, setType] = useState<'commande' | 'mensuel'>('commande')
+
+    const forfait = splitPack(data?.data)
 
     return (
         <div className={style.container}>
@@ -67,10 +93,54 @@ export default function ChoosePackPage(): JSX.Element {
                 }
             </div>
 
-            <button onClick={onSavePack} className={style.continueBtn}>Choisir</button>
+            <button onClick={() => setMode('contact')} className={style.continueBtn}>Choisir</button>
         </div>
     )
 }
+
+interface ContactContainerProps {
+    onSavePack: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+    setContact: React.Dispatch<React.SetStateAction<string | undefined>>
+    contact: string | undefined
+}
+const ContactContainer = ({ onSavePack, contact, setContact }: ContactContainerProps): JSX.Element => {
+
+    const IsContactValid = (): boolean => contact?.length === 10 ? true : false
+
+    return (
+        <div className={style.containerContact}>
+            <div onClick={() => logOut()} className={style.logout}>
+                <p>Se déconnecter</p>
+            </div>
+
+            <div className={style.boxContact}>
+                <p className={style.boxDescription}>Veuillez entrer votre numéro de téléphone ci-dessous</p>
+
+                <p className={style.yourTelTxt}>Votre numéro de téléphone</p>
+                <div className={style.telephone}>
+                    <div className={style.telephoneIcon}>
+                        <img src="/cus_img/country.svg" alt="country" />
+                        <img src="/cus_img/up-arrow.svg" alt="up-arrow" />
+                    </div>
+                    <input
+                        type="text"
+                        maxLength={10}
+                        placeholder={'06 00 00 00 00'}
+                        onChange={e => setContact(e.target.value)}
+                        className={style.telephoneInput}
+                    />
+                </div>
+                {
+                    IsContactValid() &&
+                    <div onClick={onSavePack} className={style.buttonContact}>
+                        Continuer
+                    </div>
+                }
+            </div>
+        </div>
+    )
+}
+
 
 interface PackProps {
     item: Pack
@@ -100,7 +170,6 @@ const PackItems = ({ item, selected, setSelected, type }: PackProps): JSX.Elemen
         </div>
     )
 }
-
 
 interface ItemProps {
     description: string
