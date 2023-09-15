@@ -190,7 +190,7 @@ const QuestionCard = ({ value, order, setSelect, select, quest }: QuestionCardPr
         <div
             onClick={onSelect}
             className={`${quest > 1 ? style.questionSmall : style.question} ${select === order && style.active}`}>
-            <p>{value}</p>
+            <div>{value}</div>
         </div>
     )
 }
@@ -269,7 +269,7 @@ const QuestionMultipleCard = ({ value, order, setSelect, select }: QuestionnMult
 
     return (
         <div onClick={onSelect} className={`${style.questionSmall} ${select.includes(order) && style.active}`}>
-            <p>{value}</p>
+            <div>{value}</div>
         </div>
     )
 }
