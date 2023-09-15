@@ -677,7 +677,8 @@ export interface PatchClientOrderModel {
 
 export interface Pack {
     id: number,
-    name: string,
+    name: string
+    support: string,
     isShow: boolean
     price_per_month: number,
     item_inclued: string[],
