@@ -19,7 +19,7 @@ type Inputs = {
 const schema = yup.object().shape({
     subject: yup.string().required('Ce champ est obligatoire'),
     description: yup.string().required('Ce champ est obligatoire'),
-    attachment: yup.string().required('Ce champ est obligatoire')
+    attachment: yup.string().notRequired()
 }).required();
 
 interface Props {
