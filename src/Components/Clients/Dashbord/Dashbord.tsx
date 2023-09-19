@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
-import { MdAttachMoney } from 'react-icons/md'
-import { BottomRightStaticBtn } from '../../Tutorial'
-import { FiShoppingCart } from 'react-icons/fi'
-import { FaTruckMoving } from 'react-icons/fa'
-import { AiFillThunderbolt } from 'react-icons/ai'
-import { TbTruckDelivery } from 'react-icons/tb'
-import { BsFillPatchCheckFill } from 'react-icons/bs'
-import { CustomPie, CustomLine } from '../../Chart'
 import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity, Cient } from '../../../models'
+import { BottomRightStaticBtn } from '../../Tutorial'
+import { CustomPie, CustomLine } from '../../Chart'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
+import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
 import { driver } from "driver.js";
+import styles from './style.module.css'
 import "driver.js/dist/driver.css";
 import 'reactjs-popup/dist/index.css';
 import './style.css'
-import styles from './style.module.css'
-import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
-import HoverCard from './HoverCard';
 
 interface Props {
     data: DashbordModel,
@@ -61,7 +54,15 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
         showProgress: true,
         allowClose: false,
         steps: [
-            { element: '.menu-step:nth-child(8)', popover: { title: 'Setting', description: 'Description for setting page', side: "right", align: 'start' } }
+            {
+                element: '.menu-step:nth-child(8)',
+                popover: {
+                    title: 'Setting',
+                    description: `<p class=${styles.stepDescription}>Cliquez sur l’icon</p>`,
+                    side: "right",
+                    align: 'start'
+                }
+            }
         ]
     });
 
@@ -69,11 +70,16 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
         driverObj.highlight({
             popover: {
                 description: `
-                    <div class='welcome-box'>
-                        <img src='/images/welcome-animation.svg' alt='welcome-animation' style='height: 100px; width: 200px;' />
-                        <p class='welcome-txt'>Bienvenue sur youscale, démarrer avec nous</p>
-                        <a class='start-tuto' href='#' style='font-size: 17px; display: block; margin-top: 10px; text-align: center;'>Commencer le tutoriel</a>
-                        <a class='done-tuto' href='#' style='font-size: 17px; display: block; margin-top: 10px; text-align: center;'>Terminer</a>
+                    <div class=${styles.welcomeBox}>
+                        <div class=${styles.welcomeTitle}>Bienvenue sur Youscale </div>
+                        <img class=${styles.welcomeImg} src='/images/logo.svg' alt='welcome-animation' />
+                        <p class=${styles.welcomeDesc}>
+                            Pour mieux comprendre notre système, veuillez suivre notre tutoriel, en cliquant dessous sur commencer. 
+                        </p>
+                        <div class=${styles.displayWelcomeBtn}>
+                            <a class='${styles.welcomeStartBtn} start-tuto' href='#'>Commencer le tutoriel</a>
+                            <a class='${styles.welcomeDoneBtn} done-tuto' href='#'>Terminer</a>
+                        </div>
                     </div>
                 `,
             }
@@ -312,51 +318,67 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
     }
 
     return (
-        <div className="col-xl-6 col-xxl-4">
+        <div className="col-xl-6 col-xxl-5">
             <div className="card">
                 <div className="card-header border-0 pb-0">
                     <div>
-                        <h4 className="card-title mb-2">Order statistique</h4>
+                        <h4 className={styles.reportTitle}>Commandes</h4>
+                    </div>
+
+                    <div className="card-tabs mt-3 mt-sm-0">
+                        <ul className="nav nav-tabs" role="tablist">
+                            <li className="nav-item">
+                                <a className={`nav-link active ${styles.statisticSwthLabel}`} data-bs-toggle="tab" href="#Commande" role="tab">
+                                    Commande
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={`nav-link ${styles.statisticSwthLabel}`} data-bs-toggle="tab" href="#Pourcentage" role="tab">
+                                    Pourcentage
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
                 <div className="card-body">
-                    <div className="mt-xl-0 mt-4">
+                    <div className={styles.statisticContainer}>
+                        <div className={`col-md-6 ${styles.pieChart}`}>
+                            <CustomPie data={data.data} options={option} />
+                        </div>
+
                         <div className="col-md-6">
                             <ul className="card-list mt-4">
-                                <li>
-                                    <span className="bg-delivered circle" />
-                                    livré<span>{data.data.datasets[0].data[0]}</span>
+                                <li className={styles.cmdLabel}>
+                                    <span className={`bg-delivered circle`} />
+                                    livré({data.data.datasets[0].data[0]})
                                 </li>
-                                <li>
-                                    <span className="bg-pending-1 circle" />
-                                    en attente<span>{data.data.datasets[0].data[1]}</span>
-                                </li>
-
-                                <li>
-                                    <span className="bg-pending-2 circle" />
-                                    Injoignable<span>{data.data.datasets[0].data[2]}</span>
+                                <li className={styles.cmdLabel}>
+                                    <span className={`bg-pending-1 circle`} />
+                                    en attente({data.data.datasets[0].data[1]})
                                 </li>
 
-                                <li>
-                                    <span className="bg-cancelled circle" />
-                                    annulé<span>{data.data.datasets[0].data[3]}</span>
+                                <li className={styles.cmdLabel}>
+                                    <span className={`bg-pending-2 circle`} />
+                                    Injoignable({data.data.datasets[0].data[2]})
                                 </li>
 
-                                <li>
-                                    <span className="bg-deleted circle" />
-                                    Deleted<span>{data.data.datasets[0].data[4]}</span>
+                                <li className={styles.cmdLabel}>
+                                    <span className={`bg-cancelled circle`} />
+                                    annulé({data.data.datasets[0].data[3]})
                                 </li>
-                                <li>
-                                    <span className="bg-light circle" />
-                                    total des commandes <span>{data.total}</span>
+
+                                <li className={styles.cmdLabel}>
+                                    <span className={`bg-deleted circle`} />
+                                    Deleted({data.data.datasets[0].data[4]})
                                 </li>
                             </ul>
                         </div>
+                    </div>
 
-                        <div className="col-md-6">
-                            <CustomPie data={data.data} options={option} />
-                        </div>
+                    <div className={styles.totalContainer}>
+                        <div>Commandes totales</div>
+                        <div>{data.total}</div>
                     </div>
                 </div>
             </div>
@@ -371,6 +393,13 @@ interface ReportProps {
     dataEarningNet: reportEarningNet
 }
 const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps): JSX.Element => {
+
+    const [showTooltip, setShowTooltip] = useState(false);
+
+    const toggleTooltip = () => {
+        setShowTooltip(!showTooltip);
+    };
+
     let option = {
         responsive: true,
         plugins: {
@@ -392,11 +421,18 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
     })
 
     return (
-        <div className="col-xl-6 col-xxl-8">
+        <div className={`col-xl-6 col-xxl-7 ${styles.reportCard}`}>
             <div className="card">
                 <div className="card-header d-block d-sm-flex border-0">
-                    <div className="me-3">
-                        <h4 className="card-title mb-2">statistique</h4>
+                    <div className={styles.titleContain}>
+                        <div className={styles.reportTitle}>Statistiques</div>
+                        <div
+                            className={styles.exclamationReport}
+                            onMouseEnter={toggleTooltip}
+                            onMouseLeave={toggleTooltip}
+                        >
+                            <span>!</span>
+                        </div>
                     </div>
                     <div className="card-tabs mt-3 mt-sm-0">
                         <ul className="nav nav-tabs" role="tablist">
@@ -463,6 +499,12 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                     <CustomLine data={dataChart} options={option} />
                 </div>
             </div>
+            {showTooltip && (
+                <div className={styles.tooltip}>
+                    {/* Contenu du tooltip */}
+                    <p>Ceci est le tooltip.</p>
+                </div>
+            )}
         </div>
 
     )

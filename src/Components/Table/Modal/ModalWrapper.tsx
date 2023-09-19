@@ -54,7 +54,7 @@ export default function ModalWrapper({ showModal, setShowModal, children, id, ti
                                 <button
                                     onClick={handleCloseModal}
                                     type="button"
-                                    className="btn btn-danger light"
+                                    className="btn btn-danger light fermer-btn"
                                     data-bs-dismiss="modal"
                                 >
                                     Fermer

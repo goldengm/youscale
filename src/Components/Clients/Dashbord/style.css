@@ -1,5 +1,3 @@
-
-
 .ads-card {
     height: 50vh;
 }
@@ -48,66 +46,38 @@
     visibility: visible;
 }
 
-.bg-pending-1{
-    background: #F68407!important;
+.bg-pending-1 {
+    background: #F68407 !important;
 }
 
-.bg-delivered{
-    background: #43A047!important;
+.bg-delivered {
+    background: #43A047 !important;
 }
 
-.bg-pending-2{
-    background: #b4936f!important;
+.bg-pending-2 {
+    background: #b4936f !important;
 }
 
-.bg-cancelled{
-    background: #E53935!important;
+.bg-cancelled {
+    background: #E53935 !important;
 }
 
-.bg-deleted{
-    background: #630200!important;
+.bg-deleted {
+    background: #630200 !important;
 }
 
-.info-btn{
+.info-btn {
     border: none;
     background-color: transparent;
     width: 80px;
     height: 80px;
 }
 
-.start-tuto{
-    background-color: black;
-    color: white;
-    height: 30px;
-    padding: 5px;
-    border-radius: 10px;
-    text-decoration: none;
-}
-
-.done-tuto{
-    background-color: rgb(101, 14, 14);
-    color: white;
-    height: 30px;
-    padding: 5px;
-    border-radius: 10px;
-    text-decoration: none;
-}
-
-.welcome-box{
-    height: 300px;
-    width: 270px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.welcome-txt{
-    text-align: center;
-}
-
-.display-video{
+.display-video {
     height: 200px;
     width: 200px;
 }
 
+.driver-popover {
+    max-width: fit-content;
+}

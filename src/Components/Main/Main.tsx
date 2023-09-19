@@ -1,3 +1,4 @@
+import HeaderBanner from './Banner'
 import React, { useState } from 'react'
 import Header from './Header'
 import Menu from './Menu'
@@ -24,6 +25,7 @@ export default function Main({ children, name, setUsingDate, setDate, showDateFi
 
   return (
     <div id="main-wrapper" className={showMenu ? 'show menu-toggle' : 'show'}>
+      <HeaderBanner />
       <Header
         name={name}
         urlVideo={urlVideo}

@@ -68,13 +68,23 @@ export default function Team({ client }: Props): JSX.Element {
                 element: '.add-team', popover: {
                     title: 'Add your team', description: 'Add your team here', side: "right", align: 'start',
                     onNextClick: (drvHks) => {
-                        driverObj.moveTo(2)
+                        driverObj.moveTo(3)
                     }
                 }
             },
             {
                 element: '.modal-content', popover: {
                     title: 'Add your team', description: 'Add your team here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        driverObj.moveTo(2)
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
+            {
+                element: '.fermer-btn', popover: {
+                    title: 'Close modal', description: 'close', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         alert('Close your modal before')
                     }, onPrevClick: (drvHks) => {

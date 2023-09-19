@@ -6,6 +6,7 @@ import { store } from './store';
 import { setToken } from './services/auth/setToken';
 import { setUserData } from './services/auth/setUserData';
 import { ErrorBoundary } from './Pages/Errors';
+import './App.css'
 import Routing from './routes/Routing';
 import 'react-toastify/dist/ReactToastify.css';
 
