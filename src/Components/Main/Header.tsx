@@ -66,8 +66,6 @@ const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => 
 
 export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu, urlVideo, closeTutorial, setShowVideo, showVideo }: Props): JSX.Element {
  
-  const [isVisible, setIsVisible] = useState<boolean>(true);
- 
   const [patchClient] = usePatchClientMutation()
   const { data: productData } = useGetProductQuery({ isHidden: false })
   const { data: teamData } = useGetTeamMemberQuery({ isHidden: true })

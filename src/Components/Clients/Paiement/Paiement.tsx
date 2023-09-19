@@ -35,7 +35,7 @@ export default function Paiement({ client }: Props) {
 
     const driverObj = driver({
         onNextClick: () => {
-            if (driverObj.getActiveIndex() === 1) {
+            if (driverObj.getActiveIndex() === 3) {
                 const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
                 if (response) {
                     patchClient({ isBeginner: false }).unwrap()
@@ -57,13 +57,23 @@ export default function Paiement({ client }: Props) {
                 element: '.add-perte', popover: {
                     title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
-                        driverObj.moveTo(2)
+                        driverObj.moveTo(3)
                     }
                 }
             },
             {
                 element: '.modal-content', popover: {
                     title: 'Add Perte', description: 'Add your perte here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        driverObj.moveTo(2)
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
+            {
+                element: '.fermer-btn', popover: {
+                    title: 'Close modal', description: 'close', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         alert('Close your modal before')
                     }, onPrevClick: (drvHks) => {
