@@ -358,7 +358,7 @@ interface Props {
     } | undefined
 }
 const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus, dataStatus }: Props): JSX.Element => {
-    
+
 
     const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault()
@@ -367,7 +367,12 @@ const StatusDropdown = ({ name, setOrderQueryData, refetch, _skip, setStatus, da
 
         var search = value === 'Status' ? undefined : value
         setStatus(search)
-        setOrderQueryData({ status: search, search: '', _skip: 0, _limit: _skip })
+        setOrderQueryData(prevState => ({
+            ...prevState,
+            status: search,
+            _skip: 0,
+            _limit: prevState._skip
+        }));
         refetch()
     }
 

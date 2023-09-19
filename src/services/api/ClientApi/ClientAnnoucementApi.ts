@@ -8,7 +8,7 @@ export const ClientAnnoucementApi = createApi({
     reducerPath: 'ClientAnnoucementApi',
     baseQuery: fetchBaseQuery({ baseUrl: CLIENT_ANNOUCEMENT_URL }),
     endpoints: (builder) =>({
-        getAnnoucement : builder.query<{code: Number, data:AdminAnnoucementModel}, void>({
+        getAnnoucement : builder.query<{code: Number, data:AdminAnnoucementModel[]}, void>({
             query:() => ({
                 method: 'GET',
                 url: '/',

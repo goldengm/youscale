@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
+import { BottomRightStaticBtn } from '../../Tutorial';
+import { driver } from "driver.js";
+import { Cient } from '../../../models';
 import Main from '../../Main'
 import API from './API'
 import OrderSetting from './OrderSetting'
-import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
-import { driver } from "driver.js";
-import { Cient } from '../../../models';
+
 import "driver.js/dist/driver.css";
 import './setting.style.css'
-import { BottomRightStaticBtn } from '../../Tutorial';
 
 interface Props {
     client: Cient | undefined
@@ -21,7 +22,7 @@ export default function Setting({ client }: Props) {
 
     const driverObj = driver({
         onNextClick: () => {
-            if (driverObj.getActiveIndex() === 7) {
+            if (driverObj.getActiveIndex() === 13) {
                 const response = confirm("En terminant vous confirmer ne plus recevoir le tutoriel sur les autres pages ?")
                 if (response) {
                     patchClient({ isBeginner: false }).unwrap()
@@ -44,13 +45,23 @@ export default function Setting({ client }: Props) {
                 element: '.row .api_card:nth-child(1)', popover: {
                     title: 'Google Sheet', description: 'Integrate google sheet.', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
-                        driverObj.moveTo(2)
+                        driverObj.moveTo(3)
                     }
                 }
             },
             {
                 element: '.modal-content', popover: {
                     title: 'Google Sheet', description: 'Integrate google sheet.', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        driverObj.moveTo(2)
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
+            {
+                element: '.fermer-btn', popover: {
+                    title: 'Close modal', description: 'close', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         alert('Close your modal before')
                     }, onPrevClick: (drvHks) => {
@@ -64,13 +75,23 @@ export default function Setting({ client }: Props) {
                         driverObj.moveTo(0)
                     },
                     onNextClick: (drvHks) => {
-                        driverObj.moveTo(4)
+                        driverObj.moveTo(5)
                     }
                 }
             },
             {
                 element: '.modal-content', popover: {
                     title: 'Shipping Company', description: 'Add your shipping company here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        driverObj.moveTo(5)
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
+            {
+                element: '.fermer-btn', popover: {
+                    title: 'Close modal', description: 'close', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         alert('Close your modal before')
                     }, onPrevClick: (drvHks) => {
@@ -81,7 +102,7 @@ export default function Setting({ client }: Props) {
             {
                 element: '.status_card', popover: {
                     title: 'Status', description: 'You can manage your status here', side: "right", align: 'start', onPrevClick: (drvHks) => {
-                        driverObj.moveTo(2)
+                        driverObj.moveTo(3)
                     },
                 }
             },
@@ -90,13 +111,23 @@ export default function Setting({ client }: Props) {
                 element: '.add-city-btn', popover: {
                     title: 'Add City', description: 'You can add your city here', side: "right", align: 'end',
                     onNextClick: (drvHks) => {
-                        driverObj.moveTo(8)
+                        driverObj.moveTo(9)
                     }
                 }
             },
             {
                 element: '.modal-content', popover: {
                     title: 'Add City', description: 'You can add your city here', side: "bottom", align: 'start',
+                    onNextClick: (drvHks) => {
+                        driverObj.moveTo(10)
+                    }, onPrevClick: (drvHks) => {
+                        alert('Close your modal before')
+                    },
+                }
+            },
+            {
+                element: '.fermer-btn', popover: {
+                    title: 'Close modal', description: 'close', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         alert('Close your modal before')
                     }, onPrevClick: (drvHks) => {
@@ -107,7 +138,7 @@ export default function Setting({ client }: Props) {
             {
                 element: '.copy-model-btn', popover: {
                     title: 'Copy Model', description: 'You can copy the model for import your city', side: "right", align: 'end', onPrevClick: (drvHks) => {
-                        driverObj.moveTo(6)
+                        driverObj.moveTo(7)
                     },
                 }
             },
