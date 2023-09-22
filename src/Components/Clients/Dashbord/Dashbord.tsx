@@ -307,6 +307,8 @@ interface OrderStatisticCardProps {
     data: orderStatistic
 }
 const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
+    const [mode, setMode] = useState<'commande' | 'percent'>('commande')
+
     let option = {
         responsive: true,
         plugins: {
@@ -327,12 +329,12 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
 
                     <div className="card-tabs mt-3 mt-sm-0">
                         <ul className="nav nav-tabs" role="tablist">
-                            <li className="nav-item">
+                            <li onClick={()=> setMode('commande')} className="nav-item">
                                 <a className={`nav-link active ${styles.statisticSwthLabel}`} data-bs-toggle="tab" href="#Commande" role="tab">
                                     Commande
                                 </a>
                             </li>
-                            <li className="nav-item">
+                            <li onClick={()=> setMode('percent')} className="nav-item">
                                 <a className={`nav-link ${styles.statisticSwthLabel}`} data-bs-toggle="tab" href="#Pourcentage" role="tab">
                                     Pourcentage
                                 </a>
@@ -351,26 +353,26 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                             <ul className="card-list mt-4">
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-delivered circle`} />
-                                    livré({data.data.datasets[0].data[0]})
+                                    livré ({ mode === 'commande' ? data.data.datasets[0].data[0] : ((data.data.datasets[0].data[0]*100)/data.total).toFixed(2) + '%' })
                                 </li>
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-pending-1 circle`} />
-                                    en attente({data.data.datasets[0].data[1]})
+                                    en attente ({ mode === 'commande' ? data.data.datasets[0].data[1] : ((data.data.datasets[0].data[1]*100)/data.total).toFixed(2) + '%' })
                                 </li>
 
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-pending-2 circle`} />
-                                    Injoignable({data.data.datasets[0].data[2]})
+                                    Injoignable ({ mode === 'commande' ? data.data.datasets[0].data[2] : ((data.data.datasets[0].data[2]*100)/data.total).toFixed(2) + '%' })
                                 </li>
 
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-cancelled circle`} />
-                                    annulé({data.data.datasets[0].data[3]})
+                                    annulé ({ mode === 'commande' ? data.data.datasets[0].data[3] : ((data.data.datasets[0].data[3]*100)/data.total).toFixed(2) + '%' })
                                 </li>
 
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-deleted circle`} />
-                                    Deleted({data.data.datasets[0].data[4]})
+                                    Deleted ({ mode === 'commande' ? data.data.datasets[0].data[4] : ((data.data.datasets[0].data[4]*100)/data.total).toFixed(2) + '%' })
                                 </li>
                             </ul>
                         </div>

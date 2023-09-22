@@ -2,9 +2,12 @@ import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { CustumSelect } from '../Forms'
 import { TutorialModal } from '../Modal'
+import { FaUser } from 'react-icons/fa'
+import { FiPackage } from 'react-icons/fi'
 import { useGetProductQuery } from '../../services/api/ClientApi/ClientProductApi'
 import { useGetTeamMemberQuery } from '../../services/api/ClientApi/ClientTeamMemberApi'
 import { VideoModal } from '../Table/Modal/Video'
+import { Filter } from '../Filter/Filter'
 import { GetProductModel, GetTeamMemberModel } from '../../models'
 import { usePatchClientMutation } from '../../services/api/ClientApi/ClientApi'
 import { GetRole } from '../../services/storageFunc'
@@ -31,13 +34,13 @@ interface Props {
 type dataType = {
   label: string;
   value: string;
-}[]
+}
 
-const convertProduct = (data: GetProductModel[] | undefined): dataType => {
+const convertProduct = (data: GetProductModel[] | undefined): dataType[] => {
 
   if (!data) return []
 
-  var out: dataType = []
+  var out: dataType[] = []
 
   data.map(dt => {
     if (!dt.isDeleted) {
@@ -48,11 +51,11 @@ const convertProduct = (data: GetProductModel[] | undefined): dataType => {
   return out
 }
 
-const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType => {
+const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType[] => {
 
   if (!data) return []
 
-  var out: dataType = [{ label: 'Aucun', value: String(0) }]
+  var out: dataType[] = [{ label: 'Aucun', value: String(0) }]
 
   data.map(dt => {
     if (dt.active) {
@@ -70,10 +73,9 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
   const { data: productData } = useGetProductQuery({ isHidden: false })
   const { data: teamData } = useGetTeamMemberQuery({ isHidden: true })
 
-  const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target
+  const handleTeamChange = ({ label, value }: dataType) => {
 
-    if (value === 'all') {
+    if (value === '') {
       setIdTeam && setIdTeam(-1)
       return
     }
@@ -91,10 +93,8 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
       .catch(err => console.warn(err))
   }
 
-  const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target
-
-    if (value === 'all') return
+  const handleProductChange = ({ label, value }: dataType) => {
+    if (value === '') return
 
     setProduct && setProduct(value)
   }
@@ -131,13 +131,13 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
                 </li>
 
                 <li className="nav-item">
-                  {showProductFilter && <CustumSelect name='Product' data={convertProduct(productData?.data)} onChange={handleProductChange} />}
+                  {showProductFilter && <Filter Icons={FiPackage} label={'Produit'} data={convertProduct(productData?.data)} onChange={handleProductChange} />}
                 </li>
 
                 {
                   GetRole() === "CLIENT" &&
                   <li className="nav-item">
-                    {showTeamFilter && <CustumSelect name='Team member' data={convertTeamMember(teamData?.data)} onChange={handleTeamChange} />}
+                    {showTeamFilter && <Filter Icons={FaUser} label={'Team member'} data={convertTeamMember(teamData?.data)} onChange={handleTeamChange} />}
                   </li>
                 }
 
