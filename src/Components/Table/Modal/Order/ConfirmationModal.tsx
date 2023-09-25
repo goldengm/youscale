@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetStatusQuery } from '../../../../services/api/ClientApi/ClientStatusApi';
 import { useGetClientOrderByIdQuery, usePatchClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi';
 import { showToastError } from '../../../../services/toast/showToastError';
-import { CustumDropdown, MultiSelectElement, SendButton } from '../../../Input';
+import { CustumDropdown, MultiSelectElement, SendButton } from '../../../Input/v2';
 import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi';
 import { ProductOrderCard } from './Card';
 import { Spinner4Bar } from '../../../Loader';
@@ -79,8 +79,8 @@ const schema = yup.object().shape({
 }).required();
 
 interface Props {
-    id_orders: number[],
-    showModal: boolean,
+    id_orders: number[]
+    showModal: boolean
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
     setStatus: React.Dispatch<React.SetStateAction<string | undefined>>
     statusConfirmation: string | undefined

@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;700&family=Poppins:ital,wght@0,500;1,200;1,300&display=swap');
+
+.tableWrapper {
+    width: 1270px;
+    height: 580px;
+    border-radius: 20px;
+    background: #FFF;
+    padding: 20px;
+}
+
+.headerTable {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 50px 0px 50px;
+    height: 55px;
+}
+
+.leftTools {
+    display: flex;
+    justify-content: space-around;
+    width: 120px;
+}
+
+.leftTools img {
+    width: 25px;
+    height: 25px;
+}
+
+.leftTools img:hover {
+    cursor: pointer;
+}
+
+.searchContainer {
+    display: flex;
+    width: 250px;
+    padding: 10px 60px 10px 20px;
+    align-items: center;
+    gap: 10px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+}
+
+.searchInput {
+    outline: none;
+    border: none;
+    font-size: 17px;
+    background: #FFF;
+}
+
+
+.middleTools {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 580px;
+}
+
+.rightTools {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 120px;
+}
+
+.rightTools img {
+    width: 25px;
+    height: 25px;
+}
+
+.rightTools img:hover {
+    cursor: pointer;
+}
+
+.table {
+    position: relative;
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.table th {
+    position: sticky;
+    background: rgba(17, 17, 17, 0.70);
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.table td {
+    color: #000;
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: 1px solid rgba(17, 17, 17, 0.30);
+    ;
+}
+
+.table th:first-child {
+    border-radius: 15px 0px 0px 0px;
+}
+
+.table th:last-child {
+    border-radius: 0px 15px 0px 0px;
+}
+
+.table th,
+td {
+
+    padding: 10px;
+    top: 0;
+}
+
+.tableContainer {
+    position: relative;
+    height: 450px;
+    overflow: scroll;
+}
+
+.tdWhatsapp {
+    display: flex;
+    height: 100%;
+}
+
+.tableContainer::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #FAFAFA;
+}
+
+.tableContainer::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+    background-color: #FAFAFA;
+}
+
+.tableContainer::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: rgba(17, 17, 17, 0.30);
+}
+
+.displayStatus {
+    display: flex;
+    align-items: center;
+    width: 1150px;
+    height: 38px;
+    border: 1px solid rgba(17, 17, 17, 0.30);
+    background: #FAFAFA;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 38px;
+    width: 120px;
+    border-right: 1px solid rgba(17, 17, 17, 0.30);
+}
+
+.status:hover {
+    cursor: pointer;
+}
+
+.status p {
+    margin: 0;
+    color: rgba(17, 17, 17, 0.70);
+    font-family: Poppins;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.statusControls {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 38px;
+    width: 120px;
+    border: 1px solid rgba(17, 17, 17, 0.30);
+}
+
+.statusControls img {
+    width: 24px;
+    height: 24px;
+}
+
+.statusControls img:hover {
+    cursor: pointer;
+}
+
+.bottomTable {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.tdStatus {
+    display: flex;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: #FFF;
+}
