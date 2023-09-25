@@ -188,6 +188,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
                 <input
                     onChange={() => handleCheckRow(order?.id || 0)}
                     checked={order?.checked}
+                    className={style.checkbox}
                     type="checkbox"
                 />
             </td>

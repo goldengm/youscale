@@ -34,7 +34,7 @@ const Column = ({ column, handleCheckAll }: ColumnProps): JSX.Element => {
             <th>
                 <input
                     type="checkbox"
-                    className={style.checkAll}
+                    className={style.checkbox}
                     onChange={handleCheckAll}
                 />
             </th>

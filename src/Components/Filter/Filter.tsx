@@ -19,7 +19,7 @@ interface Props {
   data?: dataType[]
   onChange: ({ label, value }: dataType) => void
 }
-export const Filter = ({ Icons ,label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
+export const Filter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
   const [title, setTitle] = useState<string>(label)
   const [display, setIsDisplay] = useState<boolean>(false)
 
@@ -40,18 +40,20 @@ export const Filter = ({ Icons ,label, onChange, data = DEFAULT_VALUE }: Props):
   }, []);
 
   return (
-    <div className={style.filterContainer}>
-      <div onClick={e => setIsDisplay(!display)} className={style.filter}>
-        <Icons size={20} className={style.logo} />
-        <p>{title}</p>
+    <div>
+      <div className={style.filterContainer}>
+        <div onClick={e => setIsDisplay(!display)} className={style.filter}>
+          <Icons size={20} className={style.logo} />
+          <p>{title}</p>
+        </div>
+        {display &&
+          <Display
+            onChange={onChange}
+            elementRef={elementRef}
+            setTitle={setTitle}
+            data={data}
+          />}
       </div>
-      {display &&
-        <Display
-          onChange={onChange}
-          elementRef={elementRef}
-          setTitle={setTitle}
-          data={data}
-        />}
     </div>
   )
 }
@@ -67,12 +69,13 @@ const Display = ({ elementRef, setTitle, data, onChange }: DisplayProps): JSX.El
   return (
     <div ref={elementRef} className={style.display}>
       <Items label={'Tout'} isChecked value='' />
-      {data.map((dt, key) => <Items
-        label={dt.label}
-        setTitle={setTitle}
-        value={dt.value}
-        onChange={onChange}
-      />)}
+      {data.map((dt, key) =>
+        <Items
+          label={dt.label}
+          setTitle={setTitle}
+          value={dt.value}
+          onChange={onChange}
+        />)}
     </div>
   )
 }
