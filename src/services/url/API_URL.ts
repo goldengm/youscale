@@ -7,7 +7,7 @@ const urls = {
   dev: "https://api.oumardev.com",
   local: "http://127.0.0.1:8500",
 };
-export const BASE_URL = urls.prod;
+export const BASE_URL = urls.local;
 
 /** Auth URL */
 export const CLIENT_LOGIN_URL = `${BASE_URL}/api/youscale/v1/client/login`;

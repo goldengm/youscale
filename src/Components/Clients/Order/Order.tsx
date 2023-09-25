@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
-import { Table } from '../../Table/Order'
+import { Table } from '../../TableOrder'
 import { ClientOrderApi, useGetClientOrderQuery, useGetSheetOrderQuery } from '../../../services/api/ClientApi/ClientOrderApi'
 import { Cient, OrderQueryModel } from '../../../models'
 import { useDispatch } from 'react-redux'
@@ -177,7 +177,6 @@ export default function Order({ client }: Props): JSX.Element {
             refetch={RefetchOrderClient}
             OrderQueryData={OrderQueryData}
             setOrderQueryData={setOrderQueryData}
-            isLoading={isLoading}
           />
         </div>
       </div>

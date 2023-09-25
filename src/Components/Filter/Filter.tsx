@@ -16,7 +16,7 @@ const DEFAULT_VALUE: dataType[] = [
 interface Props {
   Icons: IconType
   label: string
-  data: dataType[]
+  data?: dataType[]
   onChange: ({ label, value }: dataType) => void
 }
 export const Filter = ({ Icons ,label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
