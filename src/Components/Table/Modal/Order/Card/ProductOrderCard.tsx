@@ -1,11 +1,12 @@
 import React from 'react'
 import { MultiSelectElement } from '../../../../Input'
+import styles from './product.module.css'
 
 interface Props {
     title: string,
     index: number,
-    setSelectedProduct: 
-    
+    setSelectedProduct:
+
     React.Dispatch<React.SetStateAction<{
         label: string;
         value: number | undefined | string;
@@ -65,28 +66,30 @@ export default function ProductOrderCard({ title, index, setSelectedProduct, sel
     }
 
     return (
-        <div>
-            <div className="card">
-                <div className="card-header border-0 pb-0">
-                    <h5 className="card-title">{title}</h5>
-                </div>
-                <div className="card-body">
-                    <p className="card-text">
-                        <div className="input-group mb-3  input-success">
-                            <span className="input-group-text">Quantity</span>
-                            <input
-                                min={1}
-                                onChange={handleChangeQuantity}
-                                defaultValue={dt.quantity || 1}
-                                type="number"
-                                className="form-control"
-                            />
-                        </div>
-                        <MultiSelectElement options={dt.variant ? FormatVariantOption(dt.allVariant) : []} selected={FormatVariantOption(dt.variant)} onChange={handleChangeVariant} />
-                    </p>
-                </div>
+        <div className={styles.productContainer}>
+            <h5 className={styles.title}>{title}</h5>
+            <div>
+                <p>
+                    <div className={styles.quantity}>
+                        <span>Quantité</span>
+                        <input
+                            min={1}
+                            onChange={handleChangeQuantity}
+                            defaultValue={dt.quantity || 1}
+                            type="number"
+                        />
+                    </div>
+                    <div className={styles.variant}>
+                        <span>Variant</span>
+                        <MultiSelectElement
+                            style={'confirmation'}
+                            options={dt.variant ? FormatVariantOption(dt.allVariant) : []}
+                            selected={FormatVariantOption(dt.variant)}
+                            onChange={handleChangeVariant}
+                        />
+                    </div>
+                </p>
             </div>
         </div>
-
     )
 }
