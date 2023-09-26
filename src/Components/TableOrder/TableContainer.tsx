@@ -1,4 +1,5 @@
 import style from './table.module.css'
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 function truncateString(str: string, maxLength: number) {
     if (str.length > maxLength) {
@@ -12,14 +13,30 @@ interface Props {
     column: string[]
     handleCheckAll: () => void
     children: JSX.Element | JSX.Element[]
+    dataLength: number
+    fetchData: () => Promise<void>
 }
-export default function TableContainer({ column, handleCheckAll, children }: Props) {
+export default function TableContainer({ column, handleCheckAll, children, dataLength, fetchData }: Props) {
     return (
-        <div className={style.tableContainer}>
-            <table className={style.table}>
-                <Column column={column} handleCheckAll={handleCheckAll} />
-                {children}
-            </table>
+        <div>
+            <InfiniteScroll
+                className={style.tableContainer}
+                dataLength={dataLength}
+                next={fetchData}
+                hasMore={true} // Replace with a condition based on your data source
+                loader={<h4>Loading...</h4>}
+                height={450}
+                endMessage={
+                  <p style={{ textAlign: "center" }}>
+                    <b>Yay! You have seen it all</b>
+                  </p>
+                }
+            >
+                <table className={style.table}>
+                    <Column column={column} handleCheckAll={handleCheckAll} />
+                    {children}
+                </table>
+            </InfiniteScroll>
         </div>
     )
 }

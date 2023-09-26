@@ -130,7 +130,12 @@ export const Table = ({ data, OrderQueryData, setStatus, setOrderQueryData, refe
         setStatus={setStatus}
       />
 
-      <TableContainer column={GetColumn(ColumnData?.data)} handleCheckAll={handleCheckAll}>
+      <TableContainer
+        column={GetColumn(ColumnData?.data)}
+        handleCheckAll={handleCheckAll}
+        dataLength={data?.data.length || 0}
+        fetchData={fetchData}
+      >
         {
           data ? data?.data.map((dt, index) => <Row
             handleCheckRow={handleCheckRow}

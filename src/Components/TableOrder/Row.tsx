@@ -352,8 +352,8 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Date') return <td>{row['Date']}</td>
 
-                        return <td onClick={() => onEdit()}>
-                            {row[formatDtName]}
+                        return <td className={style.defaultRow} onClick={() => onEdit()}>
+                            <p> {row[formatDtName]}</p>
                             <CiEdit color={'black'} size={18} />
                         </td>
                     }
