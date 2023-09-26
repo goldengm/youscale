@@ -213,3 +213,10 @@ td {
     border-radius: 5px;
     background: #FFF;
 }
+
+.defaultRow p {
+    margin: 0;
+    padding: 0;
+    width: 60px;
+    overflow-wrap: anywhere;
+}
