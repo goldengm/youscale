@@ -4,12 +4,12 @@ import { MultiSelectElement } from '../../../Input'
 import ModalWrapper from '../ModalWrapper'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
 import { VariantModel, ErrorModel } from '../../../../models';
 import { useAddVariantMutation, useGetVariantQuery } from '../../../../services/api/ClientApi/ClientVariantApi';
 import { useAddProductMutation } from '../../../../services/api/ClientApi/ClientProductApi';
 import { showToastError } from '../../../../services/toast/showToastError';
 import { showToastSucces } from '../../../../services/toast/showToastSucces';
+import * as yup from "yup";
 import './product.style.css'
 
 type Inputs = {
@@ -88,10 +88,9 @@ interface FormBodyProps {
     handleCloseModal: () => any
 }
 const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) => {
-    const [selected, setSelected] = useState<[]>([]);
+    const [selected, setSelected] = useState<string[]>([]);
 
     const [addProd] = useAddProductMutation()
-    const { data: variantData, refetch: refetchVariant } = useGetVariantQuery()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(schema),
@@ -100,7 +99,7 @@ const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) =>
     const onSubmit = (values: Inputs) => {
         const data = {
             ...values,
-            variant: clearVariant(selected),
+            variant: selected
         }
 
         addProd(data).unwrap()
@@ -135,15 +134,8 @@ const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) =>
                             placeholder={'12.55'}
                         />
                     </div>
-                    <AddVariant refetchVariant={refetchVariant} />
-                    <div className="row">
-                        <MultiSelectElement
-                            options={FormatVariant(variantData?.data)}
-                            selected={selected}
-                            onChange={setSelected}
-                        />
-                    </div>
-
+                    <AddVariant setSelected={setSelected} />
+                  
                     <button type="submit" className="btn btn-primary add-btn">
                         Ajouter
                     </button>
@@ -154,11 +146,10 @@ const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) =>
 }
 
 interface AddVariantProps {
-    refetchVariant: () => any
+    setSelected: React.Dispatch<React.SetStateAction<string[]>>
 }
-const AddVariant = ({ refetchVariant }: AddVariantProps): JSX.Element => {
+const AddVariant = ({ setSelected }: AddVariantProps): JSX.Element => {
 
-    const [addVariant] = useAddVariantMutation()
     const [variant, setVariant] = useState<string>('')
 
     const handleChangeVariant = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,22 +159,8 @@ const AddVariant = ({ refetchVariant }: AddVariantProps): JSX.Element => {
 
     const handleAddVariant = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-
-        if (variant === '') return
-        addVariant({ name: variant }).unwrap()
-            .then((res: any) => {
-                showToastSucces('Variant ajouté')
-                refetchVariant()
-                setVariant('')
-            })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
-                if (err.data) {
-                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                    else if ('message' in err.data) showToastError(err.data.message);
-                }
-            })
-
-    } // err.data.message
+        setSelected((prev) => [...prev, variant])
+    }
 
     return (
         <div className="row variant-row">
