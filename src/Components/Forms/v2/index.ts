@@ -4,6 +4,7 @@ import CustumTextArea from "./CustumTextArea";
 import CustumSelectForm from "./CustumSelectForm";
 import CustumAuthInput from "./CustumAuthInput";
 import CityDropDown from "./CityDropDown";
+import SwitchForm from "./SwitchForm";
 
 export { 
     CustumSelect,
@@ -11,5 +12,6 @@ export {
     CustumTextArea,
     CustumSelectForm,
     CustumAuthInput,
-    CityDropDown
+    CityDropDown,
+    SwitchForm
  };

@@ -38,7 +38,7 @@ export default function CustumInput({ label, placeholder, type, defaultValue = '
                 
             </div>
             {children}
-            {error && <p className='error'>{error.message}</p>}
+            {error && <p className={styles.error}>{error.message}</p>}
         </div>
     )
 }

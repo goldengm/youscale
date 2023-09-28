@@ -5,10 +5,12 @@ import BottomTable from './BottomTable'
 import style from './table.module.css'
 import { ConfirmationModal } from '../Modal'
 import { ColumnModel, GetClientOrderModel, OrderQueryModel, ProductOrder } from '../../models'
+import AddOrderModal from '../Modal/order/AddOrderModal'
+import EditOrderModal from '../Modal/order/EditOrderModal'
 import { useGetStatusQuery } from '../../services/api/ClientApi/ClientStatusApi'
 import { useEffect, useState } from 'react'
 import { useGetColumnQuery } from '../../services/api/ClientApi/ClientColumnApi'
-import { AddOrderModal, AddProductOrderModal, DeleteOrderModal, EditOrderModal } from '../Table/Modal/Order'
+import { AddProductOrderModal, DeleteOrderModal } from '../Table/Modal/Order'
 
 type Order = {
   code: Number;
@@ -112,9 +114,9 @@ export const Table = ({ data, OrderQueryData, setStatus, setOrderQueryData, refe
     <div className={style.tableWrapper}>
 
       {showDeleteModal && <DeleteOrderModal refetch={refetch} showModal={showDeleteModal} setShowModal={setShowDeleteModal} id_orders={id_orders} />}
-      {showOrderModal && <AddOrderModal driverObj={driverObj} refetch={refetch} showModal={showOrderModal} setShowModal={setShowOrderModal} />}
+      {showOrderModal && <AddOrderModal driverObj={driverObj} refetch={refetch}  setIsVisible={setShowOrderModal} />}
       {showConfirmationModal && <ConfirmationModal driverObj={driverObj} statusConfirmation={statusConfirmation} refetch={refetch} setStatus={setStatusConfirmation} id_orders={orders_id ?? []} isOpen={showConfirmationModal} setIsVisible={setShowConfirmationModal} />}
-      {showEditModal && <EditOrderModal showModal={showEditModal} setShowModal={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={String(order?.id)} />}
+      {showEditModal && <EditOrderModal setIsVisible={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={String(order?.id)} driverObj={driverObj} />}
       {showProductOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showProductOrderModal} setShowModal={setShowProductOrderModal} />}
 
       <HeaderTable

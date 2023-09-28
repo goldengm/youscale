@@ -1,7 +1,10 @@
-.container{
+.container {
     display: flex;
-    align-items: center;
-    flex-direction: row;
+    flex-direction: column;
+}
+
+.error{
+    color: red;
 }
 
 .form {
@@ -39,9 +42,21 @@
 }
 
 .select {
+    margin-right: 10px;
     width: 205px;
     height: 35px;
     border-radius: 10px;
     border: 1px solid rgba(17, 17, 17, 0.30);
     background: #FFF;
+    padding-left: 15px;
+}
+
+.city_dropdown {
+    margin-right: 10px;
+    width: 205px !important;
+    height: 35px;
+    border-radius: 10px;
+    border: 1px solid rgba(17, 17, 17, 0.30);
+    background: #FFF;
+    padding-left: 15px;
 }

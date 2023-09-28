@@ -3,6 +3,7 @@ import ProductRow from './ProductRow'
 import TableWrapper from './TableWrapper'
 import { useGetProductQuery } from '../../../services/api/ClientApi/ClientProductApi'
 import { GetProductModel } from '../../../models'
+import styles from './product.module.css'
 
 interface Props {
     driverObj: {
@@ -16,7 +17,7 @@ export default function ProductTable({ driverObj }:Props): JSX.Element {
     const [showEditProductModal, setShowEditProductModal] = useState<boolean>(false)
     const [showDeleteProductModal, setShowDeleteProductModal] = useState<boolean>(false)
 
-    const { data, isSuccess, refetch } = useGetProductQuery({ isHidden: showHidden })
+    const { data, isFetching, refetch } = useGetProductQuery({ isHidden: showHidden })
     const [item, setItem] = useState<GetProductModel>()
 
     useEffect(() => {
@@ -27,7 +28,7 @@ export default function ProductTable({ driverObj }:Props): JSX.Element {
         <TableWrapper
             item={item}
             title='Product'
-            column={['Nom', 'Prix']}
+            column={['Nom', 'Variant', 'Prix d\'achat', 'Action']}
             refetch={refetch}
             AddBtn={<AddProductBtn setShowModal={setShowAddProductModal} driverObj={driverObj} />}
             driverObj={driverObj}
@@ -39,7 +40,7 @@ export default function ProductTable({ driverObj }:Props): JSX.Element {
             setShowEditProductModal={setShowEditProductModal}
             setShowDeleteProductModal={setShowDeleteProductModal}
         >
-            {isSuccess && data.data.map((dt, key) => !dt.isDeleted && <ProductRow data={dt} key={key} refetch={refetch} setShowDeleteModal={setShowDeleteProductModal} setShowEditModal={setShowEditProductModal} setItem={setItem} />)}
+            {data?.data.map((dt, key) => !dt.isDeleted && <ProductRow isFetching={isFetching} data={dt} key={key} refetch={refetch} setShowDeleteModal={setShowDeleteProductModal} setShowEditModal={setShowEditProductModal} setItem={setItem} />)}
         </TableWrapper>
     )
 }
@@ -53,7 +54,7 @@ interface AddProductBtnProps {
 }
 const AddProductBtn = ({ setShowModal, driverObj }: AddProductBtnProps): JSX.Element => {
 
-    const handleShowProductModal=(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>)=>{
+    const handleShowProductModal=(e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
         e.preventDefault()
         
         setShowModal(true)
@@ -63,11 +64,13 @@ const AddProductBtn = ({ setShowModal, driverObj }: AddProductBtnProps): JSX.Ele
     }
 
     return (
-        <a
+        <button
             onClick={handleShowProductModal}
             type="button"
-            className="btn btn-primary mb-2 add-product"
-        >Add product
-        </a>
+            className={styles.AddBtn}
+        >
+            <img src="/svg/product/plus.svg" alt="plus" />
+            <p>Ajouter un produit</p>
+        </button>
     )
 }

@@ -10,23 +10,25 @@ interface Props {
     register: UseFormRegister<any>,
     className?: string,
     error: FieldError | undefined,
-    data: {label: string, value: string | number}[],
-    defaultSelected? : string | number | null,
-    Onchange?: (e: React.ChangeEvent<HTMLSelectElement>)=> any
+    data: { label: string, value: string | number }[],
+    defaultSelected?: string | number | null,
+    Onchange?: (e: React.ChangeEvent<HTMLSelectElement>) => any
 }
-export default function CustumSelectForm({ label, name, register, error, data, Onchange, defaultSelected='', className }: Props): JSX.Element {
+export default function CustumSelectForm({ label, name, register, error, data, Onchange, defaultSelected = '', className }: Props): JSX.Element {
     return (
-        <div className={styles.formSelect}>
-            <label className={styles.label}>{label}</label>
-            <select
-                {...register(name)}
-                onChange={Onchange}
-                name={name}
-                className={styles.select}
-            >
-                { data.map((dt) => <option selected={String(defaultSelected) === String(dt.value)} value={dt.value}>{dt.label}</option> )}
-            </select>
-            { error && <p className='error'>{error.message}</p> }
+        <div className={styles.container}>
+            <div className={styles.form}>
+                <label className={styles.label}>{label}</label>
+                <select
+                    {...register(name)}
+                    onChange={Onchange}
+                    name={name}
+                    className={styles.select}
+                >
+                    {data.map((dt) => <option selected={String(defaultSelected) === String(dt.value)} value={dt.value}>{dt.label}</option>)}
+                </select>
+            </div>
+            {error && <p className='error'>{error.message}</p>}
         </div>
     )
 }
