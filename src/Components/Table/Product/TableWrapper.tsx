@@ -1,6 +1,8 @@
 import React from 'react'
-import { AddProductModal, DeleteProductModal, EditProductModal } from '../Modal/Product'
+import AddProductModal from '../../Modal/Product/AddProductModal'
+import EditProductModal from '../../Modal/Product/EditProductModal'
 import { GetProductModel } from '../../../models'
+import styles from './product.module.css'
 
 interface Props {
     title: string,
@@ -25,13 +27,12 @@ export default function TableWrapper({ children, title, column, item, AddBtn, se
     const never = (): any => { }
     return (
         <div className="col-lg-12 product-table">
-            {showAddProductModal ? <AddProductModal refetch={refetch ?? never()} driverObj={driverObj} showModal={showAddProductModal} setShowModal={setShowAddProductModal ?? never()} /> : <></>}
-            {showEditProductModal ? <EditProductModal refetch={refetch ?? never()} showModal={showEditProductModal} setShowModal={setShowEditProductModal ?? never()} item={item} /> : <></>}
-            {showDeleteProductModal ? <DeleteProductModal refetch={refetch ?? never()} showModal={showDeleteProductModal} setShowModal={setShowDeleteProductModal ?? never()} item={item} /> : <></>}
+            {showAddProductModal ? <AddProductModal refetch={refetch ?? never()} driverObj={driverObj} setIsVisible={setShowAddProductModal ?? never()} /> : <></>}
+            {showEditProductModal ? <EditProductModal refetch={refetch ?? never()} setIsVisible={setShowEditProductModal ?? never()} item={item} /> : <></>}
 
             <div className="card">
                 <div className="card-header">
-                    <h4 className="card-title">{title}</h4>
+                    <h4 className={styles.title}>{title}</h4>
                     {
                         setShowHidden &&
                         <div className="card-tabs mt-3 mt-sm-0">
@@ -60,10 +61,9 @@ export default function TableWrapper({ children, title, column, item, AddBtn, se
                 </div>
                 <div className="card-body">
                     <div className="table-responsive">
-                        <table className="table table-responsive-sm">
+                        <table className={styles.table}>
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     {column.map((col: string, key: number) => <th key={key}>{col}</th>)}
                                     <th></th>
                                 </tr>

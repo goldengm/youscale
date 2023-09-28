@@ -10,7 +10,6 @@ import { showToastError } from '../../../services/toast/showToastError';
 import { CustumDropdown, MultiSelectElement } from '../../Input/v2';
 import { ProductOrderCard } from '../../Table/Modal/Order/Card';
 import { useForm } from 'react-hook-form';
-import * as yup from "yup";
 import { useGetSettingQuery } from '../../../services/api/ClientApi/ClientSettingApi';
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,6 +18,7 @@ import { IoLogoWhatsapp } from 'react-icons/io';
 import { IoCallOutline } from 'react-icons/io5';
 import { TbPointFilled } from 'react-icons/tb';
 import { Spinner4Bar } from '../../Loader';
+import * as yup from "yup";
 
 type dataType = {
     label: string;

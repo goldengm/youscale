@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Select from 'react-dropdown-select';
 import { FieldError } from 'react-hook-form/dist/types/errors'
 import { UseFormSetValue } from 'react-hook-form';
-import { string } from 'yup';
+import styles from './form.module.css'
 
 type Inputs = {
     nom: string,
@@ -17,7 +17,7 @@ type Inputs = {
     updownsell: string,
     changer: string,
     ouvrir: string
-  };
+};
 
 interface Props {
     label: string,
@@ -39,16 +39,22 @@ export default function CityDropDown({ label, error, data, setValue }: Props): J
     }
 
     return (
-        <div className="mb-3 col-md-4 lg-input-cus">
-            <label className="form-label">{label}</label>
-            <Select
-                labelField="label"
-                valueField="value"
-                values={input}
-                options={data}
-                onChange={handleChange}
-            />
-            {error && <p className='error'>{error.message}</p>}
+        <div className={styles.container}>
+            <div className={styles.form}>
+                <label className={styles.label}>{label}</label>
+                <div>
+                    <Select
+                    className={styles.city_dropdown}
+                        labelField="label"
+                        valueField="value"
+                        values={input}
+                        options={data}
+                        onChange={handleChange}
+                    />
+                </div>
+
+            </div>
+            {error && <p className={styles.error}>{error.message}</p>}
         </div>
     )
 }

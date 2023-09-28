@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import StockRow from './StockRow'
 import TableWrapper from './TableWrapper'
-import { AddStockModal, EditStockModal, DeleteStockModal } from '../Modal/Product'
+import AddSotckModal from '../../Modal/Product/AddSotckModal'
+import EditSotckModal from '../../Modal/Product/EditSotckModal'
+import { DeleteStockModal } from '../Modal/Product'
 import { useGetStockQuery } from '../../../services/api/ClientApi/ClientStockApi'
 import { GetStockModel } from '../../../models'
+import styles from './product.module.css'
 
 interface Props {
     driverObj: {
@@ -19,9 +22,9 @@ export default function StockTable({ driverObj }:Props): JSX.Element {
     const { data, refetch } = useGetStockQuery()
 
     return (
-        <TableWrapper title='Stock' column={['Produit', 'Quantite']} driverObj={driverObj} AddBtn={<AddStockBtn setShowModal={setShowAddStockModal} driverObj={driverObj} />}>
-            { showAddStockModal ? <AddStockModal showModal={showAddStockModal} setShowModal={setShowAddStockModal} refetch={refetch} driverObj={driverObj} /> : <></> }
-            { showEditStockModal ? <EditStockModal showModal={showEditStockModal} item={item} setShowModal={setShowEditStockModal} refetch={refetch}  /> : <></> }
+        <TableWrapper title='Stock' column={['Produit', 'Quantite', 'Action']} driverObj={driverObj} AddBtn={<AddStockBtn setShowModal={setShowAddStockModal} driverObj={driverObj} />}>
+            { showAddStockModal ? <AddSotckModal setIsVisible={setShowAddStockModal} refetch={refetch} driverObj={driverObj} /> : <></> }
+            { showEditStockModal ? <EditSotckModal item={item} setIsVisible={setShowEditStockModal} refetch={refetch}  /> : <></> }
             { showDeleteStockModal ? <DeleteStockModal showModal={showDeleteStockModal} item={item} setShowModal={setShowDeleteStockModal} refetch={refetch}  /> : <></> }
 
             { data?.data.map((dt, index)=> <StockRow 
@@ -44,7 +47,7 @@ interface AddStockBtnProps {
 }
 const AddStockBtn = ( { setShowModal, driverObj }: AddStockBtnProps ): JSX.Element => {
    
-    const handleShowProductModal=(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>)=>{
+    const handleShowProductModal=(e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
         e.preventDefault()
         
         setShowModal(true)
@@ -54,11 +57,13 @@ const AddStockBtn = ( { setShowModal, driverObj }: AddStockBtnProps ): JSX.Eleme
     }
 
     return (
-        <a 
+        <button
             onClick={handleShowProductModal}
-            type="button" 
-            className="btn btn-primary mb-2 add-stock" 
-            >ajout de stock
-        </a>
+            type="button"
+            className={styles.AddBtn}
+        >
+            <img src="/svg/product/plus.svg" alt="plus" />
+            <p>Ajouter un stock</p>
+        </button>
     )
 }
