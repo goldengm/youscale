@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
 import { AddLinkSheetModal, ShippingModal } from '../../Table/Modal/Setting'
+import IntegrateSheetModal from '../../Modal/setting/IntegrateSheetModal'
+import IntegrateShippingModal from '../../Modal/setting/IntegrateShippingModal'
+import IntegrateWhatsappModal from '../../Modal/setting/IntegrateWhatsappModal'
+import styles from './setting.module.css'
 
-interface Props{
+interface Props {
     driverObj: {
         moveNext: () => void
     }
 }
-export default function API({ driverObj }:Props): JSX.Element {
+export default function API({ driverObj }: Props): JSX.Element {
 
     const [showAddLinkSheetModal, setShowAddLinkSheetModal] = useState<boolean>(false)
     const [showShippingModal, setShowShippingModal] = useState<boolean>(false)
+    const [showWhatsappModal, setShowWhatsappModal] = useState<boolean>(true)
 
     const handleShowSheetModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
@@ -27,16 +32,23 @@ export default function API({ driverObj }:Props): JSX.Element {
         }, 1000);
     }
 
+    const handleShowWhatsappModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
+        setShowWhatsappModal(true)
+    }
+
     return (
         <div className="row">
-            {showAddLinkSheetModal && <AddLinkSheetModal showModal={showAddLinkSheetModal} driverObj={driverObj} setShowModal={setShowAddLinkSheetModal} />}
-            {showShippingModal && <ShippingModal showModal={showShippingModal} driverObj={driverObj} setShowModal={setShowShippingModal} />}
+            {showAddLinkSheetModal && <IntegrateSheetModal driverObj={driverObj} setIsVisible={setShowAddLinkSheetModal} />}
+            {showShippingModal && <IntegrateShippingModal driverObj={driverObj} setIsVisible={setShowShippingModal} />}
+            {showWhatsappModal && <IntegrateWhatsappModal driverObj={driverObj} setIsVisible={setShowWhatsappModal} />}
 
             <h3 className="mt-4 mb-3">API</h3>
             <div className="row">
-                <APICard img={'/cus_img/goo_sheet.png'} title={'Google Sheets'} onClick={handleShowSheetModal} />
-                <APICard img={'/cus_img/shopify.png'} title={'Shopify'} />
-                <APICard title={'Shipping Companies'} onClick={handleShowShippingModal} />
+                <APICard img={'/svg/setting/sheets.png'} title={'Google Sheets'} onClick={handleShowSheetModal} />
+                <APICard img={'/svg/setting/shopify.png'} title={'Shopify'} />
+                <APICard img={'/svg/setting/shipping.svg'} title={'Sociétés de livraison'} onClick={handleShowShippingModal} />
+                <APICard img={'/svg/setting/whatsapp.svg'} title={'Whatsapp'} onClick={handleShowWhatsappModal} />
             </div>
         </div>
     )
@@ -44,31 +56,21 @@ export default function API({ driverObj }:Props): JSX.Element {
 
 interface APICardProps {
     title: string,
-    img?: string,
+    img: string,
     onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => any
 }
 const APICard = ({ title, img, onClick }: APICardProps): JSX.Element => {
     return (
-        <div className="col-xl-3 col-xxl-3 col-sm-6 api_card">
-            <div className="card overflow-hidden">
-                <div className="social-graph-wrapper widget-facebook">
-                    {img && <img src={img} className='api-img' alt="api-img" />}
-                </div>
-                <div className="col-6 api-col">
-                    <div className="pt-3 pb-3 ps-0 pe-0 text-center">
-                        <h4 className="m-1">
-                            <span className="counter">{title}</span>
-                        </h4>
-                        <button
-                            onClick={onClick}
-                            type="button"
-                            className="btn btn-outline-primary btn-xs"
-                        >
-                            Integrate
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <div className={styles.apiCard}>
+            <img src={img} className={styles.apiLogo} alt="apiLogo" />
+            <p className={styles.apiTitle}>{title}</p>
+            <button
+                onClick={onClick}
+                type="button"
+                className={styles.apiBtn}
+            >
+                Intégrer
+            </button>
         </div>
     )
 }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { RiFileDownloadFill } from 'react-icons/ri'
-import { AddStatusModal, AddCityModal, EditCityModal, DeleteCityModal, EditPasswordModal } from '../../Table/Modal/Setting';
+import AddCityModal from '../../Modal/setting/AddCityModal';
+import EditCityModal from '../../Modal/setting/EditCityModal';
+import { AddStatusModal, DeleteCityModal, EditPasswordModal } from '../../Table/Modal/Setting';
 import { useGetStatusQuery, usePatchStatusMutation } from '../../../services/api/ClientApi/ClientStatusApi';
 import { CityModel, ColumnModel, ColumnPatchModel, ErrorModel, StatusModel } from '../../../models';
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api/ClientApi/ClientColumnApi';
@@ -11,11 +13,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
 import { showToastError } from '../../../services/toast/showToastError';
 import { showToastSucces } from '../../../services/toast/showToastSucces';
+import { Switch } from '../../Switch';
 import { RotatingLines } from 'react-loader-spinner'
 import { ColorPicker } from '../../Input';
 import * as yup from "yup";
 import axios from 'axios';
 import 'react-nestable/dist/styles/index.css';
+import styles from './setting.module.css'
 
 type Inputs = {
     default_conf_pricing: string,
@@ -45,12 +49,12 @@ const SplitActiveInnactive = (data: ColumnModel[] | undefined) => {
 
     return obj
 }
-interface Props{
+interface Props {
     driverObj: {
         moveNext: () => void
     }
 }
-export default function OrderSetting({ driverObj }:Props) {
+export default function OrderSetting({ driverObj }: Props) {
     const [showAddStatusModal, setShowAddStatusModal] = useState<boolean>(false)
     const [showAddCityModal, setShowAddCityModal] = useState<boolean>(false)
     const [showEditCityModal, setShowEditCityModal] = useState<boolean>(false)
@@ -71,8 +75,8 @@ export default function OrderSetting({ driverObj }:Props) {
         <div className="row">
             {showAddStatusModal && <AddStatusModal setShowModal={setShowAddStatusModal} showModal={showAddStatusModal} refetch={refetchStatus} />}
 
-            {showAddCityModal && <AddCityModal setShowModal={setShowAddCityModal} refetch={refetchData} showModal={showAddCityModal} driverObj={driverObj} />}
-            {showEditCityModal && <EditCityModal item={item} setShowModal={setShowEditCityModal} refetch={refetchData} showModal={showEditCityModal} />}
+            {showAddCityModal && <AddCityModal setIsVisible={setShowAddCityModal} refetch={refetchData} driverObj={driverObj} />}
+            {showEditCityModal && <EditCityModal item={item} setIsVisible={setShowEditCityModal} refetch={refetchData} />}
             {showDeleteCityModal && <DeleteCityModal id_city={item?.id ? String(item?.id) : ''} setShowModal={setShowDeleteCityModal} refetch={refetchData} showModal={showDeleteCityModal} />}
             {showEditPasswordModal && <EditPasswordModal setShowModal={setShowEditPasswordModal} showModal={showEditPasswordModal} />}
 
@@ -93,29 +97,32 @@ interface StatusProps {
 const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProps): JSX.Element => {
 
     return (
-        <div className="col-xl-6 col-lg-6">
-            <div className="card status_card">
-                <div className="card-header">
-                    <h4 className="card-title">Status</h4>
-                </div>
-                <div className="card-body">
-                    <div className="row">
-                        {statusData && statusData.map(dt => <StatusCheckbox dt={dt} refetch={refetchStatus} />)}
-                    </div>
-                </div>
+        <div className={styles.statusContainer}>
+            <p className={styles.statusTitle}>Status</p>
+            <div className="row">
+                {statusData && statusData.map(dt => <StatusRow dt={dt} refetch={refetchStatus} />)}
+            </div>
+
+            <div className={styles.saveStatusBottom}>
+                <button
+                    type="button"
+                    className={styles.apiBtn}
+                >
+                    Enregistrer
+                </button>
             </div>
         </div>
     )
 }
 
-interface StatusCheckboxProps {
+interface StatusRowProps {
     dt: StatusModel,
     refetch: () => any
 }
-const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
+const StatusRow = ({ dt, refetch }: StatusRowProps): JSX.Element => {
     const [patchStatus] = usePatchStatusMutation()
 
-    const handleStatusCheckbox = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    const handleStatusCheckbox = () => {
 
         const data = { id: dt.id ?? 0, checked: !dt.checked }
 
@@ -152,20 +159,15 @@ const StatusCheckbox = ({ dt, refetch }: StatusCheckboxProps): JSX.Element => {
     }
 
     return (
-        <div className="col-xl-4 col-xxl-6 col-6 status-lst">
-            <div className="form-check custom-checkbox mb-3">
-                <input
-                    onClick={handleStatusCheckbox}
-                    defaultChecked={dt.checked}
-                    type="checkbox"
-                    className="form-check-input"
-                    id="customCheckBox1"
-                />
-                <label className="form-check-label" htmlFor="customCheckBox1">
-                    {dt.name}
-                </label>
-            </div>
+        <div className={styles.StatusRow}>
+            <p className={styles.StatusRowTxt}>{dt.name}</p>
             <ColorPicker color={dt.color} handleChangeColor={handleChangeColor} />
+
+            <Switch
+                active={dt.checked}
+                SwitchHideProduct={handleStatusCheckbox}
+                size={{ width: '43.727px', height: '25.227px' }}
+            />
         </div>
     )
 }
@@ -240,25 +242,20 @@ const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Elemen
     })
 
     return (
-        <div className="col-12 column_card">
-            <div className="card">
-                <div className="card-header">
-                    <h4 className="card-title">Column</h4>
-                </div>
-                <div className="card-body">
-                    <div className="row">
-                        <Column data={objData.active} className={'active-column'} title='Active columns' />
-                        <Column data={objData.innactive} className={'inactive-column'} title='Inactive columns' />
-                    </div>
-                </div>
+        <div className={styles.columnContainer}>
+            <p className={styles.columnTitle}>Colonnes de commandes</p>
+            <div className="row">
+                <Column data={objData.active} className={'active-column'} title='Colonnes actives' />
+                <Column data={objData.innactive} className={'inactive-column'} title='Colonnes inactives' />
             </div>
+            <p className={styles.columnWarning}>* : Toutes cases ayant ce symbole ne peuvent pas être inactives </p>
         </div>
     )
 }
 
 interface ColumnProps {
-    title: string,
-    className: string,
+    title: string
+    className: 'active-column' | 'inactive-column'
     data: ColumnModel[] | undefined
 }
 const Column = ({ title, className, data }: ColumnProps): JSX.Element => {
@@ -267,11 +264,11 @@ const Column = ({ title, className, data }: ColumnProps): JSX.Element => {
             <div className="card-content">
                 <div className="nestable">
                     <div className="dd" id="nestable">
-                        <h3 style={{ textAlign: 'center'}}>{title}</h3>
-                        <ol className={`dd-list ${className}`}>
+                        <h3 className={`${styles.nestableTitle} ${className == "active-column" ? styles.activeTitle : styles.inactiveTitle} `}>{title}</h3>
+                        <ol className={`${styles.nestableContainer} ${className}`}>
                             {
                                 data?.map((dt, index) =>
-                                    <li id={`${dt.id}`} key={index} draggable={true} className="dd-item col-order" data-id={index}>
+                                    <li id={`${dt.id}`} key={index} draggable={true} className={`${styles.nestableItems} col-order`} data-id={index}>
                                         <div className="dd-handle">{dt.alias ?? dt.name}</div>
                                     </li>
                                 )
@@ -295,100 +292,12 @@ interface CityProps {
         moveNext: () => void
     }
 }
-const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModal, setItem, data, refetch, driverObj }: CityProps): JSX.Element => {
-
-    const handleShowCityModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
-        e.preventDefault()
-
-        setShowAddCityModal(true)
-        setTimeout(() => {
-            driverObj.moveNext()
-        }, 1000);
-    }
-
-    return (
-        <div className="col-12">
-            <div className="card">
-                <div className="card-header">
-                    <h4 className="card-title">City</h4>
-
-                    <a
-                        onClick={handleShowCityModal}
-                        type="button"
-                        className="btn btn-primary mb-2 add-city-btn"
-                    >
-                        Add city
-                    </a>
-                </div>
-                <div className="card-body">
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="card-body">
-                                <div className="table-responsive">
-                                    <table className="table table-responsive-sm">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Nom</th>
-                                                <th>Prix</th>
-                                                <th />
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {data && data.map((dt, index) => !dt.isFromSheet && <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />)}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div className="col-md-6">
-                            <DragAndDropFile refetch={refetch} />
-                            <a href='/load/model.csv' className="btn btn-outline-primary btn-xs export-btn copy-model-btn">Copier le model</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
 
 interface CityRowProps {
     setShowEditCityModal: React.Dispatch<React.SetStateAction<boolean>>,
     setItem: React.Dispatch<React.SetStateAction<CityModel | undefined>>,
     setShowDeleteCityModal: React.Dispatch<React.SetStateAction<boolean>>,
     item: CityModel
-}
-const CityRow = ({ setShowEditCityModal, setShowDeleteCityModal, setItem, item }: CityRowProps): JSX.Element => {
-
-    const handleEdit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        setItem(item)
-        setShowEditCityModal(true)
-    }
-
-    const handleDelete = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        setItem(item)
-        setShowDeleteCityModal(true)
-    }
-
-    return (
-        <tr>
-            <th>{item.id}</th>
-            <td>{item.name}</td>
-            <td>{item.price} dhs</td>
-            <td>
-                <div className="d-flex">
-                    <a onClick={handleEdit} href="#" className="btn btn-primary shadow btn-xs sharp me-1">
-                        <i className="fas fa-pencil-alt" />
-                    </a>
-                    <a onClick={handleDelete} href="#" className="btn btn-danger shadow btn-xs sharp">
-                        <i className="fa fa-trash" />
-                    </a>
-                </div>
-            </td>
-        </tr>
-    )
 }
 
 interface DragAndDropFileProps {
@@ -489,9 +398,9 @@ function DragAndDropFile({ refetch }: DragAndDropFileProps) {
                     </>
                 ) : (
                     <>
-                        <RiFileDownloadFill size={50} color='gray' />
+                        <img src="/svg/setting/upload.svg" alt="upload" />
                         <label htmlFor="payment_image" className='drag-txt'>Glissez et deposez un fichier excel</label>
-                        <input type="file" id="payment_image" onChange={handleFileSelect} name="payment_image" accept="text/csv" />
+                        <input type="file" id="payment_image" onChange={handleFileSelect} className={styles.importFileBtn} name="payment_image" accept="text/csv" />
                     </>
                 )}
                 {file && <p className='drag-txt'> : {file.name}</p>}
@@ -635,5 +544,101 @@ const ConfSetting = ({ setShowEditPasswordModal }: ConfSettingProps): JSX.Elemen
                 </div>
             </div>
         </div>
+    )
+}
+
+const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModal, setItem, data, refetch, driverObj }: CityProps): JSX.Element => {
+
+    const handleShowCityModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault()
+
+        setShowAddCityModal(true)
+        setTimeout(() => {
+            driverObj.moveNext()
+        }, 1000);
+    }
+
+    return (
+        <div className={styles.cityContainer}>
+            <div className={styles.cityHeader}>
+                <p className={styles.cityHeaderTitle}>Villes</p>
+                <div className={styles.citySearchContainer}>
+                    <img src="/svg/setting/search.svg" alt="search" />
+                    <input type="text" placeholder='Recherche' />
+                </div>
+            </div>
+
+            <div className={styles.mainCity}>
+                <div className={styles.leftCity}>
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th>Ville</th>
+                                <th>Prix</th>
+                                <th>Société de livraison</th>
+                                <th />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data && data.map((dt, index) => !dt.isFromSheet && <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />)}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className={styles.rightCity}>
+                    <a
+                        onClick={handleShowCityModal}
+                        type="button"
+                        className={styles.addCityBtn}
+                    >
+                        <img src="/svg/setting/add.svg" alt="add" />
+                        Ajouter une ville
+                    </a>
+
+                    <p className={styles.cityDesc}>
+                        Si vous voulez ajouter plusieurs villes en vrac, téléchargez le modèle, et déposez le en appuyant sur le bouton ci-dessous.
+                    </p>
+
+                    <a href='/load/model.csv' className={styles.downloadModelBtn}>
+                        <img src="/svg/setting/download.svg" alt="download" />
+                        Copier le model
+                    </a>
+
+                    <DragAndDropFile refetch={refetch} />
+                </div>
+
+            </div>
+        </div>
+    )
+}
+
+const CityRow = ({ setShowEditCityModal, setShowDeleteCityModal, setItem, item }: CityRowProps): JSX.Element => {
+
+    const handleEdit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        setItem(item)
+        setShowEditCityModal(true)
+    }
+
+    const handleDelete = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        setItem(item)
+        setShowDeleteCityModal(true)
+    }
+
+    return (
+        <tr>
+            <td>{item.name}</td>
+            <td>{item.price}dhs</td>
+            <td>{item.id_shipping}</td>
+            <td>
+                <div className="d-flex">
+                    <a onClick={handleEdit} href="#">
+                        <img src="/svg/setting/edit.svg" alt="edit" />
+                    </a>
+                    <a onClick={handleDelete} href="#">
+                        <img src="/svg/setting/delete.svg" alt="delete" />
+                    </a>
+                </div>
+            </td>
+        </tr>
     )
 }
