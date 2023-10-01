@@ -7,7 +7,6 @@ interface Props{
 }
 export default function PreviewImagesModal({ attachement, setShowImage, showImage }: Props) {
 
-    console.log(showImage)
     const onClose =(e: React.MouseEvent<HTMLSpanElement, MouseEvent>)=>{
         e.preventDefault()
         setShowImage(false)

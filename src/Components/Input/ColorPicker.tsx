@@ -22,7 +22,7 @@ export default function ColorPicker({ color, handleChangeColor }: ColorPickerPro
     return (
         <div className='color-cont'>
             <input type="color" className='mg-color' onChange={onChange} value={c} />
-            <a onClick={onSave} className='badge badge-circle badge-outline-dark' href="#">save color</a>
+            {/* <a onClick={onSave} className='badge badge-circle badge-outline-dark' href="#">save color</a> */}
         </div>
     )
 }
