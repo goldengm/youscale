@@ -7,9 +7,9 @@ import { showToastError } from '../../../../services/toast/showToastError';
 import { ErrorModel, GetSheetIntegrationModel } from '../../../../models';
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../../services/api/ClientApi/ClientColumnApi';
 import ModalWrapper from '../ModalWrapper'
+import { showToastSucces } from '../../../../services/toast/showToastSucces';
 import * as yup from "yup";
 import './styles.css'
-import { showToastSucces } from '../../../../services/toast/showToastSucces';
 
 type Inputs = {
     spreadsheetId: string
