@@ -82,7 +82,7 @@ export default function AddCityModal({ setIsVisible, driverObj, refetch }: Props
 
     return (
         <div className={styles.modalOverlay}>
-            <div className={styles.modalContent_Whatsapp}>
+            <div className={styles.modalContent_City}>
                 <button className={styles.closeButton} onClick={handleClose}>
                     &times;
                 </button>
