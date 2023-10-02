@@ -5,6 +5,8 @@ import { driver } from "driver.js";
 import { Cient } from '../../../models';
 import Main from '../../Main'
 import API from './API'
+import styles from './setting.module.css'
+import modalStyles from '../../Modal/setting/setting.module.css'
 import OrderSetting from './OrderSetting'
 
 import "driver.js/dist/driver.css";
@@ -42,7 +44,7 @@ export default function Setting({ client }: Props) {
 
         steps: [
             {
-                element: '.row .api_card:nth-child(1)', popover: {
+                element: `.row .${styles.apiCard}:nth-child(1)`, popover: {
                     title: 'Google Sheet', description: 'Integrate google sheet.', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         driverObj.moveTo(3)
@@ -50,7 +52,7 @@ export default function Setting({ client }: Props) {
                 }
             },
             {
-                element: '.modal-content', popover: {
+                element: `.${modalStyles.modalContent}`, popover: {
                     title: 'Google Sheet', description: 'Integrate google sheet.', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         driverObj.moveTo(2)
@@ -60,7 +62,7 @@ export default function Setting({ client }: Props) {
                 }
             },
             {
-                element: '.fermer-btn', popover: {
+                element: `.${modalStyles.closeButton}`, popover: {
                     title: 'Close modal', description: 'close', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         alert('Close your modal before')
@@ -70,27 +72,27 @@ export default function Setting({ client }: Props) {
                 }
             },
             {
-                element: '.row .api_card:nth-child(3)', popover: {
+                element: `.row .${styles.apiCard}:nth-child(3)`, popover: {
                     title: 'Shipping Company', description: 'Add your shipping company here', side: "right", align: 'start', onPrevClick: (drvHks) => {
                         driverObj.moveTo(0)
                     },
                     onNextClick: (drvHks) => {
-                        driverObj.moveTo(5)
+                        driverObj.moveTo(6)
                     }
                 }
             },
             {
-                element: '.modal-content', popover: {
+                element: `.${modalStyles.modalContent_Shipping}`, popover: {
                     title: 'Shipping Company', description: 'Add your shipping company here', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
-                        driverObj.moveTo(5)
+                        driverObj.moveTo(6)
                     }, onPrevClick: (drvHks) => {
                         alert('Close your modal before')
                     },
                 }
             },
             {
-                element: '.fermer-btn', popover: {
+                element: `.${modalStyles.closeButton}`, popover: {
                     title: 'Close modal', description: 'close', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         alert('Close your modal before')
@@ -100,23 +102,23 @@ export default function Setting({ client }: Props) {
                 }
             },
             {
-                element: '.status_card', popover: {
+                element: `.${styles.statusContainer}`, popover: {
                     title: 'Status', description: 'You can manage your status here', side: "right", align: 'start', onPrevClick: (drvHks) => {
                         driverObj.moveTo(3)
                     },
                 }
             },
-            { element: '.column_card', popover: { title: 'Column', description: 'You can manage your column here', side: "top", align: 'start' } },
+            { element: `.${styles.columnContainer}`, popover: { title: 'Column', description: 'You can manage your column here', side: "top", align: 'start' } },
             {
-                element: '.add-city-btn', popover: {
+                element: `.${styles.addCityBtn}`, popover: {
                     title: 'Add City', description: 'You can add your city here', side: "right", align: 'end',
                     onNextClick: (drvHks) => {
-                        driverObj.moveTo(9)
+                        driverObj.moveTo(11)
                     }
                 }
             },
             {
-                element: '.modal-content', popover: {
+                element: `.${modalStyles.modalContent_City}`, popover: {
                     title: 'Add City', description: 'You can add your city here', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         driverObj.moveTo(10)
@@ -126,7 +128,7 @@ export default function Setting({ client }: Props) {
                 }
             },
             {
-                element: '.fermer-btn', popover: {
+                element: `.${modalStyles.closeButton}`, popover: {
                     title: 'Close modal', description: 'close', side: "bottom", align: 'start',
                     onNextClick: (drvHks) => {
                         alert('Close your modal before')
@@ -136,7 +138,7 @@ export default function Setting({ client }: Props) {
                 }
             },
             {
-                element: '.copy-model-btn', popover: {
+                element: `.${styles.downloadModelBtn}`, popover: {
                     title: 'Copy Model', description: 'You can copy the model for import your city', side: "right", align: 'end', onPrevClick: (drvHks) => {
                         driverObj.moveTo(7)
                     },

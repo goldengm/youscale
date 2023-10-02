@@ -14,7 +14,7 @@ export default function API({ driverObj }: Props): JSX.Element {
 
     const [showAddLinkSheetModal, setShowAddLinkSheetModal] = useState<boolean>(false)
     const [showShippingModal, setShowShippingModal] = useState<boolean>(false)
-    const [showWhatsappModal, setShowWhatsappModal] = useState<boolean>(true)
+    const [showWhatsappModal, setShowWhatsappModal] = useState<boolean>(false)
 
     const handleShowSheetModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
