@@ -5,42 +5,38 @@ import { useGetClientQuery } from '../../../../services/api/ClientApi/ClientApi'
 import { useGetSupportMessageQuery } from '../../../../services/api/ClientApi/ClientSupportApi';
 import { BASE_URL } from '../../../../services/url/API_URL';
 import { BsFillSendFill } from 'react-icons/bs'
-import ModalWrapper from '../ModalWrapper'
 import io from 'socket.io-client'
-import "./chat.css"
+import styles from './support.module.css'
 
 
 const socket = io(BASE_URL, { transports: ['websocket'] })
 interface Props {
     item: Support | undefined
-    showModal: boolean,
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function MessageSupportModal({ showModal, setShowModal, item }: Props): JSX.Element {
+const MessageSupportModal: React.FC<Props> = ({ setIsVisible, item }): JSX.Element | null => {
 
     const { data: client } = useGetClientQuery()
     const { data: message, refetch: refetchMessage } = useGetSupportMessageQuery({ id: item?.id ?? 0 })
 
-    useEffect(() => {
-        var body = document.querySelector<HTMLBodyElement>('body');
-
-        var modalBackdrop = document.createElement('div');
-        modalBackdrop.className = 'modal-backdrop fade show';
-
-        if (body) {
-            body.classList.add('modal-open');
-            body.style.overflow = 'hidden';
-            body.style.paddingRight = '17px';
-
-            body.appendChild(modalBackdrop);
-        }
-    }, [])
+    const handleClose = () => {
+        setIsVisible(false)
+    };
 
     return (
-        <ModalWrapper title={'Chat'} showModal={showModal} setShowModal={setShowModal} id='HistoryOrderModal'>
-            <FormBody data={item ?? {} as Support} client={client?.data} messageList={message?.data} refetchMessage={refetchMessage} />
-        </ModalWrapper>
-    )
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+                <button className={styles.closeButton} onClick={handleClose}>
+                    &times;
+                </button>
+                <div className={styles.main}>
+                    <p className={styles.title}>Discussion</p>
+
+                    <FormBody data={item ?? {} as Support} client={client?.data} messageList={message?.data} refetchMessage={refetchMessage} />
+                </div>
+            </div>
+        </div>
+    );
 }
 
 interface FormBodyProps {
@@ -49,7 +45,18 @@ interface FormBodyProps {
     messageList: ChatMessage[] | undefined
     refetchMessage: () => any
 }
+
 const FormBody = ({ data, client, messageList, refetchMessage }: FormBodyProps) => {
+
+    const getBadge = (status: string | undefined): string => {
+        if (status === 'pending') return styles.enattende_span
+        if (status === 'open') return styles.ouvert_span
+        if (status === 'in_progress') return styles.encour_span
+        if (status === 'done') return styles.resolu_span
+
+        return ''
+    }
+
     const [showImage, setShowImage] = useState<boolean>(false)
     const [message, setMessage] = useState<string>('')
     const sendBtnRef = useRef<ElementRef<"a">>(null)
@@ -82,39 +89,51 @@ const FormBody = ({ data, client, messageList, refetchMessage }: FormBodyProps) 
     }
 
     return (
-        <div>
+        <div className="card-body">
             <PreviewImagesModal attachement={data.attachment} setShowImage={setShowImage} showImage={showImage} />
-            <div className="container-msg">
-                <div className="chat-page">
-                    <div className="msg-inbox">
-                        <div className="chats">
-                            <div className="msg-page">
-                                <OutgoingMsg description={data.description} attachement={data.attachment} setShowImage={setShowImage} idUser={data.id_user ?? 0} date={data.createdAt ?? ''} />
-                                {messageList && messageList.map((msg, index) => msg.id_user ?
-                                    <OutgoingMsg key={index} idUser={msg.id_user ?? 0} description={msg.message} date={msg.createdAt ?? ''} /> :
-                                    <ReceivedMsg key={index} idUser={msg.id_user ?? 0} description={msg.message} date={msg.createdAt ?? ''} />
-                                )}
-                            </div>
-                        </div>
-                        <div className="msg-bottom">
-                            <div className="input-group-msg">
-                                <input
-                                    onChange={onWrite}
-                                    value={message}
-                                    onKeyDown={onKeyPress}
-                                    type="text"
-                                    className="form-control-msg chat-input"
-                                    placeholder="Ecrivez votre message..."
-                                />
-                                <a onClick={sendMessage} ref={sendBtnRef} className="input-group-text-msg send-icon">
-                                    <BsFillSendFill className="bi bi-send" />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+
+            <div className={styles.header}>
+                <div className={styles.id}>
+                    <p>ID</p>
+                    <p>#{data.id}</p>
+                </div>
+
+                <div className={styles.subject}>
+                    <p>Sujet</p>
+                    <p>{data.subject}</p>
                 </div>
             </div>
+
+
+            <div className={styles.status}>
+                <p>Statut</p>
+                <span className={getBadge(data?.status)}>{data.status}</span>
+            </div>
+
+            <div className={styles.msgContainer}>
+
+                <OutgoingMsg description={data.description} attachement={data.attachment} setShowImage={setShowImage} date={data.createdAt ?? ''} />
+                {messageList && messageList.map((msg, index) => msg.id_user ?
+                    <OutgoingMsg key={index} description={msg.message} date={msg.createdAt ?? ''} /> :
+                    <ReceivedMsg key={index} description={msg.message} date={msg.createdAt ?? ''} />
+                )}
+            </div>
+
+            <div className={styles.sendInput}>
+                <input
+                    onChange={onWrite}
+                    value={message}
+                    onKeyDown={onKeyPress}
+                    type="text"
+                    placeholder={'Votre message'}
+                />
+
+                <a onClick={sendMessage} ref={sendBtnRef} href="#">
+                    <img src="/svg/support/send.svg" alt="svg" />
+                </a>
+            </div>
         </div>
+
     )
 }
 
@@ -122,37 +141,30 @@ interface EventProps {
     description: string
     attachement?: string
     setShowImage?: React.Dispatch<React.SetStateAction<boolean>>
-    idUser: number
     date: string
 }
-const ReceivedMsg = ({ description, date, attachement, idUser }: EventProps): JSX.Element => {
+const ReceivedMsg = ({ description, date, attachement }: EventProps): JSX.Element => {
     return (
-        <div className="received-chats">
-            <div className="received-msg">
-                <div className="received-msg-inbox">
-                    {attachement && <img src={attachement} alt="attachement" className='chat-attachement' />}
-                    <p>
-                        {description}
-                    </p>
-                    <span className="time">Admin | {date.toString().slice(0, 10)}</span>
-                </div>
-            </div>
+        <div className={styles.recipied_msg}>
+            {attachement && <img src={attachement} alt="attachement" className={styles.attachement} />}
+            <p>
+                {description}
+            </p>
+            <span className={styles.time}>{date.toString().slice(0, 10)}</span>
         </div>
     )
 }
 
-const OutgoingMsg = ({ description, date, attachement, idUser, setShowImage }: EventProps): JSX.Element => {
+const OutgoingMsg = ({ description, date, attachement, setShowImage }: EventProps): JSX.Element => {
     return (
-        <div className="outgoing-chats">
-            <div className="outgoing-msg">
-                <div className="outgoing-chats-msg">
-                    <p>
-                        {attachement && <img src={attachement} onClick={() => setShowImage && setShowImage(true)} alt="attachement" className='chat-attachement' />}
-                        {description}
-                    </p>
-                    <span className="time">You | {date.toString().slice(0, 10)}</span>
-                </div>
-            </div>
+        <div className={styles.sender_msg}>
+             {attachement && <img src={attachement} onClick={() => setShowImage && setShowImage(true)} alt="attachement" className={styles.attachement} />}
+            <p>
+                {description}
+            </p>
+            <span className={styles.time}>{date.toString().slice(0, 10)}</span>
         </div>
     )
 }
+
+export default MessageSupportModal;
