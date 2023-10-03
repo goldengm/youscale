@@ -1,14 +1,13 @@
-.column-access-row{
+.column-access-row {
+    padding: 0;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 7px;
+    margin-bottom: 7px;
 }
 
 .custom-checkbox {
     margin-bottom: 0px !important;
 }
 
-.lg-mse{
-    width: 50%;
+.lg-mse {
+    width: 200px;
 }

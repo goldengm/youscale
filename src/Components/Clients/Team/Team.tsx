@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
-import { FaPen } from 'react-icons/fa'
-import { RiLoginCircleFill } from 'react-icons/ri'
+import PerformanceCard from './PerformanceCard'
+import EarningCard from './EarningCard'
+import AddTeamModal from '../../Modal/Team/AddTeamModal'
+import EditTeamModal from '../../Modal/Team/EditTeamModal'
 import { CustomHist } from '../../Chart'
-import { AddTeamModal, EditTeamModal } from '../../Table/Modal/Team'
 import { Cient, EarningTable, GetTeamMemberModel, Performance, TeamDashbordQueryModel } from '../../../models'
 import { useGetTeamMemberQuery, usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi'
 import { useGetTeamDashbordQuery } from '../../../services/api/ClientApi/ClientTeamDashbordApi'
@@ -13,13 +14,13 @@ import { setToken } from '../../../services/auth/setToken'
 import { setUserData } from '../../../services/auth/setUserData'
 import { showToastError } from '../../../services/toast/showToastError'
 import { driver } from "driver.js";
-import PerformanceCard from './PerformanceCard'
-import EarningCard from './EarningCard'
+import { Switch } from '../../Switch'
 import { showToastSucces } from '../../../services/toast/showToastSucces'
 import { Spinner4Bar } from '../../Loader'
+import { BottomRightStaticBtn } from '../../Tutorial'
 import './team.style.css'
 import "driver.js/dist/driver.css";
-import { BottomRightStaticBtn } from '../../Tutorial'
+import styles from './team.module.css'
 
 interface Props {
     client: Cient | undefined
@@ -154,8 +155,8 @@ export default function Team({ client }: Props): JSX.Element {
             showVideo={showVideo}
             setShowVideo={setShowVideo}
         >
-            {showAddTeamModal && <AddTeamModal refetch={refetch} showModal={showAddTeamModal} setShowModal={setShowAddTeamModal} driverObj={driverObj} />}
-            {showEditTeamModal && <EditTeamModal showModal={showEditTeamModal} setShowModal={setShowEditTeamModal} dataEdit={item} refetch={refetch} />}
+            {showAddTeamModal && <AddTeamModal refetch={refetch} setIsVisible={setShowAddTeamModal} driverObj={driverObj} />}
+            {showEditTeamModal && <EditTeamModal setIsVisible={setShowEditTeamModal} dataEdit={item} refetch={refetch} />}
             <div className="content-body">
                 <div className="container-fluid">
                     <div className="team-header">
@@ -203,11 +204,11 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
     }
 
     return (
-        <div className="col-xl-3 col-xxl-5 col-xl-custum">
+        <div className="col-xl-3 col-xxl-6 col-xl-custum">
             <div className="card">
                 <div className="card-header border-0 pb-0">
                     <div>
-                        <h4 className="card-title mb-2">Team</h4>
+                        <h4 className={styles.teamTitle}>Team</h4>
                     </div>
                     {
                         <div className="card-tabs mt-3 mt-sm-0">
@@ -234,14 +235,27 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                     <a
                         onClick={handleShowTeamModal}
                         type="button"
-                        className="btn btn-primary mb-2 add-team">
-                        Add team
+                        className={styles.addMemberBtn}>
+                        <img src="/svg/team/add.svg" alt="add" />
+                        Ajouter un membre
                     </a>
                 </div>
-                <div className="card-body display-scrll">
-                    {
-                        isLoading ? <Spinner4Bar /> : data && data.map((dt, index) => <TeamRow key={index} refetch={refetch} item={dt} setShowEditTeamModal={setShowEditTeamModal} setItem={setItem} />)
-                    }
+                <div className="table-responsive">
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Taux d’Up/Crosssell</th>
+                                <th>Activité</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                isLoading ? <Spinner4Bar /> : data && data.map((dt, index) => <TeamRow key={index} refetch={refetch} item={dt} setShowEditTeamModal={setShowEditTeamModal} setItem={setItem} />)
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -260,7 +274,7 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
 
     const [patchTeamMember, { error, isError }] = usePatchTeamMemberMutation()
 
-    const handleEditSatus = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    const handleEditSatus = () => {
 
         patchTeamMember({ id: item.id, active: !item.active }).unwrap()
             .then((res: any) => {
@@ -270,14 +284,14 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
             .catch((err: any) => showToastError(err.data.message))
     }
 
-    const handleShowEdit = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+    const handleShowEdit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
 
         setItem(item)
         setShowEditTeamModal(true)
     }
 
-    const handleLoginAsTeam = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+    const handleLoginAsTeam = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
 
         loginAsTeam({ email: item.email ?? '' }).unwrap()
@@ -294,37 +308,27 @@ const TeamRow = ({ setShowEditTeamModal, item, refetch, setItem }: PropsTeamRow)
     }
 
     return (
-        <div className="d-flex align-items-end mt-2 pb-3 justify-content-between">
-            <div className="fs-18 card-info">
-                <span className="text-black pe-2">{item.name}</span>
-                <span>{item.email}</span>
-            </div>
-
-            <div className="fs-18 card-edit">
-                <RiLoginCircleFill onClick={handleLoginAsTeam} size={22} color={'black'} style={{ marginRight: 12 }} className='login-as-team-btn' />
-                <FaPen
-                    onClick={handleShowEdit}
-                    className='edit-team-pencil'
-                    style={{ marginRight: 12 }}
-                />
-
-                <Switch active={item.active} onClick={handleEditSatus} />
-            </div>
-        </div>
-    )
-}
-
-interface SwitchProps {
-    onClick: (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => any,
-    active: boolean | undefined
-}
-const Switch = ({ onClick, active }: SwitchProps) => {
-    return (
-        <label className="switch">
-            <input defaultChecked={active} onClick={onClick} type="checkbox" />
-            <span className="slider round"></span>
-        </label>
-
+        <tr>
+            <td>{item.name}</td>
+            <td>{item.crosssell}</td>
+            <td>
+                <div className="d-flex">
+                    <Switch
+                        active={item.active || false}
+                        size={{ width: '43.727px', height: '25.227px' }}
+                        SwitchHideProduct={handleEditSatus}
+                    />
+                </div>
+            </td>
+            <td>
+                <a onClick={handleLoginAsTeam} className={styles.actionIcons} href="#">
+                    <img src="/svg/team/rmConnect.svg" alt="rmConnect" />
+                </a>
+                <a onClick={handleShowEdit} className={styles.actionIcons} href="#">
+                    <img src="/svg/team/edit.svg" alt="edit" />
+                </a>
+            </td>
+        </tr>
     )
 }
 
@@ -355,19 +359,29 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
     }
 
     return (
-        <div className="col-lg-6">
+        <div className="col-lg-7">
             <div className="card">
+                <div className="card-header">
+                    <div>
+                        <h4 className={styles.teamTitle}>Salaire</h4>
+                    </div>
+                </div>
                 <div className="card-body">
                     <div className="table-responsive">
-                        <table className="table table-hover table-responsive-sm">
+                        <table className={styles.table}>
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Nombre de commande</th>
-                                    <th>Profit</th>
+                                    <th>Commande</th>
+                                    <th>Bénéfice</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td>Salaire</td>
+                                    <td>0</td>
+                                    <td>{earningTable?.crosssell.salaire}</td>
+                                </tr>
                                 <tr>
                                     <td>Livre</td>
                                     <td>{earningTable?.livre.nb_commande}</td>
@@ -388,12 +402,8 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
                                     <td>{earningTable?.crosssell.nb_commande}</td>
                                     <td>{earningTable?.crosssell.her_earning}</td>
                                 </tr>
-                                <tr>
-                                    <td>Salaire</td>
-                                    <td>0</td>
-                                    <td>{earningTable?.crosssell.salaire}</td>
-                                </tr>
-                                <tr>
+
+                                <tr className={styles.totalRow}>
                                     <td>Total</td>
                                     <td>{sumNbCommande(earningTable)}</td>
                                     <td>{sumHerEarning(earningTable)}</td>

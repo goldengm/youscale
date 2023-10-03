@@ -1,5 +1,6 @@
 import React from 'react'
 import { Performance } from '../../../models'
+import styles from './team.module.css'
 
 interface Props {
     children: JSX.Element
@@ -9,10 +10,10 @@ interface Props {
 }
 export default function PerformanceCard({ children, setPerformance, perf, perf_rate }: Props) {
     return (
-        <div className="col-xl-6 col-lg-6">
+        <div className="col-xl-5 col-lg-6">
             <div className="card">
                 <div className="card-header">
-                    <h4 className="card-title">Performance</h4>
+                    <h4 className={styles.teamTitle}>Performance</h4>
                     <div className="card-tabs mt-3 mt-sm-0">
                         <ul className="nav nav-tabs" role="tablist">
                             <li className="nav-item">
