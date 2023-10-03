@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { CustumInput } from '../../../Forms'
-import { MultiSelectElement } from '../../../Input'
-import ModalWrapper from '../ModalWrapper'
-import { CityAccessModel, ColumnAccessModel, ErrorModel, GetTeamMemberModel, PageAccessModel, ProductAccessModel } from '../../../../models'
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form/dist/types/form'
-import { FieldError } from 'react-hook-form/dist/types/errors'
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { CityAccessModel, ColumnAccessModel, ErrorModel, GetTeamMemberModel, PageAccessModel, ProductAccessModel } from '../../../models';
+import { useGetProductQuery } from '../../../services/api/ClientApi/ClientProductApi';
+import { showToastError } from '../../../services/toast/showToastError';
+import { MultiSelectElement } from '../../Input/v2';
+import { FieldError, UseFormRegister, UseFormSetValue, useForm } from 'react-hook-form';
+import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useGetColumnQuery } from '../../../../services/api/ClientApi/ClientColumnApi'
-import { useGetCityQuery } from '../../../../services/api/ClientApi/ClientCityApi'
-import { useGetProductQuery } from '../../../../services/api/ClientApi/ClientProductApi'
-import { useGetPageQuery } from '../../../../services/api/ClientApi/ClientPageApi'
-import { usePatchTeamMemberMutation } from '../../../../services/api/ClientApi/ClientTeamMemberApi'
-import { showToastError } from '../../../../services/toast/showToastError'
+import { CustumInput } from '../../Forms/v2';
+import { Spinner4Bar } from '../../Loader';
+import { usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi';
+import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi';
+import { Switch } from '../../Switch';
+import { useGetPageQuery } from '../../../services/api/ClientApi/ClientPageApi';
 import * as yup from "yup";
-import './team.style.css'
+import styles from './team.module.css';
 
 type Inputs = {
     name: string,
@@ -171,58 +170,41 @@ const getColumnAccessEdit = (data: ColumnAccessModel[] | undefined): string[] =>
 }
 
 interface Props {
-    showModal: boolean,
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-    refetch: () => any,
+    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
+    refetch: () => any
     dataEdit: GetTeamMemberModel | undefined
 }
-export default function EditTeamModal({ showModal, setShowModal, refetch, dataEdit }: Props): JSX.Element {
+const EditTeamModal: React.FC<Props> = ({ setIsVisible, refetch, dataEdit }): JSX.Element | null => {
 
-    useEffect(() => {
-        var body = document.querySelector<HTMLBodyElement>('body');
-
-        var modalBackdrop = document.createElement('div');
-        modalBackdrop.className = 'modal-backdrop fade show';
-
-        if (body) {
-            body.classList.add('modal-open');
-            body.style.overflow = 'hidden';
-            body.style.paddingRight = '17px';
-
-            body.appendChild(modalBackdrop);
-        }
-    }, [])
-
-    const handleCloseModal = () => {
-        var body = document.querySelector<HTMLBodyElement>('body');
-
-        if (body) {
-            body.classList.remove('modal-open');
-            body.style.overflow = '';
-            body.style.paddingRight = '';
-
-            var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
-
-            if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
-
-            setShowModal(false)
-        }
-    }
+    const handleClose = () => {
+        setIsVisible(false);
+    };
 
     return (
-        <ModalWrapper title={'Edit team'} showModal={showModal} setShowModal={setShowModal} id='AddOrderModal'>
-            <FormBody refetch={refetch} dataEdit={dataEdit} handleCloseModal={handleCloseModal} />
-        </ModalWrapper>
-    )
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+                <button className={styles.closeButton} onClick={handleClose}>
+                    &times;
+                </button>
+                <div className={styles.main}>
+                    <p className={styles.title}>Modifier un membre</p>
+
+                    <FormBody refetch={refetch} dataEdit={dataEdit} />
+                </div>
+            </div>
+        </div>
+    );
 }
 
 interface FormBodyProps {
-    refetch: () => any,
-    handleCloseModal: () => void,
+    refetch: () => any
     dataEdit: GetTeamMemberModel | undefined
 }
-const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
-    const [patchTeam, { isLoading } ] = usePatchTeamMemberMutation()
+
+const FormBody = ({ refetch, dataEdit }: FormBodyProps) => {
+
+    const [showShipping, setShowShipping] = useState<boolean>(dataEdit?.livoToken ? true : false)
+    const [patchTeam, { isLoading }] = usePatchTeamMemberMutation()
 
     const { data: ColumnData } = useGetColumnQuery()
     const { data: CityData } = useGetCityQuery()
@@ -234,7 +216,6 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
     });
 
     const onSubmit = (values: Inputs) => {
-
         const data: GetTeamMemberModel = {
             ...values,
             id: dataEdit?.id || 0,
@@ -248,7 +229,6 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
         patchTeam(data).unwrap()
             .then(res => {
                 refetch()
-                handleCloseModal()
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -256,6 +236,10 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
+    }
+
+    const SwitchHideShipping = () => {
+        setShowShipping(!showShipping)
     }
 
     return (
@@ -288,26 +272,12 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                             register={register}
                             name={'password'}
                             error={errors.password}
-                            showEye={true}
+                            //showEye={true}
                             type={'password'}
                             label={"Password"}
                             placeholder={'*****'}
-                            className={'lg-input-cus'}
                         />
 
-                        <CustumInput
-                            defaultValue={dataEdit?.livoToken}
-                            register={register}
-                            name={'livoToken'}
-                            error={errors.livoToken}
-                            type={'text'}
-                            label={"Token"}
-                            placeholder={'your_token_here'}
-                            className={'lg-input-cus'}
-                        />
-                    </div>
-
-                    <div className="row">
                         <CustumInput
                             defaultValue={dataEdit?.salaire}
                             register={register}
@@ -364,18 +334,19 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                             name={'max_order'}
                             error={errors.max_order}
                             type={'number'}
-                            label={"commande max en attente"}
+                            label={"commandes en attente*"}
                             placeholder={'2'}
                         />
                     </div>
 
+                    <div className={styles.titlteSection}>Fonctions</div>
 
                     <div className="row">
                         <div className="form-check custom-checkbox mb-3 checkbox-info">
                             <input
                                 {...register('can_delete_order')}
                                 type="checkbox"
-                                className="form-check-input"
+                                className={styles.checkbox}
                                 defaultChecked={dataEdit?.can_delete_order}
                                 id="customCheckBox2"
                             />
@@ -388,7 +359,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                             <input
                                 {...register('can_edit_order')}
                                 type="checkbox"
-                                className="form-check-input"
+                                className={styles.checkbox}
                                 defaultChecked={dataEdit?.can_edit_order}
                                 id="customCheckBox2"
                             />
@@ -397,9 +368,6 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                             </label>
                         </div>
 
-                    </div>
-
-                    <div className="row">
                         <AllAccess
                             checked={dataEdit?.all_column_access}
                             selectedValues={getColumnAccess(dataEdit?.Team_Client_Column_Acces)}
@@ -449,14 +417,49 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                         />
                     </div>
 
-                    <button disabled={isLoading} type="submit" className="btn btn-primary">
-                        Ajouter
-                    </button>
+
+                    <div className="row">
+                        <div className={styles.shippingPties}>
+                            <p>API de société de livraison </p>
+                            <Switch
+                                active={showShipping}
+                                size={{ width: '43.727px', height: '25.227px' }}
+                                SwitchHideProduct={SwitchHideShipping}
+                            />
+                        </div>
+                        {
+                            showShipping &&
+                            <CustumInput
+                                defaultValue={dataEdit?.livoToken}
+                                register={register}
+                                name={'livoToken'}
+                                error={errors.livoToken}
+                                type={'text'}
+                                label={"API de société de livraison "}
+                                placeholder={'your_token_here'}
+                            />
+                        }
+                    </div>
+
+                    {
+                        isLoading ? <Spinner4Bar /> :
+                            <div className={styles.bottomAction}>
+                                <button type="submit" className={styles.saveBtn}>
+                                    Enregistrer
+                                </button>
+                                <a href="#" className={styles.NextBtn}>
+                                    Fermer
+                                </a>
+                            </div>
+                    }
                 </form>
             </div>
         </div>
+
     )
 }
+
+export default EditTeamModal;
 
 interface ColumnAccessProps {
     label: string,
@@ -493,7 +496,7 @@ const AllAccess = ({ label, register, name, error, setValue, options, column, se
                     {...register(name)}
                     onClick={() => setIsAll(!isAll)}
                     type="checkbox"
-                    className="form-check-input"
+                    className={styles.checkbox}
                     defaultChecked={checked}
                     id="customCheckBox2"
                 />
