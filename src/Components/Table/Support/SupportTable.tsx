@@ -4,6 +4,7 @@ import TableWrapper from './TableWrapper'
 import { Support } from '../../../models'
 import { MessageSupportModal } from '../Modal/Support'
 import { useGetSupportQuery } from '../../../services/api/ClientApi/ClientSupportApi'
+import styles from './support.module.css'
 
 export default function SupportTable(): JSX.Element {
 
@@ -19,13 +20,13 @@ export default function SupportTable(): JSX.Element {
             setQuery={setQuery}
             item={item}
             title='Support'
-            column={['subject', 'description', 'status']}
+            column={['Date', 'Object', 'Description', 'Statut', 'Discussion']}
             refetch={refetch}
             AddBtn={<CreateIssueBtn setShowModal={setShowCreateSupportModal} />}
             showAddSupportModal={showCreateSupportModal}
             setShowCreateSupportModal={setShowCreateSupportModal}
         >
-            {showMessage && <MessageSupportModal item={item} showModal={showMessage} setShowModal={setShowMessage} />}
+            {showMessage && <MessageSupportModal item={item} setIsVisible={setShowMessage} />}
             {isSuccess && data.data.map((dt, key) => <SupportRow data={dt} key={key} setItem={setItem} setShowMessage={setShowMessage} />)}
         </TableWrapper>
     )
@@ -40,8 +41,10 @@ const CreateIssueBtn = ({ setShowModal }: AddProductBtnProps): JSX.Element => {
         <a
             onClick={() => setShowModal(true)}
             type="button"
-            className="btn btn-primary mb-2 add-product"
-        >Create Issues
+            className={styles.createTicketBtn}
+        >
+            <img src="/svg/support/add.svg" alt="add" />
+            Create Issues
         </a>
     )
 }

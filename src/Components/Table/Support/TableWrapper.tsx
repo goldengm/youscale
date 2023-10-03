@@ -1,6 +1,14 @@
 import React from 'react'
-import { AddSupportModal } from '../Modal/Support'
+import AddSupportModal from '../../Modal/support/AddSupportModal'
+import { AiFillFilter } from 'react-icons/ai'
+import { Filter } from '../../Filter'
 import { Support } from '../../../models'
+import styles from './support.module.css'
+
+type dataType = {
+    label: string;
+    value: string;
+}
 
 interface Props {
     title: string,
@@ -17,37 +25,40 @@ interface Props {
 }
 export default function TableWrapper({ children, title, column, AddBtn, refetch, showAddSupportModal, setShowCreateSupportModal, setQuery }: Props): JSX.Element {
 
-    const changeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        e.preventDefault()
-        const { value } = e.target
+    const changeStatus = ({ value, label }:dataType) => {
+
         setQuery({ status: value === String('0') ? undefined : value })
     }
 
     const never = (): any => { }
+
     return (
         <div className="col product-table">
-            {showAddSupportModal ? <AddSupportModal refetch={refetch ?? never()} showModal={showAddSupportModal} setShowModal={setShowCreateSupportModal ?? never()} /> : <></>}
+            {showAddSupportModal ? <AddSupportModal refetch={refetch ?? never()} setIsVisible={setShowCreateSupportModal ?? never()} /> : <></>}
 
             <div className="card">
                 <div className="card-header">
-                    <h4 className="card-title">{title}</h4>
-                    <div className="col-auto my-1">
-                        <select onChange={changeStatus} className="me-sm-2 form-control wide" id="inlineFormCustomSelect">
-                            <option value={0}>Status</option>
-                            <option value={'pending'}>Pending</option>
-                            <option value={'open'}>Open</option>
-                            <option value={'in_progress'}>In progress</option>
-                            <option value={'done'}>Done </option>
-                        </select>
-                    </div>
+                    <SearchInput />
+                    <Filter
+                        Icons={AiFillFilter}
+                        label={'Produit'}
+                        data={[
+                            { value: '0', label: 'Tout'},
+                            { value: 'pending', label: 'pending'},
+                            { value: 'open', label: 'open'},
+                            { value: 'in_progress', label: 'in_progress'},
+                            { value: 'done', label: 'done'}
+                        ]}
+                        onChange={changeStatus}
+                    />
                     {AddBtn}
                 </div>
                 <div className="card-body">
                     <div className="table-responsive">
-                        <table className="table table-responsive-sm">
+                        <table className={styles.table}>
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>ID</th>
                                     {column.map((col: string, key: number) => <th key={key}>{col}</th>)}
                                     <th></th>
                                 </tr>
@@ -59,6 +70,16 @@ export default function TableWrapper({ children, title, column, AddBtn, refetch,
                     </div>
                 </div>
             </div>
+        </div>
+    )
+}
+
+
+const SearchInput = (): JSX.Element => {
+    return (
+        <div className={styles.searchContainer}>
+            <img src="/svg/support/search.svg" alt="search" />
+            <input type="text" placeholder={'Recherche'} />
         </div>
     )
 }
