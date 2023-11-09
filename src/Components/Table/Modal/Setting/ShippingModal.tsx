@@ -81,7 +81,6 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
 
     const onSubmit = (values: Inputs) => {
         patchClient(values).unwrap().then((result: any) => {
-            console.log(result)
             handleCloseModal()
             refetch()
         }).catch((err: { data: ErrorModel | { message: string }, status: number }) => {
