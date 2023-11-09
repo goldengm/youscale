@@ -40,6 +40,7 @@ export default function IntegrateSheetModal({ setIsVisible, driverObj }: Props):
     const [modifiedColumns, setModifiedColumns] = useState<{ [key: string]: any }>({});
     const [mode, setMode] = useState<'sheet' | 'colonne'>('sheet')
 
+    const { data: columnData, refetch: refetchColumn } = useGetColumnQuery()
     const { data, refetch } = useGetLinkSheetQuery();
     const [row, setRow] = useState<GetSheetIntegrationModel[]>([])
 
@@ -63,7 +64,7 @@ export default function IntegrateSheetModal({ setIsVisible, driverObj }: Props):
             try {
                 await patchColumn({ id: key, alias: modifiedColumns[key] }).unwrap();
                 showToastSucces('Your alias is added');
-                refetch();
+                refetchColumn();
                 if (i < keys.length - 1) {
                     await delay(2000);
                 }
@@ -92,14 +93,14 @@ export default function IntegrateSheetModal({ setIsVisible, driverObj }: Props):
                             <SheetContainer />
                             :
                             <div>
-                                <ColumnContainer modifiedColumns={modifiedColumns} setModifiedColumns={setModifiedColumns} />
+                                <ColumnContainer data={columnData} modifiedColumns={modifiedColumns} setModifiedColumns={setModifiedColumns} />
 
                                 <div className={styles.bottomBtn}>
                                     <button onClick={handleSaveChanges} className={styles.saveBtn}>
                                         Enregistrer
                                     </button>
 
-                                    <button className={styles.closeBtn}>
+                                    <button onClick={()=> handleClose()} className={styles.closeBtn}>
                                         Fermer
                                     </button>
                                 </div>
@@ -115,9 +116,12 @@ export default function IntegrateSheetModal({ setIsVisible, driverObj }: Props):
 interface ColumnContainerProps {
     modifiedColumns: {}
     setModifiedColumns: React.Dispatch<React.SetStateAction<{}>>
+    data: {
+        code: Number;
+        data: ColumnModel[];
+    } | undefined
 }
-const ColumnContainer = ({ modifiedColumns, setModifiedColumns }: ColumnContainerProps): JSX.Element => {
-    const { data } = useGetColumnQuery()
+const ColumnContainer = ({ modifiedColumns, setModifiedColumns, data }: ColumnContainerProps): JSX.Element => {
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, item: ColumnModel) => {
         const { name, value } = event.target;
@@ -254,6 +258,7 @@ const ItemSheet = ({ data, refetch }: ItemSheetProps) => {
     const onSubmit = (values: Inputs) => {
         if (!data?.id) {
             integrateSheet(values).unwrap().then((result: any) => {
+                showToastSucces('Votre feuille a été enregistré')
                 refetch()
             }).catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {

@@ -407,11 +407,11 @@ export interface GetSettingModel {
 
 export interface PatchSettingModel {
     id: number,
-    default_conf_pricing: string,
-    delfault_del_pricing: string,
-    default_time: string,
-    automated_msg: string,
-    startWrldOrder: string
+    default_conf_pricing?: string,
+    delfault_del_pricing?: string,
+    default_time?: string,
+    automated_msg?: string,
+    startWrldOrder?: string
 }
 
 export interface AdminTransactionModel {

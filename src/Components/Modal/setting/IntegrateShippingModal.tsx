@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import styles from './setting.module.css'
-import * as yup from "yup";
+import React, { useState } from 'react'
 import { ColumnModel, ErrorModel, ShippingModel } from '../../../models';
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api/ClientApi/ClientColumnApi';
 import { showToastError } from '../../../services/toast/showToastError';
 import { useGetShippingQuery } from '../../../services/api/ClientApi/ClientShippingApi';
-
-type Inputs = {
-    livoToken: string
-};
-
-const schema = yup.object().shape({
-    livoToken: yup.string().required('Ce champ est obligatoire').optional()
-}).required();
+import { useGetClientQuery, usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
+import { showToastSucces } from '../../../services/toast/showToastSucces';
+import styles from './setting.module.css'
 
 interface Props {
     setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
@@ -21,9 +14,13 @@ interface Props {
     }
 }
 export default function IntegrateShippingModal({ setIsVisible, driverObj }: Props): JSX.Element {
-    const { data: dataColumn } = useGetColumnQuery()
 
+    const { data: user, refetch: refetchUser } = useGetClientQuery();
+    const { data: dataColumn, refetch: refetchColumn } = useGetColumnQuery()
+
+    const [patchClient] = usePatchClientMutation();
     const [mode, setMode] = useState<'societe' | 'colonne'>('colonne')
+    const [livoToken, setLivoToken] = useState<string>()
 
     const handleClose = () => {
         setIsVisible(false);
@@ -33,6 +30,17 @@ export default function IntegrateShippingModal({ setIsVisible, driverObj }: Prop
     const handleSaveChanges = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
 
+        if (livoToken) {
+            patchClient({ livoToken }).unwrap().then((result: any) => {
+                showToastSucces('Token ajouté')
+                refetchUser()
+            }).catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
+        }
     };
 
     return (
@@ -49,14 +57,17 @@ export default function IntegrateShippingModal({ setIsVisible, driverObj }: Prop
                         <div onClick={() => setMode('societe')} className={`${styles.switchItems} ${mode === 'societe' && styles.itemsActive} `}>Sociétés</div>
                     </div>
 
-                    {mode === 'colonne' ? <ColonneContainer statusData={dataColumn?.data} /> : <SocieteContainer />}
+                    {mode === 'colonne' ? <ColonneContainer refetchColumn={refetchColumn} statusData={dataColumn?.data} /> : <SocieteContainer livoToken={user?.data.livoToken} setLivoToken={setLivoToken} />}
 
                     <div className={styles.bottomBtn}>
-                        <button onClick={handleSaveChanges} className={styles.saveBtn}>
-                            Enregistrer
-                        </button>
+                        {
+                            mode === 'societe' &&
+                            <button onClick={handleSaveChanges} className={styles.saveBtn}>
+                                Enregistrer
+                            </button>
+                        }
 
-                        <button className={styles.closeBtn}>
+                        <button onClick={() => handleClose()} className={styles.closeBtn}>
                             Fermer
                         </button>
                     </div>
@@ -69,22 +80,27 @@ export default function IntegrateShippingModal({ setIsVisible, driverObj }: Prop
 
 interface ColumnContainerProps {
     statusData: ColumnModel[] | undefined
+    refetchColumn: () => any
 }
-const ColonneContainer = ({ statusData }: ColumnContainerProps): JSX.Element => {
-
+const ColonneContainer = ({ statusData, refetchColumn }: ColumnContainerProps): JSX.Element => {
     return (
         <div className={styles.ColonneContainer}>
             <p className={styles.ColonneDescTxt}>Sélectionner les colonnes que vous allez importer aux sociétés de livraison</p>
 
             <div className={styles.displayColonneArea}>
-                {statusData && statusData.map(dt => <StatusItem dt={dt} />)}
+                {statusData && statusData.map(dt => <StatusItem refetchColumn={refetchColumn} dt={dt} />)}
             </div>
         </div>
     )
 }
 
-const SocieteContainer = (): JSX.Element => {
+interface SocieteContainerProps {
+    setLivoToken: React.Dispatch<React.SetStateAction<string | undefined>>
+    livoToken: string | undefined
+}
+const SocieteContainer = ({ setLivoToken, livoToken }: SocieteContainerProps): JSX.Element => {
     const { data, isSuccess } = useGetShippingQuery()
+   
 
     return (
         <div className={styles.SocieteContainer}>
@@ -94,7 +110,13 @@ const SocieteContainer = (): JSX.Element => {
             </div>
 
             <div className={styles.displaySociete}>
-                {isSuccess && data?.data.map((dt: ShippingModel) => dt.isShow && <SocieteItem item={dt} />)}
+                {isSuccess && data?.data.map((dt: ShippingModel) => dt.isShow &&
+                    <SocieteItem
+                        livoToken={livoToken}
+                        setLivoToken={setLivoToken}
+                        item={dt}
+                    />
+                )}
             </div>
         </div>
     )
@@ -102,8 +124,9 @@ const SocieteContainer = (): JSX.Element => {
 
 interface StatusItemProps {
     dt: ColumnModel
+    refetchColumn: () => any
 }
-const StatusItem = ({ dt }: StatusItemProps): JSX.Element => {
+const StatusItem = ({ dt, refetchColumn }: StatusItemProps): JSX.Element => {
 
     const [patchColumn] = usePatchColumnMutation()
 
@@ -114,6 +137,7 @@ const StatusItem = ({ dt }: StatusItemProps): JSX.Element => {
         patchColumn(data).unwrap()
             .then((res: any) => {
                 console.log(res)
+                refetchColumn()
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -140,13 +164,27 @@ const StatusItem = ({ dt }: StatusItemProps): JSX.Element => {
 
 interface SocieteItemProps {
     item: ShippingModel
+    livoToken: string | undefined
+    setLivoToken: React.Dispatch<React.SetStateAction<string | undefined>>
 }
-const SocieteItem = ({ item }: SocieteItemProps): JSX.Element => {
+const SocieteItem = ({ item, setLivoToken, livoToken }: SocieteItemProps): JSX.Element => {
+
+    const defaultValue = item.name.toUpperCase() === 'LIVO' ? livoToken : ''
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault()
+        if (item.name.toUpperCase() === 'LIVO') setLivoToken(e.target.value)
+    }
+
     return (
         <div className={styles.SocieteItem}>
             <img src={`data:image/jpeg;base64,${item.image}`} alt="societe" />
             <p>{item.name}</p>
-            <input placeholder={'Saisir API'} type="text" />
+            <input
+                defaultValue={defaultValue}
+                onChange={handleChange}
+                placeholder={'Saisir API'}
+                type="text"
+            />
         </div>
     )
 }
