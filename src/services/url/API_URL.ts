@@ -4,7 +4,7 @@ var baseUrl = protocol + "//" + url.split("/")[2];
 
 const urls = {
   prod: baseUrl === "https://app.youscale.co" ? "https://api.youscale.co" : "https://staging-api.youscale.co",
-  dev: "https://api.oumardev.com",
+  dev: "https://api.oumardev.com", 
   local: "http://127.0.0.1:8500",
 };
 export const BASE_URL = urls.prod;
