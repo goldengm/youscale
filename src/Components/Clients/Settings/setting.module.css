@@ -298,12 +298,6 @@
     flex-direction: row;
 }
 
-@media (max-width:1200px) {
-    .mainCity {
-        flex-direction: column;
-    }
-}
-
 .addCityBtn {
     display: inline-flex;
     padding: 8px 16px;
@@ -356,4 +350,14 @@
     gap: 10px;
     align-items: center;
     margin: 10px;
+    width: 400px;
+}
+
+@media (max-width:1200px) {
+    .mainCity {
+        flex-direction: column;
+    }
+    .rightCity {
+        width: 100%;
+    }
 }
