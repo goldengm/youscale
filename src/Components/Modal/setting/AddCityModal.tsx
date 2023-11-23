@@ -184,7 +184,7 @@ const Select = ({ label, name, register, error, data, defaultSelected }: SelectP
                 {...register(name)}
                 name={name}
             >
-                {data.map((dt) => <option selected={String(defaultSelected) === String(dt.value)} value={dt.value}>{dt.label}</option>)}
+                {data.map((dt, index) => <option key={index} selected={String(defaultSelected) === String(dt.value)} value={dt.value}>{dt.label}</option>)}
             </select>
             {error && <p className={styles.errorTxt}>{error.message}</p>}
         </div>
