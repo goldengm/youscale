@@ -99,7 +99,7 @@ const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProp
     return (
         <div className={styles.statusContainer}>
             <p className={styles.statusTitle}>Status</p>
-            <div className="row">
+            <div className="row" style={{paddingLeft: "20px", paddingRight: "20px"}}>
                 {statusData && statusData.map(dt => <StatusRow dt={dt} refetch={refetchStatus} />)}
             </div>
 
@@ -160,7 +160,7 @@ const StatusRow = ({ dt, refetch }: StatusRowProps): JSX.Element => {
 
     return (
         <div className={styles.StatusRow}>
-            <p className={styles.StatusRowTxt}>{dt.name}</p>
+            <span className={styles.StatusRowTxt}>{dt.name}</span>
             <ColorPicker color={dt.color} handleChangeColor={handleChangeColor} />
 
             <Switch
@@ -242,7 +242,7 @@ const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Elemen
     })
 
     return (
-        <div className={styles.columnContainer}>
+        <div className={styles.columnContainer} style={{width: '-webkit-fill-available'}}>
             <p className={styles.columnTitle}>Colonnes de commandes</p>
             <div className="row">
                 <Column data={objData.active} className={'active-column'} title='Colonnes actives' />
