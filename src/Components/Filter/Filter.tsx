@@ -27,7 +27,6 @@ export const Filter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props):
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      console.log(elementRef)
       if (elementRef.current && !elementRef.current.contains(event.target as Node)) {
         setIsDisplay(false);
       }

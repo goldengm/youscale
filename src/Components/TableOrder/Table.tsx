@@ -140,6 +140,7 @@ export const Table = ({ data, OrderQueryData, setStatus, setOrderQueryData, refe
       >
         {
           data ? data?.data.map((dt, index) => <Row
+            key={index}
             handleCheckRow={handleCheckRow}
             row={dt}
             setIdOrders={setIdOrders}
