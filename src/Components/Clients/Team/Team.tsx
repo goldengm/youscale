@@ -252,7 +252,7 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                         </thead>
                         <tbody>
                             {
-                                isLoading ? <Spinner4Bar /> : data && data.map((dt, index) => <TeamRow key={index} refetch={refetch} item={dt} setShowEditTeamModal={setShowEditTeamModal} setItem={setItem} />)
+                                isLoading ? <tr><td><Spinner4Bar /></td></tr> : data && data.map((dt, index) => <TeamRow key={index} refetch={refetch} item={dt} setShowEditTeamModal={setShowEditTeamModal} setItem={setItem} />)
                             }
                         </tbody>
                     </table>
