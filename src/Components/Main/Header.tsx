@@ -15,20 +15,20 @@ import CustumDateRangePicker from './CustumDateRangePicker'
 import './styles.css'
 
 interface Props {
-  setDate?: React.Dispatch<React.SetStateAction<string[]>>,
-  setProduct?: React.Dispatch<React.SetStateAction<string>>,
-  setUsingDate?: React.Dispatch<React.SetStateAction<boolean>>,
-  showDateFilter?: boolean,
-  setIdTeam?: React.Dispatch<React.SetStateAction<number>>,
-  showTeamFilter?: boolean,
-  showProductFilter?: boolean,
-  showMenu: boolean,
-  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>,
-  name: string
-  urlVideo: string
-  closeTutorial: () => void
-  setShowVideo: React.Dispatch<React.SetStateAction<boolean>>
-  showVideo: boolean
+  setDate?: React.Dispatch<React.SetStateAction<string[]>>;
+  setProduct?: React.Dispatch<React.SetStateAction<string>>;
+  setUsingDate?: React.Dispatch<React.SetStateAction<boolean>>;
+  showDateFilter?: boolean;
+  setIdTeam?: React.Dispatch<React.SetStateAction<number>>;
+  showTeamFilter?: boolean;
+  showProductFilter?: boolean;
+  showMenu: boolean;
+  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
+  urlVideo: string;
+  closeTutorial: () => void;
+  setShowVideo: React.Dispatch<React.SetStateAction<boolean>>;
+  showVideo: boolean;
 }
 
 type dataType = {
@@ -37,79 +37,116 @@ type dataType = {
 }
 
 const convertProduct = (data: GetProductModel[] | undefined): dataType[] => {
+  if (!data) return [];
 
-  if (!data) return []
+  var out: dataType[] = [];
 
-  var out: dataType[] = []
-
-  data.map(dt => {
+  data.map((dt) => {
     if (!dt.isDeleted) {
-      out.push({ label: dt.name, value: String(dt.id) })
+      out.push({ label: dt.name, value: String(dt.id) });
     }
-  })
+  });
 
-  return out
-}
+  return out;
+};
 
-const convertTeamMember = (data: GetTeamMemberModel[] | undefined): dataType[] => {
+const convertTeamMember = (
+  data: GetTeamMemberModel[] | undefined
+): dataType[] => {
+  if (!data) return [];
 
-  if (!data) return []
+  var out: dataType[] = [{ label: "Aucun", value: String(0) }];
 
-  var out: dataType[] = [{ label: 'Aucun', value: String(0) }]
-
-  data.map(dt => {
+  data.map((dt) => {
     if (dt.active) {
-      out.push({ label: dt.name ?? '', value: String(dt.id) })
+      out.push({ label: dt.name ?? "", value: String(dt.id) });
     }
-  })
+  });
 
-  return out
+  return out;
+};
 
-}
+export default function Header({
+  setDate,
+  setUsingDate,
+  showDateFilter,
+  setProduct,
+  showProductFilter,
+  showTeamFilter,
+  setIdTeam,
+  name,
+  showMenu,
+  setShowMenu,
+  urlVideo,
+  closeTutorial,
+  setShowVideo,
+  showVideo,
+}: Props): JSX.Element {
+  const [patchClient] = usePatchClientMutation();
+  const { data: productData } = useGetProductQuery({ isHidden: false });
+  const { data: teamData } = useGetTeamMemberQuery({ isHidden: true });
+  const [isNavExpanded, setIsNavExpanded] = useState(false);
 
-export default function Header({ setDate, setUsingDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, name, showMenu, setShowMenu, urlVideo, closeTutorial, setShowVideo, showVideo }: Props): JSX.Element {
-
-  const [patchClient] = usePatchClientMutation()
-  const { data: productData } = useGetProductQuery({ isHidden: false })
-  const { data: teamData } = useGetTeamMemberQuery({ isHidden: true })
+  const NavExpanded = () => {
+    setIsNavExpanded(!isNavExpanded);
+    if (!isNavExpanded) {
+      setShowMenu(false);
+    }
+  };
 
   const handleTeamChange = ({ label, value }: dataType) => {
-
-    if (value === '') {
-      setIdTeam && setIdTeam(-1)
-      return
+    if (value === "") {
+      setIdTeam && setIdTeam(-1);
+      return;
     }
 
-    setIdTeam && setIdTeam(Number(value))
-  }
+    setIdTeam && setIdTeam(Number(value));
+  };
 
-  const RenitilizeStep = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault()
-    patchClient({ isBeginner: true }).unwrap()
-      .then(res => {
-        console.log(res)
-        window.location.reload()
+  const RenitilizeStep = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    patchClient({ isBeginner: true })
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
       })
-      .catch(err => console.warn(err))
-  }
+      .catch((err) => console.warn(err));
+  };
 
   const handleProductChange = ({ label, value }: dataType) => {
-    if (value === '') return
+    if (value === "") return;
 
-    setProduct && setProduct(value)
-  }
+    setProduct && setProduct(value);
+  };
 
   return (
     <>
-      <TutorialModal setIsVisible={setShowVideo} isOpen={showVideo} urlVideo={urlVideo} />
+      <TutorialModal
+        setIsVisible={setShowVideo}
+        isOpen={showVideo}
+        urlVideo={urlVideo}
+      />
       <div className="nav-header">
         <a href="/" className="brand-logo">
-          <img src="/cus_img/Group15.png" alt="logo" className="brand-title" width="124px" height="33px" />
+          <img
+            src="/cus_img/Group15.png"
+            alt="logo"
+            className="brand-title1"
+            width="124px"
+            height="33px"
+          />
+          <img
+            src="/cus_img/youscale.svg"
+            alt="logo"
+            className={showMenu ? "brand-title2" : "brand-title2 hidden"}
+            width="124px"
+            height="33px"
+          />
         </a>
-        <div
-          onClick={() => setShowMenu(!showMenu)}
-          className="nav-control"
-        >
+        <div onClick={() => setShowMenu(!showMenu)} className="nav-control">
           <div className={showMenu ? "hamburger is-active" : "hamburger"}>
             <span className="line" />
             <span className="line" />
@@ -121,10 +158,67 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
       <div className="header">
         <div className="header-content">
           <nav className="navbar navbar-expand">
+            <button
+              className="hamburger2"
+              onClick={() => {
+                NavExpanded();
+              }}
+            >
+              {/* icon from heroicons.com */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="black"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+
             <div className="collapse navbar-collapse justify-content-between">
               <div className="header-left">
                 <div className="dashboard_bar">{name}</div>
               </div>
+              <div
+                className={
+                  isNavExpanded ? "navigation-menu expanded" : "navigation-menu"
+                }
+              >
+                <ul className="navbar-nav header-right">
+                  <li className="nav-item" id="nav1">
+                    <a onClick={RenitilizeStep} href="#">
+                      Reprendre le tutoriel
+                    </a>
+                  </li>
+
+                  <li className="nav-item" id="nav2">
+                    {showProductFilter && (
+                      <Filter
+                        Icons={FiPackage}
+                        label={"Produit"}
+                        data={convertProduct(productData?.data)}
+                        onChange={handleProductChange}
+                      />
+                    )}
+                  </li>
+
+                  {GetRole() === "CLIENT" && (
+                    <li className="nav-item" id="nav3">
+                      {showTeamFilter && (
+                        <Filter
+                          Icons={FaUser}
+                          label={"Team member"}
+                          data={convertTeamMember(teamData?.data)}
+                          onChange={handleTeamChange}
+                        />
+                      )}
+                    </li>
+                  )}
+
               <ul className="navbar-nav header-right">
                 <li className="nav-item">
                   <a onClick={RenitilizeStep} href="#">Reprendre le tutoriel</a>
@@ -178,5 +272,5 @@ export default function Header({ setDate, setUsingDate, showDateFilter, setProdu
         </div>
       </div>
     </>
-  )
+  );
 }
