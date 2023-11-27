@@ -68,8 +68,9 @@ const Display = ({ elementRef, setTitle, data, onChange }: DisplayProps): JSX.El
   return (
     <div ref={elementRef} className={style.display}>
       <Items label={'Tout'} isChecked value='' />
-      {data.map((dt, key) =>
+      {data.map((dt, index) =>
         <Items
+          key={index}
           label={dt.label}
           setTitle={setTitle}
           value={dt.value}
