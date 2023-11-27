@@ -1,7 +1,7 @@
 import React from 'react'
 import AddSupportModal from '../../Modal/support/AddSupportModal'
 import { AiFillFilter } from 'react-icons/ai'
-import { Filter } from '../../Filter'
+import { SupportFilter } from '../../Filter/SupportFilter'
 import { Support } from '../../../models'
 import styles from './support.module.css'
 
@@ -39,7 +39,7 @@ export default function TableWrapper({ children, title, column, AddBtn, refetch,
             <div className="card">
                 <div className="card-header">
                     <SearchInput />
-                    <Filter
+                    <SupportFilter
                         Icons={AiFillFilter}
                         label={'Produit'}
                         data={[
