@@ -69,26 +69,24 @@ export default function ProductOrderCard({ title, index, setSelectedProduct, sel
         <div className={styles.productContainer}>
             <h5 className={styles.title}>{title}</h5>
             <div>
-                <p>
-                    <div className={styles.quantity}>
-                        <span>Quantité</span>
-                        <input
-                            min={1}
-                            onChange={handleChangeQuantity}
-                            defaultValue={dt.quantity || 1}
-                            type="number"
-                        />
-                    </div>
-                    <div className={styles.variant}>
-                        <span>Variant</span>
-                        <MultiSelectElement
-                            style={'confirmation'}
-                            options={dt.variant ? FormatVariantOption(dt.allVariant) : []}
-                            selected={FormatVariantOption(dt.variant)}
-                            onChange={handleChangeVariant}
-                        />
-                    </div>
-                </p>
+                <div className={styles.quantity}>
+                    <span>Quantité</span>
+                    <input
+                        min={1}
+                        onChange={handleChangeQuantity}
+                        defaultValue={dt.quantity || 1}
+                        type="number"
+                    />
+                </div>
+                <div className={styles.variant}>
+                    <span>Variant</span>
+                    <MultiSelectElement
+                        style={'confirmation'}
+                        options={dt.variant ? FormatVariantOption(dt.allVariant) : []}
+                        selected={FormatVariantOption(dt.variant)}
+                        onChange={handleChangeVariant}
+                    />
+                </div>
             </div>
         </div>
     )

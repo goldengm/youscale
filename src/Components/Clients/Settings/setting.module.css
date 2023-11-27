@@ -46,8 +46,7 @@
 }
 
 .statusContainer {
-    width: 1148px;
-    height: 480px;
+    width: -webkit-fill-available;
     border-radius: 15px;
     border: 1px solid var(--Gray1, rgba(17, 17, 17, 0.30));
     background: #FAFAFA;
@@ -69,6 +68,7 @@
     align-items: center;
     justify-content: space-between;
     width: 250px;
+    height: 50px;
 }
 
 .StatusRowTxt {
@@ -77,8 +77,7 @@
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 24px;
-    width: 90px;
+    width: 110px;
 }
 
 .saveStatusBottom {
@@ -87,8 +86,6 @@
 }
 
 .columnContainer {
-    width: 1148px;
-    height: 600px;
     flex-shrink: 0;
     border-radius: 15px;
     border: 1px solid var(--Gray1, rgba(17, 17, 17, 0.30));
@@ -127,7 +124,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 538px;
     height: 455px;
     border-radius: 15px;
     border: 1px solid var(--Gray1, rgba(17, 17, 17, 0.30));
@@ -174,8 +170,9 @@
 }
 
 .leftCity {
-    overflow: scroll;
-    height: 358px;
+    flex: 1;
+    overflow: auto;
+    max-height: 360px;
 }
 
 .leftCity::-webkit-scrollbar-track {
@@ -197,13 +194,9 @@
 }
 
 .table {
-    position: relative;
-    border-collapse: collapse;
-    width: 667px;
-    height: 358px;
-    margin-bottom: 20px;
+    width: 100%;
     border-radius: 25px;
-    background: #FFF;
+    background: #fff;
 }
 
 .table th {
@@ -216,7 +209,6 @@
     font-weight: 400;
     line-height: 24px;
     padding-left: 15px;
-    /* 150% */
 }
 
 .table th:first-child {
@@ -227,22 +219,21 @@
     border-radius: 0px 15px 0px 0px;
 }
 
-.table td {
+.table tr {
     color: #000;
     font-family: Poppins;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 24px;
-}
-
-.table tbody {
-    border: 1px solid var(--Gray1, rgba(17, 17, 17, 0.30));
+    border-bottom: 1px solid #ddd;
 }
 
 .cityContainer {
-    width: 1148px;
-    height: 471px;
+    display: flex;
+    flex-direction: column;
+    gap:16px;
+    width: -webkit-fill-available;
     flex-shrink: 0;
     border-radius: 15px;
     border: 1px solid var(--Gray1, rgba(17, 17, 17, 0.30));
@@ -252,11 +243,10 @@
 }
 
 .cityHeader {
-    height: 80px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    width: 500px;
+    gap: 20px;
+    justify-content: start;
 }
 
 .cityHeaderTitle {
@@ -271,16 +261,25 @@
 
 .citySearchContainer {
     display: flex;
-    width: 274px;
-    padding: 12.088px 97px 12.088px 16.118px;
+    padding: 12px;
     align-items: center;
-    gap: 8.059px;
+    gap: 8px;
     border-radius: 12.088px;
-    border: 0.806px solid rgba(0, 0, 0, 0.30);
+    border: 1px solid rgba(0, 0, 0, 0.30);
     background: #FFF;
 }
 
+@media (max-width:460px) {
+    .cityHeader {
+        flex-direction: column;
+    }
+    .citySearchContainer {
+        width: 100%
+    }
+}
+
 .citySearchContainer input {
+    width: 100%;
     color: rgba(0, 0, 0, 0.70);
     font-family: Poppins;
     font-size: 12.894px;
@@ -292,6 +291,7 @@
 
 .mainCity {
     display: flex;
+    flex-direction: row;
 }
 
 .addCityBtn {
@@ -313,7 +313,6 @@
 }
 
 .cityDesc {
-    width: 365px;
     color: #000;
     font-family: Poppins;
     font-size: 12px;
@@ -344,6 +343,17 @@
 .rightCity {
     display: flex;
     flex-direction: column;
+    gap: 10px;
     align-items: center;
     margin: 10px;
+    width: 400px;
+}
+
+@media (max-width:1200px) {
+    .mainCity {
+        flex-direction: column;
+    }
+    .rightCity {
+        width: 100%;
+    }
 }

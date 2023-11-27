@@ -24,7 +24,7 @@ export default function TableContainer({ column, handleCheckAll, children, dataL
                 dataLength={dataLength}
                 next={fetchData}
                 hasMore={true} // Replace with a condition based on your data source
-                loader={<h4>Loading...</h4>}
+                loader
                 height={450}
                 endMessage={
                   <p style={{ textAlign: "center" }}>
@@ -33,8 +33,12 @@ export default function TableContainer({ column, handleCheckAll, children, dataL
                 }
             >
                 <table className={style.table}>
-                    <Column column={column} handleCheckAll={handleCheckAll} />
-                    {children}
+                    <thead>
+                        <Column column={column} handleCheckAll={handleCheckAll} />
+                    </thead>
+                    <tbody>
+                        {children}
+                    </tbody>
                 </table>
             </InfiniteScroll>
         </div>

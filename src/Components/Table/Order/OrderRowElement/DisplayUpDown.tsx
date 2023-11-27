@@ -15,12 +15,13 @@ export default function DisplayUpDown({ onChange, currentData }: Props): JSX.Ele
 
   return (
     <select
+      value={currentData['Up/Downsell']}
       onChange={onChange}
       className="select-custum"
     >
 
       <option value={'Aucun'}>Aucun</option>
-      {Data.map((dt) => (<option selected={dt === currentData['Up/Downsell']} value={dt}>{dt}</option>))}
+      {Data.map((dt, index) => (<option key={index} value={dt}>{dt}</option>))}
     </select>
   )
 }
