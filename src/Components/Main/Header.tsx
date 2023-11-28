@@ -134,7 +134,7 @@ export default function Header({
           <img
             src="/cus_img/Group15.png"
             alt="logo"
-            className="brand-title1"
+            className={showMenu ? "brand-title1 hidden" : "brand-title1"}
             width="124px"
             height="33px"
           />
@@ -188,59 +188,28 @@ export default function Header({
                   isNavExpanded ? "navigation-menu expanded" : "navigation-menu"
                 }
               >
-                <ul className="navbar-nav header-right">
-                  <li className="nav-item" id="nav1">
-                    <a onClick={RenitilizeStep} href="#">
-                      Reprendre le tutoriel
-                    </a>
-                  </li>
-
-                  <li className="nav-item" id="nav2">
-                    {showProductFilter && (
-                      <Filter
-                        Icons={FiPackage}
-                        label={"Produit"}
-                        data={convertProduct(productData?.data)}
-                        onChange={handleProductChange}
-                      />
-                    )}
-                  </li>
-
-                  {GetRole() === "CLIENT" && (
-                    <li className="nav-item" id="nav3">
-                      {showTeamFilter && (
-                        <Filter
-                          Icons={FaUser}
-                          label={"Team member"}
-                          data={convertTeamMember(teamData?.data)}
-                          onChange={handleTeamChange}
-                        />
-                      )}
-                    </li>
-                  )}
-
               <ul className="navbar-nav header-right">
-                <li className="nav-item">
+                <li className="nav-item" id='nav1'>
                   <a onClick={RenitilizeStep} href="#">Reprendre le tutoriel</a>
                 </li>
 
-                <li className="nav-item">
+                <li className="nav-item" id='nav2'>
                   {showProductFilter && <Filter Icons={FiPackage} label={'Produit'} data={convertProduct(productData?.data)} onChange={handleProductChange} />}
                 </li>
 
                 {
                   GetRole() === "CLIENT" &&
-                  <li className="nav-item">
+                  <li className="nav-item" id='nav3'>
                     {showTeamFilter && <Filter Icons={FaUser} label={'Team member'} data={convertTeamMember(teamData?.data)} onChange={handleTeamChange} />}
                   </li>
                 }
 
 
-                <li className="nav-item">
+                <li className="nav-item" id='nav4'>
                   {showDateFilter && <CustumDateRangePicker setDate={setDate} setUsingDate={setUsingDate} />}
                 </li>
 
-                <li className="nav-item">
+                <li className="nav-item" id='nav5'>
                   <Link
                     to={'/pack'}
                     className="nav-link"
@@ -267,6 +236,7 @@ export default function Header({
                   </Link>
                 </li>
               </ul>
+              </div>
             </div>
           </nav>
         </div>

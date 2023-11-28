@@ -99,6 +99,9 @@
   .brand-title2.hidden {
     display: none;
   }
+  .brand-title1.hidden {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -109,7 +112,7 @@
 
 @media only screen and (max-width: 1024px) {
   .brand-title1 {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -124,5 +127,9 @@
 @media only screen and (max-width: 768px) {
   .brand-title2.hidden {
     display: block;
+  }
+
+  .brand-title1 {
+    display: none;
   }
 }
