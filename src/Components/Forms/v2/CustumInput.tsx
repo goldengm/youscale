@@ -22,8 +22,9 @@ export default function CustumInput({ label, placeholder, type, defaultValue = '
         <div className={styles.container}>
             <div className={styles.form}>
                 <label className={styles.label}>{label}</label>
-                <div>
+                <div style={{width:"50%"}}>
                     <input
+                    style={{width: "100%"}}
                         min={min || 0}
                         {...register(name)}
                         defaultValue={defaultValue}
