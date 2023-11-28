@@ -7,10 +7,10 @@
     right: 0;
     display: flex;
     background: rgba(119, 32, 225, 0.7);
-    padding: 5px 20px;
+    height: 34px;
+    padding: 5px 365px;
     justify-content: center;
     align-items: center;
-    /* text-wrap: nowrap; */
   }
 
 .announcement {
@@ -20,7 +20,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    /* flex: 1; */
+    flex: 1;
     text-align: center;
 }
 
@@ -35,5 +35,5 @@
 }
 
 .closeButton {
-    /* margin-left: auto; */
+    margin-left: auto;
 }

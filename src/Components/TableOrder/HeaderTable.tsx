@@ -6,7 +6,7 @@ import { CSVLink } from 'react-csv'
 import { BulkEditAgentModal } from '../Table/Modal/Order'
 import { GetRole } from '../../services/storageFunc'
 import style from './table.module.css'
-import { OrderFilter } from '../Filter/OrderFilter'
+import { Filter } from '../Filter'
 import { AiFillFilter } from 'react-icons/ai'
 
 var currentTeam = GetCurrTeamMember()
@@ -268,7 +268,7 @@ const StatusDropdown = ({ setOrderQueryData, refetch, _skip, setStatus, dataStat
     return (
         <div className="col-auto my-1">
             {
-                dataStatus && <OrderFilter Icons={AiFillFilter} label={`Tous les status (${getTotalStatus()})`} data={convertProduct(dataStatus?.countOrderByStatus)} onChange={handleChangeStatus} />
+                dataStatus && <Filter Icons={AiFillFilter} label={`Tous les status (${getTotalStatus()})`} data={convertProduct(dataStatus?.countOrderByStatus)} onChange={handleChangeStatus} />
             }
         </div>
     )

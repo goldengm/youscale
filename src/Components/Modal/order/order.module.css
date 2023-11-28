@@ -67,14 +67,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 490px;
     height: 936px;
     margin: 10px;
-}
-
-@media only screen and (min-width: 768px){
-    .main {
-        width: 490px;
-    }
 }
 
 .title {
@@ -137,6 +132,7 @@
 }
 
 .productLayout {
+    width: 437px;
     height: auto;
     border-radius: 15px;
     border: 1px solid rgba(17, 17, 17, 0.10);

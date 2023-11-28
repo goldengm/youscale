@@ -225,7 +225,7 @@ const FormBody = ({ refetch }: FormBodyProps) => {
     }
 
     return (
-        <div className="card-body" style={{width: '100%'}}>
+        <div className="card-body">
             <div className="basic-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">

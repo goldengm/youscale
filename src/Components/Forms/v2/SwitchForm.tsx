@@ -13,7 +13,7 @@ export default function SwitchForm({ label, active, SwitchHideProduct }: Props):
         <div className={styles.container}>
             <div className={styles.form}>
                 <label className={styles.label}>{label}</label>
-                <div style={{width: "50%"}}>
+                <div>
                     <Switch
                         active={active}
                         SwitchHideProduct={SwitchHideProduct}
