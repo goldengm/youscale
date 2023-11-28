@@ -25,7 +25,7 @@ export default function CustumSelectForm({ label, name, register, error, data, O
                     name={name}
                     className={styles.select}
                 >
-                    {data.map((dt) => <option selected={String(defaultSelected) === String(dt.value)} value={dt.value}>{dt.label}</option>)}
+                    {data.map((dt, index) => <option key={index} value={dt.value}>{dt.label}</option>)}
                 </select>
             </div>
             {error && <p className='error'>{error.message}</p>}

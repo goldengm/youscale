@@ -200,7 +200,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Order_id') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     {order?.SheetId ?? row[formatDtName]}
                                     <AiFillEye
                                         onClick={() => setShowHistoryModal(true)}
@@ -212,7 +212,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Telephone') {
                             return (
-                                <td className={style.tdWhatsapp}>
+                                <td key={dt.id} className={style.tdWhatsapp}>
                                     <img src="/svg/order/whatsapp.png" alt="whatsapp" onClick={() => handleClick('+212' + row[formatDtName])} />
                                     {order?.telDuplicate && <BsTelephoneXFill size={11} color={'red'} />}
                                     <a href={`tel:+212${row[formatDtName]}`}>
@@ -225,7 +225,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Agent') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     <DisplayTeamMember
                                         onChange={handleChangeTeam}
                                         data={dataTeamMember?.data}
@@ -237,7 +237,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Up/Downsell') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     <DisplayUpDown
                                         onChange={handleChangeUpDown}
                                         currentData={row}
@@ -248,7 +248,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Source') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     <DisplaySource
                                         onChange={handleChangeSource}
                                         currentData={row}
@@ -259,7 +259,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Changer') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     <DisplayChangeOuvrir
                                         name='changer'
                                         onChange={handleChangeChanger}
@@ -271,7 +271,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Ouvrir') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     <DisplayChangeOuvrir
                                         name='ouvrir'
                                         onChange={handleChangeOuvrir}
@@ -283,7 +283,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Ville') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     <CustumDropdown refetch={refetch} options={FormatCity(dataCity ? dataCity.data : [])} name='id_city' data={dataCity ? dataCity.data : []} order={order && order} />
                                 </td>
                             )
@@ -291,7 +291,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Status') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     <div className={`${style.tdStatus} tooltip-order`}>
                                         <DisplayStatus
                                             currentData={row}
@@ -315,7 +315,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Commentaire') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     <div onClick={() => setShowCommentModal(true)} className="tooltip-order"><BiMessageRoundedDetail
                                         size={30}
                                         data-bs-container="body"
@@ -334,7 +334,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Produit') {
                             return (
-                                <td>
+                                <td key={dt.id}>
                                     <a
                                         style={{ color: 'black' }}
                                         onClick={() => onShowProductEdit()}
@@ -350,9 +350,9 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
                             )
                         }
 
-                        if (formatDtName === 'Date') return <td>{row['Date']}</td>
+                        if (formatDtName === 'Date') return <td key={dt.id}>{row['Date']}</td>
 
-                        return <td className={style.defaultRow} onClick={() => onEdit()}>
+                        return <td key={dt.id} className={style.defaultRow} onClick={() => onEdit()}>
                             <p> {row[formatDtName]}</p>
                             <CiEdit color={'black'} size={18} />
                         </td>

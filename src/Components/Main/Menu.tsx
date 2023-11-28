@@ -94,7 +94,6 @@ export default function Menu(): JSX.Element {
           <li className="dropdown header-profile">
             <a
               className="nav-link"
-              href="javascript:void(0);"
               role="button"
               data-bs-toggle="dropdown"
             >

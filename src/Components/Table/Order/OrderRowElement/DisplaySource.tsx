@@ -17,11 +17,12 @@ export default function DisplaySource({ currentData, onChange }: Props): JSX.Ele
 
   return (
     <select
+      value={currentData.Source}
       onChange={onChange}
       className="select-custum"
     >
       <option value={0}>Aucun</option>
-      {sourceData.map((dt) => (<option selected={dt === currentData.Source} value={dt}>{dt}</option>))}
+      {sourceData.map((dt, index) => (<option key={index} value={dt}>{dt}</option>))}
     </select>
   )
 }

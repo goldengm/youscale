@@ -19,7 +19,7 @@ interface Props {
   data?: dataType[]
   onChange: ({ label, value }: dataType) => void
 }
-export const Filter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
+export const SupportFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
   const [title, setTitle] = useState<string>(label)
   const [display, setIsDisplay] = useState<boolean>(false)
 
@@ -27,6 +27,7 @@ export const Filter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props):
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      console.log(elementRef)
       if (elementRef.current && !elementRef.current.contains(event.target as Node)) {
         setIsDisplay(false);
       }
@@ -40,8 +41,8 @@ export const Filter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props):
 
   return (
     <div>
-      <div className={style.filterContainer}>
-        <div onClick={e => setIsDisplay(!display)} className={style.filter}>
+      <div className={style.supportFilterContainer}>
+        <div onClick={e => setIsDisplay(!display)} className={style.supportFilter}>
           <Icons size={20} className={style.logo} />
           <p>{title}</p>
         </div>
@@ -68,9 +69,8 @@ const Display = ({ elementRef, setTitle, data, onChange }: DisplayProps): JSX.El
   return (
     <div ref={elementRef} className={style.display}>
       <Items label={'Tout'} isChecked value='' />
-      {data.map((dt, index) =>
+      {data.map((dt, key) =>
         <Items
-          key={index}
           label={dt.label}
           setTitle={setTitle}
           value={dt.value}

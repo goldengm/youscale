@@ -33,7 +33,7 @@ export default function BottomTable({ setStatus, dataStatus, setOrderQueryData, 
     return (
         <div className={style.bottomTable}>
             <div ref={displayElemRef} className={style.displayStatus}>
-                {dataStatus?.data.map(dt => dt.checked && <StatusItems name={dt.name} setOrderQueryData={setOrderQueryData} refetch={refetch} setStatus={setStatus} borderColor={dt.color || 'transparent'} />)}
+                {dataStatus?.data.map((dt, index) => dt.checked && <StatusItems key={index} name={dt.name} setOrderQueryData={setOrderQueryData} refetch={refetch} setStatus={setStatus} borderColor={dt.color || 'transparent'} />)}
             </div>
             <div className={style.statusControls}>
                 <img src="/svg/order/prev_table.svg" alt="prev_table" />

@@ -7,7 +7,7 @@ import { useGetStatusQuery, usePatchStatusMutation } from '../../../services/api
 import { CityModel, ColumnModel, ColumnPatchModel, ErrorModel, StatusModel } from '../../../models';
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api/ClientApi/ClientColumnApi';
 import { useGetCityQuery } from '../../../services/api/ClientApi/ClientCityApi';
-import { CLIENT_UPLOAD_CITY_URL } from '../../../services/url/API_URL';
+import { CLIENT_STATUS_URL, CLIENT_UPLOAD_CITY_URL } from '../../../services/url/API_URL';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
@@ -96,17 +96,39 @@ interface StatusProps {
 }
 const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProps): JSX.Element => {
 
+    const handleSubmit = () => {
+        const token = localStorage.getItem('token')
+
+        axios.patch(CLIENT_STATUS_URL, {statusData}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                console.log(res)
+                refetchStatus()
+            })
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                if (err.data) {
+                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                    else if ('message' in err.data) showToastError(err.data.message);
+                }
+            })
+    }
+
     return (
         <div className={styles.statusContainer}>
             <p className={styles.statusTitle}>Status</p>
-            <div className="row">
-                {statusData && statusData.map(dt => <StatusRow dt={dt} refetch={refetchStatus} />)}
+            <div className="row" style={{paddingLeft: "20px", paddingRight: "20px"}}>
+                {statusData && statusData.map(dt => <StatusRow key={dt.id} dt={dt} refetch={refetchStatus} />)}
             </div>
 
             <div className={styles.saveStatusBottom}>
                 <button
                     type="button"
                     className={styles.apiBtn}
+                    onClick={handleSubmit}
                 >
                     Enregistrer
                 </button>
@@ -129,6 +151,7 @@ const StatusRow = ({ dt, refetch }: StatusRowProps): JSX.Element => {
         patchStatus(data).unwrap()
             .then(res => {
                 console.log(res)
+                refetch()
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -136,8 +159,6 @@ const StatusRow = ({ dt, refetch }: StatusRowProps): JSX.Element => {
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
-
-        refetch()
     }
 
     const handleChangeColor = (color: string) => {
@@ -147,6 +168,7 @@ const StatusRow = ({ dt, refetch }: StatusRowProps): JSX.Element => {
         patchStatus(data).unwrap()
             .then(res => {
                 console.log(res)
+                refetch()
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -154,13 +176,11 @@ const StatusRow = ({ dt, refetch }: StatusRowProps): JSX.Element => {
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
-
-        refetch()
     }
 
     return (
         <div className={styles.StatusRow}>
-            <p className={styles.StatusRowTxt}>{dt.name}</p>
+            <span className={styles.StatusRowTxt}>{dt.name}</span>
             <ColorPicker color={dt.color} handleChangeColor={handleChangeColor} />
 
             <Switch
@@ -242,7 +262,7 @@ const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Elemen
     })
 
     return (
-        <div className={styles.columnContainer}>
+        <div className={styles.columnContainer} style={{width: '-webkit-fill-available'}}>
             <p className={styles.columnTitle}>Colonnes de commandes</p>
             <div className="row">
                 <Column data={objData.active} className={'active-column'} title='Colonnes actives' />
