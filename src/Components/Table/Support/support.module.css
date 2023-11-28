@@ -11,6 +11,12 @@
     background: #FFF;
 }
 
+@media only screen and (max-width: 444px) {
+    .searchContainer {
+        width: 100%;
+    }    
+}
+
 .searchContainer input {
     border: none;
     outline: none;
@@ -38,6 +44,12 @@
     font-style: normal;
     font-weight: 500;
     line-height: 25.756px;
+}
+
+@media only screen and (max-width: 600px) and (min-width: 444px){
+    .createTicketBtn {
+        width: 100%;
+    }
 }
 
 .createTicketBtn img {

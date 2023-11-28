@@ -4,14 +4,53 @@
     position: relative;
 }
 
+.supportFilterContainer {
+    position: relative;
+}
+
+.orderFilterContainer {
+    position: relative;
+}
+
 .filter {
     display: flex;
+    padding-left: 24px;
+    padding-right: 24px;
     justify-content: center;
     align-items: center;
+    gap: 12px;
     border-radius: 15px;
     border: 1px solid rgba(0, 0, 0, 0.30);
     background: #FFF;
-    width: 215px;
+    width: max-content;
+    height: 50px;
+}
+
+.supportFilter {
+    display: flex;
+    padding-left: 24px;
+    padding-right: 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+    width: max-content;
+    height: 50px;
+}
+
+.orderFilter {
+    display: flex;
+    padding-left: 24px;
+    padding-right: 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+    width: max-content;
     height: 50px;
 }
 
@@ -23,11 +62,35 @@
     margin: 0;
 }
 
+.supportFilter p {
+    color: rgba(0, 0, 0, 0.70);
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.orderFilter p {
+    color: rgba(0, 0, 0, 0.70);
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+}
+
 .logo {
-    margin-right: 20px;
+    /* margin-right: 12px; */
 }
 
 .filterContainer:hover {
+    cursor: pointer;
+}
+
+.supportFilterContainer:hover {
+    cursor: pointer;
+}
+
+.orderFilterContainer:hover {
     cursor: pointer;
 }
 
@@ -103,4 +166,34 @@
     background-position: center;
     background-image: url('/public/checked.svg');
     margin: 1px;
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 920px){
+    .filter p {
+        display: none; 
+    } 
+}
+
+@media only screen and (max-width: 870px){
+    .supportFilter p {
+        display: none; 
+    } 
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 510px){
+    .orderFilter p {
+        display: none; 
+    } 
+}
+
+@media only screen and (max-width: 510px) {
+    .orderFilter {
+        width: 250px;
+    }
+}
+
+@media only screen and (max-width: 920px) {
+    .filter {
+        width: 270px;
+    }
 }

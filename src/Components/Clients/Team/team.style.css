@@ -79,9 +79,24 @@ input:checked+.slider:before {
     cursor: pointer;
 }
 
-@media (min-width: 1200px){
-    .col-xl-custum {
+
+.col-xl-custum {
+    width: 100%;
+}
+
+@media only screen and (max-width:1200px) {
+    .col-lg-7 {
+        width: 100%;
+    }
+    .col-lg-6 {
         width: 100% !important;
+    }
+}
+
+@media only screen and (max-width:600px) {
+    .card-header {
+        flex-wrap: wrap;
+        gap: 12px;
     }
 }
 
