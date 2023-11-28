@@ -70,6 +70,7 @@ const EditOrderModal: React.FC<Props> = ({ setIsVisible, refetch, driverObj, id_
                         refetch={refetch}
                         dataEdit={dataEdit}
                         id_order={id_order}
+                        handleClose={handleClose} 
                     />
                 </div>
             </div>
@@ -81,9 +82,10 @@ interface FormBodyProps {
     id_order: string
     dataEdit: GetClientOrderModel
     refetch: () => any
+    handleClose: () => any
 }
 
-const FormBody = ({ refetch, id_order, dataEdit }: FormBodyProps) => {
+const FormBody = ({ refetch, handleClose, id_order, dataEdit }: FormBodyProps) => {
 
     const [patchOrder, { isLoading }] = usePatchClientOrderMutation()
 
@@ -143,6 +145,7 @@ const FormBody = ({ refetch, id_order, dataEdit }: FormBodyProps) => {
             .then(res => {
                 console.log(res)
                 refetch()
+                handleClose()
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -259,7 +262,7 @@ const FormBody = ({ refetch, id_order, dataEdit }: FormBodyProps) => {
                                 <button type="submit" className={styles.saveBtn}>
                                     Enregistrer
                                 </button>
-                                <a href="#" className={styles.NextBtn}>
+                                <a href="#" onClick={handleClose} className={styles.NextBtn}>
                                     Fermer
                                 </a>
                             </div>

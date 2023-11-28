@@ -132,6 +132,7 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
                 }
             })
         }
+        handleCloseModal()
     }
 
     const onDeleteSheet = () =>{

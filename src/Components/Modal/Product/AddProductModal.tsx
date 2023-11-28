@@ -123,7 +123,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
                                 <button type="submit" className={styles.saveBtn}>
                                     Enregistrer
                                 </button>
-                                <a href="#" className={styles.NextBtn}>
+                                <a href="#" onClick={handleClose} className={styles.NextBtn}>
                                     Fermer
                                 </a>
                             </div>

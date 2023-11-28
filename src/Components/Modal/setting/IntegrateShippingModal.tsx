@@ -34,6 +34,7 @@ export default function IntegrateShippingModal({ setIsVisible, driverObj }: Prop
             patchClient({ livoToken }).unwrap().then((result: any) => {
                 showToastSucces('Token ajouté')
                 refetchUser()
+                handleClose()
             }).catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);

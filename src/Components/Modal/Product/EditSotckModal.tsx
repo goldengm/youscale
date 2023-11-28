@@ -131,7 +131,7 @@ const FormBody = ({ refetch, item, handleClose }: FormBodyProps) => {
                                 <button type="submit" className={styles.saveBtn}>
                                     Modifier
                                 </button>
-                                <a href="#" className={styles.NextBtn}>
+                                <a href="#" onClick={handleClose} className={styles.NextBtn}>
                                     Fermer
                                 </a>
                             </div>

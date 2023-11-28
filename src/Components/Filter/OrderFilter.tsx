@@ -52,6 +52,7 @@ export const OrderFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Pr
             elementRef={elementRef}
             setTitle={setTitle}
             data={data}
+            label={title}
           />}
       </div>
     </div>
@@ -63,15 +64,21 @@ interface DisplayProps {
   setTitle: React.Dispatch<React.SetStateAction<string>>
   data: dataType[]
   onChange: ({ label, value }: dataType) => void
+  label:string
 }
-const Display = ({ elementRef, setTitle, data, onChange }: DisplayProps): JSX.Element => {
+const Display = ({ elementRef, setTitle, data, onChange, label }: DisplayProps): JSX.Element => {
 
   return (
     <div ref={elementRef} className={style.display}>
-      <Items label={'Tout'} isChecked value='' />
+      <Items
+        label={'Tout'}
+        isChecked={label=='Produit'}
+        setTitle={setTitle}
+        value='' />
       {data.map((dt, key) =>
         <Items
           label={dt.label}
+          isChecked={label==dt.label || label=='Produit'}
           setTitle={setTitle}
           value={dt.value}
           onChange={onChange}
@@ -96,7 +103,11 @@ const Items = ({ isChecked, label, setTitle, onChange, value }: ItemsProps): JSX
     for (const elem of element) elem.classList.remove(style.checked)
 
     e.currentTarget.classList.add(style.checked)
-    setTitle && setTitle(label)
+    if (label == "Tout") {
+      setTitle && setTitle("Produit")
+    } else {
+      setTitle && setTitle(label)
+    }
     onChange && onChange({ label, value })
   }
 

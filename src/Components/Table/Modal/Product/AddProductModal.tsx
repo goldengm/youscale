@@ -109,6 +109,7 @@ const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) =>
                 handleCloseModal()
             })
             .catch((err: { data: ErrorModel, status: number }) => showToastError(err.data.errors[0].msg))
+        handleCloseModal()
     }
 
     return (

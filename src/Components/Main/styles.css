@@ -9,6 +9,10 @@
   padding: 4px;
 }
 
+.nav-item {
+  align-self: center;
+}
+
 .navigation-menu {
   margin-left: auto;
 }
