@@ -68,6 +68,7 @@ export default function IntegrateSheetModal({ setIsVisible, driverObj }: Props):
                 if (i < keys.length - 1) {
                     await delay(2000);
                 }
+            handleClose()
             } catch (err) {
                 console.log(err);
             }

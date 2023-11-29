@@ -75,6 +75,7 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
+        handleClose()
     }
 
     return (
@@ -124,7 +125,7 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
                                 Ajouter
                             </button>
 
-                            <a href='#' className={styles.closeBtn}>
+                            <a href='#' onClick={handleClose} className={styles.closeBtn}>
                                 Fermer
                             </a>
                         </div>
