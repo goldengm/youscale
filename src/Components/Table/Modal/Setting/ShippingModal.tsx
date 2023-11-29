@@ -76,6 +76,7 @@ const FormBody = ({ handleCloseModal }: FormBodyProps) => {
     const { data: dataColumn, refetch: refetchColumn } = useGetColumnQuery()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

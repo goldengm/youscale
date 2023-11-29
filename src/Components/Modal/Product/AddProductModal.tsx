@@ -66,7 +66,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
 
     const [addProd, { isLoading }] = useAddProductMutation()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 

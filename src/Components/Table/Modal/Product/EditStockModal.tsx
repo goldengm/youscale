@@ -97,6 +97,7 @@ const FormBody = ({ item, handleCloseModal, refetch }: FormBodyProps) => {
   const { data: productData } = useGetProductQuery({ isHidden: false })
 
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    // @ts-ignore
     resolver: yupResolver(schema),
   });
 

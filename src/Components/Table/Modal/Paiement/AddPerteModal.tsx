@@ -40,7 +40,7 @@ const FormatDataOption = (data: GetProductModel[] | undefined) => {
     var objArr: { label: string, value: string }[] = []
 
     for (let i = 0; i < data.length; i++) {
-        if (!data[i].isDeleted)
+        if (!data[i].isDeleted && data[i].variant.length == 0)
             objArr.push({ label: data[i].name, value: String(data[i].id) })
     }
 
@@ -116,6 +116,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
     const { data: productData } = useGetProductQuery({ isHidden: false })
 
     const { register, handleSubmit, formState: { errors }, getValues } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

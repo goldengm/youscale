@@ -82,6 +82,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders }: FormBodyProps) => {
     const { data: dataTeamMember } = useGetTeamMemberQuery({ isHidden: true })
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

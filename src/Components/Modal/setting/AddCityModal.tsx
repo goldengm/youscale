@@ -58,6 +58,7 @@ export default function AddCityModal({ setIsVisible, driverObj, refetch }: Props
     const [addCity] = useAddCityMutation()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

@@ -19,8 +19,8 @@ interface Props {
   data?: dataType[]
   onChange: ({ label, value }: dataType) => void
 }
-export const Filter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
-  const [defaultLabel, setdefaultLabel] =  useState<string>(label)
+export const CommandeFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
+  const [defaultLabel, setDefaultLabel] =  useState<string>(label)
   const [title, setTitle] = useState<string>(label)
   const [display, setIsDisplay] = useState<boolean>(false)
 
@@ -28,6 +28,7 @@ export const Filter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props):
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      console.log(elementRef)
       if (elementRef.current && !elementRef.current.contains(event.target as Node)) {
         setIsDisplay(false);
       }
@@ -41,8 +42,8 @@ export const Filter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props):
 
   return (
     <div>
-      <div className={style.filterContainer}>
-        <div onClick={e => setIsDisplay(!display)} className={style.filter}>
+      <div className={style.commandesFilterContainer}>
+        <div onClick={e => setIsDisplay(!display)} className={style.commandesFilter}>
           <Icons size={20} className={style.logo} />
           <p>{title}</p>
         </div>
@@ -66,10 +67,9 @@ interface DisplayProps {
   data: dataType[]
   defaultLabel: string
   onChange: ({ label, value }: dataType) => void
-  label: string
+  label:string
 }
 const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: DisplayProps): JSX.Element => {
-
 
   return (
     <div ref={elementRef} className={style.display}>
@@ -79,9 +79,8 @@ const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: 
         defaultLabel= {defaultLabel}
         setTitle={setTitle}
         value='' />
-      {data.map((dt, index) =>
+      {data.map((dt, key) =>
         <Items
-          key={index}
           label={dt.label}
           isChecked={label==dt.label || label== defaultLabel}
           defaultLabel= {defaultLabel}
@@ -107,7 +106,7 @@ const Items = ({ isChecked, label, setTitle, defaultLabel, onChange, value }: It
     e.preventDefault()
     const element = document.querySelectorAll(`.${style.items}`)
 
-    // for (const elem of element) elem.classList.remove(style.checked)
+    for (const elem of element) elem.classList.remove(style.checked)
 
     e.currentTarget.classList.add(style.checked)
     if (label == "Tout") {
@@ -115,7 +114,6 @@ const Items = ({ isChecked, label, setTitle, defaultLabel, onChange, value }: It
     } else {
       setTitle && setTitle(label)
     }
-    
     onChange && onChange({ label, value })
   }
 

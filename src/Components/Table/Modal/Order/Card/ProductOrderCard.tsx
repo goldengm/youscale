@@ -31,7 +31,6 @@ interface Props {
     }
 }
 export default function ProductOrderCard({ title, index, setSelectedProduct, selectedProduct, dt }: Props): JSX.Element {
-
     const handleChangeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newSelectedProduct = [...selectedProduct]
         newSelectedProduct[index].quantity = parseInt(e.target.value)

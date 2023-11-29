@@ -32,10 +32,9 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
     var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
 
     for (let i = 0; i < data.length; i++) {
-      if(!data[i].isDeleted)
-        objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
+      if(!data[i].isDeleted && data[i].variant.length == 0)
+          objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
     }
-
     return objArr
   }
 
@@ -53,10 +52,10 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
   const [selectedProduct, setSelectedProduct] = useState<selectedProductModel[]>([]);
 
   useEffect(() => {
-    setSelectedProduct((editData) ? editData?.map((dt) => {
-      return { label: dt.Product.name, value: dt.Product.id ? String(dt.Product.id) : '', quantity: dt.quantity, variant: dt.variant, allVariant: dt.Product.variant }
-    }) : [])
-  }, [])
+    setSelectedProduct((editData) ? editData?.filter(dt => dt.Product.variant?.length === 0).map((dt) => {
+      return { label: dt.Product.name, value: dt.Product.id ? String(dt.Product.id) : '', quantity: dt.quantity, variant: dt.variant, allVariant: dt.Product.variant };
+    }) : []);
+  }, []);
   
 
   useEffect(() => {

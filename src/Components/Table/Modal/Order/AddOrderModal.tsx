@@ -144,6 +144,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
   const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({})
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({
+    // @ts-ignore
     resolver: yupResolver(schema),
   });
 
@@ -178,7 +179,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
     var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
 
     for (let i = 0; i < data.length; i++) {
-      if (!data[i].isDeleted)
+      if (!data[i].isDeleted && data[i].variant.length == 0)
         objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
     }
 

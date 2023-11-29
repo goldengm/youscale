@@ -252,7 +252,7 @@ const ItemSheet = ({ data, refetch }: ItemSheetProps) => {
     const [patchSheet] = usePatchSheetMutation();
     const [deleteSheet] = useDeleteSheetMutation();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 

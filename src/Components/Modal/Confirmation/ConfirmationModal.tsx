@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './confirmation.module.css';
 import { AiFillFilter } from 'react-icons/ai'
-import { Filter } from '../../Filter';
+import { CommandeFilter } from '../../Filter/CommandeFilter';
 import { useGetStatusQuery } from '../../../services/api/ClientApi/ClientStatusApi';
 import { useGetClientOrderByIdQuery, usePatchClientOrderMutation } from '../../../services/api/ClientApi/ClientOrderApi';
 import { CityModel, ErrorModel, GetClientOrderModel, GetProductModel, OrderOnlyModel, ProductOrder, StatusModel, countOrderByStatusModel } from '../../../models';
@@ -31,31 +31,35 @@ interface GetStatusModel {
     countOrderByStatus: countOrderByStatusModel[];
 }
 
-type Inputs = {
-    nom: string,
-    telephone: string,
-    prix: string,
-    adresse: string,
-    message: string,
-    status: string,
-    source: string,
-    updownsell: string,
-    changer: string,
-    ouvrir: string
+interface Inputs {
+    nom: string;
+    telephone: string;
+    prix: string;
+    adresse: string;
+    message: string;
+    status: string;
+    source: string;
+    updownsell: string;
+    changer: string;
+    ouvrir: string;
 };
 
-const schema = yup.object().shape({
-    nom: yup.string().notRequired(),
-    telephone: yup.string().notRequired(),
-    prix: yup.string().notRequired(),
-    adresse: yup.string().notRequired(),
-    message: yup.string().notRequired(),
-    status: yup.string().notRequired(),
-    source: yup.string().notRequired(),
-    updownsell: yup.string().notRequired(),
-    changer: yup.string().notRequired(),
-    ouvrir: yup.string().notRequired(),
-}).required();
+type SchemaObject = {
+    [key in keyof Inputs]: yup.Schema<any>
+  }
+  
+  const schema = yup.object().shape({
+    nom: yup.string(),
+    telephone: yup.string(),
+    prix: yup.string(),
+    adresse: yup.string(),
+    message: yup.string(),
+    status: yup.string(),
+    source: yup.string(),
+    updownsell: yup.string(),
+    changer: yup.string(),
+    ouvrir: yup.string(),
+});
 
 
 const FilterStatusData = (data: StatusModel[] | undefined): dataType[] => {
@@ -135,7 +139,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({ id_orders, isOpen, setIsVisib
                                         <p>{currentOrder.order[0].id}</p>
                                     </div>
                                 </div>
-                                <Filter Icons={AiFillFilter} data={FilterStatusWithOrder(StatusData?.countOrderByStatus)} onChange={OnChangeStatus} label={'Tous les status'} />
+                                <CommandeFilter Icons={AiFillFilter} data={FilterStatusWithOrder(StatusData?.countOrderByStatus)} onChange={OnChangeStatus} label={'Tous les status'} />
                             </div>
 
                             <ProductLayout refetch={refetch} id={id_orders[index]} editData={currentOrder.order[0].Product_Orders} />
@@ -147,6 +151,13 @@ const ConfirmationModal: React.FC<ModalProps> = ({ id_orders, isOpen, setIsVisib
                     <div className={styles.modalContent}>
                         <div className={styles.main}>
                             <p>Veuillez patienter vos informations se charge...</p>
+                            <div className={styles.bottomAction} style={{ justifyContent: "space-between", flexDirection: "row-reverse" }}>
+                                <a href="#"
+                                    onClick={handleClose}
+                                    className={styles.NextBtn} >
+                                    Fermer
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -175,7 +186,7 @@ const ProductLayout = ({ editData, refetch, id }: ProductLayoutProps): JSX.Eleme
         var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
 
         for (let i = 0; i < data.length; i++) {
-            if (!data[i].isDeleted)
+            if (!data[i].isDeleted && data[i].variant.length == 0)
                 objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
         }
 
@@ -196,7 +207,7 @@ const ProductLayout = ({ editData, refetch, id }: ProductLayoutProps): JSX.Eleme
     const [selectedProduct, setSelectedProduct] = useState<selectedProductModel[]>([]);
 
     useEffect(() => {
-        setSelectedProduct((editData) ? editData?.map((dt) => {
+        setSelectedProduct((editData) ? editData?.filter(dt => dt.Product.variant?.length === 0).map((dt) => {
             return { label: dt.Product.name, value: dt.Product.id ? String(dt.Product.id) : '', quantity: dt.quantity, variant: dt.variant, allVariant: dt.Product.variant }
         }) : [])
     }, [])
@@ -277,7 +288,7 @@ interface FormBodyProps {
         data: GetClientOrderModel
         order: OrderOnlyModel[]
     }
-}
+}   
 
 const FormBody = ({ refetch, id_orders, setIndex, index, currentOrder, StatusData, RefetchStatus }: FormBodyProps) => {
 
@@ -286,6 +297,7 @@ const FormBody = ({ refetch, id_orders, setIndex, index, currentOrder, StatusDat
     const [patchOrder, { isLoading }] = usePatchClientOrderMutation()
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

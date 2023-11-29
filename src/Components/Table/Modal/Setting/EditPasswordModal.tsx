@@ -70,7 +70,7 @@ interface FormBodyProps {
 const FormBody = ({ handleCloseModal }: FormBodyProps) => {
     const [resetClientPassword, { data, isLoading, error, isSuccess }] = useResetClientPasswordMutation();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 

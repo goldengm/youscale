@@ -213,6 +213,7 @@ const FormBody = ({ refetch, handleClose, dataEdit }: FormBodyProps) => {
     const { data: PageData } = useGetPageQuery()
 
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 
