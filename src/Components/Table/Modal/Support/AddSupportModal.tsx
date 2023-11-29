@@ -75,6 +75,7 @@ interface FormBodyProps {
 const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) => {
 
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

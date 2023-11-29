@@ -99,6 +99,7 @@ const FormBody = ({ item, refetch, handleCloseModal }: FormBodyProps) => {
     const { data: variantData } = useGetVariantQuery()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

@@ -108,6 +108,7 @@ const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProp
             .then(res => {
                 console.log(res)
                 refetchStatus()
+                showToastSucces(`enregistré avec succès`)
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -438,6 +439,7 @@ const ConfSetting = ({ setShowEditPasswordModal }: ConfSettingProps): JSX.Elemen
     const [patchSetting] = usePatchSettingMutation()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

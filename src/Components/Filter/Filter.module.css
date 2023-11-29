@@ -26,6 +26,20 @@
     height: 50px;
 }
 
+.commandesFilter {
+    display: flex;
+    padding-left: 24px;
+    padding-right: 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+    width: max-content;
+    height: 50px;
+}
+
 .supportFilter {
     display: flex;
     padding-left: 24px;
@@ -62,6 +76,14 @@
     margin: 0;
 }
 
+.commandesFilter p {
+    color: rgba(0, 0, 0, 0.70);
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+}
+
 .supportFilter p {
     color: rgba(0, 0, 0, 0.70);
     font-family: Poppins;
@@ -83,6 +105,10 @@
 }
 
 .filterContainer:hover {
+    cursor: pointer;
+}
+
+.commandesFilterContainer {
     cursor: pointer;
 }
 
@@ -195,5 +221,11 @@
 @media only screen and (max-width: 920px) {
     .filter {
         width: 270px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .commandesFilter p {
+        display: none;
     }
 }

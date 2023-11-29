@@ -20,6 +20,7 @@ interface Props {
   onChange: ({ label, value }: dataType) => void
 }
 export const OrderFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
+  const [defaultLabel, setDefaultLabel] =  useState<string>(label)
   const [title, setTitle] = useState<string>(label)
   const [display, setIsDisplay] = useState<boolean>(false)
 
@@ -50,6 +51,7 @@ export const OrderFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Pr
           <Display
             onChange={onChange}
             elementRef={elementRef}
+            defaultLabel={defaultLabel}
             setTitle={setTitle}
             data={data}
             label={title}
@@ -63,22 +65,25 @@ interface DisplayProps {
   elementRef: React.RefObject<HTMLDivElement>
   setTitle: React.Dispatch<React.SetStateAction<string>>
   data: dataType[]
+  defaultLabel: string
   onChange: ({ label, value }: dataType) => void
   label:string
 }
-const Display = ({ elementRef, setTitle, data, onChange, label }: DisplayProps): JSX.Element => {
+const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: DisplayProps): JSX.Element => {
 
   return (
     <div ref={elementRef} className={style.display}>
       <Items
         label={'Tout'}
-        isChecked={label=='Produit'}
+        isChecked={label==defaultLabel}
+        defaultLabel= {defaultLabel}
         setTitle={setTitle}
         value='' />
       {data.map((dt, key) =>
         <Items
           label={dt.label}
-          isChecked={label==dt.label || label=='Produit'}
+          isChecked={label==dt.label || label== defaultLabel}
+          defaultLabel= {defaultLabel}
           setTitle={setTitle}
           value={dt.value}
           onChange={onChange}
@@ -91,10 +96,11 @@ interface ItemsProps {
   isChecked?: boolean
   setTitle?: React.Dispatch<React.SetStateAction<string>>
   onChange?: ({ label, value }: dataType) => void
+  defaultLabel: string
   label: string
   value: string
 }
-const Items = ({ isChecked, label, setTitle, onChange, value }: ItemsProps): JSX.Element => {
+const Items = ({ isChecked, label, setTitle, defaultLabel, onChange, value }: ItemsProps): JSX.Element => {
 
   const onCheck = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault()
@@ -104,7 +110,7 @@ const Items = ({ isChecked, label, setTitle, onChange, value }: ItemsProps): JSX
 
     e.currentTarget.classList.add(style.checked)
     if (label == "Tout") {
-      setTitle && setTitle("Produit")
+      setTitle && setTitle(defaultLabel)
     } else {
       setTitle && setTitle(label)
     }

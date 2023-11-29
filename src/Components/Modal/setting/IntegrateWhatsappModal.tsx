@@ -31,6 +31,7 @@ export default function IntegrateWhatsappModal({ setIsVisible, driverObj }: Prop
     const [patchSetting] = usePatchSettingMutation()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

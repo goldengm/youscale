@@ -72,7 +72,7 @@ const TeamAuth = (): JSX.Element => {
     const dispatch = useDispatch<any>()
     const { message, isAuthenticated, isError, isVerified, step } = useSelector(selectAuth)
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 

@@ -72,6 +72,7 @@ const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
     const [addStatus] = useAddStatusMutation()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema)
     });
 

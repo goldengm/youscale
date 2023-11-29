@@ -99,6 +99,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
     const [addCity] = useAddCityMutation()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

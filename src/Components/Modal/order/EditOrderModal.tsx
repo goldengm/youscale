@@ -92,6 +92,7 @@ const FormBody = ({ refetch, handleClose, id_order, dataEdit }: FormBodyProps) =
     const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({})
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

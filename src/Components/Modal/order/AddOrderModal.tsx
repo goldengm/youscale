@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './order.module.css';
 import { useGetStatusQuery } from '../../../services/api/ClientApi/ClientStatusApi';
 import { useAddClientOrderMutation } from '../../../services/api/ClientApi/ClientOrderApi';
@@ -95,13 +95,38 @@ const AddOrderModal: React.FC<Props> = ({ setIsVisible, refetch, driverObj }): J
         driverObj.moveNext()
     };
 
+    const useOutsideClick = (callback: () => void) => {
+        const ref = useRef<HTMLDivElement>(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (ref.current && !ref.current.contains(event.target as Node)) {
+                    callback();
+                }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [callback]);
+
+        return ref;
+    };
+
+    const ref = useOutsideClick(() => {
+        console.log('Clicked outside of MyComponent');
+        handleClose();
+    });
+
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
                 <button className={styles.closeButton} onClick={handleClose}>
                     &times;
                 </button>
-                <div className={styles.main}>
+                <div className={styles.main} ref={ref} id='rewq4321'>
                     <p className={styles.title}>Ajouter une commande</p>
 
                     <FormBody refetch={refetch} handleClose={handleClose} />
@@ -128,6 +153,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
     const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({})
 
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 
@@ -162,7 +188,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
         var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
 
         for (let i = 0; i < data.length; i++) {
-            if (!data[i].isDeleted)
+            if (!data[i].isDeleted && data[i].variant.length == 0)
                 objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
         }
 
@@ -228,7 +254,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
     }
 
     return (
-        <div className="card-body" style={{width: '100%'}}>
+        <div className="card-body" style={{ width: '100%' }}>
             <div className="basic-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
@@ -365,7 +391,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
                                     Enregistrer
                                 </button>
                                 <a href="#"
-                                onClick={handleClose}
+                                    onClick={handleClose}
                                     className={styles.NextBtn} >
                                     Fermer
                                 </a>

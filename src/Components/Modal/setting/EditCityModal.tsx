@@ -55,6 +55,7 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
     const [addCity] = useAddCityMutation()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

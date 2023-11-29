@@ -77,6 +77,7 @@ const CouponForm = (): JSX.Element => {
     const [UseCoupon] = useCouponMutation()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 

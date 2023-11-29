@@ -181,6 +181,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
     const [patchOrder, { isLoading }] = usePatchClientOrderMutation()
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>({
+        // @ts-ignore
         resolver: yupResolver(schema),
     });
 
@@ -379,7 +380,7 @@ const EditProductSection = ({ editData, refetch, id }: EditProductSectionProps):
         var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
 
         for (let i = 0; i < data.length; i++) {
-            if (!data[i].isDeleted)
+            if (!data[i].isDeleted && data[i].variant.length == 0)
                 objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
         }
 
