@@ -103,6 +103,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
             .then(res => {
                 console.log(res)
                 refetch()
+                handleClose()
             })
             .catch((err: { data: ErrorModel, status: number }) => showToastError(err.data.errors[0].msg))
     }
@@ -145,7 +146,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
                                 <button type="submit" className={styles.saveBtn}>
                                     Ajouter
                                 </button>
-                                <a href="#" className={styles.NextBtn}>
+                                <a href="#" onClick={handleClose} className={styles.NextBtn}>
                                     Fermer
                                 </a>
                             </div>

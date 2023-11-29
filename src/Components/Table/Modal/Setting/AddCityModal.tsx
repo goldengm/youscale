@@ -120,6 +120,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
+        handleCloseModal()
     }
 
     return (

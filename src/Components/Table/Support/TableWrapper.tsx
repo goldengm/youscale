@@ -43,7 +43,6 @@ export default function TableWrapper({ children, title, column, AddBtn, refetch,
                         Icons={AiFillFilter}
                         label={'Produit'}
                         data={[
-                            { value: '0', label: 'Tout'},
                             { value: 'pending', label: 'pending'},
                             { value: 'open', label: 'open'},
                             { value: 'in_progress', label: 'in_progress'},

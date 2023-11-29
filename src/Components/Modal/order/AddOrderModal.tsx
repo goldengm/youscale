@@ -104,7 +104,7 @@ const AddOrderModal: React.FC<Props> = ({ setIsVisible, refetch, driverObj }): J
                 <div className={styles.main}>
                     <p className={styles.title}>Ajouter une commande</p>
 
-                    <FormBody refetch={refetch} />
+                    <FormBody refetch={refetch} handleClose={handleClose} />
                 </div>
             </div>
         </div>
@@ -112,10 +112,11 @@ const AddOrderModal: React.FC<Props> = ({ setIsVisible, refetch, driverObj }): J
 }
 
 interface FormBodyProps {
-    refetch: () => any
+    refetch: () => any,
+    handleClose: () => any
 }
 
-const FormBody = ({ refetch }: FormBodyProps) => {
+const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
 
     const [addOrder, { isLoading }] = useAddClientOrderMutation()
 
@@ -215,6 +216,8 @@ const FormBody = ({ refetch }: FormBodyProps) => {
         addOrder(data).unwrap()
             .then(res => {
                 refetch()
+                handleClose()
+
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -361,7 +364,9 @@ const FormBody = ({ refetch }: FormBodyProps) => {
                                 <button type="submit" className={styles.saveBtn}>
                                     Enregistrer
                                 </button>
-                                <a href="#" className={styles.NextBtn}>
+                                <a href="#"
+                                onClick={handleClose}
+                                    className={styles.NextBtn} >
                                     Fermer
                                 </a>
                             </div>

@@ -226,6 +226,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
+        handleCloseModal()
     }
 
     const onNext = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

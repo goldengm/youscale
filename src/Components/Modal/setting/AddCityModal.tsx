@@ -71,6 +71,7 @@ export default function AddCityModal({ setIsVisible, driverObj, refetch }: Props
         addCity(data).unwrap()
             .then(res => {
                 refetch()
+                handleClose()
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -125,7 +126,7 @@ export default function AddCityModal({ setIsVisible, driverObj, refetch }: Props
                                 Ajouter
                             </button>
 
-                            <a href='#' className={styles.closeBtn}>
+                            <a href='#' onClick={handleClose} className={styles.closeBtn}>
                                 Fermer
                             </a>
                         </div>

@@ -54,6 +54,7 @@ export default function IntegrateWhatsappModal({ setIsVisible, driverObj }: Prop
                 console.log(res)
                 showToastSucces('La configuration a été modifié')
                 refetch()
+                handleClose()
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {

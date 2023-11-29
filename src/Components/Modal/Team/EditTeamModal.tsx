@@ -189,7 +189,7 @@ const EditTeamModal: React.FC<Props> = ({ setIsVisible, refetch, dataEdit }): JS
                 <div className={styles.main}>
                     <p className={styles.title}>Modifier un membre</p>
 
-                    <FormBody refetch={refetch} dataEdit={dataEdit} />
+                    <FormBody refetch={refetch} handleClose={handleClose} dataEdit={dataEdit} />
                 </div>
             </div>
         </div>
@@ -198,10 +198,11 @@ const EditTeamModal: React.FC<Props> = ({ setIsVisible, refetch, dataEdit }): JS
 
 interface FormBodyProps {
     refetch: () => any
+    handleClose: () => void
     dataEdit: GetTeamMemberModel | undefined
 }
 
-const FormBody = ({ refetch, dataEdit }: FormBodyProps) => {
+const FormBody = ({ refetch, handleClose, dataEdit }: FormBodyProps) => {
 
     const [showShipping, setShowShipping] = useState<boolean>(dataEdit?.livoToken ? true : false)
     const [patchTeam, { isLoading }] = usePatchTeamMemberMutation()
@@ -229,6 +230,7 @@ const FormBody = ({ refetch, dataEdit }: FormBodyProps) => {
         patchTeam(data).unwrap()
             .then(res => {
                 refetch()
+                handleClose()
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -236,7 +238,7 @@ const FormBody = ({ refetch, dataEdit }: FormBodyProps) => {
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
-    }
+        }
 
     const SwitchHideShipping = () => {
         setShowShipping(!showShipping)
@@ -447,7 +449,7 @@ const FormBody = ({ refetch, dataEdit }: FormBodyProps) => {
                                 <button type="submit" className={styles.saveBtn}>
                                     Enregistrer
                                 </button>
-                                <a href="#" className={styles.NextBtn}>
+                                <a href="#" onClick={handleClose} className={styles.NextBtn}>
                                     Fermer
                                 </a>
                             </div>
