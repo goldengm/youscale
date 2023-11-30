@@ -545,7 +545,7 @@ interface BestSellingCardProps {
 }
 const BestSellingCard = ({ name, price, count, price_product }: BestSellingCardProps): JSX.Element => {
     return (
-        <div className="d-flex align-items-end mt-2 pb-3 justify-content-between">
+        <div className="d-flex align-items-end mt-2 pb-3 justify-content-between" style={{alignItems: 'center'}}>
             <span>{name}</span>
             <span className="fs-18">
                 <span className="text-black pe-2">{price_product}dhs/order </span>- {count} orders
