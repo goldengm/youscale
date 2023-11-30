@@ -48,9 +48,9 @@ const HeaderBanner = () => {
         <FaArrowLeft />
       </div>
       <div className={styles.announcement}>
-        <marquee>
+        <Marquee autoFill={false} loop={50} delay={5} speed={40}>
           {getAnnoucement(data?.data)[currentAnnouncementIndex].text}
-        </marquee>
+        </Marquee>
       </div>
       <div className={styles.rightArrow} onClick={goToNextAnnouncement}>
         <FaArrowRight />
