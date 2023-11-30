@@ -3,7 +3,7 @@ import { FaArrowLeft, FaArrowRight, FaTimes } from "react-icons/fa";
 import { useGetAnnoucementQuery } from "../../services/api/ClientApi/ClientAnnoucementApi";
 import { AdminAnnoucementModel } from "../../models";
 import styles from "./HeaderBanner.module.css";
-import Marquee from "react-marquee-slider";
+import Marquee from "react-fast-marquee";
 
 const getAnnoucement = (
   data: AdminAnnoucementModel[] | undefined
