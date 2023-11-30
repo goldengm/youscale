@@ -60,8 +60,8 @@
 
 .violet .content .values .items {
     display: flex;
-    align-items: end;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
 }
 
 .violet .content .values .items .desc {
@@ -126,12 +126,14 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    word-break: break-word;
 }
 
 .items {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    word-break: break-word;
 }
 
 .desc {
