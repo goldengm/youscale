@@ -1,6 +1,6 @@
 .confirmation_multiSelect {
     border-radius: 10px;
-    width: 138px;
+    width: 100%;
     height: 35px;
     background: #FFF;
 }
@@ -8,7 +8,13 @@
 .city_dropdown {
     width: 205px !important;
     height: 35px;
-    border-radius: 10px;
+    border-radius: 10px !important;
     border: 1px solid rgba(17, 17, 17, 0.30);
     background: #FFF;
+}
+
+@media only screen and (max-width: 550px) {
+    .city_dropdown {
+        width: 120px !important;
+    }
 }

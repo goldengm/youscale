@@ -8957,7 +8957,7 @@ label {
       background-position: 0 120%; }
   @media only screen and (max-width: 767px) {
     .nav-header {
-      top: 0;
+      /* top: 0; */
       background: transparent; }
       .nav-header .svg-logo-primary-path {
         fill: var(--primary) !important; }
@@ -9248,7 +9248,7 @@ svg.pulse-svg {
 
 [data-header-position="fixed"] .header {
   position: fixed;
-  top: 0;
+  top: 20px;
   width: 100%; }
 
 [data-header-position="fixed"] .content-body {
@@ -9258,7 +9258,7 @@ svg.pulse-svg {
       padding-top: 6.5rem; } }
   @media only screen and (max-width: 1199px) {
     [data-header-position="fixed"] .content-body {
-      padding-top: 5rem; } }
+      padding-top: 0rem; } }
 
 [data-header-position="fixed"] .dlabnav {
   margin-top: 0; }
@@ -13580,7 +13580,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   position: fixed; }
 
 [data-sidebar-position="fixed"][data-layout="vertical"] .nav-header {
-  position: fixed;
+  /* position: fixed; */
   border-top-left-radius: 1.25rem;
   border-top-right-radius: 1.25rem; }
 

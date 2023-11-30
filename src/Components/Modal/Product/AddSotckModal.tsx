@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import { ErrorModel, GetProductModel } from '../../../models';
 import { useGetProductQuery } from '../../../services/api/ClientApi/ClientProductApi';
 import { showToastError } from '../../../services/toast/showToastError';
@@ -54,13 +54,38 @@ const AddSotckModal: React.FC<Props> = ({ setIsVisible, refetch, driverObj }): J
         driverObj.moveNext()
     };
 
+    const useOutsideClick = (callback: () => void) => {
+        const ref = useRef<HTMLDivElement>(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (ref.current && !ref.current.contains(event.target as Node)) {
+                    callback();
+                }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [callback]);
+
+        return ref;
+    };
+
+    const ref = useOutsideClick(() => {
+        console.log('Clicked outside of MyComponent');
+        handleClose();
+    });
+
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
                 <button className={styles.closeButton} onClick={handleClose}>
                     &times;
                 </button>
-                <div className={styles.main}>
+                <div className={styles.main} ref={ref}>
                     <p className={styles.title}>Ajouter un stock</p>
 
                     <FormBody refetch={refetch} handleClose={handleClose} />

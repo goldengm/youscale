@@ -85,8 +85,13 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
             }
         })
     }
+    
 
     useEffect(() => {
+        if (document.readyState === "complete") {
+            localStorage.removeItem('videoDisplay');
+        }
+
         document.addEventListener('click', (event: Event) => {
             const target = event.target as HTMLElement;
             if (target && target.classList.contains('start-tuto')) {
@@ -438,7 +443,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                     </div>
                     <div className="card-tabs mt-3 mt-sm-0">
                         <ul className="nav nav-tabs" role="tablist">
-                            <li className="nav-item">
+                            <li className="nav-item item2">
                                 <a
                                     onClick={() => {
                                         setModeChart('order')
@@ -452,7 +457,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                                     commande
                                 </a>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item item2">
                                 <a
                                     onClick={() => {
                                         setModeChart('earning')
@@ -466,7 +471,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                                     profit
                                 </a>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item item2">
                                 <a
                                     onClick={() => {
                                         setModeChart('rate')
@@ -480,7 +485,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                                     taux
                                 </a>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item item2">
                                 <a
                                     onClick={() => {
                                         setModeChart('cost')

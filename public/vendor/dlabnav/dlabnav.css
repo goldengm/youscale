@@ -2298,7 +2298,7 @@ a {
   position: fixed; }
 
 [data-sidebar-position="fixed"][data-layout="vertical"] .nav-header {
-  position: fixed;
+  /* position: fixed; */
   left: auto; }
 
 [data-sidebar-position="fixed"][data-layout="vertical"] .dlabnav {

@@ -10,7 +10,6 @@ interface CustumDropdownProps {
     data: CityModel[]
     order: { id: number, id_city: number, id_team: number, createdAt: Date } | undefined
     refetch?: () => void
-    
 }
 export default function CustumDropdown({ options, order, refetch, data }: CustumDropdownProps) {
     const [value, setValue] = useState<{ label: string, value: string | number }[]>([{

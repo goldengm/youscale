@@ -77,6 +77,9 @@ dependencies:
   react-loading-skeleton:
     specifier: ^3.3.1
     version: 3.3.1(react@18.2.0)
+  react-marquee-slider:
+    specifier: ^1.1.5
+    version: 1.1.5(styled-components@5.3.11)
   react-modal:
     specifier: ^3.16.1
     version: 3.16.1(react-dom@18.2.0)(react@18.2.0)
@@ -2143,6 +2146,14 @@ packages:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /react-marquee-slider@1.1.5(styled-components@5.3.11):
+    resolution: {integrity: sha512-eta0DSKMu8F+82O3zF4jlWdTTlsmJg3h8n12trqCndBYo5DAc07odVlfxSfSsEGcBEHYli12RehrK3EYc4LwrQ==}
+    peerDependencies:
+      styled-components: '>=4.0.0'
+    dependencies:
+      styled-components: 5.3.11(@babel/core@7.23.3)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     dev: false
 
   /react-modal-video@2.0.1(react-dom@18.2.0)(react@18.2.0):
