@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ErrorModel } from '../../../models';
 import { showToastError } from '../../../services/toast/showToastError';
 import { useForm } from 'react-hook-form';
@@ -31,6 +31,31 @@ const AddSupportModal: React.FC<Props> = ({ setIsVisible, refetch }): JSX.Elemen
     const handleClose = () => {
         setIsVisible(false)
     };
+    
+    const useOutsideClick = (callback: () => void) => {
+        const ref = useRef<HTMLDivElement>(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (ref.current && !ref.current.contains(event.target as Node)) {
+                    callback();
+                }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [callback]);
+
+        return ref;
+    };
+
+    const ref = useOutsideClick(() => {
+        console.log('Clicked outside of MyComponent');
+        handleClose();
+    });
 
     return (
         <div className={styles.modalOverlay}>
@@ -38,7 +63,7 @@ const AddSupportModal: React.FC<Props> = ({ setIsVisible, refetch }): JSX.Elemen
                 <button className={styles.closeButton} onClick={handleClose}>
                     &times;
                 </button>
-                <div className={styles.main}>
+                <div className={styles.main} ref={ref}>
                     <p className={styles.title}>Créer un ticket</p>
 
                     <FormBody refetch={refetch} handleClose={handleClose} />

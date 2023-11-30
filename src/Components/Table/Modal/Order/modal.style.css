@@ -25,7 +25,14 @@
 
 .call-ws-media {
     display: flex;
+    gap: 20px;
     justify-content: center;
     align-items: center;
     margin: 10px;
+}
+
+@media only screen and (max-width: 450px) and (min-width: 400px) {
+    .call-ws-media {
+        gap: 0px
+    }
 }

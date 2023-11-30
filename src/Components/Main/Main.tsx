@@ -1,5 +1,5 @@
 import HeaderBanner from './Banner'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from './Header'
 import Menu from './Menu'
 import Footer from './Footer'
@@ -21,7 +21,14 @@ interface Props {
   showVideo: boolean
 }
 export default function Main({ children, name, setUsingDate, setDate, showDateFilter, setProduct, showProductFilter, showTeamFilter, setIdTeam, urlVideo, closeTutorial, setShowVideo, showVideo }: Props): JSX.Element {
-  const [showMenu, setShowMenu] = useState<boolean>(true)
+  const [showMenu, setShowMenu] = useState<boolean>(Boolean)
+
+  useEffect(() => {
+    let width = screen.width;
+    if(width > 425){
+      setShowMenu(false)
+    }
+  }, [])
 
   return (
     <div id="main-wrapper" className={showMenu ? 'show menu-toggle' : 'show'}>

@@ -123,7 +123,7 @@ export default function Header({
   };
 
   return (
-    <>
+    <div style={{marginTop: '100px'}}>
       <TutorialModal
         setIsVisible={setShowVideo}
         isOpen={showVideo}
@@ -241,6 +241,6 @@ export default function Header({
           </nav>
         </div>
       </div>
-    </>
+    </div>
   );
 }

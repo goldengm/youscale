@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ErrorModel, GetProductModel } from '../../../models';
 import { useAddProductMutation, usePatchProductMutation } from '../../../services/api/ClientApi/ClientProductApi';
 import { showToastError } from '../../../services/toast/showToastError';
@@ -34,13 +34,38 @@ const EditProductModal: React.FC<Props> = ({ setIsVisible, refetch, item }): JSX
         setIsVisible(false);
     };
 
+    const useOutsideClick = (callback: () => void) => {
+        const ref = useRef<HTMLDivElement>(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (ref.current && !ref.current.contains(event.target as Node)) {
+                    callback();
+                }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [callback]);
+
+        return ref;
+    };
+
+    const ref = useOutsideClick(() => {
+        console.log('Clicked outside of MyComponent');
+        handleClose();
+    });
+
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
                 <button className={styles.closeButton} onClick={handleClose}>
                     &times;
                 </button>
-                <div className={styles.main}>
+                <div className={styles.main} ref={ref}>
                     <p className={styles.title}>Modifier un produit</p>
 
                     <FormBody refetch={refetch} item={item} handleClose={handleClose} />

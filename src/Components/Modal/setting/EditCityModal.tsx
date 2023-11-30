@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
 import { FieldError, UseFormRegister } from 'react-hook-form'
 import { CityModel, ErrorModel, ShippingModel } from '../../../models';
 import { useGetShippingQuery } from '../../../services/api/ClientApi/ClientShippingApi';
@@ -79,13 +79,38 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
         handleClose()
     }
 
+    const useOutsideClick = (callback: () => void) => {
+        const ref = useRef<HTMLDivElement>(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (ref.current && !ref.current.contains(event.target as Node)) {
+                    callback();
+                }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [callback]);
+
+        return ref;
+    };
+
+    const ref = useOutsideClick(() => {
+        console.log('Clicked outside of MyComponent');
+        handleClose();
+    });
+
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent_Whatsapp}>
                 <button className={styles.closeButton} onClick={handleClose}>
                     &times;
                 </button>
-                <div className={styles.main_Whatsapp}>
+                <div className={styles.main_Whatsapp} ref={ref}>
                     <p className={styles.title}>Modifier une ville</p>
 
                     <form onSubmit={handleSubmit(onSubmit)}>

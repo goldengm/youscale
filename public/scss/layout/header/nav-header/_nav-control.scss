@@ -15,10 +15,10 @@
 
 [data-header-position="fixed"] {
     .nav-header {
-        position: fixed;
+        // position: fixed;
         left: 1.25rem;
 		@include respond ('phone-land'){
-			left:0;
+			// left:0;
 		}
     }
 }

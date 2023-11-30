@@ -19633,7 +19633,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 }
 
 [data-sidebar-position="fixed"][data-layout="vertical"] .nav-header {
-  position: fixed;
+  /* position: fixed; */
   border-top-left-radius: 1.25rem;
   border-top-right-radius: 1.25rem;
 }

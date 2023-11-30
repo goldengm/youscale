@@ -15,6 +15,10 @@
     padding: 20px;
 }
 
+.card-tabs {
+    width: 50%;
+}
+
 .green {
     background: #3DA824;
 }
@@ -104,6 +108,8 @@
 }
 
 .displayCard {
+    gap: 8px;
+    flex-wrap: wrap;
     display: flex;
     justify-content: space-around;
     margin-bottom: 40px;
@@ -353,4 +359,10 @@
     background-size: 40px 40px;
     height: 40px;
     width: 40px;
+}
+
+@media only screen and (max-width: 375px) {
+    .pieChart {
+        margin-right:20px;
+    }
 }

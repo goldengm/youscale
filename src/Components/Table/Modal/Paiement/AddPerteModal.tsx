@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { CustumInput, CustumTextArea, CustumSelectForm } from '../../../Forms'
 import ModalWrapper from '../ModalWrapper'
 import { useGetClientPerteCategorieQuery } from '../../../../services/api/ClientApi/ClientPerteCategorie'
@@ -153,8 +153,34 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
 
     }
 
+    const useOutsideClick = (callback: () => void) => {
+        const ref = useRef<HTMLDivElement>(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (ref.current && !ref.current.contains(event.target as Node)) {
+                    callback();
+                }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [callback]);
+
+        return ref;
+    };
+
+    const ref = useOutsideClick(() => {
+        console.log('Clicked outside of MyComponent');
+        handleCloseModal();
+    });
+
+
     return (
-        <div className="card-body">
+        <div className="card-body" ref={ref}>
             <div className="basic-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
