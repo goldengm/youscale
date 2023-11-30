@@ -30,6 +30,7 @@
 .green .content .values .items {
     display: flex;
     flex-direction: column;
+    word-break: break-word;
 }
 
 .green .content .values .items .desc {
@@ -108,7 +109,7 @@
 }
 
 .displayCard {
-    gap: 8px;
+    gap: 16px;
     flex-wrap: wrap;
     display: flex;
     justify-content: space-around;
