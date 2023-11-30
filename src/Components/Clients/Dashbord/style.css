@@ -83,5 +83,5 @@
 }
 
 .card-header {
-    width: 450px;
+    height: max-content;
 }
