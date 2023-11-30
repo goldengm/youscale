@@ -3,7 +3,7 @@ import { FaArrowLeft, FaArrowRight, FaTimes } from "react-icons/fa";
 import { useGetAnnoucementQuery } from "../../services/api/ClientApi/ClientAnnoucementApi";
 import { AdminAnnoucementModel } from "../../models";
 import styles from "./HeaderBanner.module.css";
-import Marquee from "react-marquee-slider";
+import Marquee from "react-fast-marquee";
 
 const getAnnoucement = (
   data: AdminAnnoucementModel[] | undefined
@@ -48,9 +48,9 @@ const HeaderBanner = () => {
         <FaArrowLeft />
       </div>
       <div className={styles.announcement}>
-        <marquee>
+        <Marquee autoFill={false} loop={50} delay={5} speed={20}>
           {getAnnoucement(data?.data)[currentAnnouncementIndex].text}
-        </marquee>
+        </Marquee>
       </div>
       <div className={styles.rightArrow} onClick={goToNextAnnouncement}>
         <FaArrowRight />
