@@ -102,7 +102,7 @@ const Items = ({ isChecked, label, setTitle, onChange, value }: ItemsProps): JSX
     e.preventDefault()
     const element = document.querySelectorAll(`.${style.items}`)
 
-    for (const elem of element) elem.classList.remove(style.checked)
+    // for (const elem of element) elem.classList.remove(style.checked)
 
     e.currentTarget.classList.add(style.checked)
     if (label == "Tout") {
