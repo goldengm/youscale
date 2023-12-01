@@ -9247,6 +9247,7 @@ svg.pulse-svg {
     padding-left: 2.5rem; }
 
 [data-header-position="fixed"] .header {
+  z-index: 1;
   position: fixed;
   top: 20px;
   width: 100%; }
