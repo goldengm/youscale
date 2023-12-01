@@ -258,7 +258,7 @@ const SheetContainer = (): JSX.Element => {
                     className={styles.addSheetBtn}
                     href="#">
                     <img src="/svg/setting/add.svg" alt="add" />
-                    Ajouter un nouveau sheet
+                     {window.innerWidth > 600 ? ('Ajouter un nouveau sheet') : (window.innerWidth > 424 ? ('nouveau') : null)}
                 </a>
             </div>
 
