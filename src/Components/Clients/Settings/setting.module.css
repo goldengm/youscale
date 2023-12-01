@@ -349,6 +349,10 @@
     width: 400px;
 }
 
+.rightCity button {
+    width: auto;
+}
+
 @media (max-width:1200px) {
     .mainCity {
         flex-direction: column;
