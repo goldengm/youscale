@@ -232,7 +232,7 @@ const StatusDropdown = ({ setOrderQueryData, refetch, _skip, setStatus, dataStat
             ...prevState,
             status: search,
             _skip: 0,
-            _limit: prevState._skip
+            _limit: 20
         }));
         refetch()
     }
