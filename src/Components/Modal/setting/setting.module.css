@@ -236,6 +236,7 @@
 }
 
 .stepTxt {
+    word-break: break-word;
     width: 532px;
     color: #000;
     font-family: Poppins;
@@ -269,10 +270,11 @@
 }
 
 .sheetMail {
+    word-break: break-word;
     margin-top: 15px;
     margin-bottom: 15px;
     width: 551px;
-    height: 34px;
+    height: max-content;
     flex-shrink: 0;
     background: rgba(119, 32, 225, 0.30);
 
@@ -287,9 +289,9 @@
 }
 
 .topAction {
+    width: 90%;
     display: flex;
-    width: 600px;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .addSheetBtn {
@@ -703,3 +705,65 @@
 .modalContent_City {
     overflow-x: hidden;
 }
+
+@media only screen and (max-width: 768px) {
+    .main {
+        width: 100%;
+    }
+    .sheetContainer {
+        width: 100%;
+    }
+    .switchItems {
+        width: 100%;
+    }
+    .itemsActive {
+        width: 100%;
+    }
+    .sheetMail {
+        width: 90%;
+    }
+    .stepTxt {
+        width: 90%;
+    }
+    .topAction {
+        width: 90%;
+        margin-top: 20px;
+        gap: 8px;
+    }
+    .exampleBtn {
+        margin-top: 20px;
+        margin-left: 20px;
+    }
+    .title {
+        width: 90%;
+    }
+
+    .main_Shipping {
+        width: 100%;
+    }
+    .displayColonneArea {
+        width: 90%;
+        height: fit-content;
+        gap: 8px;
+    }
+    .ColonneDescTxt {
+        width: 90%;
+        word-break: break-word;
+    }
+    .main_Whatsapp {
+        width: 100%;
+    }
+    .whtField input{
+        width: 60%;
+    }
+
+    .whtField textarea{
+        width: 90%;
+    }
+    .bottomBtn {
+        width: auto;
+        gap: 8px
+    };
+
+}
+
