@@ -23,13 +23,38 @@ const MessageSupportModal: React.FC<Props> = ({ setIsVisible, item }): JSX.Eleme
         setIsVisible(false)
     };
 
+    const useOutsideClick = (callback: () => void) => {
+        const ref = useRef<HTMLDivElement>(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (ref.current && !ref.current.contains(event.target as Node)) {
+                    callback();
+                }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [callback]);
+
+        return ref;
+    };
+
+    const ref = useOutsideClick(() => {
+        console.log('Clicked outside of MyComponent');
+        handleClose();
+    });
+
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
                 <button className={styles.closeButton} onClick={handleClose}>
                     &times;
                 </button>
-                <div className={styles.main}>
+                <div className={styles.main} ref={ref}>
                     <p className={styles.title}>Discussion</p>
 
                     <FormBody data={item ?? {} as Support} client={client?.data} messageList={message?.data} refetchMessage={refetchMessage} />
