@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
 
 interface ModalWrapperProps {
     showModal: boolean,
@@ -32,9 +32,34 @@ export default function ModalWrapper({ showModal, setShowModal, children, id, ti
         }
     }
 
+    const useOutsideClick = (callback: () => void) => {
+        const ref = useRef<HTMLDivElement>(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (ref.current && !ref.current.contains(event.target as Node)) {
+                    callback();
+                }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [callback]);
+
+        return ref;
+    };
+
+    const ref = useOutsideClick(() => {
+        console.log('Clicked outside of MyComponent');
+        handleCloseModal();
+    });
+
     return (
-        <div style={{ display: 'block' }} className={`modal fade show ${id}`} id={id}>
-            <div className="modal-dialog" role="document">
+        <div style={{ display: 'block' }} className={`modal fade show ${id}`} id={id} >
+            <div className="modal-dialog" role="document" ref={ref}>
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">{title}</h5>
