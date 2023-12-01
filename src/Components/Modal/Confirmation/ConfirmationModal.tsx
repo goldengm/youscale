@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./confirmation.module.css";
 import { AiFillFilter } from "react-icons/ai";
 import { CommandeFilter } from "../../Filter/CommandeFilter";
@@ -141,6 +141,31 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     setIsVisible(false);
   };
 
+  const useOutsideClick = (callback: () => void) => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+          if (ref.current && !ref.current.contains(event.target as Node)) {
+              callback();
+          }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+
+      return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [callback]);
+
+    return ref;
+  };
+
+  const ref = useOutsideClick(() => {
+      console.log('Clicked outside of MyComponent');
+      handleClose();
+  });
+
   return isOpen ? (
     isSuccess && id_orders.length > 0 ? (
       <div className={styles.modalOverlay}>
@@ -148,7 +173,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
           <button className={styles.closeButton} onClick={handleClose}>
             &times;
           </button>
-          <div className={styles.main}>
+          <div className={styles.main} ref={ref}>
             <p className={styles.title}>Confirmation des commandes</p>
             <p className={styles.cmdRestante}>
               {id_orders.length - (index + 1)} commandes restantes
