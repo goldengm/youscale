@@ -74,6 +74,7 @@ const Display = ({ elementRef, setTitle, data, onChange, label }: DisplayProps):
         label={'Tout'}
         isChecked={label=='Produit'}
         setTitle={setTitle}
+        onChange={onChange}
         value='' />
       {data.map((dt, key) =>
         <Items

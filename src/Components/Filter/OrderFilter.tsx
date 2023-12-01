@@ -78,6 +78,7 @@ const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: 
         isChecked={label==defaultLabel}
         defaultLabel= {defaultLabel}
         setTitle={setTitle}
+        onChange={onChange}
         value='' />
       {data.map((dt, key) =>
         <Items
