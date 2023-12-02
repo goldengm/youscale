@@ -31,6 +31,7 @@ import { IoCallOutline } from "react-icons/io5";
 import { TbPointFilled } from "react-icons/tb";
 import { Spinner4Bar } from "../../Loader";
 import * as yup from "yup";
+import { showToastSucces } from "../../../services/toast/showToastSucces";
 
 type dataType = {
   label: string;
@@ -479,7 +480,7 @@ const FormBody = ({
       .unwrap()
       .then((res) => {
         refetch();
-        handleClose();
+        showToastSucces("enregistré avec succès")
         if (id_orders.length === index + 1) return;
       })
       .catch(

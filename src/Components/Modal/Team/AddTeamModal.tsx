@@ -152,7 +152,6 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
     });
 
     const onSubmit = (values: Inputs) => {
-        console.log("+++++++++++", values)
         const data = {
             ...values,
             day_payment: '1',
@@ -206,7 +205,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
                             register={register}
                             name={'password'}
                             error={errors.password}
-                            //showEye={true}
+                            // showEye={true}
                             type={'password'}
                             label={"Password"}
                             placeholder={'*****'}
