@@ -132,7 +132,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 
   useEffect(() => {
     refetchCurrentOrder();
-  }, [index]);
+  }, [id_orders[index]]);
 
   const OnChangeStatus = ({ label, value }: dataType) => {
     setStatus(value === "0" ? undefined : value);
@@ -502,11 +502,9 @@ const FormBody = ({
     e.preventDefault();
 
     if (id_orders.length === index + 1) {
-      handleClose();
       return;
     }
     setIndex((prevIndex) => prevIndex + 1);
-    handleClose();
   };
 
   const handleClick = (phone_number: string) => {

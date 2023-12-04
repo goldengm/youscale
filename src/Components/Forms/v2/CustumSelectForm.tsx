@@ -37,6 +37,7 @@ export default function CustumSelectForm({
           <select
             {...register(name)}
             onChange={Onchange}
+            value={defaultSelected?.toString()}
             name={name}
             className={confirmation ? styles.confirmationselect : styles.select}
           >
