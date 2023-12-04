@@ -132,7 +132,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 
   useEffect(() => {
     refetchCurrentOrder();
-  }, [index]);
+  }, [id_orders[index]]);
 
   const OnChangeStatus = ({ label, value }: dataType) => {
     setStatus(value === "0" ? undefined : value);
