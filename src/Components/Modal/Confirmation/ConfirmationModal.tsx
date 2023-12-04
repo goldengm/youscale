@@ -502,11 +502,9 @@ const FormBody = ({
     e.preventDefault();
 
     if (id_orders.length === index + 1) {
-      handleClose();
       return;
     }
     setIndex((prevIndex) => prevIndex + 1);
-    handleClose();
   };
 
   const handleClick = (phone_number: string) => {

@@ -24,11 +24,23 @@ export default function Main({ children, name, setUsingDate, setDate, showDateFi
   const [showMenu, setShowMenu] = useState<boolean>(Boolean)
 
   useEffect(() => {
-    let width = screen.width;
-    if(width > 425){
-      setShowMenu(false)
-    }
-  }, [])
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setShowMenu(false);
+      } else {
+        setShowMenu(true);
+      }
+    };
+  
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div id="main-wrapper" className={showMenu ? 'show menu-toggle' : 'show'}>

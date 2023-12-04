@@ -216,7 +216,6 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
             .then(res => {
                 refetch()
                 if (id_orders.length === (index + 1)) {
-                    handleCloseModal()
                     return
                 }
 
@@ -227,14 +226,12 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
-        handleCloseModal()
     }
 
     const onNext = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
 
         if (id_orders.length === (index + 1)) {
-            handleCloseModal()
             return
         }
 
