@@ -516,6 +516,10 @@ const FormBody = ({
     setIndex((prevIndex) => prevIndex + 1);
   };
 
+  useEffect(()=>{
+    setSelectedStatus(currentOrder.data[0].status)
+  },[index])
+
   const handleClick = (phone_number: string) => {
     window.open(
       `https://wa.me/${phone_number}?text=${encodeURI(

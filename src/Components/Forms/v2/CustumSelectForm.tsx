@@ -24,7 +24,7 @@ export default function CustumSelectForm({
   error,
   data,
   Onchange,
-  defaultSelected = "",
+  defaultSelected,
   className,
   confirmation,
   selectedStatus,
@@ -45,32 +45,33 @@ export default function CustumSelectForm({
         <div style={confirmation ? (window.innerWidth > 550 ? { width: "205px" } : { width: "120px" }) : { width: "50%" }}>
           {confirmation ? (
             <select 
-            id="confirmation_select"
-            {...register(name)}
-            onChange={selectChange}
-            value={selectedStatus}
-            name={name}
-            className={styles.confirmationselect}
-          > 
-            {data.map((dt, index) => (
-              <option key={index} value={dt.value}>
-                {dt.label}
-              </option>
-            ))}
-          </select>
+              id="confirmation_select"
+              {...register(name)}
+              onChange={selectChange}
+              defaultValue={defaultSelected?defaultSelected:"Livre"}
+              value={selectedStatus}
+              name={name}
+              className={styles.confirmationselect}
+            > 
+              {data.map((dt, index) => (
+                <option key={index} value={dt.value}>
+                  {dt.label}
+                </option>
+              ))}
+            </select>
           ): (
             <select
-            {...register(name)}
-            onChange={Onchange}
-            name={name}
-            className={styles.select}
-          >
-            {data.map((dt, index) => (
-              <option key={index} value={dt.value}>
-                {dt.label}
-              </option>
-            ))}
-          </select>
+              {...register(name)}
+              onChange={Onchange}
+              name={name}
+              className={styles.select}
+            >
+              {data.map((dt, index) => (
+                <option key={index} value={dt.value}>
+                  {dt.label}
+                </option>
+              ))}
+            </select>
           )}
         </div>
       </div>
