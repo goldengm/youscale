@@ -14,6 +14,8 @@ interface Props {
   defaultSelected?: string | number | null;
   Onchange?: (e: React.ChangeEvent<HTMLSelectElement>) => any;
   confirmation?: boolean;
+  selectedStatus?: string | undefined
+  setSelectedStatus?: any
 }
 export default function CustumSelectForm({
   label,
@@ -22,10 +24,17 @@ export default function CustumSelectForm({
   error,
   data,
   Onchange,
-  defaultSelected = "",
+  defaultSelected,
   className,
   confirmation,
+  selectedStatus,
+  setSelectedStatus,
 }: Props): JSX.Element {
+
+  const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    setSelectedStatus(value)
+  };
 
   return (
     <div className={confirmation ? styles.confirmcontainer : styles.container}>
@@ -34,19 +43,36 @@ export default function CustumSelectForm({
           {label}
         </label>
         <div style={confirmation ? (window.innerWidth > 550 ? { width: "205px" } : { width: "120px" }) : { width: "50%" }}>
-          <select
-            {...register(name)}
-            onChange={Onchange}
-            value={defaultSelected?.toString()}
-            name={name}
-            className={confirmation ? styles.confirmationselect : styles.select}
-          >
-            {data.map((dt, index) => (
-              <option key={index} value={dt.value}>
-                {dt.label}
-              </option>
-            ))}
-          </select>
+          {confirmation ? (
+            <select 
+              id="confirmation_select"
+              {...register(name)}
+              onChange={selectChange}
+              defaultValue={defaultSelected?defaultSelected:"Livre"}
+              value={selectedStatus}
+              name={name}
+              className={styles.confirmationselect}
+            > 
+              {data.map((dt, index) => (
+                <option key={index} value={dt.value}>
+                  {dt.label}
+                </option>
+              ))}
+            </select>
+          ): (
+            <select
+              {...register(name)}
+              onChange={Onchange}
+              name={name}
+              className={styles.select}
+            >
+              {data.map((dt, index) => (
+                <option key={index} value={dt.value}>
+                  {dt.label}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
       </div>
       {error && <p className="error">{error.message}</p>}
