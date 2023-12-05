@@ -44,7 +44,7 @@ export default function CityDropDown({ label, error, data, setValue }: Props): J
                 <label className={styles.label}>{label}</label>
                 <div>
                     <Select
-                    className={styles.city_dropdown}
+                        className={styles.city_dropdown}
                         labelField="label"
                         valueField="value"
                         values={input}

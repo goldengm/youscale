@@ -123,6 +123,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({});
 
   const [index, setIndex] = useState<number>(0);
+  const [selectedStatus, setSelectedStatus] = useState<string>()
   const {
     data: currentOrder,
     isSuccess,
@@ -136,6 +137,8 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 
   const OnChangeStatus = ({ label, value }: dataType) => {
     setStatus(value === "0" ? undefined : value);
+    setIndex(0)
+    setSelectedStatus(value === "0" ? undefined : value)
   };
 
   const handleClose = () => {
@@ -222,6 +225,8 @@ const ConfirmationModal: React.FC<ModalProps> = ({
                 setIndex={setIndex}
                 id_orders={id_orders}
                 index={index}
+                selectedStatus={selectedStatus}
+                setSelectedStatus ={setSelectedStatus}
               />
             )}
           </div>
@@ -422,6 +427,8 @@ interface FormBodyProps {
     data: GetClientOrderModel;
     order: OrderOnlyModel[];
   };
+  selectedStatus: string | undefined;
+  setSelectedStatus: any;
 }
 
 const FormBody = ({
@@ -433,6 +440,8 @@ const FormBody = ({
   StatusData,
   RefetchStatus,
   handleClose,
+  selectedStatus,
+  setSelectedStatus,
 }: FormBodyProps) => {
   const { data: dataSetting } = useGetSettingQuery();
   const { data: dataCity } = useGetCityQuery();
@@ -614,6 +623,8 @@ const FormBody = ({
               label={"Status"}
               name={"status"}
               confirmation={true}
+              selectedStatus={selectedStatus}
+              setSelectedStatus={setSelectedStatus}
             />
             {currentOrder.order[0].isSendLivo === "not_send" ? (
               <TbPointFilled size={40} color={"gray"} />
