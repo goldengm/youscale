@@ -182,7 +182,7 @@ interface ColumnProps {
 const ColumnRow = ({ item, onInputChange }: ColumnProps): JSX.Element => {
     return (
         <div className={styles.columnRow}>
-            <input className={styles.columnValueInput} type="text" value={item.name} readOnly />
+            <input className={item.name === "Order id" || item.name === "Date" || item.name === "Produit" || item.name === "Destinataire" || item.name === "Telephone" || item.name === "Ville" || item.name === "Prix" ? styles.customValueInputStyle : styles.columnValueInput} type="text" value={item.name} readOnly />
             <img src="/svg/setting/next.svg" alt="next" />
 
             <input
