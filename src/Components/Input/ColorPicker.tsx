@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './styles.css'
 
-interface ColorPickerProps{
+interface ColorPickerProps {
     color: string
     handleChangeColor: (color: string) => void
 }
@@ -9,7 +9,7 @@ export default function ColorPicker({ color, handleChangeColor }: ColorPickerPro
 
     const [c, setC] = useState<string>(color || '#ffffff')
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         const { value } = e.target
         setC(value)

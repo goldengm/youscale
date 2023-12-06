@@ -32,8 +32,8 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
     var objArr: { label: string, value: string, allVariant: string[], variant: [] }[] = []
 
     for (let i = 0; i < data.length; i++) {
-      if(!data[i].isDeleted && data[i].variant.length == 0)
-          objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
+      if (!data[i].isDeleted && data[i].variant.length == 0)
+        objArr.push({ label: data[i].name, value: String(data[i].id), allVariant: data[i].variant, variant: [] })
     }
     return objArr
   }
@@ -56,7 +56,7 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
       return { label: dt.Product.name, value: dt.Product.id ? String(dt.Product.id) : '', quantity: dt.quantity, variant: dt.variant, allVariant: dt.Product.variant };
     }) : []);
   }, []);
-  
+
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
@@ -104,12 +104,12 @@ export default function AddProductOrderModal({ id, showModal, setShowModal, refe
         refetch()
         handleCloseModal()
       })
-      .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+      .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
         if (err.data) {
-            if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-            else if ('message' in err.data) showToastError(err.data.message);
+          if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+          else if ('message' in err.data) showToastError(err.data.message);
         }
-    })
+      })
   }
 
   return (

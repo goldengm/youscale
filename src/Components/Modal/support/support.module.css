@@ -75,6 +75,7 @@
     .main {
         width: 389px;
     }
+
     .input {
         width: 80%;
     }
@@ -205,7 +206,7 @@
     line-height: 16.176px;
 }
 
-.loadImgLabel:hover{
+.loadImgLabel:hover {
     cursor: pointer;
 }
 

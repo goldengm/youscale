@@ -46,7 +46,7 @@
     margin-right: 30px;
 }
 
-.variant{
+.variant {
     margin-top: 10px;
     display: flex;
     align-items: center;
@@ -56,10 +56,10 @@
     width: 60px;
 }
 
-@media only screen and (max-width: 620px){
+@media only screen and (max-width: 620px) {
     .productContainer {
         width: 100%;
-    } 
+    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -67,7 +67,8 @@
         display: flex;
         justify-content: space-between;
     }
+
     .quantity input {
         width: 100%;
-    }   
+    }
 }

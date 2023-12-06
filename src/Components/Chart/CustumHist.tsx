@@ -4,16 +4,16 @@ import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
-interface CustomHistProps{
-    data : any,
-    options:any
+interface CustomHistProps {
+  data: any,
+  options: any
 }
 
 function CustomHist({ data, options }: CustomHistProps) {
 
   return (
     <React.Fragment>
-        <Bar data={data} options={options} />
+      <Bar data={data} options={options} />
     </React.Fragment>
   )
 }

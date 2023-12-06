@@ -5,8 +5,8 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 interface ChartProps {
-    data : any,
-    options : any
+    data: any,
+    options: any
 }
 
 export default function CustomPie(props: ChartProps): JSX.Element {

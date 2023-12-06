@@ -1,5 +1,4 @@
-
-.spinner-four{
+.spinner-four {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7,17 +6,17 @@
     background-color: white;
 }
 
-@keyframes maketour{
-    from{
+@keyframes maketour {
+    from {
         transform: rotate(0deg);
     }
 
-    to{
+    to {
         transform: rotate(360deg);
     }
 }
 
-.loader-first{
+.loader-first {
     height: 30px;
     width: 30px;
     writing-mode: horizontal-tb;
@@ -28,7 +27,7 @@
     animation: maketour 0.5s linear infinite;
 }
 
-.spinner-two .loader-double-1{
+.spinner-two .loader-double-1 {
     height: 30px;
     width: 30px;
     writing-mode: horizontal-tb;
@@ -40,10 +39,10 @@
     justify-content: center;
     align-items: center;
     display: flex;
-    animation: maketour 1s linear infinite;  
+    animation: maketour 1s linear infinite;
 }
 
-.spinner-two .loader-double-2{
+.spinner-two .loader-double-2 {
     z-index: 99999;
     height: 20px;
     width: 20px;
@@ -56,10 +55,10 @@
     animation: maketour 2s linear infinite;
 }
 
-.spinner-three .loader-double-1{
+.spinner-three .loader-double-1 {
     height: 30px;
     width: 30px;
-    writing-mode:vertical-rl;
+    writing-mode: vertical-rl;
     border: 2px solid rgb(255, 255, 255);
     border-block-end-width: 2px;
     border-block-end-color: transparent;
@@ -69,13 +68,13 @@
     justify-content: center;
     align-items: center;
     display: flex;
-    animation: maketour 1s linear infinite;   
+    animation: maketour 1s linear infinite;
 }
 
-.spinner-three .loader-double-2{
+.spinner-three .loader-double-2 {
     height: 20px;
     width: 20px;
-    writing-mode:horizontal-tb;
+    writing-mode: horizontal-tb;
     border: 1px solid rgb(255, 255, 255);
     border-block-end-width: 3px;
     border-block-end-color: transparent;
@@ -85,35 +84,35 @@
     justify-content: center;
     align-items: center;
     display: flex;
-    animation: maketour 2s linear infinite;  
+    animation: maketour 2s linear infinite;
 }
 
-.spinner-three .loader-double-3{
+.spinner-three .loader-double-3 {
     height: 10px;
     width: 10px;
-    writing-mode:vertical-rl;
+    writing-mode: vertical-rl;
     border: 0.5px solid rgb(255, 255, 255);
     border-block-end-width: 3px;
     border-block-end-color: transparent;
     border-block-start-color: transparent;
     border-top-color: transparent;
     border-radius: 30px;
-    animation: maketour 4s linear infinite;  
+    animation: maketour 4s linear infinite;
 }
 
-@keyframes showhidden{
-    from{
+@keyframes showhidden {
+    from {
         height: 25px;
         opacity: 1;
     }
 
-    to{
+    to {
         height: 0px;
         opacity: 0;
     }
 }
 
-.spinner-four .bar-1{
+.spinner-four .bar-1 {
     height: 25px;
     width: 5px;
     margin: 2px;
@@ -121,14 +120,15 @@
     animation: showhidden 1s linear infinite;
 }
 
-.spinner-four .bar-2{
+.spinner-four .bar-2 {
     height: 25px;
     width: 5px;
     margin: 2px;
     background-color: black;
     animation: showhidden 1.5s linear infinite;
 }
-.spinner-four .bar-3{
+
+.spinner-four .bar-3 {
     height: 25px;
     width: 5px;
     margin: 2px;

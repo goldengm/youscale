@@ -13,10 +13,10 @@ interface Bank {
     rib: string;
 }
 
-interface TransactionProps{
+interface TransactionProps {
     data: Bank | undefined
 }
-export const Transaction = ({ data }:TransactionProps): JSX.Element => {
+export const Transaction = ({ data }: TransactionProps): JSX.Element => {
     return (
         <div className="row">
             <Bank data={data} />
@@ -25,7 +25,7 @@ export const Transaction = ({ data }:TransactionProps): JSX.Element => {
     )
 }
 
-const Bank = ({ data }:TransactionProps): JSX.Element => {
+const Bank = ({ data }: TransactionProps): JSX.Element => {
     return (
         <div className="col-xl-6">
             <div className="card">
@@ -50,7 +50,7 @@ const PaymentAction = (): JSX.Element => {
     )
 }
 
-const BankInformation = ({ data }:TransactionProps): JSX.Element => {
+const BankInformation = ({ data }: TransactionProps): JSX.Element => {
 
     return (
         <div className="basic-list-group">

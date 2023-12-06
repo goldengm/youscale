@@ -41,7 +41,7 @@ const FormatVariant = (variants: VariantModel[] | undefined) => {
 interface Props {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-    refetch: ()=> any,
+    refetch: () => any,
     item: GetProductModel | undefined
 }
 export default function EditProductModal({ showModal, setShowModal, refetch, item }: Props): JSX.Element {
@@ -79,14 +79,14 @@ export default function EditProductModal({ showModal, setShowModal, refetch, ite
 
     return (
         <ModalWrapper title={'Edit product'} showModal={showModal} setShowModal={setShowModal} id='AddProductModal'>
-            <FormBody item={item} handleCloseModal={handleCloseModal} refetch={refetch}  />
+            <FormBody item={item} handleCloseModal={handleCloseModal} refetch={refetch} />
         </ModalWrapper>
     )
 }
 
 interface FormBodyProps {
     item: GetProductModel | undefined,
-    refetch: ()=> any,
+    refetch: () => any,
     handleCloseModal: () => void
 }
 const FormBody = ({ item, refetch, handleCloseModal }: FormBodyProps) => {
@@ -117,7 +117,7 @@ const FormBody = ({ item, refetch, handleCloseModal }: FormBodyProps) => {
                 refetch()
                 handleCloseModal()
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);

@@ -20,8 +20,8 @@ export default function DisplayChangeOuvrir({ name, currentData, onChange }: Pro
     >
 
       <option value={'Aucun'}>Aucun</option>
-      { name == 'changer' && Data.map((dt) => (<option selected={dt === currentData.Changer} value={dt}>{dt}</option>)) }
-      { name == 'ouvrir' && Data.map((dt) => (<option selected={dt === currentData.Ouvrir} value={dt}>{dt}</option>)) }
+      {name == 'changer' && Data.map((dt) => (<option selected={dt === currentData.Changer} value={dt}>{dt}</option>))}
+      {name == 'ouvrir' && Data.map((dt) => (<option selected={dt === currentData.Ouvrir} value={dt}>{dt}</option>))}
     </select>
   )
 }

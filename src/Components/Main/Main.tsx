@@ -32,11 +32,11 @@ export default function Main({ children, name, setUsingDate, setDate, showDateFi
         setShowMenu(true);
       }
     };
-  
+
     handleResize();
 
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };

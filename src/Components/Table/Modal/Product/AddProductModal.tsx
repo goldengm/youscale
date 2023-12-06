@@ -136,7 +136,7 @@ const FormBody = ({ setShowModal, refetch, handleCloseModal }: FormBodyProps) =>
                         />
                     </div>
                     <AddVariant setSelected={setSelected} />
-                  
+
                     <button type="submit" className="btn btn-primary add-btn">
                         Ajouter
                     </button>

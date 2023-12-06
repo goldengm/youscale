@@ -240,7 +240,7 @@ const TeamCard = ({ setShowAddTeamModal, setShowEditTeamModal, data, refetch, se
                         Ajouter un membre
                     </a>
                 </div>
-                <div className="table-responsive" style={{margin:'30px'}}>
+                <div className="table-responsive" style={{ margin: '30px' }}>
                     <table className={styles.table}>
                         <thead>
                             <tr>

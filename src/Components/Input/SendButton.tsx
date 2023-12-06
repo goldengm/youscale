@@ -1,14 +1,14 @@
 import React from 'react'
 
-interface SendButtonProps{
+interface SendButtonProps {
     onClick: () => any,
     value: string
 }
-export default function SendButton({ onClick, value }:SendButtonProps) : JSX.Element {
+export default function SendButton({ onClick, value }: SendButtonProps): JSX.Element {
     return (
-        <button 
+        <button
             onClick={onClick}
-            type="button" 
+            type="button"
             className="btn btn-rounded btn-secondary"
         >
             {value}

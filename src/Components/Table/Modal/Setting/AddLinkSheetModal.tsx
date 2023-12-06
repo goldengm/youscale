@@ -21,11 +21,11 @@ const schema = yup.object().shape({
     spreadsheetId: yup.string().required('Ce champ est obligatoire'),
     range: yup.string().required('Ce champ est obligatoire'),
     name: yup
-    .string()
-    .required('Ce champ est obligatoire')
-    .test('no-spaces', 'Le champ ne doit pas contenir d\'espace', value => {
-        return !/\s/.test(value);
-    })
+        .string()
+        .required('Ce champ est obligatoire')
+        .test('no-spaces', 'Le champ ne doit pas contenir d\'espace', value => {
+            return !/\s/.test(value);
+        })
 }).required();
 
 interface Props {
@@ -135,8 +135,8 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
         handleCloseModal()
     }
 
-    const onDeleteSheet = () =>{
-        deleteSheet({id: data?.id || 0}).unwrap().then((result: any) => {
+    const onDeleteSheet = () => {
+        deleteSheet({ id: data?.id || 0 }).unwrap().then((result: any) => {
             handleCloseModal()
             refetch()
         }).catch((err: { data: ErrorModel | { message: string }, status: number }) => {
@@ -185,14 +185,14 @@ const FormBody = ({ handleCloseModal, data, refetch }: FormBodyProps) => {
                     />
 
                     <button type="submit" className="badge badge-md badge-success">Ajouter</button>
-                    <a href='#' onClick={()=> onDeleteSheet()} className="badge badge-md badge-danger">Supprimer</a>
+                    <a href='#' onClick={() => onDeleteSheet()} className="badge badge-md badge-danger">Supprimer</a>
                 </form>
             </div>
         </div>
     )
 }
 
-interface ChangeColumnProps{
+interface ChangeColumnProps {
     handleCloseModal: () => any
 }
 const ChangeColumn = ({ handleCloseModal }: ChangeColumnProps): JSX.Element => {

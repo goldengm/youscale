@@ -207,9 +207,10 @@
     justify-content: space-around;
     margin: 30px;
 }
+
 .bottomBtn button {
     width: 100px;
-} 
+}
 
 .saveBtn {
     display: inline-flex;
@@ -730,30 +731,38 @@
     .main {
         width: 100%;
     }
+
     .sheetContainer {
         width: 100%;
     }
+
     .switchItems {
         width: 100%;
     }
+
     .itemsActive {
         width: 100%;
     }
+
     .sheetMail {
         width: 90%;
     }
+
     .stepTxt {
         width: 90%;
     }
+
     .topAction {
         width: 90%;
         margin-top: 20px;
         gap: 8px;
     }
+
     .exampleBtn {
         margin-top: 20px;
         margin-left: 20px;
     }
+
     .title {
         width: 90%;
     }
@@ -761,46 +770,59 @@
     .main_Shipping {
         width: 100%;
     }
+
     .displayColonneArea {
         width: 90%;
         height: fit-content;
         gap: 8px;
     }
+
     .ColonneDescTxt {
         width: 90%;
         word-break: break-word;
     }
+
     .main_Whatsapp {
         width: 100%;
     }
-    .whtField input{
+
+    .whtField input {
         width: 60%;
     }
 
-    .whtField textarea{
+    .whtField textarea {
         width: 90%;
     }
+
     .bottomBtn {
         width: auto;
         gap: 8px
-    };
+    }
+
+    ;
+
     .columnTitle {
         width: 90%;
         gap: 30px;
         align-items: center;
     }
+
     .columnRow {
         width: 90%;
     }
+
     .columnValueInput {
         width: 40%;
     }
+
     .customValueInputStyle {
         width: 40%;
     }
+
     .columnInputTxt {
         width: 40%;
     }
+
     .columnDisplay {
         width: 100%;
     }
@@ -811,7 +833,8 @@
     .sheetBottomAction {
         width: 100%;
     }
-    .rowsInput{
+
+    .rowsInput {
         justify-content: center;
     }
 }
@@ -820,15 +843,17 @@
     .columnValueInput {
         font-size: smaller;
     }
+
     .customValueInputStyle {
         font-size: smaller;
     }
 }
 
 @media only screen and (max-width: 480px) {
-    .searchSociete  {
+    .searchSociete {
         width: 90%;
     }
+
     .SocieteContainer {
         width: 100%;
     }

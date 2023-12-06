@@ -4,13 +4,13 @@ import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
-interface CustomLineProps{
+interface CustomLineProps {
     data: any,
     options: any
 }
 
 export default function CustomLine({ data, options }: CustomLineProps): JSX.Element {
     return (
-        <Line style={{width:'80px',height:'80px'}} data={data} options={options} />
+        <Line style={{ width: '80px', height: '80px' }} data={data} options={options} />
     );
 }

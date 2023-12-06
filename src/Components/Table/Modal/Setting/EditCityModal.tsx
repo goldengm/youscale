@@ -105,7 +105,7 @@ const FormBody = ({ refetch, handleCloseModal, item }: FormBodyProps) => {
         const data = {
             ...values,
             id: item?.id || 0,
-            id_shipping : (String(values.id_shipping) === "") || (String(values.id_shipping) === "0") ? null : values.id_shipping
+            id_shipping: (String(values.id_shipping) === "") || (String(values.id_shipping) === "0") ? null : values.id_shipping
         }
 
         patchCity(data).unwrap()

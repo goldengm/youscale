@@ -99,7 +99,7 @@ const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProp
     const handleSubmit = () => {
         const token = localStorage.getItem('token')
 
-        axios.patch(CLIENT_STATUS_URL, {statusData}, {
+        axios.patch(CLIENT_STATUS_URL, { statusData }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -121,7 +121,7 @@ const Status = ({ setShowAddStatusModal, statusData, refetchStatus }: StatusProp
     return (
         <div className={styles.statusContainer}>
             <p className={styles.statusTitle}>Status</p>
-            <div className="row" style={{paddingLeft: "20px", paddingRight: "20px"}}>
+            <div className="row" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
                 {statusData && statusData.map(dt => <StatusRow key={dt.id} dt={dt} refetch={refetchStatus} />)}
             </div>
 
@@ -263,7 +263,7 @@ const ColumnOfOrder = ({ refetch, objData }: ColumnOfOrderCardProps): JSX.Elemen
     })
 
     return (
-        <div className={styles.columnContainer} style={{width: '-webkit-fill-available'}}>
+        <div className={styles.columnContainer} style={{ width: '-webkit-fill-available' }}>
             <p className={styles.columnTitle}>Colonnes de commandes</p>
             <div className="row">
                 <Column data={objData.active} className={'active-column'} title='Colonnes actives' />

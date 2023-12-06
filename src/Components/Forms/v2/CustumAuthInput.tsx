@@ -31,7 +31,7 @@ export default function CustumAuthInput({ label, placeholder, type, className = 
                     showPassword ? <AiOutlineEye onClick={() => setShowPassword(!showPassword)} size={20} className='eyes' /> : <AiOutlineEyeInvisible onClick={() => setShowPassword(!showPassword)} size={20} className='eyes' />
                 )
             }
-             {error && <p className='error'>{error.message}</p>}
+            {error && <p className='error'>{error.message}</p>}
         </fieldset>
     )
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useGetSettingQuery, usePatchSettingMutation } from '../../../services/api/ClientApi/ClientSettingApi';
 import { UseFormRegister, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

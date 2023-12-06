@@ -174,7 +174,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
             })
     }
 
-    const SwitchHideShipping = () =>{
+    const SwitchHideShipping = () => {
         setShowShipping(!showShipping)
     }
 

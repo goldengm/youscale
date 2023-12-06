@@ -33,7 +33,7 @@ export default function PerformanceCard({ children, setPerformance, perf, perf_r
                                     data-bs-toggle="tab"
                                     href="#Rate"
                                     role="tab"
-                                    onClick={()=> setPerformance(perf_rate)}
+                                    onClick={() => setPerformance(perf_rate)}
                                 >
                                     Rate
                                 </a>

@@ -77,7 +77,7 @@ const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
     });
 
     const onSubmit = (values: Inputs) => {
-      
+
     }
 
     return (

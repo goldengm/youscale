@@ -264,7 +264,7 @@ const FormBody = ({ refetch, handleClose, dataEdit }: FormBodyProps) => {
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
-        }
+    }
 
     const SwitchHideShipping = () => {
         setShowShipping(!showShipping)

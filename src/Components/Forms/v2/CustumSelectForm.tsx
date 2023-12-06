@@ -38,28 +38,28 @@ export default function CustumSelectForm({
 
   return (
     <div className={confirmation ? styles.confirmcontainer : styles.container}>
-      <div className={confirmation ? styles.confirmform :styles.form}>
+      <div className={confirmation ? styles.confirmform : styles.form}>
         <label className={confirmation ? styles.confirmlabel : styles.label}>
           {label}
         </label>
         <div style={confirmation ? (window.innerWidth > 550 ? { width: "205px" } : { width: "120px" }) : { width: "50%" }}>
           {confirmation ? (
-            <select 
+            <select
               id="confirmation_select"
               {...register(name)}
               onChange={selectChange}
-              defaultValue={defaultSelected?defaultSelected:"Livre"}
+              defaultValue={defaultSelected ? defaultSelected : "Livre"}
               value={selectedStatus}
               name={name}
               className={styles.confirmationselect}
-            > 
+            >
               {data.map((dt, index) => (
                 <option key={index} value={dt.value}>
                   {dt.label}
                 </option>
               ))}
             </select>
-          ): (
+          ) : (
             <select
               {...register(name)}
               onChange={Onchange}

@@ -17,7 +17,7 @@ type Inputs = {
     updownsell: string,
     changer: string,
     ouvrir: string
-  };
+};
 
 interface Props {
     label: string,

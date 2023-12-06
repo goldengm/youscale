@@ -59,7 +59,7 @@ export default function PackContainer() {
         return (dataSetting?.data.trial_period || 0) - diffInDays;
     }
 
-    function addDaysToDate({ date, days }: { date: Date, days: number }) : Date {
+    function addDaysToDate({ date, days }: { date: Date, days: number }): Date {
         const newDate = new Date(date);
         newDate.setDate(newDate.getDate() + days);
         return newDate;
@@ -80,7 +80,7 @@ export default function PackContainer() {
                         computeDateDifference(new Date(dataPack.data.Subscription.date_subscription), new Date()) > 0 &&
                         <PackTitlte title={`Pack <p class='expire-txt'>your pack will expire in ${computeDateDifference(new Date(dataPack.data.Subscription.date_subscription), new Date())} days</p>`} />
                     }
-                    { client?.data.isTrial &&  <PackTitlte title={`Pack <p class='expire-txt'>your pack will expire in ${addDaysToDate({ date: client.data.trialAt || new Date(), days: client.data.trialPeriod || 0 }).toString().slice(0,15)}</p>`} /> }
+                    {client?.data.isTrial && <PackTitlte title={`Pack <p class='expire-txt'>your pack will expire in ${addDaysToDate({ date: client.data.trialAt || new Date(), days: client.data.trialPeriod || 0 }).toString().slice(0, 15)}</p>`} />}
                     <Tarif data={dataPack} isLoading={isLoading} refetch={refetch} />
                     <PackTitlte title='Payment methods' />
                     <Account />

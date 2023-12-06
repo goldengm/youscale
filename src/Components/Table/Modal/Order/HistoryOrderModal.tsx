@@ -15,7 +15,7 @@ interface Props {
 }
 export default function HistoryOrderModal({ showModal, setShowModal, id_order }: Props): JSX.Element {
 
-  const { data } = useGetOrderHistoryQuery({id_order})
+  const { data } = useGetOrderHistoryQuery({ id_order })
 
   useEffect(() => {
     var body = document.querySelector<HTMLBodyElement>('body');
@@ -39,10 +39,10 @@ export default function HistoryOrderModal({ showModal, setShowModal, id_order }:
   )
 }
 
-interface FormBodyProps{
-    data: HistoryType | undefined
+interface FormBodyProps {
+  data: HistoryType | undefined
 }
-const FormBody = ({ data }:FormBodyProps) => {
+const FormBody = ({ data }: FormBodyProps) => {
   return (
     <div className="card-body">
       <div
@@ -61,7 +61,7 @@ interface EventProps {
   description: string,
   date: string
 }
-const Event = ({description, date}: EventProps): JSX.Element => {
+const Event = ({ description, date }: EventProps): JSX.Element => {
   return (
     <li>
       <div className="timeline-badge primary" />

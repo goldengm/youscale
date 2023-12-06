@@ -1,4 +1,4 @@
-.pack-price{
+.pack-price {
     font-weight: 600;
     color: #5bccc3;
     text-align: center;
@@ -6,7 +6,7 @@
     margin-bottom: 0;
 }
 
-.cust-pack-card{
+.cust-pack-card {
     display: flex;
     flex-direction: column;
 }
@@ -15,14 +15,14 @@
     margin: 10px;
 }
 
-.expire-txt{
+.expire-txt {
     text-align: center;
 }
 
-.coupon{
+.coupon {
     margin-top: 30px;
 }
 
-.expire-txt{
+.expire-txt {
     color: red;
 }

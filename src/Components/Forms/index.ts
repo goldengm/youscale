@@ -5,11 +5,11 @@ import CustumSelectForm from "./CustumSelectForm";
 import CustumAuthInput from "./CustumAuthInput";
 import CityDropDown from "./CityDropDown";
 
-export { 
+export {
     CustumSelect,
     CustumInput,
     CustumTextArea,
     CustumSelectForm,
     CustumAuthInput,
     CityDropDown
- };
+};

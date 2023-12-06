@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ModalWrapper from '../ModalWrapper'
-import { ErrorModel, GetStockModel  } from '../../../../models';
+import { ErrorModel, GetStockModel } from '../../../../models';
 import { useDeleteStockMutation } from '../../../../services/api/ClientApi/ClientStockApi';
 import { showToastError } from '../../../../services/toast/showToastError';
 
@@ -8,7 +8,7 @@ interface Props {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
     refetch: () => void,
-    item: GetStockModel  | undefined
+    item: GetStockModel | undefined
 }
 export default function DeleteStockModal({ showModal, setShowModal, refetch, item }: Props): JSX.Element {
 
@@ -55,7 +55,7 @@ export default function DeleteStockModal({ showModal, setShowModal, refetch, ite
                     handleCloseModal()
                     console.log(res)
                 })
-                .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                     if (err.data) {
                         if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                         else if ('message' in err.data) showToastError(err.data.message);

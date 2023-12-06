@@ -20,7 +20,7 @@ interface Props {
   onChange: ({ label, value }: dataType) => void
 }
 export const CommandeFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
-  const [defaultLabel, setDefaultLabel] =  useState<string>(label)
+  const [defaultLabel, setDefaultLabel] = useState<string>(label)
   const [title, setTitle] = useState<string>(label)
   const [display, setIsDisplay] = useState<boolean>(false)
 
@@ -66,7 +66,7 @@ interface DisplayProps {
   data: dataType[]
   defaultLabel: string
   onChange: ({ label, value }: dataType) => void
-  label:string
+  label: string
 }
 const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: DisplayProps): JSX.Element => {
 
@@ -74,16 +74,16 @@ const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: 
     <div ref={elementRef} className={style.display}>
       <Items
         label={'Tout'}
-        isChecked={label==defaultLabel}
-        defaultLabel= {defaultLabel}
+        isChecked={label == defaultLabel}
+        defaultLabel={defaultLabel}
         setTitle={setTitle}
         onChange={onChange}
         value='' />
       {data.map((dt, key) =>
         <Items
           label={dt.label}
-          isChecked={label==dt.label || label== defaultLabel}
-          defaultLabel= {defaultLabel}
+          isChecked={label == dt.label || label == defaultLabel}
+          defaultLabel={defaultLabel}
           setTitle={setTitle}
           value={dt.value}
           onChange={onChange}

@@ -95,7 +95,7 @@ const EditOrderModal: React.FC<Props> = ({ setIsVisible, refetch, driverObj, id_
                         refetch={refetch}
                         dataEdit={dataEdit}
                         id_order={id_order}
-                        handleClose={handleClose} 
+                        handleClose={handleClose}
                     />
                 </div>
             </div>

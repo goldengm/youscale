@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 import { FieldError, UseFormRegister } from 'react-hook-form'
 import { ErrorModel, ShippingModel } from '../../../models';
 import { useGetShippingQuery } from '../../../services/api/ClientApi/ClientShippingApi';

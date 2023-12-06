@@ -143,7 +143,7 @@ export default function ConfirmationModal({ showModal, setShowModal, refetch, id
     console.log('id_orders: ', id_orders)
 
     return (
-        (isSuccess && id_orders.length > 0 ) ?
+        (isSuccess && id_orders.length > 0) ?
             <ModalWrapper title={'Confirmation'} showModal={showModal} closeModal={handleCloseModal} setShowModal={setShowModal} id='EditOrderModal'>
                 <SelectStatusComponent data={FilterStatusWithOrder(StatusData?.countOrderByStatus)} label={'Status'} name={'status'} Onchange={onSelectStatus} statusConfirmation={statusConfirmation} />
                 <div className="order-id-date">
@@ -246,7 +246,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders, setIndex, index, curre
         <div className="card-body">
             <div className="basic-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className='restant-txt'>restant: {id_orders.length - (index+1)}</div>
+                    <div className='restant-txt'>restant: {id_orders.length - (index + 1)}</div>
                     <div className="row">
                         <CustumSelectForm
                             className={'lg-input-cus'}
