@@ -28,7 +28,6 @@ export const CommandeFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE }:
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      console.log(elementRef)
       if (elementRef.current && !elementRef.current.contains(event.target as Node)) {
         setIsDisplay(false);
       }
