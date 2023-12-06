@@ -135,6 +135,10 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     refetchCurrentOrder();
   }, [id_orders[index]]);
 
+  useEffect(() => {
+    RefetchStatus()
+  }, [])
+  
   const OnChangeStatus = ({ label, value }: dataType) => {
     setStatus(value === "0" ? undefined : value);
     setIndex(0)
@@ -143,6 +147,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 
   const handleClose = () => {
     setIsVisible(false);
+    refetch()
   };
 
   const useOutsideClick = (callback: () => void) => {
