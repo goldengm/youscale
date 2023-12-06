@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ErrorModel, GetProductModel } from '../../../models';
 import { useGetProductQuery } from '../../../services/api/ClientApi/ClientProductApi';
 import { showToastError } from '../../../services/toast/showToastError';

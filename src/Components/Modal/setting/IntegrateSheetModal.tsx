@@ -68,7 +68,7 @@ export default function IntegrateSheetModal({ setIsVisible, driverObj }: Props):
                 if (i < keys.length - 1) {
                     await delay(2000);
                 }
-            handleClose()
+                handleClose()
             } catch (err) {
                 console.log(err);
             }
@@ -126,7 +126,7 @@ export default function IntegrateSheetModal({ setIsVisible, driverObj }: Props):
                                         Enregistrer
                                     </button>
 
-                                    <button onClick={()=> handleClose()} className={styles.closeBtn}>
+                                    <button onClick={() => handleClose()} className={styles.closeBtn}>
                                         Fermer
                                     </button>
                                 </div>
@@ -211,14 +211,14 @@ const SheetContainer = (): JSX.Element => {
         data && setRow(data?.data)
     }, [data])
 
-    const onViewExample1 = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
+    const onViewExample1 = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
 
         setAttachement(EXAMPLE_1_URL)
         setShowImage(true)
     }
 
-    const onViewExample2 = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>{
+    const onViewExample2 = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
 
         setAttachement(EXAMPLE_2_URL)
@@ -258,7 +258,7 @@ const SheetContainer = (): JSX.Element => {
                     className={styles.addSheetBtn}
                     href="#">
                     <img src="/svg/setting/add.svg" alt="add" />
-                     {window.innerWidth > 600 ? ('Ajouter un nouveau sheet') : (window.innerWidth > 424 ? ('nouveau') : null)}
+                    {window.innerWidth > 600 ? ('Ajouter un nouveau sheet') : (window.innerWidth > 424 ? ('nouveau') : null)}
                 </a>
             </div>
 

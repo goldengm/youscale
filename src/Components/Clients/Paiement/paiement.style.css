@@ -1,31 +1,31 @@
-.goal-progress-line{
+.goal-progress-line {
     width: 200px;
 }
 
-.goal-form{
+.goal-form {
     display: flex;
     margin-top: 20px;
 }
 
-.input-goal{
+.input-goal {
     height: auto;
     margin-right: 10px;
 }
 
-.table-paiement{
+.table-paiement {
     height: 370px;
     overflow: scroll;
     overflow-x: hidden;
 }
 
-.table-header{
+.table-header {
     height: 100px;
 }
 
-.table-price{
+.table-price {
     font-size: 18px;
 }
 
-.table-delete-icon:hover{
+.table-delete-icon:hover {
     cursor: pointer;
 }

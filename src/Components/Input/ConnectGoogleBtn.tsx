@@ -1,10 +1,10 @@
 import React from 'react'
 import './styles.css'
 
-interface Props{
+interface Props {
     onClick: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => any
 }
-export default function ConnectGoogleBtn({ onClick }:Props) {
+export default function ConnectGoogleBtn({ onClick }: Props) {
     return (
         <a onClick={onClick} href="#">
             <div className="g-sign-in-button">

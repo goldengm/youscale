@@ -31,7 +31,7 @@ const AddSupportModal: React.FC<Props> = ({ setIsVisible, refetch }): JSX.Elemen
     const handleClose = () => {
         setIsVisible(false)
     };
-    
+
     const useOutsideClick = (callback: () => void) => {
         const ref = useRef<HTMLDivElement>(null);
 

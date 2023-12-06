@@ -222,7 +222,7 @@ interface FormBodyProps {
     dataEdit: GetTeamMemberModel | undefined
 }
 const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
-    const [patchTeam, { isLoading } ] = usePatchTeamMemberMutation()
+    const [patchTeam, { isLoading }] = usePatchTeamMemberMutation()
 
     const { data: ColumnData } = useGetColumnQuery()
     const { data: CityData } = useGetCityQuery()
@@ -257,7 +257,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
                     else if ('message' in err.data) showToastError(err.data.message);
                 }
             })
-            handleCloseModal()
+        handleCloseModal()
     }
 
     return (

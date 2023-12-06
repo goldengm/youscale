@@ -72,19 +72,19 @@ const Display = ({ elementRef, setTitle, data, onChange, label }: DisplayProps):
     <div ref={elementRef} className={style.display}>
       <Items
         label={'Tout'}
-        isChecked={label=='Produit'}
+        isChecked={label == 'Produit'}
         setTitle={setTitle}
         onChange={onChange}
         value='' />
       {data.map((dt, key) =>
         <Items
-        key={key}
-        label={dt.label}
-        isChecked={label==dt.label || label=='Produit'}
-        setTitle={setTitle}
-        value={dt.value}
-        onChange={onChange}
-      />)}
+          key={key}
+          label={dt.label}
+          isChecked={label == dt.label || label == 'Produit'}
+          setTitle={setTitle}
+          value={dt.value}
+          onChange={onChange}
+        />)}
     </div>
   )
 }

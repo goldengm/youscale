@@ -126,7 +126,7 @@ interface SocieteContainerProps {
 }
 const SocieteContainer = ({ setLivoToken, livoToken }: SocieteContainerProps): JSX.Element => {
     const { data, isSuccess } = useGetShippingQuery()
-   
+
 
     return (
         <div className={styles.SocieteContainer}>

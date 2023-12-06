@@ -1,35 +1,35 @@
-.add-variant-btn{
+.add-variant-btn {
     width: 99px;
     height: 30px;
 }
 
-.variant-row{
+.variant-row {
     justify-content: center;
     align-items: center;
 }
 
-.add-btn{
+.add-btn {
     margin: 20px;
 }
 
-.chat-attachement{
+.chat-attachement {
     height: 100px;
     width: 100px;
 }
 
-.chat-attachement:hover{
+.chat-attachement:hover {
     cursor: pointer;
     opacity: 0.6;
 }
 
-.admin-msg{
+.admin-msg {
     background-color: slateblue;
 }
 
-.admin-msg span{
+.admin-msg span {
     color: white !important;
 }
 
-.admin-msg h6{
+.admin-msg h6 {
     color: white !important;
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 import { FieldError, UseFormRegister } from 'react-hook-form'
 import { CityModel, ErrorModel, ShippingModel } from '../../../models';
 import { useGetShippingQuery } from '../../../services/api/ClientApi/ClientShippingApi';
@@ -136,7 +136,7 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
                             />
 
                             <Select
-                                 defaultSelected={item?.id_shipping}
+                                defaultSelected={item?.id_shipping}
                                 data={GetShippingCompanies(shippingData?.data)}
                                 register={register}
                                 error={errors.id_shipping}

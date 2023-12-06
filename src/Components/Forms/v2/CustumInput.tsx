@@ -32,11 +32,11 @@ export default function CustumInput({
 }: Props): JSX.Element {
   return (
     <div className={styles.container}>
-      <div className={ confirmation? styles.confirmform : styles.form}>
+      <div className={confirmation ? styles.confirmform : styles.form}>
         <label className={confirmation ? styles.confirmlabel : styles.label}>
           {label}
         </label>
-        <div style={confirmation?( window.innerWidth > 550 ? {width:'205px'} : {width: '120px'}): { width: "50%" }}>
+        <div style={confirmation ? (window.innerWidth > 550 ? { width: '205px' } : { width: '120px' }) : { width: "50%" }}>
           <input
             style={{ width: "100%" }}
             min={min || 0}

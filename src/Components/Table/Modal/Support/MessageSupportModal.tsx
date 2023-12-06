@@ -183,7 +183,7 @@ const ReceivedMsg = ({ description, date, attachement }: EventProps): JSX.Elemen
 const OutgoingMsg = ({ description, date, attachement, setShowImage }: EventProps): JSX.Element => {
     return (
         <div className={styles.sender_msg}>
-             {attachement && <img src={attachement} onClick={() => setShowImage && setShowImage(true)} alt="attachement" className={styles.attachement} />}
+            {attachement && <img src={attachement} onClick={() => setShowImage && setShowImage(true)} alt="attachement" className={styles.attachement} />}
             <p>
                 {description}
             </p>

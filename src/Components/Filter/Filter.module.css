@@ -130,16 +130,18 @@
     background: #FFF;
     box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.09);
     width: 218px;
-    max-height: 250px; /* Changed height to max-height */
+    max-height: 250px;
+    /* Changed height to max-height */
     padding: 13px;
-    overflow-y: auto; /* Changed overflow to auto for vertical scroll only */
+    overflow-y: auto;
+    /* Changed overflow to auto for vertical scroll only */
     overflow-x: hidden;
     z-index: 99;
 }
 
 .display::-webkit-scrollbar {
     width: 0.4em;
-    
+
 }
 
 .display::-webkit-scrollbar-track {
@@ -194,22 +196,22 @@
     margin: 1px;
 }
 
-@media only screen and (max-width: 1200px) and (min-width: 920px){
+@media only screen and (max-width: 1200px) and (min-width: 920px) {
     .filter p {
-        display: none; 
-    } 
+        display: none;
+    }
 }
 
-@media only screen and (max-width: 870px){
+@media only screen and (max-width: 870px) {
     .supportFilter p {
-        display: none; 
-    } 
+        display: none;
+    }
 }
 
-@media only screen and (max-width: 1200px) and (min-width: 510px){
+@media only screen and (max-width: 1200px) and (min-width: 510px) {
     .orderFilter p {
-        display: none; 
-    } 
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 510px) {

@@ -20,7 +20,7 @@ interface Props {
   onChange: ({ label, value }: dataType) => void
 }
 export const Filter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
-  const [defaultLabel, setdefaultLabel] =  useState<string>(label)
+  const [defaultLabel, setdefaultLabel] = useState<string>(label)
   const [title, setTitle] = useState<string>(label)
   const [display, setIsDisplay] = useState<boolean>(false)
 
@@ -75,8 +75,8 @@ const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: 
     <div ref={elementRef} className={style.display}>
       <Items
         label={'Tout'}
-        isChecked={label==defaultLabel}
-        defaultLabel= {defaultLabel}
+        isChecked={label == defaultLabel}
+        defaultLabel={defaultLabel}
         setTitle={setTitle}
         onChange={onChange}
         value='' />
@@ -84,8 +84,8 @@ const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: 
         <Items
           key={index}
           label={dt.label}
-          isChecked={label==dt.label || label== defaultLabel}
-          defaultLabel= {defaultLabel}
+          isChecked={label == dt.label || label == defaultLabel}
+          defaultLabel={defaultLabel}
           setTitle={setTitle}
           value={dt.value}
           onChange={onChange}
@@ -116,7 +116,7 @@ const Items = ({ isChecked, label, setTitle, defaultLabel, onChange, value }: It
     } else {
       setTitle && setTitle(label)
     }
-    
+
     onChange && onChange({ label, value })
   }
 

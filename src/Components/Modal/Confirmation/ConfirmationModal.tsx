@@ -138,11 +138,11 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   useEffect(() => {
     RefetchStatus()
   }, [])
-  
+
   const OnChangeStatus = ({ label, value }: dataType) => {
-    setStatus(value === "0" ? undefined : value);
+    setStatus(value);
     setIndex(0)
-    setSelectedStatus(value === "0" ? undefined : value)
+    setSelectedStatus(value)
   };
 
   const handleClose = () => {
@@ -155,15 +155,15 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-          if (ref.current && !ref.current.contains(event.target as Node)) {
-              callback();
-          }
+        if (ref.current && !ref.current.contains(event.target as Node)) {
+          callback();
+        }
       };
 
       document.addEventListener('mousedown', handleClickOutside);
 
       return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [callback]);
 
@@ -171,8 +171,8 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   };
 
   const ref = useOutsideClick(() => {
-      console.log('Clicked outside of MyComponent');
-      handleClose();
+    console.log('Clicked outside of MyComponent');
+    handleClose();
   });
 
   return isOpen ? (
@@ -231,7 +231,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
                 id_orders={id_orders}
                 index={index}
                 selectedStatus={selectedStatus}
-                setSelectedStatus ={setSelectedStatus}
+                setSelectedStatus={setSelectedStatus}
               />
             )}
           </div>
@@ -326,16 +326,16 @@ const ProductLayout = ({
     setSelectedProduct(
       editData
         ? editData
-            ?.filter((dt) => dt.Product.variant?.length === 0)
-            .map((dt) => {
-              return {
-                label: dt.Product.name,
-                value: dt.Product.id ? String(dt.Product.id) : "",
-                quantity: dt.quantity,
-                variant: dt.variant,
-                allVariant: dt.Product.variant,
-              };
-            })
+          ?.filter((dt) => dt.Product.variant?.length === 0)
+          .map((dt) => {
+            return {
+              label: dt.Product.name,
+              value: dt.Product.id ? String(dt.Product.id) : "",
+              quantity: dt.quantity,
+              variant: dt.variant,
+              allVariant: dt.Product.variant,
+            };
+          })
         : []
     );
   }, []);
@@ -521,9 +521,9 @@ const FormBody = ({
     setIndex((prevIndex) => prevIndex + 1);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setSelectedStatus(currentOrder.data[0].status)
-  },[index])
+  }, [index])
 
   const handleClick = (phone_number: string) => {
     window.open(
@@ -535,9 +535,9 @@ const FormBody = ({
   };
 
   return (
-    <div className="card-body" style={{width: '100%'}}>
+    <div className="card-body" style={{ width: '100%' }}>
       <div className="basic-form">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} onChange={() => { }}>
           <div className="row">
             <CustumInput
               defaultValue={currentOrder.order[0].nom}

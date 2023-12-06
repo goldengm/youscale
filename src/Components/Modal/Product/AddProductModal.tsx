@@ -118,7 +118,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
         <div className="card-body">
             <div className="basic-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row" style={{gap: "20px"}}>
+                    <div className="row" style={{ gap: "20px" }}>
                         <CustumInput
                             register={register}
                             name={'name'}
@@ -137,7 +137,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
                             placeholder={'12.55'}
                         />
                     </div>
-                    <div className="row" style={{marginTop: "20px"}}>
+                    <div className="row" style={{ marginTop: "20px" }}>
                         <SwitchForm label={'Variant'} active={showVariant} SwitchHideProduct={switchShowVariant} />
                         {showVariant && <AddVariant setSelected={setSelected} />}
                     </div>

@@ -232,7 +232,7 @@
 .cityContainer {
     display: flex;
     flex-direction: column;
-    gap:16px;
+    gap: 16px;
     width: -webkit-fill-available;
     flex-shrink: 0;
     border-radius: 15px;
@@ -273,6 +273,7 @@
     .cityHeader {
         flex-direction: column;
     }
+
     .citySearchContainer {
         width: 100%
     }
@@ -357,6 +358,7 @@
     .mainCity {
         flex-direction: column;
     }
+
     .rightCity {
         width: 100%;
     }

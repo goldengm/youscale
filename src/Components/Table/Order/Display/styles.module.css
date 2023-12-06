@@ -52,7 +52,7 @@
     color: black;
     width: 100px;
     font-size: 15px;
-    font-weight:600;
+    font-weight: 600;
 }
 
 .ItemsStatusIcon {
@@ -60,14 +60,14 @@
     color: black;
 }
 
-.SwithButton{
+.SwithButton {
     display: flex;
     align-items: center;
     background-color: rgb(239, 239, 239);
     width: 20%;
 }
 
-.SwithButtonArrow{
+.SwithButtonArrow {
     font-size: 20px;
     width: 30px;
     height: 30px;
@@ -77,7 +77,7 @@
     border-radius: 30px;
 }
 
-.SwithButtonArrow:hover{
+.SwithButtonArrow:hover {
     cursor: pointer;
     opacity: 0.7;
 }

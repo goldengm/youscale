@@ -1,14 +1,14 @@
 import React from 'react'
 
-type dataType ={
+type dataType = {
     label: string;
     value: string;
 }[]
 
 const DEFAULT_VALUE: dataType = [
-    {label: 'One', value: '1'},
-    {label: 'Two', value: '2'},
-    {label: 'Three', value: '3'}
+    { label: 'One', value: '1' },
+    { label: 'Two', value: '2' },
+    { label: 'Three', value: '3' }
 ]
 
 interface Props {
@@ -25,7 +25,7 @@ export default function CustumSelect({ name, onChange, data = DEFAULT_VALUE }: P
                 onChange={onChange}
             >
                 <option value={'all'} selected={true}>{name}</option>
-                { data.map((dt,index)=> <option key={index} value={dt.value}>{dt.label}</option> ) }
+                {data.map((dt, index) => <option key={index} value={dt.value}>{dt.label}</option>)}
             </select>
         </div>
     )

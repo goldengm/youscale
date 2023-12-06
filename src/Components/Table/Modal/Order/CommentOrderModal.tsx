@@ -71,11 +71,11 @@ const FormBody = ({ data, id_order, refetch }: FormBodyProps) => {
         setMessage('')
     }
 
-    const onKeyPress=(event: React.KeyboardEvent<HTMLInputElement>)=>{
+    const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             event.preventDefault();
             sendBtnRef.current?.click()
-          }
+        }
     }
 
     return (

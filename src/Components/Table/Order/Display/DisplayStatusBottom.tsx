@@ -29,13 +29,13 @@ interface Props {
     setOrderQueryData: React.Dispatch<React.SetStateAction<OrderQueryModel>>
     refetch: () => any
 }
-export default function DisplayStatusBottom({ setStatus, dataStatus, setOrderQueryData, refetch }:Props) {
+export default function DisplayStatusBottom({ setStatus, dataStatus, setOrderQueryData, refetch }: Props) {
     const displayElemRef = useRef<ElementRef<"div">>(null)
 
     return (
         <div className={styles.displayStatusBottomContainer}>
             <div ref={displayElemRef} className={styles.displayStatusBottom}>
-                { dataStatus?.data.map(dt => dt.checked && <ItemsStatus name={dt.name} setOrderQueryData={setOrderQueryData} refetch={refetch} setStatus={setStatus} borderColor={dt.color || 'transparent'} />) }
+                {dataStatus?.data.map(dt => dt.checked && <ItemsStatus name={dt.name} setOrderQueryData={setOrderQueryData} refetch={refetch} setStatus={setStatus} borderColor={dt.color || 'transparent'} />)}
             </div>
             <SwithButton displayElemRef={displayElemRef} />
         </div>
@@ -51,7 +51,7 @@ interface ItemsStatusProps {
 }
 const ItemsStatus = ({ name, borderColor, setStatus, setOrderQueryData, refetch }: ItemsStatusProps): JSX.Element => {
 
-    const onClick=(e: React.MouseEvent<HTMLDivElement, MouseEvent>)=>{
+    const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault()
         setStatus(name)
         setOrderQueryData({ status: name, search: '', _skip: 0, _limit: 20 })

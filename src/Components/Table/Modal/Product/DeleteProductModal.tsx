@@ -55,7 +55,7 @@ export default function DeleteProductModal({ showModal, setShowModal, refetch, i
                     handleCloseModal()
                     console.log(res)
                 })
-                .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+                .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                     if (err.data) {
                         if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                         else if ('message' in err.data) showToastError(err.data.message);

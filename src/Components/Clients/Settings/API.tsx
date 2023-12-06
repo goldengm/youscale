@@ -44,7 +44,7 @@ export default function API({ driverObj }: Props): JSX.Element {
             {showWhatsappModal && <IntegrateWhatsappModal driverObj={driverObj} setIsVisible={setShowWhatsappModal} />}
 
             <h3 className="mt-4 mb-3">API</h3>
-            <div className="row" style={{justifyContent: 'space-evenly'}}>
+            <div className="row" style={{ justifyContent: 'space-evenly' }}>
                 <APICard img={'/svg/setting/sheets.png'} title={'Google Sheets'} onClick={handleShowSheetModal} />
                 <APICard img={'/svg/setting/shopify.png'} title={'Shopify'} />
                 <APICard img={'/svg/setting/shipping.svg'} title={'Sociétés de livraison'} onClick={handleShowShippingModal} />

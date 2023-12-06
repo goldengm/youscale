@@ -50,10 +50,10 @@ export default function DeleteCityModal({ showModal, setShowModal, refetch, id_c
 
         deleteCity(id_city).unwrap()
             .then(res => {
-               handleCloseModal()
-               refetch()
+                handleCloseModal()
+                refetch()
             })
-            .catch((err: {data: ErrorModel | {message : string}, status: number}) => {
+            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
                     else if ('message' in err.data) showToastError(err.data.message);
@@ -80,7 +80,7 @@ const FormBody = ({ onClick }: FormBodyProps) => {
                     <h2 className="swal2-title" id="swal2-title" style={{ display: "flex" }}>
                         Voulez vous vraiment supprimer cette ville ?
                     </h2>
-                    <button 
+                    <button
                         onClick={onClick}
                         className="btn btn-danger btn sweet-wrong"
                     >Supprimer</button>

@@ -6,7 +6,7 @@ import CustumAuthInput from "./CustumAuthInput";
 import CityDropDown from "./CityDropDown";
 import SwitchForm from "./SwitchForm";
 
-export { 
+export {
     CustumSelect,
     CustumInput,
     CustumTextArea,
@@ -14,4 +14,4 @@ export {
     CustumAuthInput,
     CityDropDown,
     SwitchForm
- };
+};

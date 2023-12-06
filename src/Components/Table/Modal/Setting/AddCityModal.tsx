@@ -107,7 +107,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
 
         const data = {
             ...values,
-            id_shipping : String(values.id_shipping) === "" ? null : values.id_shipping
+            id_shipping: String(values.id_shipping) === "" ? null : values.id_shipping
         }
 
         addCity(data).unwrap()

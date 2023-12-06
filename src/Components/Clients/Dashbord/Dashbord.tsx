@@ -85,7 +85,7 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
             }
         })
     }
-    
+
 
     useEffect(() => {
         if (document.readyState === "complete") {
@@ -334,12 +334,12 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
 
                     <div className="card-tabs mt-3 mt-sm-0">
                         <ul className="nav nav-tabs" role="tablist">
-                            <li onClick={()=> setMode('commande')} className="nav-item">
+                            <li onClick={() => setMode('commande')} className="nav-item">
                                 <a className={`nav-link active ${styles.statisticSwthLabel}`} data-bs-toggle="tab" href="#Commande" role="tab">
                                     Commande
                                 </a>
                             </li>
-                            <li onClick={()=> setMode('percent')} className="nav-item">
+                            <li onClick={() => setMode('percent')} className="nav-item">
                                 <a className={`nav-link ${styles.statisticSwthLabel}`} data-bs-toggle="tab" href="#Pourcentage" role="tab">
                                     Pourcentage
                                 </a>
@@ -358,26 +358,26 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                             <ul className="card-list mt-4">
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-delivered circle`} />
-                                    livré ({ mode === 'commande' ? data.data.datasets[0].data[0] : ((data.data.datasets[0].data[0]*100)/data.total).toFixed(2) + '%' })
+                                    livré ({mode === 'commande' ? data.data.datasets[0].data[0] : ((data.data.datasets[0].data[0] * 100) / data.total).toFixed(2) + '%'})
                                 </li>
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-pending-1 circle`} />
-                                    en attente ({ mode === 'commande' ? data.data.datasets[0].data[1] : ((data.data.datasets[0].data[1]*100)/data.total).toFixed(2) + '%' })
+                                    en attente ({mode === 'commande' ? data.data.datasets[0].data[1] : ((data.data.datasets[0].data[1] * 100) / data.total).toFixed(2) + '%'})
                                 </li>
 
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-pending-2 circle`} />
-                                    Injoignable ({ mode === 'commande' ? data.data.datasets[0].data[2] : ((data.data.datasets[0].data[2]*100)/data.total).toFixed(2) + '%' })
+                                    Injoignable ({mode === 'commande' ? data.data.datasets[0].data[2] : ((data.data.datasets[0].data[2] * 100) / data.total).toFixed(2) + '%'})
                                 </li>
 
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-cancelled circle`} />
-                                    annulé ({ mode === 'commande' ? data.data.datasets[0].data[3] : ((data.data.datasets[0].data[3]*100)/data.total).toFixed(2) + '%' })
+                                    annulé ({mode === 'commande' ? data.data.datasets[0].data[3] : ((data.data.datasets[0].data[3] * 100) / data.total).toFixed(2) + '%'})
                                 </li>
 
                                 <li className={styles.cmdLabel}>
                                     <span className={`bg-deleted circle`} />
-                                    Deleted ({ mode === 'commande' ? data.data.datasets[0].data[4] : ((data.data.datasets[0].data[4]*100)/data.total).toFixed(2) + '%' })
+                                    Deleted ({mode === 'commande' ? data.data.datasets[0].data[4] : ((data.data.datasets[0].data[4] * 100) / data.total).toFixed(2) + '%'})
                                 </li>
                             </ul>
                         </div>
@@ -545,7 +545,7 @@ interface BestSellingCardProps {
 }
 const BestSellingCard = ({ name, price, count, price_product }: BestSellingCardProps): JSX.Element => {
     return (
-        <div className="d-flex align-items-end mt-2 pb-3 justify-content-between" style={{alignItems: 'center'}}>
+        <div className="d-flex align-items-end mt-2 pb-3 justify-content-between" style={{ alignItems: 'center' }}>
             <span>{name}</span>
             <span className="fs-18">
                 <span className="text-black pe-2">{price_product}dhs/order </span>- {count} orders

@@ -2,15 +2,15 @@
     width: 100% !important;
 }
 
-.cust-input-content{
+.cust-input-content {
     display: flex;
     align-items: center;
 }
 
-.eyes{
+.eyes {
     margin-left: 6px;
 }
 
-.eyes:hover{
+.eyes:hover {
     cursor: pointer;
 }
