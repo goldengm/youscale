@@ -323,6 +323,7 @@ const ProductLayout = ({
   >([]);
 
   useEffect(() => {
+    console.log("editdata", editData)
     setSelectedProduct(
       editData
         ? editData
@@ -338,7 +339,7 @@ const ProductLayout = ({
           })
         : []
     );
-  }, []);
+  }, [id])
 
   const onSubmit = () => {
     if (selectedProduct.length === 0) {

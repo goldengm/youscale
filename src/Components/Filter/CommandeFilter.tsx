@@ -71,7 +71,7 @@ interface DisplayProps {
 const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: DisplayProps): JSX.Element => {
 
   return (
-    <div ref={elementRef} className={style.display}>
+    <div ref={elementRef} className={style.commandesDisplay}>
       <Items
         label={'Tout'}
         isChecked={label == defaultLabel}
@@ -81,6 +81,7 @@ const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: 
         value='' />
       {data.map((dt, key) =>
         <Items
+          key={key}
           label={dt.label}
           isChecked={label == dt.label || label == defaultLabel}
           defaultLabel={defaultLabel}
