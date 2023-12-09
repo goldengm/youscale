@@ -178,9 +178,9 @@ td {
 }
 
 .displayStatus {
+  overflow: auto;
   display: flex;
   align-items: center;
-  width: 1150px;
   border: 1px solid rgba(17, 17, 17, 0.3);
   background: #fafafa;
 }
@@ -227,10 +227,10 @@ td {
 }
 
 .bottomTable {
+  width: 100%;
   margin-top: 10px;
   display: flex;
   align-items: center;
-  overflow: auto;
 }
 
 .tdStatus {

@@ -11898,6 +11898,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
     margin: 0;
     list-style: none; }
   .dlabnav .metismenu {
+    position: fixed;
     display: flex;
     flex-direction: column;
     padding-top: 15px; }

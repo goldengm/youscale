@@ -1,6 +1,7 @@
 import { ElementRef, useRef } from 'react';
 import { OrderQueryModel, StatusModel, countOrderByStatusModel } from '../../models';
 import style from './table.module.css'
+import { string } from 'yup';
 
 function truncateString(str: string, maxLength: number): string {
     if (str.length <= maxLength) {
@@ -30,14 +31,28 @@ interface Props {
 export default function BottomTable({ setStatus, dataStatus, setOrderQueryData, refetch }: Props) {
     const displayElemRef = useRef<ElementRef<"div">>(null)
 
+    const moveLeft = () => {
+        const displayStatusElement = document.querySelector('.displayStatus');
+        if (displayStatusElement) {
+            displayStatusElement.scrollLeft -= 900; // Subtracting to move left
+        }
+    }
+
+    const moveRight = () => {
+        const displayStatusElement = document.querySelector('.displayStatus');
+        if (displayStatusElement) {
+            displayStatusElement.scrollLeft += 900; // Adding to move right
+        }
+    }
+
     return (
         <div className={style.bottomTable}>
             <div ref={displayElemRef} className={style.displayStatus}>
                 {dataStatus?.data.map((dt, index) => dt.checked && <StatusItems key={index} name={dt.name} setOrderQueryData={setOrderQueryData} refetch={refetch} setStatus={setStatus} borderColor={dt.color || 'transparent'} />)}
             </div>
             <div className={style.statusControls}>
-                <img src="/svg/order/prev_table.svg" alt="prev_table" />
-                <img src="/svg/order/next_table.svg" alt="next_table" />
+                <img src="/svg/order/prev_table.svg" alt="prev_table" onClick={moveLeft} />
+                <img src="/svg/order/next_table.svg" alt="next_table" onClick={moveRight} />
             </div>
         </div>
     )

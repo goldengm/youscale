@@ -1,5 +1,6 @@
 import style from './table.module.css'
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { Spinner4Bar } from '../Loader'
 
 function truncateString(str: string, maxLength: number) {
     if (str.length > maxLength) {
@@ -15,8 +16,9 @@ interface Props {
     children: JSX.Element | JSX.Element[]
     dataLength: number
     fetchData: () => Promise<void>
+    isLoading: boolean
 }
-export default function TableContainer({ column, handleCheckAll, children, dataLength, fetchData }: Props) {
+export default function TableContainer({ column, handleCheckAll, children, dataLength, fetchData, isLoading }: Props) {
     return (
         <div>
             <InfiniteScroll
@@ -36,8 +38,8 @@ export default function TableContainer({ column, handleCheckAll, children, dataL
                     <thead>
                         <Column column={column} handleCheckAll={handleCheckAll} />
                     </thead>
-                    <tbody>
-                        {children}
+                    <tbody >
+                        {isLoading ? <tr><td><Spinner4Bar /></td></tr> :children}
                     </tbody>
                 </table>
             </InfiniteScroll>

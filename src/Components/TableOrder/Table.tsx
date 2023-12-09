@@ -70,7 +70,7 @@ export const Table = ({ data, OrderQueryData, setStatus, setOrderQueryData, refe
   const [showOrderModal, setShowOrderModal] = useState(false)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState<boolean>(false)
-  const { data: ColumnData } = useGetColumnQuery()
+  const { data: ColumnData, isLoading, isFetching } = useGetColumnQuery()
 
   const [id_orders, setIdOrders] = useState<number[]>()
 
@@ -137,6 +137,7 @@ export const Table = ({ data, OrderQueryData, setStatus, setOrderQueryData, refe
         handleCheckAll={handleCheckAll}
         dataLength={data?.data.length || 0}
         fetchData={fetchData}
+        isLoading={isFetching}        
       >
         {
           data ? data?.data.map((dt, index) => <Row
