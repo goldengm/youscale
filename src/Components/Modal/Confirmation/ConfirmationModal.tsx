@@ -517,7 +517,7 @@ const FormBody = ({
     e.preventDefault();
 
     if (id_orders.length === index + 1) {
-      return;
+      handleClose()
     }
     setIndex((prevIndex) => prevIndex + 1);
   };
@@ -527,10 +527,9 @@ const FormBody = ({
   }, [index])
 
   const handleClick = (phone_number: string) => {
-    window.open(
-      `https://wa.me/${phone_number}?text=${encodeURI(
-        dataSetting?.data.automated_msg || ""
-      )}`,
+    window.open(`https://wa.me/${phone_number}?text=${encodeURI(
+      dataSetting?.data.automated_msg || ""
+    )}`,
       "_blank"
     );
   };
