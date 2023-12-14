@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { CustumInput } from '../../Forms/v2';
 import { Spinner4Bar } from '../../Loader';
 import { useAddTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi';
+import { usePatchTeamMemberMutation } from '../../../services/api/ClientApi/ClientTeamMemberApi';
 import { useGetColumnQuery } from '../../../services/api/ClientApi/ClientColumnApi';
 import { Switch } from '../../Switch';
 import { useGetPageQuery } from '../../../services/api/ClientApi/ClientPageApi';
@@ -139,7 +140,8 @@ interface FormBodyProps {
 const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
 
     const [showShipping, setShowShipping] = useState<boolean>(false)
-    const [addTeam, { isLoading }] = useAddTeamMemberMutation()
+    const [addTeam, { isLoading: isAddLoading }] = useAddTeamMemberMutation()
+    const [patchTeam, { isLoading: isPatchLoading }] = usePatchTeamMemberMutation()
 
     const { data: ColumnData } = useGetColumnQuery()
     const { data: CityData } = useGetCityQuery()
@@ -162,9 +164,23 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
         }
 
         addTeam(data).unwrap()
-            .then(res => {
-                refetch()
-                handleClose()
+            .then((res: any) => {
+                const patchData = {
+                    ...data,
+                    id: res.data.id
+                }
+
+                patchTeam(patchData).unwrap()
+                    .then(res => {
+                        refetch()
+                        handleClose()
+                    })
+                    .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
+                        if (err.data) {
+                            if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
+                            else if ('message' in err.data) showToastError(err.data.message);
+                        }
+                    })
             })
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
@@ -366,7 +382,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
                     </div>
 
                     {
-                        isLoading ? <Spinner4Bar /> :
+                        (isAddLoading || isPatchLoading) ? <Spinner4Bar /> :
                             <div className={styles.bottomAction}>
                                 <button type="submit" className={styles.saveBtn}>
                                     Enregistrer
@@ -397,6 +413,11 @@ interface ColumnAccessProps {
 const AllAccess = ({ label, register, name, error, setValue, options, column }: ColumnAccessProps): JSX.Element => {
     const [isAll, setIsAll] = useState<boolean>(true)
     const [selected, setSelected] = useState<[]>([]);
+
+    useEffect(() => {
+        if (isAll) handleMultiSelect(options)
+        else handleMultiSelect(selected)
+    }, [isAll]);
 
     const getArrayFromSelected = (data: []): string[] => {
         var new_arr = data.map((dt: { value: string | number }) => String(dt.value))

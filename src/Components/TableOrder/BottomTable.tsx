@@ -1,4 +1,4 @@
-import { ElementRef, useRef } from 'react';
+import { ElementRef, useRef, useState } from 'react';
 import { OrderQueryModel, StatusModel, countOrderByStatusModel } from '../../models';
 import style from './table.module.css'
 import { string } from 'yup';
@@ -29,25 +29,60 @@ interface Props {
     refetch: () => any
 }
 export default function BottomTable({ setStatus, dataStatus, setOrderQueryData, refetch }: Props) {
-    const displayElemRef = useRef<ElementRef<"div">>(null)
+    const [scrollPosition, setScrollPosition] = useState<number>(0);
+    const displayElemRef = useRef<HTMLDivElement>(null);
 
     const moveLeft = () => {
-        const displayStatusElement = document.querySelector('.displayStatus');
-        if (displayStatusElement) {
-            displayStatusElement.scrollLeft -= 900; // Subtracting to move left
-        }
-    }
+        if (displayElemRef.current && dataStatus?.data) {
+            const scrollStep = 100; // Adjust this value as needed
+            const newPosition = scrollPosition - scrollStep;
+        
+            if (newPosition >= 0) {
+              displayElemRef.current.scrollTo({
+                left: newPosition,
+                behavior: 'smooth', // You can use 'auto' for instant scroll without animation
+              });
+              setScrollPosition(newPosition);
+            } else {
+              displayElemRef.current.scrollTo({
+                left: 0,
+                behavior: 'smooth', // 'auto' for instant scroll
+              });
+              setScrollPosition(0);
+            }
+          }
+    };
 
     const moveRight = () => {
-        const displayStatusElement = document.querySelector('.displayStatus');
-        if (displayStatusElement) {
-            displayStatusElement.scrollLeft += 900; // Adding to move right
-        }
-    }
+        if (displayElemRef.current && dataStatus?.data) {
+            const scrollStep = 100; // Adjust this value as needed
+            const maxScroll = displayElemRef.current.scrollWidth - displayElemRef.current.clientWidth;
+            const newPosition = scrollPosition + scrollStep;
+        
+            if (newPosition <= maxScroll) {
+              displayElemRef.current.scrollTo({
+                left: newPosition,
+                behavior: 'smooth', // You can use 'auto' for instant scroll without animation
+              });
+              setScrollPosition(newPosition);
+            } else {
+              displayElemRef.current.scrollTo({
+                left: maxScroll,
+                behavior: 'smooth', // 'auto' for instant scroll
+              });
+              setScrollPosition(maxScroll);
+            }
+          }
+    };
+
+    const scrollContainerStyles: React.CSSProperties = {
+        overflowX: 'auto',
+        scrollLeft: scrollPosition,
+    } as React.CSSProperties; // Using type assertion here
 
     return (
         <div className={style.bottomTable}>
-            <div ref={displayElemRef} className={style.displayStatus}>
+            <div ref={displayElemRef} className={style.displayStatus} style={scrollContainerStyles}>
                 {dataStatus?.data.map((dt, index) => dt.checked && <StatusItems key={index} name={dt.name} setOrderQueryData={setOrderQueryData} refetch={refetch} setStatus={setStatus} borderColor={dt.color || 'transparent'} />)}
             </div>
             <div className={style.statusControls}>
@@ -68,6 +103,7 @@ interface StatusProps {
 const StatusItems = ({ name, setStatus, setOrderQueryData, refetch }: StatusProps): JSX.Element => {
 
     const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        console.log("++++++++++++", name)
         e.preventDefault()
         setStatus(name)
         setOrderQueryData({ status: name, search: '', _skip: 0, _limit: 20 })
