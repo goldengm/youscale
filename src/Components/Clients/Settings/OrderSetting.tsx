@@ -471,7 +471,7 @@ const ConfSetting = ({ setShowEditPasswordModal }: ConfSettingProps): JSX.Elemen
 
     return (
         <div className="col-12 configuration">
-            <div className="card">
+            {/* <div className="card">
                 <div className="card-header">
                     <h4 className="card-title">Configuration</h4>
                 </div>
@@ -564,7 +564,7 @@ const ConfSetting = ({ setShowEditPasswordModal }: ConfSettingProps): JSX.Elemen
                         Modifier le mot de passe
                     </button>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

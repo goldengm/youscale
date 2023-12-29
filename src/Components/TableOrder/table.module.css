@@ -75,14 +75,17 @@
   .headerTable {
     flex-wrap: wrap;
   }
+
   .middleTools {
     width: 100%;
     order: 3;
     flex-wrap: wrap;
   }
+
   .leftTools {
     width: 40%;
   }
+
   .rightTools {
     width: 40%;
   }
@@ -93,6 +96,7 @@
     width: 45%;
     justify-content: space-around;
   }
+
   .rightTools {
     width: 45%;
     justify-content: space-around;
@@ -191,6 +195,7 @@ td {
   align-items: center;
   height: 38px;
   width: 120px;
+  min-width: 80px;
   border-right: 1px solid rgba(17, 17, 17, 0.3);
 }
 
