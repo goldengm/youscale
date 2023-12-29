@@ -19,6 +19,7 @@ import { BsTelephoneXFill } from 'react-icons/bs'
 interface OrderModel { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string, telDuplicate: boolean }
 
 interface Props {
+    RefetchStatusData: () => void,
     row: GetClientOrderModel
     order: OrderModel | undefined
     refetch: () => void,
@@ -30,7 +31,7 @@ interface Props {
     handleCheckRow: (id: number) => void
     setShowOrderModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function Row({ row, order, refetch, column, handleCheckRow, setOrder, setEditData, setShowEditModal, setShowOrderModal }: Props) {
+export default function Row({ RefetchStatusData, row, order, refetch, column, handleCheckRow, setOrder, setEditData, setShowEditModal, setShowOrderModal }: Props) {
     const [patchOrder] = usePatchClientOrderMutation()
 
     const { data: dataSetting } = useGetSettingQuery()
@@ -49,7 +50,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
     const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const { value } = e.target
 
-        patchOrder({ id: order?.id, status: value }).unwrap().then((res) => refetch())
+        patchOrder({ id: order?.id, status: value }).unwrap().then((res) => refetch()).then((res) => RefetchStatusData())
             .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
                 if (err.data) {
                     if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
@@ -212,7 +213,7 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
                         if (formatDtName === 'Telephone') {
                             return (
-                                <td key={dt.id} className={style.tdWhatsapp}>
+                                <td key={dt.id}>
                                     <img src="/svg/order/whatsapp.png" alt="whatsapp" onClick={() => handleClick('+212' + row[formatDtName])} />
                                     {order?.telDuplicate && <BsTelephoneXFill size={11} color={'red'} />}
                                     <a href={`tel:+212${row[formatDtName]}`}>

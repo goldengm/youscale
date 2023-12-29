@@ -57,7 +57,7 @@ interface Props {
 }
 export const Table = ({ data, OrderQueryData, setStatus, setOrderQueryData, refetch, _setSkip, _skip, driverObj, setStatusConfirmation, statusConfirmation, orders_id }: Props): JSX.Element => {
 
-  const { data: dataStatus } = useGetStatusQuery(OrderQueryData)
+  const { data: dataStatus, refetch: RefetchStatusData } = useGetStatusQuery(OrderQueryData)
   const [editData, setEditData] = useState<GetClientOrderModel>({} as GetClientOrderModel)
   const [order, setOrder] = useState<OrderModel | undefined>()
 
@@ -65,12 +65,16 @@ export const Table = ({ data, OrderQueryData, setStatus, setOrderQueryData, refe
     _setSkip(_skip + 50)
   }
 
+
+
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showProductOrderModal, setShowProductOrderModal] = useState(false)
   const [showOrderModal, setShowOrderModal] = useState(false)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState<boolean>(false)
   const { data: ColumnData, isLoading, isFetching } = useGetColumnQuery()
+
+
 
   const [id_orders, setIdOrders] = useState<number[]>()
 
@@ -114,8 +118,17 @@ export const Table = ({ data, OrderQueryData, setStatus, setOrderQueryData, refe
     <div className={style.tableWrapper}>
 
       {showDeleteModal && <DeleteOrderModal refetch={refetch} showModal={showDeleteModal} setShowModal={setShowDeleteModal} id_orders={id_orders} />}
-      {showOrderModal && <AddOrderModal driverObj={driverObj} refetch={refetch}  setIsVisible={setShowOrderModal} />}
-      {showConfirmationModal && <ConfirmationModal driverObj={driverObj} statusConfirmation={statusConfirmation} refetch={refetch} setStatus={setStatusConfirmation} id_orders={orders_id ?? []} isOpen={showConfirmationModal} setIsVisible={setShowConfirmationModal} />}
+      {showOrderModal && <AddOrderModal driverObj={driverObj} refetch={refetch} setIsVisible={setShowOrderModal} />}
+
+      <ConfirmationModal
+        driverObj={driverObj}
+        statusConfirmation={statusConfirmation}
+        refetch={refetch}
+        setStatus={setStatusConfirmation}
+        id_orders={orders_id ?? []}
+        isOpen={showConfirmationModal}
+        setIsVisible={setShowConfirmationModal} />
+
       {showEditModal && <EditOrderModal setIsVisible={setShowEditModal} refetch={refetch} dataEdit={editData} id_order={String(order?.id)} driverObj={driverObj} />}
       {showProductOrderModal && <AddProductOrderModal editData={order?.Product_Orders} id={order?.id ?? 0} refetch={refetch} showModal={showProductOrderModal} setShowModal={setShowProductOrderModal} />}
 
@@ -137,22 +150,26 @@ export const Table = ({ data, OrderQueryData, setStatus, setOrderQueryData, refe
         handleCheckAll={handleCheckAll}
         dataLength={data?.data.length || 0}
         fetchData={fetchData}
-        isLoading={isFetching}        
+        isLoading={isFetching}
       >
         {
-          data ? data?.data.map((dt, index) => <Row
-            key={index}
-            handleCheckRow={handleCheckRow}
-            row={dt}
-            setIdOrders={setIdOrders}
-            setOrder={setOrder}
-            setEditData={setEditData}
-            setShowEditModal={setShowEditModal}
-            setShowOrderModal={setShowProductOrderModal}
-            refetch={refetch}
-            order={rowData ? rowData[index] : undefined}
-            column={ColumnData?.data}
-          />) : <></>
+          data ? data?.data.map((dt, index) =>
+            <Row
+              RefetchStatusData={RefetchStatusData}
+              key={index}
+              handleCheckRow={handleCheckRow}
+              row={dt}
+              setIdOrders={setIdOrders}
+              setOrder={setOrder}
+              setEditData={setEditData}
+              setShowEditModal={setShowEditModal}
+              setShowOrderModal={setShowProductOrderModal}
+              refetch={refetch}
+              order={rowData ? rowData[index] : undefined}
+              column={ColumnData?.data}
+            />
+          )
+            : <></>
         }
       </TableContainer>
 

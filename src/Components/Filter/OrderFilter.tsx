@@ -17,18 +17,20 @@ interface Props {
   Icons: IconType
   label: string
   data?: dataType[]
-  onChange: ({ label, value }: dataType) => void
+  onChange: ({ label, value }: dataType) => void,
+  count: number
+  filteredValue: string | undefined
 }
-export const OrderFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Props): JSX.Element => {
+export const OrderFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE, count, filteredValue }: Props): JSX.Element => {
   const [defaultLabel, setDefaultLabel] = useState<string>(label)
   const [title, setTitle] = useState<string>(label)
   const [display, setIsDisplay] = useState<boolean>(false)
 
   const elementRef = useRef<HTMLDivElement>(null);
 
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      console.log(elementRef)
       if (elementRef.current && !elementRef.current.contains(event.target as Node)) {
         setIsDisplay(false);
       }
@@ -40,12 +42,20 @@ export const OrderFilter = ({ Icons, label, onChange, data = DEFAULT_VALUE }: Pr
     };
   }, []);
 
+  //console.log(title)
+
   return (
     <div>
       <div className={style.orderFilterContainer}>
         <div onClick={e => setIsDisplay(!display)} className={style.orderFilter}>
           <Icons size={20} className={style.logo} />
-          <p>{title}</p>
+          {!filteredValue && (
+            <p>{`${title} (${count})`}</p>
+          )}
+          {filteredValue && (
+            <p>{`${title}`}</p>
+          )}
+
         </div>
         {display &&
           <Display
@@ -82,6 +92,7 @@ const Display = ({ elementRef, defaultLabel, setTitle, data, onChange, label }: 
         value='' />
       {data.map((dt, key) =>
         <Items
+          key={key}
           label={dt.label}
           isChecked={label == dt.label || label == defaultLabel}
           defaultLabel={defaultLabel}

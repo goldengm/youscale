@@ -118,7 +118,7 @@ export default function Header({
   };
 
   const handleProductChange = ({ label, value }: dataType) => {
-    if (value === "") return;
+    //if (value === "") return;
 
     setProduct && setProduct(value);
   };
