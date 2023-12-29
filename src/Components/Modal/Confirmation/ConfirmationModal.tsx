@@ -86,19 +86,7 @@ const FilterStatusData = (data: StatusModel[] | undefined): dataType[] => {
   return newArr;
 };
 
-const FilterStatusWithOrder = (
-  data: countOrderByStatusModel[] | undefined
-): dataType[] => {
-  if (!data) return [];
 
-  var newArr: dataType[] = [];
-
-  data.filter((dt: countOrderByStatusModel) => {
-    if (dt.count > 0) newArr.push({ label: dt.name, value: dt.name });
-  });
-
-  return newArr;
-};
 
 interface ModalProps {
   id_orders: number[];
@@ -141,8 +129,8 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 
   const OnChangeStatus = ({ label, value }: dataType) => {
     setStatus(value);
-    setIndex(0)
-    setSelectedStatus(value)
+    setIndex(0);
+    setSelectedStatus(value);
   };
 
   const handleClose = () => {
@@ -175,8 +163,20 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     handleClose();
   });
 
+  const FilterStatusWithOrder = (data: countOrderByStatusModel[] | undefined): dataType[] => {
+    if (!data) return [];
+    var newArr: dataType[] = [];
+    data.filter((dt: countOrderByStatusModel) => {
+      if (dt.count > 0) newArr.push({ label: dt.name, value: dt.name });
+    });
+    return newArr;
+  };
+
+  // console.log('----------------------------');
+  // console.log(isOpen, isSuccess);
+
   return isOpen ? (
-    isSuccess && id_orders.length > 0 ? (
+    id_orders.length > 0 ? (
       <div className={styles.modalOverlay}>
         <div className={styles.modalContent}>
           <button className={styles.closeButton} onClick={handleClose}>
@@ -194,45 +194,49 @@ const ConfirmationModal: React.FC<ModalProps> = ({
                   <p>Date</p>
                   <p>ID</p>
                 </div>
-                <div className={styles.dateId_value}>
-                  <p>
-                    {
-                      new Date(currentOrder.order[0].date)
-                        .toISOString()
-                        .split("T")[0]
-                    }
-                  </p>
-                  <p>{currentOrder.order[0].id}</p>
-                </div>
+                {isSuccess && (
+                  <div className={styles.dateId_value}>
+                    <p>
+                      {
+                        new Date(currentOrder.order[0].date)
+                          .toISOString()
+                          .split("T")[0]
+                      }
+                    </p>
+                    <p>{currentOrder.order[0].id}</p>
+                  </div>
+                )}
               </div>
               <CommandeFilter
                 Icons={AiFillFilter}
                 data={FilterStatusWithOrder(StatusData?.countOrderByStatus)}
                 onChange={OnChangeStatus}
-                label={"Tous les status"}
+                label="Tous les status"
               />
             </div>
-
-            <ProductLayout
-              refetch={refetch}
-              id={id_orders[index]}
-              editData={currentOrder.order[0].Product_Orders}
-            />
+            {isSuccess && (
+              <ProductLayout
+                refetch={refetch}
+                id={id_orders[index]}
+                editData={currentOrder.order[0].Product_Orders}
+              />
+            )}
             {isFetching ? (
               <p>Chargement</p>
             ) : (
-              <FormBody
-                RefetchStatus={RefetchStatus}
-                currentOrder={currentOrder}
-                StatusData={StatusData}
-                refetch={refetchCurrentOrder}
-                handleClose={handleClose}
-                setIndex={setIndex}
-                id_orders={id_orders}
-                index={index}
-                selectedStatus={selectedStatus}
-                setSelectedStatus={setSelectedStatus}
-              />
+              isSuccess && (
+                <FormBody
+                  RefetchStatus={RefetchStatus}
+                  currentOrder={currentOrder}
+                  StatusData={StatusData}
+                  refetch={refetchCurrentOrder}
+                  handleClose={handleClose}
+                  setIndex={setIndex}
+                  id_orders={id_orders}
+                  index={index}
+                  selectedStatus={selectedStatus}
+                  setSelectedStatus={setSelectedStatus}
+                />)
             )}
           </div>
         </div>
@@ -323,7 +327,7 @@ const ProductLayout = ({
   >([]);
 
   useEffect(() => {
-    console.log("editdata", editData)
+    //console.log("editdata", editData)
     setSelectedProduct(
       editData
         ? editData
