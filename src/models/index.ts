@@ -18,7 +18,7 @@ export interface ShippingModel {
     updatedAt: string
 }
 
-export interface OrderOnlyModel{
+export interface OrderOnlyModel {
     id: number
     id_city: number,
     date: string,
@@ -384,6 +384,7 @@ export interface StatusModel {
 }
 
 export interface countOrderByStatusModel {
+    id: number,
     name: string,
     count: number,
     checked: boolean

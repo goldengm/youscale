@@ -1,83 +1,105 @@
-import React, { useEffect, useRef } from 'react'
-import { FieldError, UseFormRegister } from 'react-hook-form'
-import { CityModel, ErrorModel, ShippingModel } from '../../../models';
-import { useGetShippingQuery } from '../../../services/api/ClientApi/ClientShippingApi';
-import { useAddCityMutation } from '../../../services/api/ClientApi/ClientCityApi';
-import { showToastError } from '../../../services/toast/showToastError';
+import React, { useEffect, useRef } from "react";
+import { FieldError, UseFormRegister, useForm } from "react-hook-form";
+import { CityModel, ErrorModel, ShippingModel } from "../../../models";
+import { useGetShippingQuery } from "../../../services/api/ClientApi/ClientShippingApi";
+import { useAddCityMutation } from "../../../services/api/ClientApi/ClientCityApi";
+import { showToastError } from "../../../services/toast/showToastError";
 import * as yup from "yup";
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import styles from './setting.module.css'
+import { yupResolver } from "@hookform/resolvers/yup";
+import styles from "./setting.module.css";
+import { CustumInput, SwitchForm } from '../../Forms/v2';
+
 
 type Inputs = {
-    name: string,
-    price: string
-    id_shipping: number
+    name: string;
+    price: string;
+    id_shipping: number;
 };
 
 type SelectType = {
-    label: string,
-    value: string | number
-}
+    label: string;
+    value: string | number;
+};
 
-const GetShippingCompanies = (data: ShippingModel[] | undefined): SelectType[] => {
-    if (!data) return []
+const GetShippingCompanies = (
+    data: ShippingModel[] | undefined
+): SelectType[] => {
+    if (!data) return [];
 
-    var newArr: SelectType[] = [{ label: 'none', value: 0 }]
+    var newArr: SelectType[] = [{ label: "none", value: 0 }];
 
     for (let i = 0; i < data.length; i++) {
         newArr.push({
             value: data[i].id ?? 0,
-            label: data[i].name
-        })
+            label: data[i].name,
+        });
     }
 
-    return newArr
-}
+    return newArr;
+};
 
-const schema = yup.object().shape({
-    name: yup.string().required('Ce champ est obligatoire'),
-    price: yup.string().required('Ce champ est obligatoire')
-}).required();
+const schema = yup
+    .object()
+    .shape({
+        name: yup.string().required("Ce champ est obligatoire"),
+        price: yup.string().required("Ce champ est obligatoire"),
+    })
+    .required();
 
 interface Props {
-    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
-    item: CityModel | undefined
-    refetch: () => any
+    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    item: CityModel | undefined;
+    refetch: () => any;
 }
-export default function EditCityModal({ setIsVisible, refetch, item }: Props): JSX.Element {
-
+export default function EditCityModal({
+    setIsVisible,
+    refetch,
+    item,
+}: Props): JSX.Element {
+    console.log(item);
     const handleClose = () => {
         setIsVisible(false);
     };
 
-    const { data: shippingData } = useGetShippingQuery()
-    const [addCity] = useAddCityMutation()
+    const { data: shippingData } = useGetShippingQuery();
+    const [addCity] = useAddCityMutation();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<Inputs>({
         // @ts-ignore
         resolver: yupResolver(schema),
     });
 
     const onSubmit = (values: Inputs) => {
-
         const data = {
             ...values,
-            id_shipping: String(values.id_shipping) === "" ? null : values.id_shipping
-        }
+            id_shipping:
+                String(values.id_shipping) === "" ? null : values.id_shipping,
+        };
 
-        addCity(data).unwrap()
-            .then(res => {
-                refetch()
+        addCity(data)
+            .unwrap()
+            .then((res) => {
+                refetch();
             })
-            .catch((err: { data: ErrorModel | { message: string }, status: number }) => {
-                if (err.data) {
-                    if ('errors' in err.data && Array.isArray(err.data.errors) && err.data.errors.length > 0) showToastError(err.data.errors[0].msg);
-                    else if ('message' in err.data) showToastError(err.data.message);
+            .catch(
+                (err: { data: ErrorModel | { message: string }; status: number }) => {
+                    if (err.data) {
+                        if (
+                            "errors" in err.data &&
+                            Array.isArray(err.data.errors) &&
+                            err.data.errors.length > 0
+                        )
+                            showToastError(err.data.errors[0].msg);
+                        else if ("message" in err.data) showToastError(err.data.message);
+                    }
                 }
-            })
-        handleClose()
-    }
+            );
+        handleClose();
+    };
 
     const useOutsideClick = (callback: () => void) => {
         const ref = useRef<HTMLDivElement>(null);
@@ -89,10 +111,10 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
                 }
             };
 
-            document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside);
 
             return () => {
-                document.removeEventListener('mousedown', handleClickOutside);
+                document.removeEventListener("mousedown", handleClickOutside);
             };
         }, [callback]);
 
@@ -100,7 +122,7 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
     };
 
     const ref = useOutsideClick(() => {
-        console.log('Clicked outside of MyComponent');
+        console.log("Clicked outside of MyComponent");
         handleClose();
     });
 
@@ -118,21 +140,21 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
                             <Field
                                 defaultValue={item?.name || ''}
                                 register={register}
-                                name={'name'}
+                                name={"name"}
                                 error={errors.name}
-                                type={'text'}
+                                type={"text"}
                                 label={"Name"}
-                                placeholder={'Nom'}
+                                placeholder={"Nom"}
                             />
 
                             <Field
                                 defaultValue={item?.price || ''}
                                 register={register}
-                                name={'price'}
+                                name={"price"}
                                 error={errors.price}
-                                type={'text'}
+                                type={"text"}
                                 label={"Price"}
-                                placeholder={'Prix'}
+                                placeholder={"Prix"}
                             />
 
                             <Select
@@ -141,17 +163,14 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
                                 register={register}
                                 error={errors.id_shipping}
                                 label={"Shipping companies"}
-                                name={'id_shipping'}
+                                name={"id_shipping"}
                             />
-
                         </div>
 
                         <div className={styles.bottomBtn}>
-                            <button className={styles.saveBtn}>
-                                Ajouter
-                            </button>
+                            <button className={styles.saveBtn}>Ajouter</button>
 
-                            <a href='#' onClick={handleClose} className={styles.closeBtn}>
+                            <a href="#" onClick={handleClose} className={styles.closeBtn}>
                                 Fermer
                             </a>
                         </div>
@@ -159,60 +178,85 @@ export default function EditCityModal({ setIsVisible, refetch, item }: Props): J
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 interface FieldProps {
-    label: string
-    placeholder: string
-    type: 'text' | 'number'
-    defaultValue?: string | number
-    register: UseFormRegister<any> | any
-    name: string
-    error: FieldError | undefined
+    label: string;
+    placeholder: string;
+    type: "text" | "number";
+    defaultValue?: string | number;
+    register: UseFormRegister<any> | any;
+    name: string;
+    error: FieldError | undefined;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any;
 }
-const Field = ({ label, placeholder, type, defaultValue, register, name, error }: FieldProps): JSX.Element => {
+const Field = ({
+    label,
+    placeholder,
+    type,
+    defaultValue,
+    register,
+    name,
+    error,
+    onChange,
+}: FieldProps): JSX.Element => {
     return (
         <div className={styles.whtField}>
-            <p>
-                {label}
-            </p>
-
+            <p>{label}</p>
             <input
                 {...register(name)}
+                defaultValue={defaultValue}
+                onChange={onChange}
+                className={styles.input}
                 type={type}
-                name={name}
+                placeholder={placeholder}
+            />
+            {/* <input
+                {...register(name)}
+                type={type}
+                //name={name}
                 placeholder={placeholder}
                 value={defaultValue}
-            />
+                onChange={onChange}
+            /> */}
 
             {error && <p className={styles.errorTxt}>{error.message}</p>}
         </div>
-    )
-}
+    );
+};
 
 interface SelectProps {
-    label: string
-    name: string
-    register: UseFormRegister<any>
-    error: FieldError | undefined
-    data: { label: string, value: string | number }[]
-    defaultSelected?: string | number | null
+    label: string;
+    name: string;
+    register: UseFormRegister<any>;
+    error: FieldError | undefined;
+    data: { label: string; value: string | number }[];
+    defaultSelected?: string | number | null;
 }
-const Select = ({ label, name, register, error, data, defaultSelected }: SelectProps): JSX.Element => {
+const Select = ({
+    label,
+    name,
+    register,
+    error,
+    data,
+    defaultSelected,
+}: SelectProps): JSX.Element => {
     return (
         <div className={styles.whtField}>
-            <p>
-                {label}
-            </p>
+            <p>{label}</p>
 
-            <select
-                {...register(name)}
-                name={name}
-            >
-                {data.map((dt) => <option selected={String(defaultSelected) === String(dt.value)} value={dt.value}>{dt.label}</option>)}
+            <select {...register(name)} name={name}>
+                {data.map((dt) => (
+                    <option
+                        selected={String(defaultSelected) === String(dt.value)}
+                        value={dt.value}
+                    >
+                        {dt.label}
+                    </option>
+                ))}
             </select>
             {error && <p className={styles.errorTxt}>{error.message}</p>}
         </div>
-    )
-}
+    );
+};
