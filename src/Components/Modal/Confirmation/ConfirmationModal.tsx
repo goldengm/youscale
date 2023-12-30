@@ -32,6 +32,9 @@ import { TbPointFilled } from "react-icons/tb";
 import { Spinner4Bar } from "../../Loader";
 import * as yup from "yup";
 import { showToastSucces } from "../../../services/toast/showToastSucces";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+
 
 type dataType = {
   label: string;
@@ -95,7 +98,7 @@ interface ProductLayoutProps {
   id: number;
   refetch: () => any;
   editData?: ProductOrder[] | undefined;
-  formSubmitRef: any
+  formSubmitRef: any;
 }
 
 interface FormBodyProps {
@@ -114,7 +117,7 @@ interface FormBodyProps {
   currentOrder: any;
   selectedStatus: string | undefined;
   setSelectedStatus: any;
-  formSubmitRef: any
+  formSubmitRef: any;
 }
 
 const schema = yup.object().shape({
@@ -330,14 +333,12 @@ const ProductLayout = ({
   editData,
   refetch,
   id,
-  formSubmitRef
+  formSubmitRef,
 }: ProductLayoutProps): JSX.Element => {
   const [patchOrder] = usePatchClientOrderMutation();
   const { data: ProductData, isSuccess } = useGetProductQuery({
     isHidden: false,
   });
-
-
 
   const FormatDataOption = (data: GetProductModel[]) => {
     var objArr: {
@@ -406,7 +407,6 @@ const ProductLayout = ({
     const data = {
       id_product_array: FormatAccessArray(selectedProduct),
     };
-
 
     // console.log({ ...data, id })
     // console.log(formSubmitRef);
@@ -533,7 +533,7 @@ const FormBody = ({
 
   const onSubmit = (values: Inputs) => {
     //console.log(formSubmitRef);
-    formSubmitRef?.current?.click()
+    formSubmitRef?.current?.click();
     const data = {
       ...values,
       id: Number(id_orders[index]),
@@ -718,7 +718,7 @@ const FormBody = ({
             </button>
             {showButton && (
               <button type="submit" onClick={onNext} className={styles.NextBtn}>
-                Suivant
+                <FontAwesomeIcon icon={faArrowRight} />
               </button>
             )}
           </div>
