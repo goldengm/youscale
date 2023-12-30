@@ -275,7 +275,8 @@ export interface GetTeamMemberModel {
     Team_Client_Page_Acces?: PageAccessModel[],
     Team_Client_Product_Acces?: ProductAccessModel[],
     createdAt?: Date,
-    updatedAt?: Date
+    updatedAt?: Date,
+    upsellValue?: number,
 }
 
 export interface ColumnModel {
