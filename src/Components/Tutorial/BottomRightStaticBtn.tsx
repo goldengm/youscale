@@ -9,7 +9,7 @@ interface Props {
 }
 export default function BottomRightStaticBtn({ setShowVideo }: Props) {
   var isClose = localStorage.getItem("videoDisplay");
-  let [ShowDisable, setShowDisable] = useState<boolean>(false);
+  let [ShowDisable, setShowDisable] = useState<boolean>(true);
 
   const onClose = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
     e.preventDefault();
