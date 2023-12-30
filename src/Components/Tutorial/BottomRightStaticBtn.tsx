@@ -53,14 +53,16 @@ export default function BottomRightStaticBtn({ setShowVideo }: Props) {
         </div>
       )}
 
-      <div>
-        <Button
-          style={{ position: "fixed", bottom: "20px", right: "20px" }}
-          onClick={showVidoBox}
-        >
-          Show Video
-        </Button>
-      </div>
+      {ShowDisable && (
+        <div>
+          <Button
+            style={{ position: "fixed", bottom: "20px", right: "20px" }}
+            onClick={showVidoBox}
+          >
+            Show Video
+          </Button>
+        </div>
+      )}
     </>
   );
 }
