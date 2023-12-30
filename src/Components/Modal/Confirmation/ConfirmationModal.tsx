@@ -61,6 +61,62 @@ type SchemaObject = {
   [key in keyof Inputs]: yup.Schema<any>;
 };
 
+interface SaveBtnProps {
+  onClick: () => any;
+  value: string;
+}
+
+type SelectType = {
+  label: string;
+  value: string | number;
+};
+
+interface ModalProps {
+  id_orders: number[];
+  isOpen: boolean;
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setStatus: React.Dispatch<React.SetStateAction<string | undefined>>;
+  statusConfirmation: string | undefined;
+  refetch: () => any;
+  driverObj: {
+    moveNext: () => void;
+  };
+}
+
+interface selectedProductModel {
+  label: string;
+  value: number | undefined | string;
+  quantity: number;
+  variant: string[];
+  allVariant: string[] | undefined;
+}
+
+interface ProductLayoutProps {
+  id: number;
+  refetch: () => any;
+  editData?: ProductOrder[] | undefined;
+  formSubmitRef: any
+}
+
+interface FormBodyProps {
+  StatusData: GetStatusModel | undefined;
+  RefetchStatus: () => void;
+  id_orders: number[];
+  index: number;
+  setIndex: React.Dispatch<React.SetStateAction<number>>;
+  refetch: () => any;
+  handleClose: any;
+  // currentOrder: {
+  //   code: Number;
+  //   data: GetClientOrderModel;
+  //   order: OrderOnlyModel[];
+  // };
+  currentOrder: any;
+  selectedStatus: string | undefined;
+  setSelectedStatus: any;
+  formSubmitRef: any
+}
+
 const schema = yup.object().shape({
   nom: yup.string(),
   telephone: yup.string(),
@@ -86,19 +142,6 @@ const FilterStatusData = (data: StatusModel[] | undefined): dataType[] => {
   return newArr;
 };
 
-
-
-interface ModalProps {
-  id_orders: number[];
-  isOpen: boolean;
-  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setStatus: React.Dispatch<React.SetStateAction<string | undefined>>;
-  statusConfirmation: string | undefined;
-  refetch: () => any;
-  driverObj: {
-    moveNext: () => void;
-  };
-}
 const ConfirmationModal: React.FC<ModalProps> = ({
   id_orders,
   isOpen,
@@ -109,9 +152,10 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   driverObj,
 }): JSX.Element | null => {
   const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({});
+  const formSubmitRef = useRef();
 
   const [index, setIndex] = useState<number>(0);
-  const [selectedStatus, setSelectedStatus] = useState<string>()
+  const [selectedStatus, setSelectedStatus] = useState<string>();
   const {
     data: currentOrder,
     isSuccess,
@@ -124,8 +168,8 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   }, [id_orders[index]]);
 
   useEffect(() => {
-    RefetchStatus()
-  }, [])
+    RefetchStatus();
+  }, []);
 
   const OnChangeStatus = ({ label, value }: dataType) => {
     setStatus(value);
@@ -135,7 +179,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 
   const handleClose = () => {
     setIsVisible(false);
-    refetch()
+    refetch();
   };
 
   const useOutsideClick = (callback: () => void) => {
@@ -148,10 +192,10 @@ const ConfirmationModal: React.FC<ModalProps> = ({
         }
       };
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
 
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [callback]);
 
@@ -159,11 +203,13 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   };
 
   const ref = useOutsideClick(() => {
-    console.log('Clicked outside of MyComponent');
+    //console.log("Clicked outside of MyComponent");
     handleClose();
   });
 
-  const FilterStatusWithOrder = (data: countOrderByStatusModel[] | undefined): dataType[] => {
+  const FilterStatusWithOrder = (
+    data: countOrderByStatusModel[] | undefined
+  ): dataType[] => {
     if (!data) return [];
     var newArr: dataType[] = [];
     data.filter((dt: countOrderByStatusModel) => {
@@ -216,6 +262,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
             </div>
             {isSuccess && (
               <ProductLayout
+                formSubmitRef={formSubmitRef}
                 refetch={refetch}
                 id={id_orders[index]}
                 editData={currentOrder.order[0].Product_Orders}
@@ -224,20 +271,35 @@ const ConfirmationModal: React.FC<ModalProps> = ({
             {isFetching ? (
               <p>Chargement</p>
             ) : (
-              isSuccess && (
-                <FormBody
-                  RefetchStatus={RefetchStatus}
-                  currentOrder={currentOrder}
-                  StatusData={StatusData}
-                  refetch={refetchCurrentOrder}
-                  handleClose={handleClose}
-                  setIndex={setIndex}
-                  id_orders={id_orders}
-                  index={index}
-                  selectedStatus={selectedStatus}
-                  setSelectedStatus={setSelectedStatus}
-                />)
+              <></>
+              // isSuccess && (
+              // <FormBody
+              //   RefetchStatus={RefetchStatus}
+              //   currentOrder={currentOrder}
+              //   StatusData={StatusData}
+              //   refetch={refetchCurrentOrder}
+              //   handleClose={handleClose}
+              //   setIndex={setIndex}
+              //   id_orders={id_orders}
+              //   index={index}
+              //   selectedStatus={selectedStatus}
+              //   setSelectedStatus={setSelectedStatus}
+              // />
+              // )
             )}
+            <FormBody
+              formSubmitRef={formSubmitRef}
+              RefetchStatus={RefetchStatus}
+              currentOrder={currentOrder}
+              StatusData={StatusData}
+              refetch={refetchCurrentOrder}
+              handleClose={handleClose}
+              setIndex={setIndex}
+              id_orders={id_orders}
+              index={index}
+              selectedStatus={selectedStatus}
+              setSelectedStatus={setSelectedStatus}
+            />
           </div>
         </div>
       </div>
@@ -264,28 +326,18 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   ) : null;
 };
 
-interface selectedProductModel {
-  label: string;
-  value: number | undefined | string;
-  quantity: number;
-  variant: string[];
-  allVariant: string[] | undefined;
-}
-
-interface ProductLayoutProps {
-  id: number;
-  refetch: () => any;
-  editData?: ProductOrder[] | undefined;
-}
 const ProductLayout = ({
   editData,
   refetch,
   id,
+  formSubmitRef
 }: ProductLayoutProps): JSX.Element => {
   const [patchOrder] = usePatchClientOrderMutation();
   const { data: ProductData, isSuccess } = useGetProductQuery({
     isHidden: false,
   });
+
+
 
   const FormatDataOption = (data: GetProductModel[]) => {
     var objArr: {
@@ -343,7 +395,7 @@ const ProductLayout = ({
           })
         : []
     );
-  }, [id])
+  }, [id]);
 
   const onSubmit = () => {
     if (selectedProduct.length === 0) {
@@ -354,6 +406,10 @@ const ProductLayout = ({
     const data = {
       id_product_array: FormatAccessArray(selectedProduct),
     };
+
+
+    // console.log({ ...data, id })
+    // console.log(formSubmitRef);
 
     patchOrder({ ...data, id })
       .unwrap()
@@ -399,7 +455,15 @@ const ProductLayout = ({
       ))}
 
       <div className={styles.centerBtn}>
-        <SaveBtn value="Sauvegarder" onClick={onSubmit} />
+        <button
+          hidden={true}
+          ref={formSubmitRef}
+          onClick={onSubmit}
+          className={styles.saveBtn}
+        >
+          Sauvegarder
+        </button>
+        {/* <SaveBtn value="Sauvegarder" onClick={onSubmit} /> */}
       </div>
     </div>
   );
@@ -407,39 +471,13 @@ const ProductLayout = ({
 
 export default ConfirmationModal;
 
-interface SaveBtnProps {
-  onClick: () => any;
-  value: string;
-}
-const SaveBtn = ({ onClick, value }: SaveBtnProps) => {
-  return (
-    <button onClick={onClick} className={styles.saveBtn}>
-      {value}
-    </button>
-  );
-};
-
-type SelectType = {
-  label: string;
-  value: string | number;
-};
-
-interface FormBodyProps {
-  StatusData: GetStatusModel | undefined;
-  RefetchStatus: () => void;
-  id_orders: number[];
-  index: number;
-  setIndex: React.Dispatch<React.SetStateAction<number>>;
-  refetch: () => any;
-  handleClose: any;
-  currentOrder: {
-    code: Number;
-    data: GetClientOrderModel;
-    order: OrderOnlyModel[];
-  };
-  selectedStatus: string | undefined;
-  setSelectedStatus: any;
-}
+// const SaveBtn = ({ onClick, value }: SaveBtnProps) => {
+//   return (
+//     <button onClick={onClick} className={styles.saveBtn}>
+//       {value}
+//     </button>
+//   );
+// };
 
 const FormBody = ({
   refetch,
@@ -452,10 +490,14 @@ const FormBody = ({
   handleClose,
   selectedStatus,
   setSelectedStatus,
+  formSubmitRef,
 }: FormBodyProps) => {
   const { data: dataSetting } = useGetSettingQuery();
   const { data: dataCity } = useGetCityQuery();
   const [patchOrder, { isLoading }] = usePatchClientOrderMutation();
+  const [showButton, setShowButton] = useState<boolean>(false);
+
+  const formRef = useRef<any>();
 
   const {
     register,
@@ -490,16 +532,17 @@ const FormBody = ({
   };
 
   const onSubmit = (values: Inputs) => {
+    //console.log(formSubmitRef);
+    formSubmitRef?.current?.click()
     const data = {
       ...values,
       id: Number(id_orders[index]),
     };
-
     patchOrder(data)
       .unwrap()
       .then((res) => {
         refetch();
-        showToastSucces("enregistré avec succès")
+        showToastSucces("enregistré avec succès");
         if (id_orders.length === index + 1) return;
       })
       .catch(
@@ -517,31 +560,46 @@ const FormBody = ({
       );
   };
 
+  const onSubmitHandle = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setShowButton(true);
+    formRef?.current?.click();
+  };
+
   const onNext = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-
     if (id_orders.length === index + 1) {
-      handleClose()
+      handleClose();
     }
     setIndex((prevIndex) => prevIndex + 1);
   };
 
   useEffect(() => {
-    setSelectedStatus(currentOrder.data[0].status)
-  }, [index])
+    setSelectedStatus(currentOrder.data[0].status);
+  }, [index]);
 
   const handleClick = (phone_number: string) => {
-    window.open(`https://wa.me/${phone_number}?text=${encodeURI(
-      dataSetting?.data.automated_msg || ""
-    )}`,
+    window.open(
+      `https://wa.me/${phone_number}?text=${encodeURI(
+        dataSetting?.data.automated_msg || ""
+      )}`,
       "_blank"
     );
   };
 
+  // console.log("-------showButton------------");
+  // console.log(showButton);
+
   return (
-    <div className="card-body" style={{ width: '100%' }}>
+    <div className="card-body" style={{ width: "100%" }}>
       <div className="basic-form">
-        <form onSubmit={handleSubmit(onSubmit)} onChange={() => { }}>
+        <form
+          // ref={formRef}
+          onSubmit={handleSubmit(onSubmit)}
+          onChange={() => { }}
+        >
           <div className="row">
             <CustumInput
               defaultValue={currentOrder.order[0].nom}
@@ -647,18 +705,23 @@ const FormBody = ({
               <TbPointFilled size={40} color={"green"} />
             )}
           </div>
-          {isLoading ? (
-            <Spinner4Bar />
-          ) : (
-            <div className={styles.bottomAction}>
-              <button type="submit" className={styles.saveBtn}>
-                Enregistrer
-              </button>
+          {isLoading && <Spinner4Bar />}
+
+          <div className={styles.bottomAction}>
+            <button hidden={true} ref={formRef} type="submit" />
+            <button
+              //type="submit"
+              onClick={onSubmitHandle}
+              className={styles.saveBtn}
+            >
+              Enregistrer
+            </button>
+            {showButton && (
               <button type="submit" onClick={onNext} className={styles.NextBtn}>
                 Suivant
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </form>
       </div>
     </div>
