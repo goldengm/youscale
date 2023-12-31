@@ -118,6 +118,7 @@ interface FormBodyProps {
   selectedStatus: string | undefined;
   setSelectedStatus: any;
   formSubmitRef: any;
+  bottomSubmitRef: any;
 }
 
 const schema = yup.object().shape({
@@ -156,8 +157,10 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 }): JSX.Element | null => {
   const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({});
   const formSubmitRef = useRef();
+  const bottomSubmitRef = useRef();
 
   const [index, setIndex] = useState<number>(0);
+  const [showButton, setShowButton] = useState<boolean>(false);
   const [selectedStatus, setSelectedStatus] = useState<string>();
   const {
     data: currentOrder,
@@ -166,9 +169,19 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     isFetching,
   } = useGetClientOrderByIdQuery({ id: id_orders[index] });
 
+
   useEffect(() => {
     refetchCurrentOrder();
   }, [id_orders[index]]);
+
+  useEffect(() => {
+    refetchCurrentOrder();
+  }, [isOpen, index]);
+
+
+  useEffect(() => {
+    setShowButton(false);
+  }, [isOpen]);
 
   useEffect(() => {
     RefetchStatus();
@@ -206,7 +219,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   };
 
   const ref = useOutsideClick(() => {
-    //console.log("Clicked outside of MyComponent");
+    ////console.log("Clicked outside of MyComponent");
     handleClose();
   });
 
@@ -221,8 +234,20 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     return newArr;
   };
 
-  // console.log('----------------------------');
-  // console.log(isOpen, isSuccess);
+  const onSubmitHandle = () => {
+    setShowButton(true);
+
+    // @ts-ignore
+    bottomSubmitRef?.current?.click();
+  }
+
+  const onNext = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (id_orders.length === index + 1) {
+      handleClose();
+    }
+    setIndex((prevIndex) => prevIndex + 1);
+  };
 
   return isOpen ? (
     id_orders.length > 0 ? (
@@ -263,34 +288,58 @@ const ConfirmationModal: React.FC<ModalProps> = ({
                 label="Tous les status"
               />
             </div>
-            {isSuccess && (
+            {isFetching ? (
+              <p>Chargement</p>
+            ) : (
+              isSuccess && (
+                <>
+                  <ProductLayout
+                    formSubmitRef={formSubmitRef}
+                    refetch={refetch}
+                    id={id_orders[index]}
+                    editData={currentOrder.order[0].Product_Orders}
+                  />
+                  <FormBody
+                    // RefetchStatus={RefetchStatus}
+                    // currentOrder={currentOrder}
+                    // StatusData={StatusData}
+                    // refetch={refetchCurrentOrder}
+                    // handleClose={handleClose}
+                    // setIndex={setIndex}
+                    // id_orders={id_orders}
+                    // index={index}
+                    // selectedStatus={selectedStatus}
+                    // setSelectedStatus={setSelectedStatus}
+
+                    //isSuccess={isSuccess}
+                    formSubmitRef={formSubmitRef}
+                    RefetchStatus={RefetchStatus}
+                    currentOrder={currentOrder}
+                    StatusData={StatusData}
+                    refetch={refetchCurrentOrder}
+                    handleClose={handleClose}
+                    setIndex={setIndex}
+                    id_orders={id_orders}
+                    index={index}
+                    selectedStatus={selectedStatus}
+                    setSelectedStatus={setSelectedStatus}
+                    bottomSubmitRef={bottomSubmitRef}
+                  />
+                </>
+
+              )
+            )}
+            {/* {isSuccess && (
               <ProductLayout
                 formSubmitRef={formSubmitRef}
                 refetch={refetch}
                 id={id_orders[index]}
                 editData={currentOrder.order[0].Product_Orders}
               />
-            )}
-            {isFetching ? (
-              <p>Chargement</p>
-            ) : (
-              <></>
-              // isSuccess && (
-              // <FormBody
-              //   RefetchStatus={RefetchStatus}
-              //   currentOrder={currentOrder}
-              //   StatusData={StatusData}
-              //   refetch={refetchCurrentOrder}
-              //   handleClose={handleClose}
-              //   setIndex={setIndex}
-              //   id_orders={id_orders}
-              //   index={index}
-              //   selectedStatus={selectedStatus}
-              //   setSelectedStatus={setSelectedStatus}
-              // />
-              // )
-            )}
-            <FormBody
+            )} */}
+
+            {/* <FormBody
+              isSuccess={isSuccess}
               formSubmitRef={formSubmitRef}
               RefetchStatus={RefetchStatus}
               currentOrder={currentOrder}
@@ -302,7 +351,34 @@ const ConfirmationModal: React.FC<ModalProps> = ({
               index={index}
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
-            />
+              bottomSubmitRef={bottomSubmitRef}
+            /> */}
+
+            <div
+              className={styles.bottomAction}
+            >
+              <button
+                hidden={true}
+                //ref={formRef} 
+                type="submit"
+              />
+              <button
+                //type="submit"
+                onClick={onSubmitHandle}
+                className={styles.saveBtn}
+              >
+                Enregistrer
+              </button>
+              {showButton && (
+                <button
+                  onClick={onNext}
+                  className={styles.NextBtn}
+                >
+                  <FontAwesomeIcon icon={faArrowRight} />
+                </button>
+              )}
+
+            </div>
           </div>
         </div>
       </div>
@@ -380,7 +456,7 @@ const ProductLayout = ({
   >([]);
 
   useEffect(() => {
-    //console.log("editdata", editData)
+    ////console.log("editdata", editData)
     setSelectedProduct(
       editData
         ? editData
@@ -408,8 +484,6 @@ const ProductLayout = ({
       id_product_array: FormatAccessArray(selectedProduct),
     };
 
-    // console.log({ ...data, id })
-    // console.log(formSubmitRef);
 
     patchOrder({ ...data, id })
       .unwrap()
@@ -471,15 +545,16 @@ const ProductLayout = ({
 
 export default ConfirmationModal;
 
-// const SaveBtn = ({ onClick, value }: SaveBtnProps) => {
-//   return (
-//     <button onClick={onClick} className={styles.saveBtn}>
-//       {value}
-//     </button>
-//   );
-// };
+const SaveBtn = ({ onClick, value }: SaveBtnProps) => {
+  return (
+    <button onClick={onClick} className={styles.saveBtn}>
+      {value}
+    </button>
+  );
+};
 
 const FormBody = ({
+  //isSuccess,
   refetch,
   id_orders,
   setIndex,
@@ -491,11 +566,13 @@ const FormBody = ({
   selectedStatus,
   setSelectedStatus,
   formSubmitRef,
+  bottomSubmitRef
 }: FormBodyProps) => {
   const { data: dataSetting } = useGetSettingQuery();
   const { data: dataCity } = useGetCityQuery();
   const [patchOrder, { isLoading }] = usePatchClientOrderMutation();
   const [showButton, setShowButton] = useState<boolean>(false);
+  const [thisOrder, setThisOrder] = useState(false);
 
   const formRef = useRef<any>();
 
@@ -532,7 +609,6 @@ const FormBody = ({
   };
 
   const onSubmit = (values: Inputs) => {
-    //console.log(formSubmitRef);
     formSubmitRef?.current?.click();
     const data = {
       ...values,
@@ -558,6 +634,7 @@ const FormBody = ({
           }
         }
       );
+
   };
 
   const onSubmitHandle = (
@@ -574,6 +651,7 @@ const FormBody = ({
       handleClose();
     }
     setIndex((prevIndex) => prevIndex + 1);
+
   };
 
   useEffect(() => {
@@ -589,141 +667,160 @@ const FormBody = ({
     );
   };
 
-  // console.log("-------showButton------------");
-  // console.log(showButton);
 
   return (
-    <div className="card-body" style={{ width: "100%" }}>
-      <div className="basic-form">
-        <form
-          // ref={formRef}
-          onSubmit={handleSubmit(onSubmit)}
-          onChange={() => { }}
-        >
-          <div className="row">
-            <CustumInput
-              defaultValue={currentOrder.order[0].nom}
-              register={register}
-              name={"nom"}
-              error={errors.nom}
-              type={"text"}
-              label={"Destinataire"}
-              placeholder={"Patrick Doe"}
-              confirmation={true}
-            />
-          </div>
-
-          <div className="row">
-            <CustumInput
-              defaultValue={currentOrder.order[0].telephone}
-              register={register}
-              name={"telephone"}
-              error={errors.telephone}
-              type={"text"}
-              label={"Telephone"}
-              placeholder={"778143610"}
-              confirmation={true}
-            >
-              <div className="call-ws-media">
-                <IoLogoWhatsapp
-                  className="io-logo"
-                  onClick={() =>
-                    handleClick("+212" + currentOrder.order[0].telephone)
-                  }
-                  size={25}
-                  color={"green"}
-                />
-                <a href={`tel:+212${currentOrder.order[0].telephone}`}>
-                  <IoCallOutline
-                    className="io-logo"
-                    size={25}
-                    color={"green"}
-                  />
-                </a>
-              </div>
-            </CustumInput>
-          </div>
-
-          <div className={"row"}>
-            <div className={styles.rowCity}>
-              <label className={styles.labelCity}>Ville</label>
-              <CustumDropdown
-                refetch={refetch}
-                options={FormatCity(dataCity ? dataCity.data : [])}
-                name="id_city"
-                data={dataCity ? dataCity.data : []}
-                order={{
-                  id: currentOrder.order[0].id,
-                  id_city: currentOrder.order[0].id_city,
-                  id_team: currentOrder.order[0].id_team,
-                  createdAt: currentOrder.order[0].createdAt,
-                }}
+    <>
+      <div className="card-body" style={{ width: "100%", flex: "none" }}>
+        <div className="basic-form">
+          <form
+            // ref={formRef}
+            onSubmit={handleSubmit(onSubmit)}
+            onChange={() => { }}
+          >
+            <div className="row">
+              <CustumInput
+                //defaultValue=""
+                defaultValue={currentOrder.order[0].nom}
+                //value={currentOrder.order[0].nom}
+                register={register}
+                name={"nom"}
+                error={errors.nom}
+                type={"text"}
+                label={"Destinataire"}
+                placeholder={"Patrick Doe"}
+                confirmation={true}
               />
             </div>
 
-            <CustumInput
-              defaultValue={currentOrder.order[0].prix}
-              register={register}
-              name={"prix"}
-              error={errors.prix}
-              type={"text"}
-              label={"Prix"}
-              placeholder={"36540"}
-              confirmation={true}
-            />
+            <div className="row">
+              <CustumInput
+                //defaultValue=""
+                //value={currentOrder.order[0].telephone}
+                defaultValue={currentOrder.order[0].telephone}
+                //defaultValue={currentOrder.order[0].telephone}
+                register={register}
+                name={"telephone"}
+                error={errors.telephone}
+                type={"text"}
+                label={"Telephone"}
+                placeholder={"778143610"}
+                confirmation={true}
+              >
+                <div className="call-ws-media">
+                  <IoLogoWhatsapp
+                    className="io-logo"
+                    onClick={() =>
+                      handleClick("+212" + currentOrder.order[0].telephone)
+                    }
+                    size={25}
+                    color={"green"}
+                  />
+                  <a href={`tel:+212${currentOrder.order[0].telephone}`}>
+                    <IoCallOutline
+                      className="io-logo"
+                      size={25}
+                      color={"green"}
+                    />
+                  </a>
+                </div>
+              </CustumInput>
+            </div>
 
-            <CustumInput
-              defaultValue={currentOrder.order[0].adresse}
-              register={register}
-              name={"adresse"}
-              error={errors.adresse}
-              type={"text"}
-              label={"Adresse"}
-              placeholder={"Bl 4 st.Jean"}
-              confirmation={true}
-            />
-          </div>
+            <div className={"row"}>
+              <div className={styles.rowCity}>
+                <label className={styles.labelCity}>Ville</label>
+                <CustumDropdown
+                  refetch={refetch}
+                  options={FormatCity(dataCity ? dataCity.data : [])}
+                  name="id_city"
+                  data={dataCity ? dataCity.data : []}
+                  order={{
+                    id: currentOrder.order[0].id,
+                    id_city: currentOrder.order[0].id_city,
+                    id_team: currentOrder.order[0].id_team,
+                    createdAt: currentOrder.order[0].createdAt,
+                  }}
+                />
+              </div>
 
-          <div className={styles.rowCity}>
-            <CustumSelectForm
-              className={"lg-input-cus"}
-              defaultSelected={currentOrder.order[0].status}
-              data={FilterStatusData(StatusData?.data)}
-              register={register}
-              error={errors.status}
-              label={"Status"}
-              name={"status"}
-              confirmation={true}
-              selectedStatus={selectedStatus}
-              setSelectedStatus={setSelectedStatus}
-            />
-            {currentOrder.order[0].isSendLivo === "not_send" ? (
-              <TbPointFilled size={40} color={"gray"} />
-            ) : currentOrder.order[0].isSendLivo === "error_send" ? (
-              <TbPointFilled size={40} color={"red"} />
-            ) : (
-              <TbPointFilled size={40} color={"green"} />
-            )}
-          </div>
-          {isLoading && <Spinner4Bar />}
+              <CustumInput
+                defaultValue={currentOrder.order[0].prix}
+                register={register}
+                name={"prix"}
+                error={errors.prix}
+                type={"text"}
+                label={"Prix"}
+                placeholder={"36540"}
+                confirmation={true}
+              />
 
-          <div className={styles.bottomAction}>
-            <button hidden={true} ref={formRef} type="submit" />
+              <CustumInput
+                defaultValue={currentOrder.order[0].adresse}
+                register={register}
+                name={"adresse"}
+                error={errors.adresse}
+                type={"text"}
+                label={"Adresse"}
+                placeholder={"Bl 4 st.Jean"}
+                confirmation={true}
+              />
+            </div>
+
+            <div className={styles.rowCity}>
+              <CustumSelectForm
+                className={"lg-input-cus"}
+                defaultSelected={currentOrder.order[0].status}
+                data={FilterStatusData(StatusData?.data)}
+                register={register}
+                error={errors.status}
+                label={"Status"}
+                name={"status"}
+                confirmation={true}
+                selectedStatus={selectedStatus}
+                setSelectedStatus={setSelectedStatus}
+              />
+              {currentOrder.order[0].isSendLivo === "not_send" ? (
+                <TbPointFilled size={40} color={"gray"} />
+              ) : currentOrder.order[0].isSendLivo === "error_send" ? (
+                <TbPointFilled size={40} color={"red"} />
+              ) : (
+                <TbPointFilled size={40} color={"green"} />
+              )}
+            </div>
+            {isLoading && <Spinner4Bar />}
+
+            {/* <button hidden={true} ref={bottomSubmitRef} type="submit" /> */}
+
             <button
               //type="submit"
+              hidden={true}
+              ref={bottomSubmitRef}
               onClick={onSubmitHandle}
               className={styles.saveBtn}
             >
               Enregistrer
             </button>
-            {showButton && (
-              <button type="submit" onClick={onNext} className={styles.NextBtn}>
-                <FontAwesomeIcon icon={faArrowRight} />
-              </button>
-            )}
-          </div>
-        </form>
+            <button hidden={true} ref={formRef} type="submit" />
+
+            {/* <div className={styles.bottomAction}>
+                <button hidden={true} ref={bottomSubmitRef} type="submit" />
+                <button
+                  //type="submit"
+                  onClick={onSubmitHandle}
+                  className={styles.saveBtn}
+                >
+                  Enregistrer
+                </button>
+                {showButton && (
+                  <button onClick={onNext} className={styles.NextBtn}>
+                    <FontAwesomeIcon icon={faArrowRight} />
+                  </button>
+                )}
+              </div> */}
+          </form>
+        </div>
       </div>
-    </div>
+
+    </>
   );
 };
