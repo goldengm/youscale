@@ -14,8 +14,8 @@ interface Props {
   defaultSelected?: string | number | null;
   Onchange?: (e: React.ChangeEvent<HTMLSelectElement>) => any;
   confirmation?: boolean;
-  selectedStatus?: string | undefined;
-  setSelectedStatus?: any;
+  selectedStatus?: string | undefined
+  setSelectedStatus?: any
 }
 export default function CustumSelectForm({
   label,
@@ -30,9 +30,10 @@ export default function CustumSelectForm({
   selectedStatus,
   setSelectedStatus,
 }: Props): JSX.Element {
+
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
-    setSelectedStatus(value);
+    setSelectedStatus(value)
   };
 
   return (
@@ -41,16 +42,7 @@ export default function CustumSelectForm({
         <label className={confirmation ? styles.confirmlabel : styles.label}>
           {label}
         </label>
-        <div
-          style={
-            confirmation
-              ? window.innerWidth > 550
-                ? //? { width: "205px" }
-                  {}
-                : { width: "120px" }
-              : { width: "100%" }
-          }
-        >
+        <div style={confirmation ? (window.innerWidth > 550 ? { width: "205px" } : { width: "120px" }) : { width: "50%" }}>
           {confirmation ? (
             <select
               id="confirmation_select"
@@ -62,15 +54,7 @@ export default function CustumSelectForm({
               className={styles.confirmationselect}
             >
               {data.map((dt, index) => (
-                <option
-                  // style={{
-                  //   padding: 5,
-                  //   margin: 5,
-                  //   background: "rgba(119, 32, 225, 0.70)",
-                  // }}
-                  key={index}
-                  value={dt.value}
-                >
+                <option key={index} value={dt.value}>
                   {dt.label}
                 </option>
               ))}

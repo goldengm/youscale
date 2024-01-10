@@ -1,22 +1,16 @@
-import React from "react";
-import { UseFormRegister } from "react-hook-form/dist/types/form";
-import { FieldError } from "react-hook-form/dist/types/errors";
-import styles from "./form.module.css";
+import React from 'react'
+import { UseFormRegister } from 'react-hook-form/dist/types/form'
+import { FieldError } from 'react-hook-form/dist/types/errors'
+import styles from './form.module.css'
 
 interface Props {
-  label: string;
-  register: UseFormRegister<any>;
-  name: string;
-  error: FieldError | undefined;
-  defaultValue?: string | number;
+  label: string,
+  register: UseFormRegister<any>,
+  name: string,
+  error: FieldError | undefined,
+  defaultValue?: string | number
 }
-export default function CustumTextArea({
-  label,
-  register,
-  name,
-  error,
-  defaultValue,
-}: Props): JSX.Element {
+export default function CustumTextArea({ label, register, name, error, defaultValue }: Props): JSX.Element {
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -24,12 +18,12 @@ export default function CustumTextArea({
         <textarea
           {...register(name)}
           className={styles.input}
-          rows={1}
+          rows={4}
           id="comment"
           defaultValue={defaultValue}
         />
       </div>
-      {error && <p className="error">{error.message}</p>}
+      {error && <p className='error'>{error.message}</p>}
     </div>
-  );
+  )
 }

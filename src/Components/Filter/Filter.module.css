@@ -38,11 +38,6 @@
     background: #FFF;
     width: max-content;
     height: 50px;
-
-    &:hover {
-        border-color: #7720E1;
-        box-shadow: 0 0 5px #7720E1;
-    }
 }
 
 .supportFilter {
@@ -71,11 +66,6 @@
     background: #FFF;
     width: max-content;
     height: 50px;
-
-    &:hover {
-        border-color: #7720E1;
-        box-shadow: 0 0 5px #7720E1;
-    }
 }
 
 .filter p {
@@ -209,17 +199,6 @@
     border-radius: 10px;
     padding: 5px;
     margin: 5px;
-
-    color: #000000;
-    font-family: Poppins;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-
-    &:hover {
-        background: rgba(119, 32, 225, 0.70);
-        color: #FFF;
-    }
 }
 
 .checked {
@@ -231,11 +210,11 @@
 }
 
 .itemLabel {
-    /* color: #000000;
+    color: #000000;
     font-family: Poppins;
     font-size: 14px;
     font-style: normal;
-    font-weight: 500; */
+    font-weight: 500;
 }
 
 .itemCheckbox {

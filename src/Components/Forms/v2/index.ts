@@ -5,7 +5,6 @@ import CustumSelectForm from "./CustumSelectForm";
 import CustumAuthInput from "./CustumAuthInput";
 import CityDropDown from "./CityDropDown";
 import SwitchForm from "./SwitchForm";
-import MyCustomSelect from "./MyCustomSelect";
 
 export {
     CustumSelect,
@@ -14,6 +13,5 @@ export {
     CustumSelectForm,
     CustumAuthInput,
     CityDropDown,
-    SwitchForm,
-    MyCustomSelect
+    SwitchForm
 };
