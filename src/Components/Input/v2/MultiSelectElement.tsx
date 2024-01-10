@@ -25,7 +25,7 @@ export default function MultiSelectElement({
   className,
   style,
 }: MultiSelectElementProps): JSX.Element {
-  const test = (item) => {
+  const Item = (item: any) => {
     const {
       checked,
       onClick,
@@ -67,7 +67,7 @@ export default function MultiSelectElement({
       value={selected}
       onChange={onChange}
       labelledBy="Sélectionner"
-      ItemRenderer={test}
+      ItemRenderer={Item}
     />
   );
 }
