@@ -1,17 +1,16 @@
-import { useEffect } from 'react'
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
-import { store } from './store';
-import { setToken } from './services/auth/setToken';
-import { setUserData } from './services/auth/setUserData';
-import { ErrorBoundary } from './Pages/Errors';
-import './App.css'
-import Routing from './routes/Routing';
-import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import { store } from "./store";
+import { setToken } from "./services/auth/setToken";
+import { setUserData } from "./services/auth/setUserData";
+import { ErrorBoundary } from "./Pages/Errors";
+import "./App.css";
+import Routing from "./routes/Routing";
+import "react-toastify/dist/ReactToastify.css";
 
 function App(): JSX.Element {
-
   const parmsConnx = () => {
     var url = new URL(window.location.href);
 
@@ -21,15 +20,14 @@ function App(): JSX.Element {
     var userData = params.get("userData");
 
     if (token && userData) {
-      setToken(token)
-      setUserData(JSON.parse(userData))
+      setToken(token);
+      setUserData(JSON.parse(userData));
     }
-  }
+  };
 
   useEffect(() => {
-    parmsConnx()
-  }, [])
-
+    parmsConnx();
+  }, []);
 
   return (
     <ErrorBoundary>
@@ -40,7 +38,7 @@ function App(): JSX.Element {
         </BrowserRouter>
       </Provider>
     </ErrorBoundary>
-  )
+  );
 }
 
-export default App
+export default App;

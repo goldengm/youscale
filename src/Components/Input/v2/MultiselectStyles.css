@@ -1,0 +1,30 @@
+.dropdown-container {
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px !important;
+    border: 1px solid rgba(0, 0, 0, 0.30) !important;
+    background: #FFF;
+    height: 42px;
+
+    &:hover {
+        border-color: #7720E1;
+        box-shadow: 0 0 5px #7720E1;
+    }
+
+    &:active {
+        border-color: #7720E1;
+        box-shadow: 0 0 5px #7720E1;
+    }
+}
+
+.dropdown-heading-value {
+    color: #000;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}

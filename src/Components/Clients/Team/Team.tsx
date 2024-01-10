@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Main from "../../Main";
 import PerformanceCard from "./PerformanceCard";
 import EarningCard from "./EarningCard";
 import AddTeamModal from "../../Modal/Team/AddTeamModal";
 import EditTeamModal from "../../Modal/Team/EditTeamModal";
 import { CustomHist } from "../../Chart";
+import { Table } from "reactstrap";
 import {
   Cient,
   EarningTable,
@@ -210,20 +212,24 @@ export default function Team({ client }: Props): JSX.Element {
       showVideo={showVideo}
       setShowVideo={setShowVideo}
     >
-      {showAddTeamModal && (
-        <AddTeamModal
-          refetch={refetch}
-          setIsVisible={setShowAddTeamModal}
-          driverObj={driverObj}
-        />
-      )}
-      {showEditTeamModal && (
-        <EditTeamModal
-          setIsVisible={setShowEditTeamModal}
-          dataEdit={item}
-          refetch={refetch}
-        />
-      )}
+      {showAddTeamModal &&
+        createPortal(
+          <AddTeamModal
+            refetch={refetch}
+            setIsVisible={setShowAddTeamModal}
+            driverObj={driverObj}
+          />,
+          document.body
+        )}
+      {showEditTeamModal &&
+        createPortal(
+          <EditTeamModal
+            setIsVisible={setShowEditTeamModal}
+            dataEdit={item}
+            refetch={refetch}
+          />,
+          document.body
+        )}
       <div className="content-body">
         <div className="container-fluid">
           <div className="team-header">
@@ -342,7 +348,7 @@ const TeamCard = ({
           </a>
         </div>
         <div className="table-responsive" style={{ margin: "30px" }}>
-          <table className={styles.table}>
+          <Table className={styles.table}>
             <thead>
               <tr>
                 <th>Nom</th>
@@ -371,7 +377,7 @@ const TeamCard = ({
                 ))
               )}
             </tbody>
-          </table>
+          </Table>
         </div>
       </div>
     </div>
