@@ -1011,3 +1011,8 @@ export interface ChatMessage {
     id_user?: number
     createdAt?: string
 }
+
+export type DropdownOptionType = {
+    label: string;
+    value: string | number;
+}
