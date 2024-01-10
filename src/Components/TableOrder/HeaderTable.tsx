@@ -12,8 +12,6 @@ import { GetRole } from "../../services/storageFunc";
 import style from "./table.module.css";
 import { OrderFilter } from "../Filter/OrderFilter";
 import { AiFillFilter } from "react-icons/ai";
-import { Button } from "../../common";
-import { createPortal } from "react-dom";
 
 var currentTeam = GetCurrTeamMember();
 
@@ -173,26 +171,13 @@ const DeleteBulkOrder = ({
   };
 
   return (
-    <Button
-      color="primary"
+    <img
+      src="/svg/order/delete.svg"
+      alt="delete"
+      className={id_orders && id_orders?.length > 0 ? "del-order-hov" : ""}
+      color={id_orders && id_orders?.length > 0 ? "red" : "gray"}
       onClick={handleDestroyOrder}
-      icon={
-        <img
-          src="/svg/order/delete.svg"
-          alt="delete"
-          className={id_orders && id_orders?.length > 0 ? "del-order-hov" : ""}
-          color={id_orders && id_orders?.length > 0 ? "red" : "gray"}
-          // onClick={handleDestroyOrder}
-        />
-      }
     />
-    // <img
-    //   src="/svg/order/delete.svg"
-    //   alt="delete"
-    //   className={id_orders && id_orders?.length > 0 ? "del-order-hov" : ""}
-    //   color={id_orders && id_orders?.length > 0 ? "red" : "gray"}
-    //   onClick={handleDestroyOrder}
-    // />
   );
 };
 
@@ -217,31 +202,20 @@ const EditBulkOrder = ({
 
   return (
     <>
-      {showModal &&
-        createPortal(
-          <BulkEditAgentModal
-            id_orders={id_orders}
-            showModal={showModal}
-            setShowModal={setShowModal}
-            refetch={refetch}
-          />,
-          document.body
-        )}
-
-      <Button
-        color="primary"
+      {showModal && (
+        <BulkEditAgentModal
+          id_orders={id_orders}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          refetch={refetch}
+        />
+      )}
+      <img
+        src="/svg/order/pencil.svg"
+        alt="pencil"
+        className={id_orders && id_orders?.length > 0 ? "del-order-hov" : ""}
+        color={id_orders && id_orders?.length > 0 ? "black" : "gray"}
         onClick={handleDestroyOrder}
-        icon={
-          <img
-            src="/svg/order/pencil.svg"
-            alt="pencil"
-            className={
-              id_orders && id_orders?.length > 0 ? "del-order-hov" : ""
-            }
-            color={id_orders && id_orders?.length > 0 ? "black" : "gray"}
-            onClick={handleDestroyOrder}
-          />
-        }
       />
     </>
   );
@@ -269,17 +243,7 @@ const AddOrderBtn = ({
   };
 
   return (
-    <Button
-      color="primary"
-      icon={<img src="/svg/order/add.svg" alt="add" />}
-      onClick={handleShowTeamModal}
-    />
-    // <button
-    //   icon={<img src="/svg/order/add.svg" alt="add" />}
-    //   onClick={handleShowTeamModal}
-    // >
-    //   <img src="/svg/order/add.svg" alt="add" />
-    // </button>
+    <img src="/svg/order/add.svg" alt="add" onClick={handleShowTeamModal} />
   );
 };
 
@@ -298,12 +262,7 @@ const StartConfirmationBtn = ({
   };
 
   return (
-    <Button
-      color="primary"
-      onClick={handleShowTeamModal}
-      icon={<img src="/svg/order/call.svg" alt="add" />}
-    />
-    // <img src="/svg/order/call.svg" onClick={handleShowTeamModal} alt="add" />
+    <img src="/svg/order/call.svg" onClick={handleShowTeamModal} alt="add" />
   );
 };
 
@@ -329,11 +288,7 @@ const ImportBtn = ({ id_orders }: ImportBtnProps): JSX.Element => {
       data={exportData ? exportData?.data : []}
       headers={exportData ? exportData?.header : headers}
     >
-      <Button
-        color="primary"
-        onClick={() => {}}
-        icon={<img src="/svg/order/xsls.svg" alt="xsls" />}
-      />
+      <img src="/svg/order/xsls.svg" alt="xsls" />
     </CSVLink>
   );
 };

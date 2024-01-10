@@ -1,7 +1,6 @@
 import React from "react";
 import { UseFormRegister } from "react-hook-form/dist/types/form";
 import { FieldError } from "react-hook-form/dist/types/errors";
-import cx from "classnames";
 import styles from "./form.module.css";
 import "./form.style.css";
 
@@ -33,22 +32,11 @@ export default function CustumInput({
 }: Props): JSX.Element {
   return (
     <div className={styles.container}>
-      <div className={confirmation ? styles.form : styles.form}>
-        <label className={confirmation ? styles.label : styles.label}>
+      <div className={confirmation ? styles.confirmform : styles.form}>
+        <label className={confirmation ? styles.confirmlabel : styles.label}>
           {label}
         </label>
-        <div
-          className={styles["input-container"]}
-          style={
-            confirmation
-              ? window.innerWidth > 550
-                ? //? { width: "205px" }
-                  {}
-                : { width: "120px" }
-              : {}
-            // : { width: "50%" }
-          }
-        >
+        <div style={confirmation ? (window.innerWidth > 550 ? { width: '205px' } : { width: '120px' }) : { width: "50%" }}>
           <input
             style={{ width: "100%" }}
             min={min || 0}
@@ -57,18 +45,14 @@ export default function CustumInput({
             role="presentation"
             autoComplete="off"
             onChange={onChange}
-            // className={styles.input}
-            className={cx(
-              { [styles["error-input"]]: error },
-              { [styles.input]: true }
-            )}
+            className={styles.input}
             type={type}
             placeholder={placeholder}
           />
         </div>
-        {children}
-        {error && <p className={styles.error}>{error.message}</p>}
       </div>
+      {children}
+      {error && <p className={styles.error}>{error.message}</p>}
     </div>
   );
 }
