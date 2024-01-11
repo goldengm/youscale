@@ -11,38 +11,55 @@ const getAnnoucement = (
   data ? data : [{ text: "Aucune annonce", clt_categorie: [] }];
 
 const HeaderBanner = () => {
-  // const { data } = useGetAnnoucementQuery();
+  const { data } = useGetAnnoucementQuery();
 
-  // const [currentAnnouncementIndex, setCurrentAnnouncementIndex] =
-  //   useState<number>(0);
-  // const [isVisible, setIsVisible] = useState(true);
+  const [currentAnnouncementIndex, setCurrentAnnouncementIndex] =
+    useState<number>(0);
+  const [isVisible, setIsVisible] = useState(true);
 
-  // const goToPreviousAnnouncement = () => {
-  //   setCurrentAnnouncementIndex((prevIndex) =>
-  //     prevIndex === 0 ? getAnnoucement(data?.data).length - 1 : prevIndex - 1
-  //   );
-  // };
+  const goToPreviousAnnouncement = () => {
+    setCurrentAnnouncementIndex((prevIndex) =>
+      prevIndex === 0 ? getAnnoucement(data?.data).length - 1 : prevIndex - 1
+    );
+  };
 
-  // const goToNextAnnouncement = () => {
-  //   setCurrentAnnouncementIndex((prevIndex) =>
-  //     prevIndex === getAnnoucement(data?.data).length - 1 ? 0 : prevIndex + 1
-  //   );
-  // };
+  const goToNextAnnouncement = () => {
+    setCurrentAnnouncementIndex((prevIndex) =>
+      prevIndex === getAnnoucement(data?.data).length - 1 ? 0 : prevIndex + 1
+    );
+  };
 
-  // const handleCloseClick = () => {
-  //   setIsVisible(false);
-  // };
+  const handleCloseClick = () => {
+    setIsVisible(false);
+  };
 
-  // useEffect(() => {
-  //   const interval = setInterval(goToNextAnnouncement, 15000);
-  //   return () => clearInterval(interval);
-  // }, []);
+  useEffect(() => {
+    const interval = setInterval(goToNextAnnouncement, 15000);
+    return () => clearInterval(interval);
+  }, []);
 
-  // if (!isVisible) {
-  //   return null; // Ne rend rien si le composant n'est pas visible
-  // }
+  if (!isVisible) {
+    return null; // Ne rend rien si le composant n'est pas visible
+  }
 
-  return <div className={styles.headerBanner}></div>;
+  return (
+    <div className={styles.headerBanner}>
+      <div className={styles.leftArrow} onClick={goToPreviousAnnouncement}>
+        <FaArrowLeft />
+      </div>
+      <div className={styles.announcement}>
+        <Marquee autoFill={false} delay={5} speed={40}>
+          {getAnnoucement(data?.data)[currentAnnouncementIndex].text}
+        </Marquee>
+      </div>
+      <div className={styles.rightArrow} onClick={goToNextAnnouncement}>
+        <FaArrowRight />
+      </div>
+      <div className={styles.closeButton} onClick={handleCloseClick}>
+        <FaTimes />
+      </div>
+    </div>
+  );
 };
 
 export default HeaderBanner;

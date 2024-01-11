@@ -32,9 +32,11 @@ import { TbPointFilled } from "react-icons/tb";
 import { Spinner4Bar } from "../../Loader";
 import * as yup from "yup";
 import { showToastSucces } from "../../../services/toast/showToastSucces";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { MyCustomSelect } from "../../Forms/v2";
+import cx from "classnames";
+import { DropdownOptionType } from "../../../models";
 
 type dataType = {
   label: string;
@@ -169,7 +171,6 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     isFetching,
   } = useGetClientOrderByIdQuery({ id: id_orders[index] });
 
-
   useEffect(() => {
     refetchCurrentOrder();
   }, [id_orders[index]]);
@@ -177,7 +178,6 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   useEffect(() => {
     refetchCurrentOrder();
   }, [isOpen, index]);
-
 
   useEffect(() => {
     setShowButton(false);
@@ -239,7 +239,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 
     // @ts-ignore
     bottomSubmitRef?.current?.click();
-  }
+  };
 
   const onNext = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -326,7 +326,6 @@ const ConfirmationModal: React.FC<ModalProps> = ({
                     bottomSubmitRef={bottomSubmitRef}
                   />
                 </>
-
               )
             )}
             {/* {isSuccess && (
@@ -354,30 +353,35 @@ const ConfirmationModal: React.FC<ModalProps> = ({
               bottomSubmitRef={bottomSubmitRef}
             /> */}
 
-            <div
-              className={styles.bottomAction}
-            >
+            <div className={styles.bottomAction}>
               <button
                 hidden={true}
-                //ref={formRef} 
+                //ref={formRef}
                 type="submit"
               />
               <button
                 //type="submit"
+                className={cx(
+                  { [styles.ripple]: true },
+                  { [styles.saveBtn]: true }
+                )}
                 onClick={onSubmitHandle}
-                className={styles.saveBtn}
+                //className={styles.saveBtn}
               >
                 Enregistrer
               </button>
               {showButton && (
                 <button
                   onClick={onNext}
-                  className={styles.NextBtn}
+                  //className={styles.NextBtn}
+                  className={cx(
+                    { [styles.ripple]: true },
+                    { [styles.NextBtn]: true }
+                  )}
                 >
                   <FontAwesomeIcon icon={faArrowRight} />
                 </button>
               )}
-
             </div>
           </div>
         </div>
@@ -460,16 +464,16 @@ const ProductLayout = ({
     setSelectedProduct(
       editData
         ? editData
-          ?.filter((dt) => dt.Product.variant?.length === 0)
-          .map((dt) => {
-            return {
-              label: dt.Product.name,
-              value: dt.Product.id ? String(dt.Product.id) : "",
-              quantity: dt.quantity,
-              variant: dt.variant,
-              allVariant: dt.Product.variant,
-            };
-          })
+            ?.filter((dt) => dt.Product.variant?.length === 0)
+            .map((dt) => {
+              return {
+                label: dt.Product.name,
+                value: dt.Product.id ? String(dt.Product.id) : "",
+                quantity: dt.quantity,
+                variant: dt.variant,
+                allVariant: dt.Product.variant,
+              };
+            })
         : []
     );
   }, [id]);
@@ -483,7 +487,6 @@ const ProductLayout = ({
     const data = {
       id_product_array: FormatAccessArray(selectedProduct),
     };
-
 
     patchOrder({ ...data, id })
       .unwrap()
@@ -566,7 +569,7 @@ const FormBody = ({
   selectedStatus,
   setSelectedStatus,
   formSubmitRef,
-  bottomSubmitRef
+  bottomSubmitRef,
 }: FormBodyProps) => {
   const { data: dataSetting } = useGetSettingQuery();
   const { data: dataCity } = useGetCityQuery();
@@ -581,6 +584,7 @@ const FormBody = ({
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<Inputs>({
     // @ts-ignore
     resolver: yupResolver(schema),
@@ -634,7 +638,6 @@ const FormBody = ({
           }
         }
       );
-
   };
 
   const onSubmitHandle = (
@@ -651,7 +654,6 @@ const FormBody = ({
       handleClose();
     }
     setIndex((prevIndex) => prevIndex + 1);
-
   };
 
   useEffect(() => {
@@ -667,6 +669,21 @@ const FormBody = ({
     );
   };
 
+  const handleChangeStatus = (option: DropdownOptionType) => {
+    //const { value } = e.target;
+    const { value } = option;
+    // console.log("--------come ehre------------");
+    // console.log(value);
+    setValue("status", String(value));
+    setSelectedStatus(value);
+
+    // console.log(value);
+
+    // if (value === "Reporte") setShowReporte(true);
+    // else setShowReporte(false);
+  };
+
+  // console.log(selectedStatus);
 
   return (
     <>
@@ -675,38 +692,92 @@ const FormBody = ({
           <form
             // ref={formRef}
             onSubmit={handleSubmit(onSubmit)}
-            onChange={() => { }}
+            onChange={() => {}}
           >
             <div className="row">
-              <CustumInput
-                //defaultValue=""
-                defaultValue={currentOrder.order[0].nom}
-                //value={currentOrder.order[0].nom}
-                register={register}
-                name={"nom"}
-                error={errors.nom}
-                type={"text"}
-                label={"Destinataire"}
-                placeholder={"Patrick Doe"}
-                confirmation={true}
-              />
+              <div className="col">
+                <CustumInput
+                  //defaultValue=""
+                  defaultValue={currentOrder.order[0].nom}
+                  //value={currentOrder.order[0].nom}
+                  register={register}
+                  name={"nom"}
+                  error={errors.nom}
+                  type={"text"}
+                  label={"Destinataire"}
+                  placeholder={"Patrick Doe"}
+                  confirmation={true}
+                />
+              </div>
+              <div className="col">
+                <CustumInput
+                  defaultValue={currentOrder.order[0].prix}
+                  register={register}
+                  name={"prix"}
+                  error={errors.prix}
+                  type={"text"}
+                  label={"Prix"}
+                  placeholder={"36540"}
+                  confirmation={true}
+                />
+              </div>
             </div>
-
-            <div className="row">
-              <CustumInput
-                //defaultValue=""
-                //value={currentOrder.order[0].telephone}
-                defaultValue={currentOrder.order[0].telephone}
-                //defaultValue={currentOrder.order[0].telephone}
-                register={register}
-                name={"telephone"}
-                error={errors.telephone}
-                type={"text"}
-                label={"Telephone"}
-                placeholder={"778143610"}
-                confirmation={true}
+            <div className="row mt-2">
+              <div className="col">
+                <CustumInput
+                  defaultValue={currentOrder.order[0].adresse}
+                  register={register}
+                  name={"adresse"}
+                  error={errors.adresse}
+                  type={"text"}
+                  label={"Adresse"}
+                  placeholder={"Bl 4 st.Jean"}
+                  confirmation={true}
+                />
+              </div>
+              <div className="col">
+                {/* <div className={styles.rowCity}> */}
+                <label className={styles.labelCity}>Ville</label>
+                <CustumDropdown
+                  refetch={refetch}
+                  options={FormatCity(dataCity ? dataCity.data : [])}
+                  name="id_city"
+                  data={dataCity ? dataCity.data : []}
+                  order={{
+                    id: currentOrder.order[0].id,
+                    id_city: currentOrder.order[0].id_city,
+                    id_team: currentOrder.order[0].id_team,
+                    createdAt: currentOrder.order[0].createdAt,
+                  }}
+                />
+                {/* </div> */}
+              </div>
+            </div>
+            <div className="row mt-2">
+              <div className="col">
+                <CustumInput
+                  //defaultValue=""
+                  //value={currentOrder.order[0].telephone}
+                  defaultValue={currentOrder.order[0].telephone}
+                  //defaultValue={currentOrder.order[0].telephone}
+                  register={register}
+                  name={"telephone"}
+                  error={errors.telephone}
+                  type={"text"}
+                  label={"Telephone"}
+                  placeholder={"778143610"}
+                  confirmation={true}
+                ></CustumInput>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  //justifyContent: "center",
+                }}
+                className="col"
               >
-                <div className="call-ws-media">
+                <div style={{ marginTop: "35px" }} className="call-ws-media">
                   <IoLogoWhatsapp
                     className="io-logo"
                     onClick={() =>
@@ -723,69 +794,51 @@ const FormBody = ({
                     />
                   </a>
                 </div>
-              </CustumInput>
-            </div>
-
-            <div className={"row"}>
-              <div className={styles.rowCity}>
-                <label className={styles.labelCity}>Ville</label>
-                <CustumDropdown
-                  refetch={refetch}
-                  options={FormatCity(dataCity ? dataCity.data : [])}
-                  name="id_city"
-                  data={dataCity ? dataCity.data : []}
-                  order={{
-                    id: currentOrder.order[0].id,
-                    id_city: currentOrder.order[0].id_city,
-                    id_team: currentOrder.order[0].id_team,
-                    createdAt: currentOrder.order[0].createdAt,
-                  }}
-                />
               </div>
-
-              <CustumInput
-                defaultValue={currentOrder.order[0].prix}
-                register={register}
-                name={"prix"}
-                error={errors.prix}
-                type={"text"}
-                label={"Prix"}
-                placeholder={"36540"}
-                confirmation={true}
-              />
-
-              <CustumInput
-                defaultValue={currentOrder.order[0].adresse}
-                register={register}
-                name={"adresse"}
-                error={errors.adresse}
-                type={"text"}
-                label={"Adresse"}
-                placeholder={"Bl 4 st.Jean"}
-                confirmation={true}
-              />
             </div>
 
-            <div className={styles.rowCity}>
-              <CustumSelectForm
-                className={"lg-input-cus"}
-                defaultSelected={currentOrder.order[0].status}
-                data={FilterStatusData(StatusData?.data)}
-                register={register}
-                error={errors.status}
-                label={"Status"}
-                name={"status"}
-                confirmation={true}
-                selectedStatus={selectedStatus}
-                setSelectedStatus={setSelectedStatus}
-              />
-              {currentOrder.order[0].isSendLivo === "not_send" ? (
-                <TbPointFilled size={40} color={"gray"} />
-              ) : currentOrder.order[0].isSendLivo === "error_send" ? (
-                <TbPointFilled size={40} color={"red"} />
-              ) : (
-                <TbPointFilled size={40} color={"green"} />
-              )}
+            <div className="row mt-2">
+              <div className="col">
+                <MyCustomSelect
+                  label="Status"
+                  //name="status"
+                  //setValue={setValue}
+                  defaultValue={{
+                    label: currentOrder?.order[0]?.status || "",
+                    value: currentOrder?.order[0]?.status || "",
+                  }}
+                  onChange={handleChangeStatus}
+                  options={FilterStatusData(StatusData?.data)}
+                />
+                {/* <CustumSelectForm
+                  className={"lg-input-cus"}
+                  defaultSelected={currentOrder.order[0].status}
+                  data={FilterStatusData(StatusData?.data)}
+                  register={register}
+                  error={errors.status}
+                  label={"Status"}
+                  name={"status"}
+                  confirmation={true}
+                  selectedStatus={selectedStatus}
+                  setSelectedStatus={setSelectedStatus}
+                /> */}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginTop: 30,
+                }}
+                className="col"
+              >
+                {currentOrder.order[0].isSendLivo === "not_send" ? (
+                  <TbPointFilled size={40} color={"gray"} />
+                ) : currentOrder.order[0].isSendLivo === "error_send" ? (
+                  <TbPointFilled size={40} color={"red"} />
+                ) : (
+                  <TbPointFilled size={40} color={"green"} />
+                )}
+              </div>
             </div>
             {isLoading && <Spinner4Bar />}
 
@@ -820,7 +873,6 @@ const FormBody = ({
           </form>
         </div>
       </div>
-
     </>
   );
 };

@@ -1,7 +1,8 @@
+import { createPortal } from "react-dom";
 import HeaderTable from "./HeaderTable";
 import TableContainer from "./TableContainer";
 import Row from "./Row";
-import BottomTable from "./BottomTable";
+// import BottomTable from "./BottomTable";
 import style from "./table.module.css";
 import { ConfirmationModal } from "../Modal";
 import {
@@ -236,50 +237,61 @@ export const Table = ({
 
   return (
     <div className={style.tableWrapper}>
-      {showDeleteModal && (
-        <DeleteOrderModal
-          refetch={refetch}
-          showModal={showDeleteModal}
-          setShowModal={setShowDeleteModal}
-          id_orders={id_orders}
-        />
-      )}
-      {showOrderModal && (
-        <AddOrderModal
+      {showDeleteModal &&
+        createPortal(
+          <DeleteOrderModal
+            refetch={refetch}
+            showModal={showDeleteModal}
+            setShowModal={setShowDeleteModal}
+            id_orders={id_orders}
+          />,
+          document.body
+        )}
+      {showOrderModal &&
+        createPortal(
+          <AddOrderModal
+            driverObj={driverObj}
+            refetch={refetch}
+            setIsVisible={setShowOrderModal}
+          />,
+          document.body
+        )}
+
+      {createPortal(
+        <ConfirmationModal
           driverObj={driverObj}
+          statusConfirmation={statusConfirmation}
           refetch={refetch}
-          setIsVisible={setShowOrderModal}
-        />
+          setStatus={setStatusConfirmation}
+          id_orders={orders_id ?? []}
+          isOpen={showConfirmationModal}
+          setIsVisible={setShowConfirmationModal}
+        />,
+        document.body
       )}
 
-      <ConfirmationModal
-        driverObj={driverObj}
-        statusConfirmation={statusConfirmation}
-        refetch={refetch}
-        setStatus={setStatusConfirmation}
-        id_orders={orders_id ?? []}
-        isOpen={showConfirmationModal}
-        setIsVisible={setShowConfirmationModal}
-      />
-
-      {showEditModal && (
-        <EditOrderModal
-          setIsVisible={setShowEditModal}
-          refetch={refetch}
-          dataEdit={editData}
-          id_order={String(order?.id)}
-          driverObj={driverObj}
-        />
-      )}
-      {showProductOrderModal && (
-        <AddProductOrderModal
-          editData={order?.Product_Orders}
-          id={order?.id ?? 0}
-          refetch={refetch}
-          showModal={showProductOrderModal}
-          setShowModal={setShowProductOrderModal}
-        />
-      )}
+      {showEditModal &&
+        createPortal(
+          <EditOrderModal
+            setIsVisible={setShowEditModal}
+            refetch={refetch}
+            dataEdit={editData}
+            id_order={String(order?.id)}
+            driverObj={driverObj}
+          />,
+          document.body
+        )}
+      {showProductOrderModal &&
+        createPortal(
+          <AddProductOrderModal
+            editData={order?.Product_Orders}
+            id={order?.id ?? 0}
+            refetch={refetch}
+            showModal={showProductOrderModal}
+            setShowModal={setShowProductOrderModal}
+          />,
+          document.body
+        )}
 
       <HeaderTable
         setShowConfirmationModal={setShowConfirmationModal}
@@ -326,7 +338,7 @@ export const Table = ({
         )}
       </TableContainer>
 
-      <BottomTable
+      {/* <BottomTable
         dataStatus={dataStatus}
         setStatus={setStatus}
         setOrderQueryData={setOrderQueryData}
@@ -334,7 +346,7 @@ export const Table = ({
         selectedStatus={selectedStatus}
         setStatusValue={setStatusValue}
         statusList={statusList}
-      />
+      /> */}
     </div>
   );
 };
