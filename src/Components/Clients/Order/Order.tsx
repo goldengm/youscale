@@ -39,9 +39,6 @@ export default function Order({ client }: Props): JSX.Element {
 
   const { data: OrderClient, refetch: RefetchOrderClient, isLoading } = useGetClientOrderQuery(OrderQueryData) // client data
 
-  // console.log(OrderClient);
-  // console.log(OrderQueryData);
-
   const driverObj = driver({
     onNextClick: () => {
       if (driverObj.getActiveIndex() === 3) {

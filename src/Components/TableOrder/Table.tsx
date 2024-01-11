@@ -20,20 +20,20 @@ import { countOrderByStatusModel } from "../../models";
 
 type Order =
   | {
-    code: Number;
-    data: GetClientOrderModel[];
-    order: {
-      id: number;
-      id_city: number;
-      isSendLivo: string;
-      SheetId: string;
-      id_team: number;
-      Product_Orders: ProductOrder[];
-      reportedDate: string;
-      telDuplicate: boolean;
-      createdAt: Date;
-    }[];
-  }
+      code: Number;
+      data: GetClientOrderModel[];
+      order: {
+        id: number;
+        id_city: number;
+        isSendLivo: string;
+        SheetId: string;
+        id_team: number;
+        Product_Orders: ProductOrder[];
+        reportedDate: string;
+        telDuplicate: boolean;
+        createdAt: Date;
+      }[];
+    }
   | undefined;
 
 const GetColumn = (col: ColumnModel[] | undefined): string[] => {
@@ -125,17 +125,17 @@ export const Table = ({
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [rowData, setRowData] = useState<
     | {
-      id: number;
-      checked?: boolean;
-      isSendLivo: string;
-      SheetId: string;
-      id_city: number;
-      id_team: number;
-      Product_Orders: ProductOrder[];
-      createdAt: Date;
-      reportedDate: string;
-      telDuplicate: boolean;
-    }[]
+        id: number;
+        checked?: boolean;
+        isSendLivo: string;
+        SheetId: string;
+        id_city: number;
+        id_team: number;
+        Product_Orders: ProductOrder[];
+        createdAt: Date;
+        reportedDate: string;
+        telDuplicate: boolean;
+      }[]
     | undefined
   >();
 
@@ -308,7 +308,7 @@ export const Table = ({
           data?.data.map((dt, index) => (
             <Row
               RefetchStatusData={RefetchStatusData}
-              key={dt.id}
+              key={index}
               handleCheckRow={handleCheckRow}
               row={dt}
               setIdOrders={setIdOrders}
