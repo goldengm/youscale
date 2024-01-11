@@ -141,6 +141,7 @@ export default function Menu(): JSX.Element {
                 return (
                   <li className="menu-step" key={index}>
                     <Link
+                      title={item.title}
                       to={item.path}
                       onClick={(e) => {
                         Navigate({ to: item.path });
@@ -161,6 +162,7 @@ export default function Menu(): JSX.Element {
                   return (
                     <li key={index}>
                       <Link
+                        title={item.title}
                         to={item.path}
                         onClick={(e) => {
                           Navigate({ to: item.path });
@@ -181,6 +183,7 @@ export default function Menu(): JSX.Element {
                   return (
                     <li key={index}>
                       <Link
+                        title={item.title}
                         to={item.path}
                         onClick={(e) => {
                           Navigate({ to: item.path });

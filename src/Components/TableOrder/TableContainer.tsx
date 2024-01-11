@@ -35,7 +35,7 @@ export default function TableContainer({
         next={fetchData}
         hasMore={true} // Replace with a condition based on your data source
         loader
-        height={450}
+        height={Number(window?.innerHeight * 0.66) || 550}
         endMessage={
           <p style={{ textAlign: "center" }}>
             <b>Yay! You have seen it all</b>

@@ -175,7 +175,8 @@ export const Table = ({
       if (dt.checked) {
         outputData.push({
           id: dt.id,
-          label: `${dt.name} + (${dt.count})`,
+          ///label: `${dt.name} + (${dt.count})`,
+          label: `${dt.name} (${dt.count})`,
           value: String(dt.name),
         });
       }
