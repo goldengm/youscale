@@ -139,7 +139,7 @@
     border-radius: 15px;
     background: #FFF;
     box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.09);
-    width: 218px;
+    width: 250px;
     max-height: 250px;
     /* Changed height to max-height */
     padding: 13px;
@@ -204,7 +204,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 180px;
+    /* width: 180px; */
     height: 30px;
     border-radius: 10px;
     padding: 5px;
@@ -228,6 +228,7 @@
 
 .checked .itemLabel {
     color: #FFF;
+    width: max-content;
 }
 
 .itemLabel {

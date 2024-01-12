@@ -10,6 +10,7 @@ import { logOut } from "../../services/auth/logout";
 import { useGetClientTeamMemberPageQuery } from "../../services/api/ClientTeamApi/ClientTeamPageApi";
 import { GetRole } from "../../services/storageFunc";
 import { GetCurrUser } from "../../services/auth/GetCurrUser";
+import { Tooltip } from "../../common";
 
 const MenuNav = [
   {
@@ -138,10 +139,12 @@ export default function Menu(): JSX.Element {
           </li>
           {GetRole() === "CLIENT"
             ? MenuNav.map((item, index) => {
-                return (
-                  <li className="menu-step" key={index}>
+              return (
+                <li className="menu-step" key={index}>
+                  <Tooltip text={item.title} target={`Tooltip-${index}`}>
                     <Link
-                      title={item.title}
+                      id={`Tooltip-${index}`}
+                      //title={item.title}
                       to={item.path}
                       onClick={(e) => {
                         Navigate({ to: item.path });
@@ -153,11 +156,14 @@ export default function Menu(): JSX.Element {
                       {item.icon}
                       <span className={item.cName}>{item.title}</span>
                     </Link>
-                  </li>
-                );
-              })
+                  </Tooltip>
+
+
+                </li>
+              );
+            })
             : activePageArr.length !== 0
-            ? MenuNav.map((item, index) => {
+              ? MenuNav.map((item, index) => {
                 if (activePageArr.includes(item.name)) {
                   return (
                     <li key={index}>
@@ -178,7 +184,7 @@ export default function Menu(): JSX.Element {
                   );
                 }
               })
-            : MenuNav.map((item, index) => {
+              : MenuNav.map((item, index) => {
                 if (DEFAULT_TEAM_PAGES_ACCESS.includes(item.name)) {
                   return (
                     <li key={index}>

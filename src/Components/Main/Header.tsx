@@ -122,7 +122,7 @@ export default function Header({
 
     setProduct && setProduct(value);
   };
-  console.log(showMenu);
+  // console.log(showMenu);
   return (
     <div style={{ marginTop: "100px" }}>
       <TutorialModal
