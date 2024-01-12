@@ -177,6 +177,7 @@ interface DisplayCardProps {
     crosssellRate: number;
 }
 const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet, stock, totalOrder, upsellRate, crosssellRate }: DisplayCardProps): JSX.Element => {
+    console.log(earningNet)
     return (
         <div className={styles.displayCard}>
 
