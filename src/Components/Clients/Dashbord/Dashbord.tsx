@@ -375,10 +375,10 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                                     annulé ({mode === 'commande' ? data.data.datasets[0].data[3] : ((data.data.datasets[0].data[3] * 100) / data.total).toFixed(2) + '%'})
                                 </li>
 
-                                <li className={styles.cmdLabel}>
+                                {/* <li className={styles.cmdLabel}>
                                     <span className={`bg-deleted circle`} />
                                     Deleted ({mode === 'commande' ? data.data.datasets[0].data[4] : ((data.data.datasets[0].data[4] * 100) / data.total).toFixed(2) + '%'})
-                                </li>
+                                </li> */}
                             </ul>
                         </div>
                     </div>
