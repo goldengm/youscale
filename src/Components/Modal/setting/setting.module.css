@@ -201,6 +201,13 @@
     line-height: normal;
 }
 
+.columnInputTxt:hover,
+.columnInputTxt:active,
+.columnInputTxt:focus {
+    border-color: #7720E1;
+    box-shadow: 0 0 5px #7720E1;
+}
+
 .bottomBtn {
     display: flex;
     width: 480px;

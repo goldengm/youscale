@@ -9,6 +9,7 @@ import styles from './setting.module.css'
 import { useGetColumnQuery, usePatchColumnMutation } from '../../../services/api/ClientApi/ClientColumnApi';
 import { showToastSucces } from '../../../services/toast/showToastSucces';
 import { showToastError } from '../../../services/toast/showToastError';
+import { Button } from '../../../common';
 
 
 type Inputs = {

@@ -19123,6 +19123,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .dlabnav .metismenu>li {
   transition: all 0.4s ease-in-out;
   padding: 0 18px;
+  margin-bottom: 12px;
 }
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .dlabnav .metismenu>li>a {
@@ -19136,8 +19137,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 }
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .dlabnav .metismenu>li.mm-active>a {
-  background: var(--rgba-primary-1);
-  border-radius: 3rem;
+  /* background: var(--rgba-primary-1); */
+  background: #c9a6f3;
+  border-radius: 1rem;
 }
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .dlabnav .metismenu>li.mm-active>a i {
@@ -19151,8 +19153,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 }
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .dlabnav .metismenu>li:hover>a {
-  border-radius: 3rem;
-  background: var(--rgba-primary-1);
+  border-radius: 1rem;
+  /* background: var(--rgba-primary-1); */
+  background: #c9a6f3;
   color: var(--primary);
 }
 
@@ -36932,7 +36935,8 @@ button:focus {
   position: relative;
   border: 0px solid transparent;
   border-radius: 8px;
-  box-shadow: 0px 5px 5px 0px rgba(82, 63, 105, 0.05);
+  /* box-shadow: 0px 5px 5px 0px rgba(82, 63, 105, 0.05); */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   height: calc(100% - 30px);
 }
 

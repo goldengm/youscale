@@ -1,32 +1,32 @@
 import React, { useState } from "react";
-import styles from "./Tooltip.module.css";
+// import styles from "./Tooltip.module.css";
+import { Tooltip } from "reactstrap";
 
 interface TooltipProps {
   text: string;
+  placement?: string;
   children: React.ReactNode;
+  target: string;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ text, children }) => {
-  const [showTooltip, setShowTooltip] = useState(false);
+const MyTooltip: React.FC<TooltipProps> = ({ text, children, target, placement }) => {
 
-  const handleMouseEnter = () => setShowTooltip(true);
-  const handleMouseLeave = () => setShowTooltip(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const toggle = () => setTooltipOpen(!tooltipOpen);
 
   return (
-    <div
-      className={styles["tooltip-container"]}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <>
       {children}
-      {showTooltip && (
-        <div className={styles["tooltip"]}>
-          <div className={styles["tooltip-arrow"]} />
-          <div className={styles["tooltip-content"]}>{text}</div>
-        </div>
-      )}
-    </div>
+      <Tooltip
+        placement={"right"}
+        isOpen={tooltipOpen}
+        target={target}
+        toggle={toggle}
+      >
+        <b style={{ fontSize: 16 }}>{text}</b>
+      </Tooltip>
+    </>
   );
 };
 
-export default Tooltip;
+export default MyTooltip;
