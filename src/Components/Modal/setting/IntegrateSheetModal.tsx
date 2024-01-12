@@ -239,7 +239,11 @@ const SheetContainer = (): JSX.Element => {
                 Exemple
             </a>
 
-            <a className={styles.sheetMail} href="#">
+            <a className={styles.sheetMail}
+                href="#"
+                onClick={() => { navigator.clipboard.writeText('appsheet@fluent-edition-339019.iam.gserviceaccount.com') }}
+
+            >
                 appsheet@fluent-edition-339019.iam.gserviceaccount.com
             </a>
 
