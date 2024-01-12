@@ -238,6 +238,7 @@ interface CardProps {
     orderInProgress?: number
 }
 const Card = ({ bg, value, icon, orderInProgress }: CardProps): JSX.Element => {
+    console.log(value);
 
     const [showTooltip, setShowTooltip] = useState(false);
 
