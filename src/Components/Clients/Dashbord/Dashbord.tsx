@@ -259,7 +259,7 @@ const Card = ({ bg, value, icon, orderInProgress }: CardProps): JSX.Element => {
                                 return (
                                     <div key={index} className={styles.items}>
                                         <div className={styles.desc}>{vlu.desc}</div>
-                                        <div className={styles.value}>{vlu.value}</div>
+                                        <div className={styles.value}>{Number(vlu.value).toFixed(2)}</div>
                                     </div>
                                 )
                             })
