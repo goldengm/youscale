@@ -128,7 +128,7 @@
 }
 
 .table td {
-  overflow: hidden;
+  /* overflow: hidden; */
   white-space: nowrap;
   color: #000;
   font-family: Poppins;

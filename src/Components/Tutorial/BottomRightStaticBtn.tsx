@@ -57,7 +57,7 @@ export default function BottomRightStaticBtn({ setShowVideo }: Props) {
       {ShowDisable && (
         <div>
           <Button
-            style={{ position: "fixed", bottom: "20px", right: "20px" }}
+            style={{ zIndex: 1, position: "fixed", bottom: "20px", right: "20px" }}
             color="primary"
             value="Show Video"
             onClick={showVidoBox}

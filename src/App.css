@@ -9,9 +9,15 @@
 
 .card-tabs .nav-tabs .nav-link:after {
     background: var(--blue) !important;
+    bottom: -3px;
 }
 
 
 .card-tabs .nav-tabs .nav-link.active {
     color: black;
+}
+
+.react-dropdown-select-content span {
+    max-width: 60px;
+    overflow: hidden;
 }
