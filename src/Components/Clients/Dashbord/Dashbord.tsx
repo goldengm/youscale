@@ -180,45 +180,89 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
     console.log('----------earningNet-------------')
     console.log(earningNet)
     return (
-        <div className={styles.displayCard}>
+        <>
+            <div className='row mb-5'>
+                <div className='col'>
+                    <Card
+                        bg={'green'}
+                        value={[
+                            { desc: 'Revenu Net', value: earningNet }
+                        ]}
+                        orderInProgress={orderInProgress}
+                        icon={'dollard.svg'}
+                    />
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }} className='col'>
+                    <Card
+                        bg={'orange'}
+                        value={[
+                            { desc: 'Confirmé', value: rateOfConfirmed },
+                            { desc: 'Livré', value: rateOfDelivred }
+                        ]}
+                        icon={'percent.svg'}
+                    />
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }} className='col'>
+                    <Card
+                        bg={'blue'}
+                        value={[
+                            { desc: 'Lead', value: costPerLead },
+                            { desc: 'Livré', value: costPerDelivred }
+                        ]}
+                        icon={'facebook.svg'}
+                    />
+                </div>
+                <div style={{ display: "flex", justifyContent: "end" }} className='col'>
+                    <Card
+                        bg={'violet'}
+                        value={[
+                            { desc: 'Chiffre d’affaire', value: 0 },
+                            { desc: 'Dépense', value: 0 }
+                        ]}
+                        icon={'pie.svg'}
+                    />
+                </div>
+            </div>
 
-            <Card
-                bg={'green'}
-                value={[
-                    { desc: 'Revenu Net', value: earningNet }
-                ]}
-                orderInProgress={orderInProgress}
-                icon={'dollard.svg'}
-            />
+            <div style={{ display: "none" }} className={styles.displayCard}>
 
-            <Card
-                bg={'orange'}
-                value={[
-                    { desc: 'Confirmé', value: rateOfConfirmed },
-                    { desc: 'Livré', value: rateOfDelivred }
-                ]}
-                icon={'percent.svg'}
-            />
+                <Card
+                    bg={'green'}
+                    value={[
+                        { desc: 'Revenu Net', value: earningNet }
+                    ]}
+                    orderInProgress={orderInProgress}
+                    icon={'dollard.svg'}
+                />
 
-            <Card
-                bg={'blue'}
-                value={[
-                    { desc: 'Lead', value: costPerLead },
-                    { desc: 'Livré', value: costPerDelivred }
-                ]}
-                icon={'facebook.svg'}
-            />
+                <Card
+                    bg={'orange'}
+                    value={[
+                        { desc: 'Confirmé', value: rateOfConfirmed },
+                        { desc: 'Livré', value: rateOfDelivred }
+                    ]}
+                    icon={'percent.svg'}
+                />
 
-            <Card
-                bg={'violet'}
-                value={[
-                    { desc: 'Chiffre d’affaire', value: 0 },
-                    { desc: 'Dépense', value: 0 }
-                ]}
-                icon={'pie.svg'}
-            />
+                <Card
+                    bg={'blue'}
+                    value={[
+                        { desc: 'Lead', value: costPerLead },
+                        { desc: 'Livré', value: costPerDelivred }
+                    ]}
+                    icon={'facebook.svg'}
+                />
 
-            {/* 
+                <Card
+                    bg={'violet'}
+                    value={[
+                        { desc: 'Chiffre d’affaire', value: 0 },
+                        { desc: 'Dépense', value: 0 }
+                    ]}
+                    icon={'pie.svg'}
+                />
+
+                {/* 
             <Card bg={'secondary'} value={rateOfDelivred} title={'taux de livraison'} icon={<TbTruckDelivery size={35} color={'white'} />} />
 
             <Card bg={'success'} value={stock} title={'Stock'} icon={<FiShoppingCart size={35} color={'white'} />} />
@@ -227,8 +271,9 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
 
             <Card bg={'info'} value={upsellRate + crosssellRate} title={'taux de upsell/crosssell'} icon={<FaTruckMoving size={35} color={'white'} />} /> */}
 
-            {/* <Card bg={'secondary'} value={crosssellRate} title={'taux de crosssell'} icon={<BsFillPatchCheckFill size={35} color={'white'} />} /> */}
-        </div>
+                {/* <Card bg={'secondary'} value={crosssellRate} title={'taux de crosssell'} icon={<BsFillPatchCheckFill size={35} color={'white'} />} /> */}
+            </div>
+        </>
     )
 }
 
@@ -511,7 +556,7 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
                 </div>
             </div>
             {showTooltip && (
-                <div className={styles.tooltip}>
+                <div style={{ top: 50 }} className={styles.tooltip}>
                     {/* Contenu du tooltip */}
                     <p>Ceci est le tooltip.</p>
                 </div>

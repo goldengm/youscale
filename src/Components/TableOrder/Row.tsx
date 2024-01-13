@@ -466,7 +466,7 @@ export default function Row({
 
             if (formatDtName === "Commentaire") {
               return (
-                <td style={{ maxWidth: 60 }} key={dt.id}>
+                <td style={{ maxWidth: 60, overflow: "hidden" }} key={dt.id}>
                   <div
                     onClick={() => setShowCommentModal(true)}
                     className="tooltip-order"
@@ -587,7 +587,7 @@ export default function Row({
                   style={{
                     cursor: "pointer",
                     display: "inline-block",
-                    maxWidth: 60,
+                    maxWidth: 100,
                     overflow: "hidden",
                   }}
                 >
