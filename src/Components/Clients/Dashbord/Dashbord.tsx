@@ -36,7 +36,7 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                 if (response) {
                     patchClient({ isBeginner: false }).unwrap()
                         .then(res => {
-                            console.log(res)
+                            //console.log(res)
                             driverObj.destroy();
                             window.location.reload()
                         })
@@ -108,7 +108,7 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                 if (response) {
                     patchClient({ isBeginner: false }).unwrap()
                         .then(res => {
-                            console.log(res)
+                            //console.log(res)
                             driverObj.destroy();
                             window.location.reload()
                         })
@@ -177,12 +177,12 @@ interface DisplayCardProps {
     crosssellRate: number;
 }
 const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConfirmed, rateOfDelivred, earningNet, stock, totalOrder, upsellRate, crosssellRate }: DisplayCardProps): JSX.Element => {
-    console.log('----------earningNet-------------')
-    console.log(earningNet)
+    //console.log('----------earningNet-------------')
+    //console.log(earningNet)
     return (
         <>
             <div className='row mb-5'>
-                <div className='col'>
+                <div className='col mb-3 d-flex-md'>
                     <Card
                         bg={'green'}
                         value={[
@@ -192,7 +192,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
                         icon={'dollard.svg'}
                     />
                 </div>
-                <div style={{ display: "flex", justifyContent: "center" }} className='col'>
+                <div className={`col mb-3 ${styles.centerCard}`} >
                     <Card
                         bg={'orange'}
                         value={[
@@ -202,7 +202,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
                         icon={'percent.svg'}
                     />
                 </div>
-                <div style={{ display: "flex", justifyContent: "center" }} className='col'>
+                <div className={`col mb-3 ${styles.centerCard}`}>
                     <Card
                         bg={'blue'}
                         value={[
@@ -212,7 +212,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
                         icon={'facebook.svg'}
                     />
                 </div>
-                <div style={{ display: "flex", justifyContent: "end" }} className='col'>
+                <div className={`col mb-3 ${styles.rightCard}`}>
                     <Card
                         bg={'violet'}
                         value={[
@@ -284,8 +284,8 @@ interface CardProps {
     orderInProgress?: number
 }
 const Card = ({ bg, value, icon, orderInProgress }: CardProps): JSX.Element => {
-    console.log('-----------value-----------------');
-    console.log(value);
+    //console.log('-----------value-----------------');
+    //console.log(value);
 
     const [showTooltip, setShowTooltip] = useState(false);
 

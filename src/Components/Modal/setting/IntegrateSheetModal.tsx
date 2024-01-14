@@ -202,7 +202,7 @@ const EXAMPLE_1_URL = `/svg/setting/example-1.png`
 const EXAMPLE_2_URL = `/svg/setting/example-2.png`
 
 const SheetContainer = (): JSX.Element => {
-
+    const [copied, setCopied] = React.useState(false);
     const { data, refetch } = useGetLinkSheetQuery();
     const [row, setRow] = useState<GetSheetIntegrationModel[]>([])
     const [showImage, setShowImage] = useState<boolean>(false)
@@ -226,6 +226,14 @@ const SheetContainer = (): JSX.Element => {
         setShowImage(true)
     }
 
+    const onCopy = React.useCallback(() => {
+        navigator.clipboard.writeText('appsheet@fluent-edition-339019.iam.gserviceaccount.com')
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+        }, 1500);
+    }, [])
+
     return (
         <div className={styles.sheetContainer}>
             {showImage && <PreviewImagesModal showImage={showImage} setShowImage={setShowImage} attachement={attachement} />}
@@ -239,9 +247,10 @@ const SheetContainer = (): JSX.Element => {
                 Exemple
             </a>
 
+            {copied && <span style={{ color: 'red', textAlign: "center", fontSize: 16 }}>copied</span>}
             <a className={styles.sheetMail}
                 href="#"
-                onClick={() => { navigator.clipboard.writeText('appsheet@fluent-edition-339019.iam.gserviceaccount.com') }}
+                onClick={onCopy}
 
             >
                 appsheet@fluent-edition-339019.iam.gserviceaccount.com

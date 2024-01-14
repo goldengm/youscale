@@ -361,8 +361,27 @@
     width: 40px;
 }
 
-@media only screen and (max-width: 375px) {
+.centerCard {
+    display: flex;
+    justify-content: center;
+}
+
+.rightCard {
+    display: flex;
+    justify-content: right;
+}
+
+@media only screen and (max-width: 430px) {
     .pieChart {
         margin-right: 20px;
+    }
+
+    .cardContainer {
+        display: flex;
+        justify-content: center;
+    }
+
+    .rightCard {
+        justify-content: center;
     }
 }

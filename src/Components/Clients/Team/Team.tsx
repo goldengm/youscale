@@ -348,7 +348,7 @@ const TeamCard = ({
           </a>
         </div>
         <div className="table-responsive" style={{ margin: "30px" }}>
-          <Table className={styles.table}>
+          <Table>
             <thead>
               <tr>
                 <th>Nom</th>
@@ -514,7 +514,7 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
         </div>
         <div className="card-body">
           <div className="table-responsive">
-            <table className={styles.table}>
+            <Table>
               <thead>
                 <tr>
                   <th></th>
@@ -555,7 +555,7 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
                   <td>{sumHerEarning(earningTable)}</td>
                 </tr>
               </tbody>
-            </table>
+            </Table>
           </div>
         </div>
       </div>
