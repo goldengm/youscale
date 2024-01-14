@@ -40,7 +40,7 @@ export default function TableWrapper({
   setShowDeleteProductModal,
   driverObj,
 }: Props): JSX.Element {
-  const never = (): any => {};
+  const never = (): any => { };
   return (
     <div className="col-lg-12 product-table">
       {showAddProductModal ? (
@@ -104,7 +104,7 @@ export default function TableWrapper({
         </div>
         <div className="card-body">
           <div className="table-responsive">
-            <Table className={styles.table}>
+            <Table>
               <thead>
                 <tr>
                   {column.map((col: string, key: number) => (

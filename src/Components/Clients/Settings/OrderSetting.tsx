@@ -18,6 +18,7 @@ import { RotatingLines } from 'react-loader-spinner'
 import { ColorPicker } from '../../Input';
 import * as yup from "yup";
 import axios from 'axios';
+import { Table } from 'reactstrap';
 import 'react-nestable/dist/styles/index.css';
 import styles from './setting.module.css'
 
@@ -592,7 +593,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
 
             <div className={styles.mainCity}>
                 <div className={styles.leftCity}>
-                    <table className={styles.table}>
+                    <Table>
                         <thead>
                             <tr>
                                 <th>Ville</th>
@@ -604,7 +605,7 @@ const City = ({ setShowAddCityModal, setShowEditCityModal, setShowDeleteCityModa
                         <tbody>
                             {data && data.map((dt, index) => !dt.isFromSheet && <CityRow key={index} item={dt} setItem={setItem} setShowDeleteCityModal={setShowDeleteCityModal} setShowEditCityModal={setShowEditCityModal} />)}
                         </tbody>
-                    </table>
+                    </Table>
                 </div>
 
                 <div className={styles.rightCity}>

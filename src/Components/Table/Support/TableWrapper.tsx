@@ -5,6 +5,8 @@ import { SupportFilter } from "../../Filter/SupportFilter";
 import { Support } from "../../../models";
 import styles from "./support.module.css";
 import { createPortal } from "react-dom";
+//import { Table } from "../Order";
+import { Table } from "reactstrap";
 
 type dataType = {
   label: string;
@@ -40,7 +42,7 @@ export default function TableWrapper({
     setQuery({ status: value === String("0") ? undefined : value });
   };
 
-  const never = (): any => {};
+  const never = (): any => { };
 
   return (
     <div className="col product-table">
@@ -74,7 +76,7 @@ export default function TableWrapper({
         </div>
         <div className="card-body">
           <div className="table-responsive">
-            <table className={styles.table}>
+            <Table>
               <thead>
                 <tr>
                   <th>ID</th>
@@ -85,7 +87,7 @@ export default function TableWrapper({
                 </tr>
               </thead>
               <tbody>{children}</tbody>
-            </table>
+            </Table>
           </div>
         </div>
       </div>

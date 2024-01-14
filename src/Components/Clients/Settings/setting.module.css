@@ -237,7 +237,7 @@
     flex-shrink: 0;
     border-radius: 15px;
     border: 1px solid var(--Gray1, rgba(17, 17, 17, 0.30));
-    background: #FAFAFA;
+    background: #FFF;
     margin: 20px;
     padding: 20px;
 }
