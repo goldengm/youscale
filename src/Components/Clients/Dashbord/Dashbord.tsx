@@ -181,8 +181,8 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
     //console.log(earningNet)
     return (
         <>
-            <div className='row mb-5'>
-                <div className='col mb-3 d-flex-md'>
+            <div className='row my-5'>
+                <div className='col-md-3 mb-3 d-flex-md'>
                     <Card
                         bg={'green'}
                         value={[
@@ -192,7 +192,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
                         icon={'dollard.svg'}
                     />
                 </div>
-                <div className={`col mb-3 ${styles.centerCard}`} >
+                <div className={`col-md-3 mb-3 ${styles.centerCard}`} >
                     <Card
                         bg={'orange'}
                         value={[
@@ -202,7 +202,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
                         icon={'percent.svg'}
                     />
                 </div>
-                <div className={`col mb-3 ${styles.centerCard}`}>
+                <div className={`col-md-3 mb-3 ${styles.centerCard}`}>
                     <Card
                         bg={'blue'}
                         value={[
@@ -212,7 +212,7 @@ const DisplayCard = ({ costPerLead, orderInProgress, costPerDelivred, rateOfConf
                         icon={'facebook.svg'}
                     />
                 </div>
-                <div className={`col mb-3 ${styles.rightCard}`}>
+                <div className={`col-md-3 mb-3 ${styles.rightCard}`}>
                     <Card
                         bg={'violet'}
                         value={[
