@@ -159,8 +159,7 @@ export default function Order({ client }: Props): JSX.Element {
   useEffect(() => {
     axios
       .get(
-        `${CLIENT_URL}/getallid/${
-          statusConfirmation ? `?status=${statusConfirmation}` : ``
+        `${CLIENT_URL}/getallid/${statusConfirmation ? `?status=${statusConfirmation}` : ``
         }`,
         config
       )

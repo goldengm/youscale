@@ -126,6 +126,19 @@
     margin: 15px;
 }
 
+.instructionList {
+    font-family: Poppins;
+    color: #000;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    margin-left: 40px;
+}
+
+.instructionList li {
+    list-style-type: square;
+}
+
 .columnDisplay {
     width: 540px;
 }

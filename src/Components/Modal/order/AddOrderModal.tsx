@@ -330,7 +330,30 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
     <div className="card-body" style={{ width: "100%" }}>
       <div className="basic-form">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="row">
+          <div className={styles.productLayout}>
+            <label className={styles.label}>{"Produit"}</label>
+            {ProductSuccess ? (
+              <MultiSelectElement
+                options={FormatDataOption(ProductData?.data)}
+                selected={selectedProduct}
+                onChange={setSelectedProduct}
+              />
+            ) : (
+              <></>
+            )}
+
+            {selectedProduct.map((dt, index) => (
+              <ProductOrderCard
+                key={index}
+                dt={dt}
+                index={index}
+                selectedProduct={selectedProduct}
+                setSelectedProduct={setSelectedProduct}
+                title={dt.label}
+              />
+            ))}
+          </div>
+          <div className="row mt-2">
             <div className="col">
               <CustumInput
                 register={register}
@@ -341,7 +364,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
                 placeholder={"Patrick Doe"}
               />
             </div>
-            <div className="col">
+            <div className="col mt-2">
               <CustumInput
                 register={register}
                 name={"telephone"}
@@ -352,7 +375,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
               />
             </div>
           </div>
-          <div className="row">
+          <div className="row mt-2">
             <div className="col">
               <CustumInput
                 register={register}
@@ -374,7 +397,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
               />
             </div>
           </div>
-          <div className="row">
+          <div className="row mt-2">
             <CustumTextArea
               register={register}
               name={"message"}
@@ -469,29 +492,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
             /> */}
           </div>
 
-          <div className={styles.productLayout}>
-            <label className={styles.label}>{"Produit"}</label>
-            {ProductSuccess ? (
-              <MultiSelectElement
-                options={FormatDataOption(ProductData?.data)}
-                selected={selectedProduct}
-                onChange={setSelectedProduct}
-              />
-            ) : (
-              <></>
-            )}
 
-            {selectedProduct.map((dt, index) => (
-              <ProductOrderCard
-                key={index}
-                dt={dt}
-                index={index}
-                selectedProduct={selectedProduct}
-                setSelectedProduct={setSelectedProduct}
-                title={dt.label}
-              />
-            ))}
-          </div>
           {isLoading ? (
             <Spinner4Bar />
           ) : (
