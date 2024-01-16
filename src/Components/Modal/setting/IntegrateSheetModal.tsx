@@ -207,7 +207,21 @@ const ColumnContainer = ({
     }));
   };
 
-  console.log(data);
+  //   console.log(modifiedColumns);
+
+  const formatData = (data: any) => {
+    let tempData = [];
+    for (let i = 0; i < data.length; i++) {
+      tempData.push(data[i]);
+    }
+
+    let element = tempData.splice(1, 1)[0];
+    tempData.splice(7, 0, element);
+
+    return tempData;
+  };
+
+  console.log(data?.data && formatData(data.data));
 
   return (
     <div className={styles.columnContainer}>
@@ -230,13 +244,14 @@ const ColumnContainer = ({
           <div>Colonne de Youscale</div>
           <div>Colonne de votre Google Sheet</div>
         </div>
-        {data?.data.map((item, key) => (
-          <ColumnRow
-            key={key}
-            item={item}
-            onInputChange={(event) => handleInputChange(event, item)}
-          />
-        ))}
+        {data?.data &&
+          formatData(data.data).map((item, key) => (
+            <ColumnRow
+              key={key}
+              item={item}
+              onInputChange={(event) => handleInputChange(event, item)}
+            />
+          ))}
       </div>
     </div>
   );
@@ -246,18 +261,36 @@ interface ColumnProps {
   item: ColumnModel;
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
+const mandatoryFields = [
+  "Order id",
+  "Produit",
+  "Destinataire",
+  "Telephone",
+  "Ville",
+  "Prix",
+  "Quantity",
+];
+
 const ColumnRow = ({ item, onInputChange }: ColumnProps): JSX.Element => {
+  const [value, setValue] = useState(item.alias);
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    e.preventDefault();
+    let regex = /^[a-zA-Z]+$/;
+
+    if (regex.test(value) || value.length == 0) {
+      setValue(value);
+      onInputChange(e);
+    }
+  };
+
   return (
     <div className={styles.columnRow}>
       <input
         className={
-          item.name === "Order id" ||
-          item.name === "Date" ||
-          item.name === "Produit" ||
-          item.name === "Destinataire" ||
-          item.name === "Telephone" ||
-          item.name === "Ville" ||
-          item.name === "Prix"
+          mandatoryFields.includes(item.name)
             ? styles.customValueInputStyle
             : styles.columnValueInput
         }
@@ -271,8 +304,10 @@ const ColumnRow = ({ item, onInputChange }: ColumnProps): JSX.Element => {
         className={styles.columnInputTxt}
         type="text"
         defaultValue={item.alias}
+        value={value}
         placeholder={"No alias"}
-        onChange={onInputChange}
+        //onChange={onInputChange}
+        onChange={onChange}
         name={String(item.id)}
       />
     </div>

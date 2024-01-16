@@ -3,7 +3,7 @@ import styles from "./Button.module.css";
 import cx from "classnames";
 
 interface ButtonProps {
-  onClick: (...args: any[]) => any;
+  onClick?: (...args: any[]) => any;
   value?: string;
   color: "primary" | "secondary" | "warning" | "danger";
   type?: "button" | "submit" | "reset" | undefined;

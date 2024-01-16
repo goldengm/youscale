@@ -60,7 +60,7 @@
 }
 
 .closeButton:hover {
-    color: white;
+    opacity: 0.7;
 }
 
 .main {
@@ -84,11 +84,11 @@
 }
 
 .variantBox {
-    width: 443px;
-    height: 146px;
-    border-radius: 20px;
+    /* width: 443px; */
+    /* height: 146px; */
+    border-radius: 8px;
     border: 1px solid rgba(17, 17, 17, 0.30);
-    background: rgba(250, 250, 250, 0.98);
+    /* background: rgba(250, 250, 250, 0.98); */
 }
 
 .saveBtn {
@@ -134,4 +134,16 @@
     display: flex;
     justify-content: space-around;
     width: 100%;
+}
+
+.variantList {
+    color: #000;
+    font-size: 16px;
+    font-family: poppins;
+    font-weight: 500;
+    padding: 20px;
+}
+
+.variantList li {
+    list-style-type: square;
 }
