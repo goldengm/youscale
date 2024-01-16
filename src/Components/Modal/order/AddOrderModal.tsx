@@ -221,20 +221,23 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
   ];
 
   const FormatDataOption = (data: GetProductModel[]) => {
+    console.log(data);
     var objArr: {
       label: string;
       value: string;
       allVariant: string[];
-      variant: [];
+      variant: string[];
     }[] = [];
 
     for (let i = 0; i < data.length; i++) {
-      if (!data[i].isDeleted && data[i].variant.length == 0)
+      if (!data[i].isDeleted)
         objArr.push({
           label: data[i].name,
           value: String(data[i].id),
           allVariant: data[i].variant,
-          variant: [],
+          variant: (data[i].variant.length > 0
+            ? data[i].variant
+            : []) as string[],
         });
     }
 
@@ -326,6 +329,8 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
       );
   };
 
+  //console.log(FormatDataOption(ProductData?.data));
+
   return (
     <div className="card-body" style={{ width: "100%" }}>
       <div className="basic-form">
@@ -364,7 +369,7 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
                 placeholder={"Patrick Doe"}
               />
             </div>
-            <div className="col mt-2">
+            <div className="col">
               <CustumInput
                 register={register}
                 name={"telephone"}
@@ -491,7 +496,6 @@ const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
               name={"ouvrir"}
             /> */}
           </div>
-
 
           {isLoading ? (
             <Spinner4Bar />

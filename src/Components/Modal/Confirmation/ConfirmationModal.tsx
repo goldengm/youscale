@@ -425,16 +425,18 @@ const ProductLayout = ({
       label: string;
       value: string;
       allVariant: string[];
-      variant: [];
+      variant: string[];
     }[] = [];
 
     for (let i = 0; i < data.length; i++) {
-      if (!data[i].isDeleted && data[i].variant.length == 0)
+      if (!data[i].isDeleted)
         objArr.push({
           label: data[i].name,
           value: String(data[i].id),
           allVariant: data[i].variant,
-          variant: [],
+          variant: (data[i].variant.length > 0
+            ? data[i].variant
+            : []) as string[],
         });
     }
 
