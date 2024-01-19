@@ -162,16 +162,23 @@ export default function IntegrateSheetModal({
               />
 
               <div className={styles.bottomBtn}>
-                <button onClick={handleSaveChanges} className={styles.saveBtn}>
+                <Button
+                  type="submit"
+                  color="primary"
+                  value="Enregistrer"
+                  onClick={handleSaveChanges}
+                />
+                {/* <button onClick={handleSaveChanges} className={styles.saveBtn}>
                   Enregistrer
-                </button>
+                </button> */}
 
-                <button
+                <Button color="warning" value="Fermer" onClick={handleClose} />
+                {/* <button
                   onClick={() => handleClose()}
                   className={styles.closeBtn}
                 >
                   Fermer
-                </button>
+                </button> */}
               </div>
             </div>
           )}
@@ -280,10 +287,10 @@ const ColumnRow = ({ item, onInputChange }: ColumnProps): JSX.Element => {
     e.preventDefault();
     let regex = /^[a-zA-Z]+$/;
 
-    if (regex.test(value) || value.length == 0) {
-      setValue(value);
-      onInputChange(e);
-    }
+    //if (regex.test(value) || value.length == 0) {
+    setValue(value);
+    onInputChange(e);
+    //}
   };
 
   return (
