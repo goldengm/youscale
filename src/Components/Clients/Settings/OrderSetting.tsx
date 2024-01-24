@@ -752,8 +752,6 @@ const City = ({
   refetch,
   driverObj,
 }: CityProps): JSX.Element => {
-  console.log(data);
-
   const handleShowCityModal = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
@@ -788,16 +786,6 @@ const City = ({
             </thead>
             <tbody>
               {data &&
-                data.map((dt, index) => (
-                  <CityRow
-                    key={index}
-                    item={dt}
-                    setItem={setItem}
-                    setShowDeleteCityModal={setShowDeleteCityModal}
-                    setShowEditCityModal={setShowEditCityModal}
-                  />
-                ))}
-              {/* {data &&
                 data.map(
                   (dt, index) =>
                     !dt.isFromSheet && (
@@ -809,7 +797,7 @@ const City = ({
                         setShowEditCityModal={setShowEditCityModal}
                       />
                     )
-                )} */}
+                )}
             </tbody>
           </Table>
         </div>
