@@ -252,11 +252,11 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   return isOpen ? (
     id_orders.length > 0 ? (
       <div className={styles.modalOverlay}>
-        <div className={styles.modalContent}>
+        <div ref={ref} className={styles.modalContent}>
           <button className={styles.closeButton} onClick={handleClose}>
             &times;
           </button>
-          <div className={styles.main} ref={ref}>
+          <div className={styles.main}>
             <p className={styles.title}>Confirmation des commandes</p>
             <p className={styles.cmdRestante}>
               {id_orders.length - (index + 1)} commandes restantes
