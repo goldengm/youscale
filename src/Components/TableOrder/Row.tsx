@@ -277,7 +277,8 @@ export default function Row({
     data.map((dt) => {
       if (order?.id_city === dt.id)
         options.push({ label: dt.name, value: dt.id || 0 });
-      if (!dt.isDeleted && !dt.isFromSheet) {
+      if (!dt.isDeleted) {
+        // if (!dt.isDeleted && !dt.isFromSheet) {
         if (order?.id_city !== dt.id)
           options.push({ label: dt.name, value: dt.id || 0 });
       }
@@ -348,9 +349,11 @@ export default function Row({
                     title={row[formatDtName]}
                     style={{
                       maxWidth: 70,
-                      display: '-webkit-inline-box',
-                      overflow: 'hidden'
-                    }} href={`tel:+212${row[formatDtName]}`}>
+                      display: "-webkit-inline-box",
+                      overflow: "hidden",
+                    }}
+                    href={`tel:+212${row[formatDtName]}`}
+                  >
                     <strong style={{ color: "black" }}>
                       {row[formatDtName]}
                     </strong>
@@ -535,15 +538,18 @@ export default function Row({
                   >
                     {`
                                         ${order?.Product_Orders[0]?.quantity}*
-                                        ${order?.Product_Orders[0]?.Product
-                        ?.name
-                      }
-                                        ${order?.Product_Orders.length === 1
-                        ? ""
-                        : `+ ${order?.Product_Orders.length &&
-                        order.Product_Orders.length - 1
-                        } Autres`
-                      }
+                                        ${
+                                          order?.Product_Orders[0]?.Product
+                                            ?.name
+                                        }
+                                        ${
+                                          order?.Product_Orders.length === 1
+                                            ? ""
+                                            : `+ ${
+                                                order?.Product_Orders.length &&
+                                                order.Product_Orders.length - 1
+                                              } Autres`
+                                        }
                                     `}
                   </button>
                   {/* <a
@@ -577,8 +583,8 @@ export default function Row({
             return (
               <td
                 key={dt.id}
-              //className={style.defaultRow}
-              //onClick={() => onEdit()}
+                //className={style.defaultRow}
+                //onClick={() => onEdit()}
               >
                 {/* <p> {row[formatDtName]}</p> */}
                 {/* <Tooltip text={row[formatDtName]}> */}

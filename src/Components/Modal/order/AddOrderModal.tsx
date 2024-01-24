@@ -40,12 +40,12 @@ const GetCityWhosNotFromSheet = (
   var newArr: DropdownOptionType[] = [{ label: "none", value: "none" }];
 
   for (let i = 0; i < data.length; i++) {
-    if (data[i].isFromSheet === false) {
-      newArr.push({
-        value: data[i].id ?? 0,
-        label: data[i].name,
-      });
-    }
+    // if (data[i].isFromSheet === false) {
+    newArr.push({
+      value: data[i].id ?? 0,
+      label: data[i].name,
+    });
+    //}
   }
 
   return newArr;
@@ -143,11 +143,11 @@ const AddOrderModal: React.FC<Props> = ({
 
   return (
     <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
+      <div ref={ref} className={styles.modalContent}>
         <button className={styles.closeButton} onClick={handleClose}>
           &times;
         </button>
-        <div className={styles.main} ref={ref}>
+        <div className={styles.main}>
           <p className={styles.title}>Ajouter une commande</p>
 
           <FormBody refetch={refetch} handleClose={handleClose} />

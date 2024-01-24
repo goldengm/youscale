@@ -605,7 +605,8 @@ const FormBody = ({
     data.map((dt) => {
       if (currentOrder.order[0].id_city === dt.id)
         options.push({ label: dt.name, value: dt.id || 0 });
-      if (!dt.isDeleted && !dt.isFromSheet) {
+      if (!dt.isDeleted) {
+        // if (!dt.isDeleted && !dt.isFromSheet) {
         if (currentOrder.order[0].id_city !== dt.id)
           options.push({ label: dt.name, value: dt.id || 0 });
       }
