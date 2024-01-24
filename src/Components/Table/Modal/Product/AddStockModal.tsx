@@ -35,12 +35,12 @@ const GetCityWhosNotFromSheet = (
   var newArr: SelectType[] = [{ label: "none", value: "none" }];
 
   for (let i = 0; i < data.length; i++) {
-    // if (data[i].isFromSheet === false) {
-    newArr.push({
-      value: data[i].id ?? 0,
-      label: data[i].name,
-    });
-    // }
+    if (data[i].isFromSheet === false) {
+      newArr.push({
+        value: data[i].id ?? 0,
+        label: data[i].name,
+      });
+    }
   }
 
   return newArr;
