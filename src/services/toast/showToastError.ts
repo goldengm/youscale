@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify';
+import { toast, Slide } from 'react-toastify';
 
 export const showToastError = (message: string) => {
     toast.error(message, {
@@ -10,5 +10,6 @@ export const showToastError = (message: string) => {
         draggable: true,
         progress: undefined,
         theme: "dark",
+        transition: Slide,
     });
 }

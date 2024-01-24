@@ -6,6 +6,7 @@ import { useAddCityMutation } from "../../../services/api/ClientApi/ClientCityAp
 import { showToastError } from "../../../services/toast/showToastError";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Button } from "../../../common";
 import styles from "./setting.module.css";
 
 type Inputs = {
@@ -166,11 +167,13 @@ export default function AddCityModal({
             </div>
 
             <div className={styles.bottomBtn}>
-              <button className={styles.saveBtn}>Ajouter</button>
+              <Button type="submit" color="primary" value="Ajouter" />
+              {/* <button className={styles.saveBtn}>Ajouter</button> */}
 
-              <a href="#" onClick={handleClose} className={styles.closeBtn}>
+              {/* <a href="#" onClick={handleClose} className={styles.closeBtn}>
                 Fermer
-              </a>
+              </a> */}
+              <Button color="warning" value="Fermer" onClick={handleClose} />
             </div>
           </form>
         </div>
