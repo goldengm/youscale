@@ -165,7 +165,8 @@ export default function Row({ row, order, refetch, column, handleCheckRow, setOr
 
         data.map((dt) => {
             if (order?.id_city === dt.id) options.push({ label: dt.name, value: dt.id || 0 })
-            if (!dt.isDeleted && !dt.isFromSheet) {
+            if (!dt.isDeleted ) {
+            // if (!dt.isDeleted && !dt.isFromSheet) {
                 if (order?.id_city !== dt.id) options.push({ label: dt.name, value: dt.id || 0 })
             }
         })
