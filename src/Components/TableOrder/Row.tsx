@@ -115,7 +115,8 @@ export default function Row({
     const { value } = e.target;
 
     patchOrder({ id: order?.id, source: value })
-      .then(() => refetch())
+      //.then(() => refetch())
+      .then((res) => refetch())
       .catch(
         (err: { data: ErrorModel | { message: string }; status: number }) => {
           if (err.data) {
@@ -297,8 +298,6 @@ export default function Row({
     setOrder(order);
     setShowOrderModal(true);
   };
-
-  //console.log(dataTeamMember?.data);
 
   return (
     <tr style={{ backgroundColor: getRowColor(row) ?? "transparent" }}>
