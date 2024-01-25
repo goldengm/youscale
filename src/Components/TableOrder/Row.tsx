@@ -137,7 +137,8 @@ export default function Row({
     patchOrder({
       id: order?.id,
       id_team: Number(value),
-      prev_id_team: order ? order.id_team : 0,
+      //prev_id_team: 0,
+      prev_id_team: order && order?.id_team ? order.id_team : 0,
     })
       .unwrap()
       .then(() => refetch && refetch())
