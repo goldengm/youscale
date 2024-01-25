@@ -55,9 +55,7 @@ const convertTeamMember = (
 ): dataType[] => {
   if (!data) return [];
 
-  //console.log(data);
-
-  var out: dataType[] = [{ label: "Aucun", value: String(0) }];
+  let out: dataType[] = [{ label: "Aucun", value: String(0) }];
   //var out: dataType[] = [];
 
   data.map((dt) => {

@@ -159,7 +159,8 @@ export default function Order({ client }: Props): JSX.Element {
   useEffect(() => {
     axios
       .get(
-        `${CLIENT_URL}/getallid/${statusConfirmation ? `?status=${statusConfirmation}` : ``
+        `${CLIENT_URL}/getallid/${
+          statusConfirmation ? `?status=${statusConfirmation}` : ``
         }`,
         config
       )
@@ -176,55 +177,72 @@ export default function Order({ client }: Props): JSX.Element {
       dateto: date?.[1],
       search: undefined,
       status: status,
-      id_product_array: product ?? undefined,
-      id_team: idTeam !== -1 ? idTeam : undefined,
-      _skip: 0,
-      _limit: _skip,
-    });
-    RefetchOrderClient();
-  }, [date, usingDate]);
-
-  useEffect(() => {
-    setOrderQueryData({
-      usedate: Number(usingDate),
-      datefrom: date?.[0],
-      dateto: date?.[1],
-      status: status,
       id_product_array: product !== "0" ? product : undefined,
       id_team: idTeam !== -1 ? idTeam : undefined,
       _skip: 0,
       _limit: _skip,
     });
     RefetchOrderClient();
-  }, [product]);
+  }, [date, usingDate, product, idTeam, _skip]);
 
-  useEffect(() => {
-    setOrderQueryData({
-      usedate: Number(usingDate),
-      datefrom: date?.[0],
-      dateto: date?.[1],
-      status: status,
-      id_team: idTeam !== -1 ? idTeam : undefined,
-      id_product_array: product ?? undefined,
-      _skip: 0,
-      _limit: _skip,
-    });
-    RefetchOrderClient();
-  }, [idTeam]);
+  // console.log(OrderClient);
 
-  useEffect(() => {
-    setOrderQueryData({
-      usedate: Number(usingDate),
-      datefrom: date?.[0],
-      dateto: date?.[1],
-      status: status,
-      id_team: idTeam !== -1 ? idTeam : undefined,
-      id_product_array: product ?? undefined,
-      _skip: 0,
-      _limit: _skip,
-    });
-    RefetchOrderClient();
-  }, [_skip]);
+  // useEffect(() => {
+  //   setOrderQueryData({
+  //     usedate: Number(usingDate),
+  //     datefrom: date?.[0],
+  //     dateto: date?.[1],
+  //     search: undefined,
+  //     status: status,
+  //     id_product_array: product ?? undefined,
+  //     id_team: idTeam !== -1 ? idTeam : undefined,
+  //     _skip: 0,
+  //     _limit: _skip,
+  //   });
+  //   RefetchOrderClient();
+  // }, [date, usingDate]);
+
+  // useEffect(() => {
+  //   setOrderQueryData({
+  //     usedate: Number(usingDate),
+  //     datefrom: date?.[0],
+  //     dateto: date?.[1],
+  //     status: status,
+  //     id_product_array: product !== "0" ? product : undefined,
+  //     id_team: idTeam !== -1 ? idTeam : undefined,
+  //     _skip: 0,
+  //     _limit: _skip,
+  //   });
+  //   RefetchOrderClient();
+  // }, [product]);
+
+  // useEffect(() => {
+  //   setOrderQueryData({
+  //     usedate: Number(usingDate),
+  //     datefrom: date?.[0],
+  //     dateto: date?.[1],
+  //     status: status,
+  //     id_team: idTeam !== -1 ? idTeam : undefined,
+  //     id_product_array: product ?? undefined,
+  //     _skip: 0,
+  //     _limit: _skip,
+  //   });
+  //   RefetchOrderClient();
+  // }, [idTeam]);
+
+  // useEffect(() => {
+  //   setOrderQueryData({
+  //     usedate: Number(usingDate),
+  //     datefrom: date?.[0],
+  //     dateto: date?.[1],
+  //     status: status,
+  //     id_team: idTeam !== -1 ? idTeam : undefined,
+  //     id_product_array: product ?? undefined,
+  //     _skip: 0,
+  //     _limit: _skip,
+  //   });
+  //   RefetchOrderClient();
+  // }, [_skip]);
 
   return (
     // <>
