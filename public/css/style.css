@@ -32764,6 +32764,12 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 .form-check-label {
   margin-left: 0.3125rem;
   margin-top: 0.1875rem;
+  color: #000;
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .form-check-inline .form-check-input {
