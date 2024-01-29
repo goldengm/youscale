@@ -771,7 +771,20 @@ const FormBody = ({
                   confirmation={true}
                 ></CustumInput>
               </div>
-              <div
+              <div className="col">
+                <MyCustomSelect
+                  label="Status"
+                  //name="status"
+                  //setValue={setValue}
+                  defaultValue={{
+                    label: currentOrder?.order[0]?.status || "",
+                    value: currentOrder?.order[0]?.status || "",
+                  }}
+                  onChange={handleChangeStatus}
+                  options={FilterStatusData(StatusData?.data)}
+                />
+              </div>
+              {/* <div
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -796,12 +809,38 @@ const FormBody = ({
                     />
                   </a>
                 </div>
-              </div>
+              </div> */}
             </div>
 
-            <div className="row mt-2">
+            <div className="row">
               <div className="col">
-                <MyCustomSelect
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    //justifyContent: "center",
+                  }}
+                  className="col"
+                >
+                  <div style={{ marginTop: "15px" }} className="call-ws-media">
+                    <IoLogoWhatsapp
+                      className="io-logo"
+                      onClick={() =>
+                        handleClick("+212" + currentOrder.order[0].telephone)
+                      }
+                      size={25}
+                      color={"green"}
+                    />
+                    <a href={`tel:+212${currentOrder.order[0].telephone}`}>
+                      <IoCallOutline
+                        className="io-logo"
+                        size={25}
+                        color={"green"}
+                      />
+                    </a>
+                  </div>
+                </div>
+                {/* <MyCustomSelect
                   label="Status"
                   //name="status"
                   //setValue={setValue}
@@ -811,7 +850,7 @@ const FormBody = ({
                   }}
                   onChange={handleChangeStatus}
                   options={FilterStatusData(StatusData?.data)}
-                />
+                /> */}
                 {/* <CustumSelectForm
                   className={"lg-input-cus"}
                   defaultSelected={currentOrder.order[0].status}
@@ -825,7 +864,25 @@ const FormBody = ({
                   setSelectedStatus={setSelectedStatus}
                 /> */}
               </div>
-              <div
+              <div className="col">
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginTop: 5,
+                  }}
+                  //className="col"
+                >
+                  {currentOrder.order[0].isSendLivo === "not_send" ? (
+                    <TbPointFilled size={40} color={"gray"} />
+                  ) : currentOrder.order[0].isSendLivo === "error_send" ? (
+                    <TbPointFilled size={40} color={"red"} />
+                  ) : (
+                    <TbPointFilled size={40} color={"green"} />
+                  )}
+                </div>
+              </div>
+              {/* <div
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -840,7 +897,7 @@ const FormBody = ({
                 ) : (
                   <TbPointFilled size={40} color={"green"} />
                 )}
-              </div>
+              </div> */}
             </div>
             {isLoading && <Spinner4Bar />}
 

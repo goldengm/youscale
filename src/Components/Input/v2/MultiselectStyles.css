@@ -7,7 +7,7 @@
     border-radius: 10px !important;
     border: 1px solid rgba(0, 0, 0, 0.30) !important;
     background: #FFF;
-    height: 42px;
+    height: 100%;
 
     &:hover {
         border-color: #7720E1;
@@ -20,6 +20,10 @@
     }
 }
 
+.rmsc {
+    --rmsc-h: 100% !important;
+}
+
 .dropdown-heading-value {
     color: #000;
     font-family: Poppins;
@@ -27,4 +31,11 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    white-space: normal !important;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.editeam-multiselect {
+    /* height: 100%; */
 }

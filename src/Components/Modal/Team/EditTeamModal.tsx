@@ -451,7 +451,7 @@ const FormBody = ({ refetch, handleClose, dataEdit }: FormBodyProps) => {
           <div className={styles.titlteSection}>Fonctions</div>
 
           <div className="row">
-            <div className="form-check custom-checkbox mb-3 checkbox-info">
+            <div className="form-check custom-checkbox mb-2 checkbox-info">
               <input
                 {...register("can_delete_order")}
                 type="checkbox"
@@ -463,8 +463,9 @@ const FormBody = ({ refetch, handleClose, dataEdit }: FormBodyProps) => {
                 {"peut supprimer commande"}
               </label>
             </div>
-
-            <div className="form-check custom-checkbox mb-3 checkbox-info">
+          </div>
+          <div className="row">
+            <div className="form-check custom-checkbox mb-2 checkbox-info">
               <input
                 {...register("can_edit_order")}
                 type="checkbox"
@@ -476,7 +477,8 @@ const FormBody = ({ refetch, handleClose, dataEdit }: FormBodyProps) => {
                 {"peut modifier commande"}
               </label>
             </div>
-
+          </div>
+          <div className="row">
             <AllAccess
               checked={dataEdit?.all_column_access}
               selectedValues={getColumnAccess(
@@ -490,7 +492,8 @@ const FormBody = ({ refetch, handleClose, dataEdit }: FormBodyProps) => {
               error={errors.all_column_access}
               label={"toutes les collones"}
             />
-
+          </div>
+          <div className="row">
             <AllAccess
               checked={dataEdit?.all_cities_access}
               selectedValues={getCityAccess(dataEdit?.Team_Client_City_Acces)}
@@ -502,7 +505,8 @@ const FormBody = ({ refetch, handleClose, dataEdit }: FormBodyProps) => {
               column={"cities_access"}
               label={"toutes les villes"}
             />
-
+          </div>
+          <div className="row">
             <AllAccess
               checked={dataEdit?.all_product_access}
               selectedValues={getProductAccess(
@@ -516,7 +520,8 @@ const FormBody = ({ refetch, handleClose, dataEdit }: FormBodyProps) => {
               error={errors.all_product_access}
               label={"tout les produits"}
             />
-
+          </div>
+          <div className="row">
             <AllAccess
               checked={dataEdit?.all_page_access}
               selectedValues={getPageAccess(dataEdit?.Team_Client_Page_Acces)}
@@ -613,7 +618,7 @@ const AllAccess = ({
 
   return (
     <div style={{ paddingLeft: 0 }} className="column-access-row">
-      <div className="form-check custom-checkbox mb-3 checkbox-info">
+      <div className="form-check custom-checkbox mb-2 checkbox-info">
         <input
           {...register(name)}
           onClick={() => setIsAll(!isAll)}
@@ -632,7 +637,7 @@ const AllAccess = ({
           options={options}
           selected={selected}
           onChange={handleMultiSelect}
-          className={"lg-mse"}
+          className={"lg-mse editeam-multiselect"}
         />
       )}
     </div>
