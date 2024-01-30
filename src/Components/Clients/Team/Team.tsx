@@ -16,6 +16,7 @@ import {
 } from "../../../models";
 import {
   useGetTeamMemberQuery,
+  useGetTeamMemberListQuery,
   usePatchTeamMemberMutation,
 } from "../../../services/api/ClientApi/ClientTeamMemberApi";
 import { useGetTeamDashbordQuery } from "../../../services/api/ClientApi/ClientTeamDashbordApi";
@@ -47,7 +48,7 @@ export default function Team({ client }: Props): JSX.Element {
   const [showVideo, setShowVideo] = useState<boolean>(false);
   const [showHidden, setShowHidden] = useState<boolean>(true);
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
-  const { data, refetch, isLoading, isFetching } = useGetTeamMemberQuery({
+  const { data, refetch, isLoading, isFetching } = useGetTeamMemberListQuery({
     isHidden: showHidden,
   });
   const [date, setDate] = useState<string[]>([]);
@@ -444,7 +445,12 @@ const TeamRow = ({
     <tr>
       <td>{item.name}</td>
       {/* <td>{item.crosssell}</td> */}
-      <td>{item.upsellValue}</td>
+      {/* <td>{item.upsellValue}</td> */}
+      <td>
+        {item?.upSellOrderCount && item?.totalOrderCount
+          ? ((item?.upSellOrderCount / item?.totalOrderCount) * 100).toFixed(2)
+          : 0}
+      </td>
       <td>
         <div className="d-flex">
           <Switch

@@ -4,7 +4,7 @@ var baseUrl = protocol + "//" + url.split("/")[2];
 
 const urls = {
   prod: baseUrl === "https://app.youscale.co" ? "https://api.youscale.co" : "https://staging-api.youscale.co",
-  dev: "https://api.oumardev.com", 
+  dev: "https://api.oumardev.com",
   local: "http://127.0.0.1:8500",
 };
 export const BASE_URL = urls.prod;
@@ -30,6 +30,7 @@ export const CLIENT_STOCK_URL = `${BASE_URL}/api/youscale/v1/client/stock`;
 export const CLIENT_COLUMN_URL = `${BASE_URL}/api/youscale/v1/client/columnoforder`;
 export const CLIENT_PAGE_URL = `${BASE_URL}/api/youscale/v1/client/page`;
 export const CLIENT_TEAMMEMBER_URL = `${BASE_URL}/api/youscale/v1/client/team_member`;
+export const CLIENT_TEAMMEMBERS_URL = `${BASE_URL}/api/youscale/v1/client/team_members`;
 export const CLIENT_GAINCATEGORIE_URL = `${BASE_URL}/api/youscale/v1/client/gaincategorie`;
 export const CLIENT_PERTECATEGORIE_URL = `${BASE_URL}/api/youscale/v1/client/pertecategorie`;
 export const CLIENT_GAIN_URL = `${BASE_URL}/api/youscale/v1/client/gain`;
