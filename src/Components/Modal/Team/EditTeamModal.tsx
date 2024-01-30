@@ -20,7 +20,10 @@ import { useGetCityQuery } from "../../../services/api/ClientApi/ClientCityApi";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CustumInput } from "../../Forms/v2";
 import { Spinner4Bar } from "../../Loader";
-import { usePatchTeamMemberMutation } from "../../../services/api/ClientApi/ClientTeamMemberApi";
+import {
+  usePatchTeamMemberMutation,
+  useGetOneTeamMemberQuery,
+} from "../../../services/api/ClientApi/ClientTeamMemberApi";
 import { useGetColumnQuery } from "../../../services/api/ClientApi/ClientColumnApi";
 import { Switch } from "../../Switch";
 import { useGetPageQuery } from "../../../services/api/ClientApi/ClientPageApi";
@@ -214,6 +217,16 @@ const EditTeamModal: React.FC<Props> = ({
   refetch,
   dataEdit,
 }): JSX.Element | null => {
+  const [editData, setEditData] = useState<GetTeamMemberModel>();
+
+  const { data, isLoading } = useGetOneTeamMemberQuery({
+    id: dataEdit?.id,
+  });
+
+  useEffect(() => {
+    setEditData(data?.data || undefined);
+  }, [data]);
+
   const handleClose = () => {
     setIsVisible(false);
   };
@@ -251,12 +264,15 @@ const EditTeamModal: React.FC<Props> = ({
         </button>
         <div className={styles.main} ref={ref}>
           <p className={styles.title}>Modifier un membre</p>
+          {isLoading && <Spinner4Bar />}
 
-          <FormBody
-            refetch={refetch}
-            handleClose={handleClose}
-            dataEdit={dataEdit}
-          />
+          {editData && (
+            <FormBody
+              refetch={refetch}
+              handleClose={handleClose}
+              dataEdit={editData}
+            />
+          )}
         </div>
       </div>
     </div>

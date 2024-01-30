@@ -277,6 +277,8 @@ export interface GetTeamMemberModel {
     createdAt?: Date,
     updatedAt?: Date,
     upsellValue?: number,
+    totalOrderCount?: number,
+    upSellOrderCount?: number,
 }
 
 export interface ColumnModel {
