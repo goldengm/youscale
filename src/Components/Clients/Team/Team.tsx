@@ -15,7 +15,6 @@ import {
   TeamDashbordQueryModel,
 } from "../../../models";
 import {
-  useGetTeamMemberQuery,
   useGetTeamMemberListQuery,
   usePatchTeamMemberMutation,
 } from "../../../services/api/ClientApi/ClientTeamMemberApi";

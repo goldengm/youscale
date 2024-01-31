@@ -30,7 +30,6 @@ export const CLIENT_STOCK_URL = `${BASE_URL}/api/youscale/v1/client/stock`;
 export const CLIENT_COLUMN_URL = `${BASE_URL}/api/youscale/v1/client/columnoforder`;
 export const CLIENT_PAGE_URL = `${BASE_URL}/api/youscale/v1/client/page`;
 export const CLIENT_TEAMMEMBER_URL = `${BASE_URL}/api/youscale/v1/client/team_member`;
-export const CLIENT_TEAMMEMBERS_URL = `${BASE_URL}/api/youscale/v1/client/team_members`;
 export const CLIENT_GAINCATEGORIE_URL = `${BASE_URL}/api/youscale/v1/client/gaincategorie`;
 export const CLIENT_PERTECATEGORIE_URL = `${BASE_URL}/api/youscale/v1/client/pertecategorie`;
 export const CLIENT_GAIN_URL = `${BASE_URL}/api/youscale/v1/client/gain`;

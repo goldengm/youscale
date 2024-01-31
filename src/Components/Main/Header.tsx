@@ -5,7 +5,7 @@ import { TutorialModal } from "../Modal";
 import { FaUser } from "react-icons/fa";
 import { FiPackage } from "react-icons/fi";
 import { useGetProductQuery } from "../../services/api/ClientApi/ClientProductApi";
-import { useGetTeamMemberQuery } from "../../services/api/ClientApi/ClientTeamMemberApi";
+import { useGetTeamMemberListQuery } from "../../services/api/ClientApi/ClientTeamMemberApi";
 import { VideoModal } from "../Table/Modal/Video";
 import { Filter } from "../Filter/Filter";
 import { GetProductModel, GetTeamMemberModel } from "../../models";
@@ -85,7 +85,7 @@ export default function Header({
 }: Props): JSX.Element {
   const [patchClient] = usePatchClientMutation();
   const { data: productData } = useGetProductQuery({ isHidden: false });
-  const { data: teamData } = useGetTeamMemberQuery({ isHidden: true });
+  const { data: teamData } = useGetTeamMemberListQuery({ isHidden: true });
   const [isNavExpanded, setIsNavExpanded] = useState(false);
 
   const NavExpanded = () => {
