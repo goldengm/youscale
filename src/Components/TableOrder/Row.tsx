@@ -11,7 +11,7 @@ import { useGetCityQuery } from "../../services/api/ClientApi/ClientCityApi";
 import { usePatchClientOrderMutation } from "../../services/api/ClientApi/ClientOrderApi";
 import { useGetSettingQuery } from "../../services/api/ClientApi/ClientSettingApi";
 import { useGetStatusQuery } from "../../services/api/ClientApi/ClientStatusApi";
-import { useGetTeamMemberQuery } from "../../services/api/ClientApi/ClientTeamMemberApi";
+import { useGetTeamMemberListQuery } from "../../services/api/ClientApi/ClientTeamMemberApi";
 import { showToastError } from "../../services/toast/showToastError";
 import style from "./table.module.css";
 import { TbPointFilled } from "react-icons/tb";
@@ -73,7 +73,9 @@ export default function Row({
   const { data: dataSetting } = useGetSettingQuery();
   const { data: dataCity } = useGetCityQuery();
   const { data: dataStatus, refetch: RefetchStatus } = useGetStatusQuery({});
-  const { data: dataTeamMember } = useGetTeamMemberQuery({ isHidden: true });
+  const { data: dataTeamMember } = useGetTeamMemberListQuery({
+    isHidden: true,
+  });
 
   useEffect(() => {
     RefetchStatus();
