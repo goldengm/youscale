@@ -234,7 +234,7 @@ export default function Team({ client }: Props): JSX.Element {
       <div className="content-body">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xl-3 col-xxl-7 col-xl-custum">
+            <div className="col-xl-3 col-xxl-7 col-xl-7">
               <TeamCard
                 data={data?.data}
                 setItem={setItem}
@@ -246,7 +246,7 @@ export default function Team({ client }: Props): JSX.Element {
                 driverObj={driverObj}
               />
             </div>
-            <div className="col-xl-3 col-xxl-5 col-xl-custum">
+            <div className="col-xl-3 col-xxl-5 col-xl-5">
               {teamData?.data.performance && (
                 <PerformanceCard
                   setPerformance={setPerformance}
@@ -262,12 +262,12 @@ export default function Team({ client }: Props): JSX.Element {
             </div>
           </div>
           <div className="row">
-            <div className="col-xl-3 col-xxl-7 col-xl-custum">
+            <div className="col-xl-3 col-xxl-7 col-xl-7">
               <EarningTale
                 earningTable={teamData?.data?.earning_table || undefined}
               />
             </div>
-            <div className="col-xl-3 col-xxl-5 col-xl-custum">
+            <div className="col-xl-3 col-xxl-5 col-xl-5">
               <EarningCard>
                 {teamData && (
                   <CustomHist data={teamData.data.earning} options={option} />
