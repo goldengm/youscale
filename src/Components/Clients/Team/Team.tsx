@@ -62,6 +62,7 @@ export default function Team({ client }: Props): JSX.Element {
   });
   const { data: teamData, refetch: refetchTeamData } =
     useGetTeamDashbordQuery(OrderQueryData);
+
   const [performance, setPerformance] = useState<Performance | undefined>(
     teamData?.data.performance
   );
@@ -257,7 +258,9 @@ export default function Team({ client }: Props): JSX.Element {
             )}
           </div>
           <div className="row">
-            <EarningTale earningTable={teamData?.data.earning_table} />
+            <EarningTale
+              earningTable={teamData?.data?.earning_table || undefined}
+            />
             <EarningCard>
               {teamData && (
                 <CustomHist data={teamData.data.earning} options={option} />

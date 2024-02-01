@@ -185,87 +185,7 @@ export default function Order({ client }: Props): JSX.Element {
     RefetchOrderClient();
   }, [date, usingDate, product, idTeam, _skip]);
 
-  // console.log(OrderClient);
-
-  // useEffect(() => {
-  //   setOrderQueryData({
-  //     usedate: Number(usingDate),
-  //     datefrom: date?.[0],
-  //     dateto: date?.[1],
-  //     search: undefined,
-  //     status: status,
-  //     id_product_array: product ?? undefined,
-  //     id_team: idTeam !== -1 ? idTeam : undefined,
-  //     _skip: 0,
-  //     _limit: _skip,
-  //   });
-  //   RefetchOrderClient();
-  // }, [date, usingDate]);
-
-  // useEffect(() => {
-  //   setOrderQueryData({
-  //     usedate: Number(usingDate),
-  //     datefrom: date?.[0],
-  //     dateto: date?.[1],
-  //     status: status,
-  //     id_product_array: product !== "0" ? product : undefined,
-  //     id_team: idTeam !== -1 ? idTeam : undefined,
-  //     _skip: 0,
-  //     _limit: _skip,
-  //   });
-  //   RefetchOrderClient();
-  // }, [product]);
-
-  // useEffect(() => {
-  //   setOrderQueryData({
-  //     usedate: Number(usingDate),
-  //     datefrom: date?.[0],
-  //     dateto: date?.[1],
-  //     status: status,
-  //     id_team: idTeam !== -1 ? idTeam : undefined,
-  //     id_product_array: product ?? undefined,
-  //     _skip: 0,
-  //     _limit: _skip,
-  //   });
-  //   RefetchOrderClient();
-  // }, [idTeam]);
-
-  // useEffect(() => {
-  //   setOrderQueryData({
-  //     usedate: Number(usingDate),
-  //     datefrom: date?.[0],
-  //     dateto: date?.[1],
-  //     status: status,
-  //     id_team: idTeam !== -1 ? idTeam : undefined,
-  //     id_product_array: product ?? undefined,
-  //     _skip: 0,
-  //     _limit: _skip,
-  //   });
-  //   RefetchOrderClient();
-  // }, [_skip]);
-
   return (
-    // <>
-    //   <div style={{ minHeight: "auto !important" }} className="content-body">
-    //     <div className="container-fluid">
-    //       <Table
-    //         _skip={_skip}
-    //         _setSkip={_setSkip}
-    //         orders_id={id_orders}
-    //         setStatus={setStatus}
-    //         driverObj={driverObj}
-    //         setStatusConfirmation={setStatusConfirmation}
-    //         statusConfirmation={statusConfirmation}
-    //         data={OrderClient}
-    //         refetch={RefetchOrderClient}
-    //         OrderQueryData={OrderQueryData}
-    //         setOrderQueryData={setOrderQueryData}
-    //       />
-    //     </div>
-    //   </div>
-    //   <BottomRightStaticBtn setShowVideo={setShowVideo} />
-    // </>
-
     <Main
       name={"Order"}
       urlVideo={"https://www.youtube.com/watch?v=t_d1cKerFUc"}
@@ -299,7 +219,6 @@ export default function Order({ client }: Props): JSX.Element {
           />
         </div>
       </div>
-
       <BottomRightStaticBtn setShowVideo={setShowVideo} />
     </Main>
   );
