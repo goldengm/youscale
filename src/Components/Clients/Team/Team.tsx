@@ -62,6 +62,7 @@ export default function Team({ client }: Props): JSX.Element {
   });
   const { data: teamData, refetch: refetchTeamData } =
     useGetTeamDashbordQuery(OrderQueryData);
+
   const [performance, setPerformance] = useState<Performance | undefined>(
     teamData?.data.performance
   );
@@ -232,37 +233,47 @@ export default function Team({ client }: Props): JSX.Element {
         )}
       <div className="content-body">
         <div className="container-fluid">
-          <div className="team-header">
-            <TeamCard
-              data={data?.data}
-              setItem={setItem}
-              setShowAddTeamModal={setShowAddTeamModal}
-              setShowHidden={setShowHidden}
-              isLoading={isFetching}
-              setShowEditTeamModal={setShowEditTeamModal}
-              refetch={refetch}
-              driverObj={driverObj}
-            />
-            {teamData?.data.performance && (
-              <PerformanceCard
-                setPerformance={setPerformance}
-                perf={teamData?.data.performance}
-                perf_rate={teamData?.data.performance_rate}
-              >
-                <CustomHist
-                  data={performance ?? teamData?.data.performance}
-                  options={option}
-                />
-              </PerformanceCard>
-            )}
+          <div className="row">
+            <div className="col-xl-3 col-xxl-7 col-xl-custum">
+              <TeamCard
+                data={data?.data}
+                setItem={setItem}
+                setShowAddTeamModal={setShowAddTeamModal}
+                setShowHidden={setShowHidden}
+                isLoading={isFetching}
+                setShowEditTeamModal={setShowEditTeamModal}
+                refetch={refetch}
+                driverObj={driverObj}
+              />
+            </div>
+            <div className="col-xl-3 col-xxl-5 col-xl-custum">
+              {teamData?.data.performance && (
+                <PerformanceCard
+                  setPerformance={setPerformance}
+                  perf={teamData?.data.performance}
+                  perf_rate={teamData?.data.performance_rate}
+                >
+                  <CustomHist
+                    data={performance ?? teamData?.data.performance}
+                    options={option}
+                  />
+                </PerformanceCard>
+              )}
+            </div>
           </div>
           <div className="row">
-            <EarningTale earningTable={teamData?.data.earning_table} />
-            <EarningCard>
-              {teamData && (
-                <CustomHist data={teamData.data.earning} options={option} />
-              )}
-            </EarningCard>
+            <div className="col-xl-3 col-xxl-7 col-xl-custum">
+              <EarningTale
+                earningTable={teamData?.data?.earning_table || undefined}
+              />
+            </div>
+            <div className="col-xl-3 col-xxl-5 col-xl-custum">
+              <EarningCard>
+                {teamData && (
+                  <CustomHist data={teamData.data.earning} options={option} />
+                )}
+              </EarningCard>
+            </div>
           </div>
         </div>
       </div>
@@ -304,7 +315,7 @@ const TeamCard = ({
   };
 
   return (
-    <div className="col-xl-3 col-xxl-6 col-xl-custum">
+    <div className="">
       <div className="card">
         <div className="card-header border-0 pb-0">
           <div>
@@ -510,7 +521,7 @@ const EarningTale = ({ earningTable }: EarningTaleProps) => {
   }
 
   return (
-    <div className="col-lg-7">
+    <div className="">
       <div className="card">
         <div className="card-header">
           <div>
