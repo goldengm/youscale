@@ -1,11 +1,12 @@
 import React from "react";
 import { Link, Navigate } from "react-router-dom";
-import { RxDashboard } from "react-icons/rx";
-import { IoMdListBox } from "react-icons/io";
-import { MdProductionQuantityLimits, MdOutlinePayments } from "react-icons/md";
-import { BiSupport } from "react-icons/bi";
-import { AiOutlineTeam } from "react-icons/ai";
-import { FcSettings } from "react-icons/fc";
+import { RiDashboardFill } from "react-icons/ri";
+import { FaTable } from "react-icons/fa6";
+import { RiTeamFill } from "react-icons/ri";
+import { MdContactSupport } from "react-icons/md";
+import { IoSettings } from "react-icons/io5";
+import { MdOutlinePayments } from "react-icons/md";
+import { FaBox } from "react-icons/fa6";
 import { logOut } from "../../services/auth/logout";
 import { useGetClientTeamMemberPageQuery } from "../../services/api/ClientTeamApi/ClientTeamPageApi";
 import { GetRole } from "../../services/storageFunc";
@@ -16,35 +17,35 @@ const MenuNav = [
   {
     title: "Dashboard",
     path: "/",
-    icon: <RxDashboard size={20} color={"gray"} />,
+    icon: <RiDashboardFill size={20} color={"gray"} />,
     cName: "nav-text",
     name: "dashbord",
   },
   {
     title: "Order",
     path: "/order",
-    icon: <IoMdListBox size={20} color={"gray"} />,
+    icon: <FaTable size={20} color={"gray"} />,
     cName: "nav-text",
     name: "order",
   },
   {
     title: "Produit",
     path: "/product",
-    icon: <MdProductionQuantityLimits size={20} color={"gray"} />,
+    icon: <FaBox size={20} color={"gray"} />,
     cName: "nav-text",
     name: "produit",
   },
   {
     title: "Equipe",
     path: "/team",
-    icon: <AiOutlineTeam size={20} color={"gray"} />,
+    icon: <RiTeamFill size={20} color={"gray"} />,
     cName: "nav-text",
     name: "team",
   },
   {
     title: "Support",
     path: "/support",
-    icon: <BiSupport size={20} color={"gray"} />,
+    icon: <MdContactSupport size={20} color={"gray"} />,
     cName: "nav-text",
     name: "support",
   },
@@ -58,7 +59,7 @@ const MenuNav = [
   {
     title: "Paramètre",
     path: "/setting",
-    icon: <FcSettings size={20} color={"gray"} />,
+    icon: <IoSettings size={20} color={"gray"} />,
     cName: "nav-text",
     name: "setting",
   },
@@ -139,31 +140,29 @@ export default function Menu(): JSX.Element {
           </li>
           {GetRole() === "CLIENT"
             ? MenuNav.map((item, index) => {
-              return (
-                <li className="menu-step" key={index}>
-                  <Tooltip text={item.title} target={`Tooltip-${index}`}>
-                    <Link
-                      id={`Tooltip-${index}`}
-                      //title={item.title}
-                      to={item.path}
-                      onClick={(e) => {
-                        Navigate({ to: item.path });
-                        e.preventDefault();
-                      }}
-                      className="ai-icon"
-                      aria-expanded="false"
-                    >
-                      {item.icon}
-                      <span className={item.cName}>{item.title}</span>
-                    </Link>
-                  </Tooltip>
-
-
-                </li>
-              );
-            })
+                return (
+                  <li className="menu-step" key={index}>
+                    <Tooltip text={item.title} target={`Tooltip-${index}`}>
+                      <Link
+                        id={`Tooltip-${index}`}
+                        //title={item.title}
+                        to={item.path}
+                        onClick={(e) => {
+                          Navigate({ to: item.path });
+                          e.preventDefault();
+                        }}
+                        className="ai-icon"
+                        aria-expanded="false"
+                      >
+                        {item.icon}
+                        <span className={item.cName}>{item.title}</span>
+                      </Link>
+                    </Tooltip>
+                  </li>
+                );
+              })
             : activePageArr.length !== 0
-              ? MenuNav.map((item, index) => {
+            ? MenuNav.map((item, index) => {
                 if (activePageArr.includes(item.name)) {
                   return (
                     <li key={index}>
@@ -184,7 +183,7 @@ export default function Menu(): JSX.Element {
                   );
                 }
               })
-              : MenuNav.map((item, index) => {
+            : MenuNav.map((item, index) => {
                 if (DEFAULT_TEAM_PAGES_ACCESS.includes(item.name)) {
                   return (
                     <li key={index}>
