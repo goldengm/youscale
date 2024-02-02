@@ -247,6 +247,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
       handleClose();
     }
     setIndex((prevIndex) => prevIndex + 1);
+    setShowButton(false);
   };
 
   return isOpen ? (
