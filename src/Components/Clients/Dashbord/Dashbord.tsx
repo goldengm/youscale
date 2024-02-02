@@ -616,7 +616,7 @@ const BestCityCardComponent = ({ data }: BestCityCardProps): JSX.Element => {
                     </div>
                 </div>
                 <div className="card-body">
-                    {data && data.map((city, index) => <BestCityCard key={index} city={city.City_User.name} order={city.count} />)}
+                    {data && data.map((city, index) => <BestCityCard key={index} city={city?.City_User?.name} order={city.count} />)}
                 </div>
             </div>
         </div>
