@@ -361,7 +361,33 @@ interface OrderStatisticCardProps {
     data: orderStatistic
 }
 const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
-    const [mode, setMode] = useState<'commande' | 'percent'>('commande')
+    //console.log(data);
+    const [mode, setMode] = useState<'commande' | 'percent'>('commande');
+    const [chartData, setChartData] = useState<any>([]);
+
+
+    useEffect(() => {
+        calculatePercentages();
+    }, [mode]);
+
+    const calculatePercentages = () => {
+        const tempData = data?.data;
+
+        if (tempData?.datasets[0]?.data) {
+            const sum = tempData.datasets[0].data.reduce((a, b) => a + b, 0);
+            const percentageArray = tempData.datasets[0].data.map(item => (item / sum) * 100);
+
+            // Create a new object with the modified data property
+            const modifiedData = {
+                ...tempData,
+                datasets: [{
+                    ...tempData.datasets[0],
+                    data: percentageArray
+                }]
+            };
+            setChartData(modifiedData);
+        }
+    }
 
     let option = {
         responsive: true,
@@ -400,7 +426,7 @@ const OrderStatisticCard = ({ data }: OrderStatisticCardProps): JSX.Element => {
                 <div className="card-body">
                     <div className={styles.statisticContainer}>
                         <div className={`col-md-6 ${styles.pieChart}`}>
-                            <CustomPie data={data.data} options={option} />
+                            <CustomPie data={mode === 'commande' ? data.data : chartData} options={option} />
                         </div>
 
                         <div className="col-md-6">
