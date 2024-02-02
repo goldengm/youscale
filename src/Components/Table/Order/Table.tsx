@@ -14,6 +14,7 @@ import Row from './Row'
 import './styles.css'
 import { GetRole } from '../../../services/storageFunc'
 import { GetCurrTeamMember } from '../../../services/auth/GetCurrTeamMember'
+import { createPortal } from "react-dom";
 
 interface OrderModel { id: number, SheetId: string, checked?: boolean, id_city: number, id_team: number, Product_Orders: ProductOrder[], createdAt: Date, reportedDate: string, isSendLivo: string, telDuplicate: boolean }
 
@@ -315,7 +316,16 @@ const EditBulkOrder = ({ id_orders, refetch }: EditBulkOrderProps): JSX.Element 
 
     return (
         <>
-            {showModal && <BulkEditAgentModal id_orders={id_orders} showModal={showModal} setShowModal={setShowModal} refetch={refetch} />}
+            {showModal &&
+                createPortal(
+                    <BulkEditAgentModal
+                        id_orders={id_orders}
+                        showModal={showModal}
+                        setShowModal={setShowModal}
+                        refetch={refetch}
+                    />,
+                    document.body
+                )}
             <FaUserEdit
                 size={25}
                 className={id_orders && id_orders?.length > 0 ? 'del-order-hov' : ''}
