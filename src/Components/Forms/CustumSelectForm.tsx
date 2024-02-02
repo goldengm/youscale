@@ -15,7 +15,7 @@ interface Props {
 }
 export default function CustumSelectForm({ label, name, register, error, data, Onchange, defaultSelected = '', className }: Props): JSX.Element {
     return (
-        <div className={`mb-3 col-md-6 ${className}`}>
+        <div className={`mb-3 col-md-12 ${className}`}>
             <label className="form-label">{label}</label>
             <select
                 {...register(name)}

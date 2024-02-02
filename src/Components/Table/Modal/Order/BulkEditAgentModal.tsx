@@ -4,10 +4,11 @@ import ModalWrapper from '../ModalWrapper'
 import { ErrorModel, GetTeamMemberModel } from '../../../../models'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useGetTeamMemberQuery } from '../../../../services/api/ClientApi/ClientTeamMemberApi';
+import { useGetTeamMemberListQuery } from '../../../../services/api/ClientApi/ClientTeamMemberApi';
 import { useBulkEditClientOrderMutation } from '../../../../services/api/ClientApi/ClientOrderApi';
 import { showToastError } from '../../../../services/toast/showToastError';
 import * as yup from "yup";
+import { Button } from '../../../../common';
 
 type SelectType = {
     label: string,
@@ -31,35 +32,36 @@ interface Props {
 }
 export default function BulkEditAgentModal({ showModal, setShowModal, refetch, id_orders }: Props): JSX.Element {
 
-    useEffect(() => {
-        var body = document.querySelector<HTMLBodyElement>('body');
+    // useEffect(() => {
+    //     var body = document.querySelector<HTMLBodyElement>('body');
 
-        var modalBackdrop = document.createElement('div');
-        modalBackdrop.className = 'modal-backdrop fade show';
+    //     var modalBackdrop = document.createElement('div');
+    //     modalBackdrop.className = 'modal-backdrop fade show';
 
-        if (body) {
-            body.classList.add('modal-open');
-            body.style.overflow = 'hidden';
-            body.style.paddingRight = '17px';
+    //     if (body) {
+    //         body.classList.add('modal-open');
+    //         body.style.overflow = 'hidden';
+    //         body.style.paddingRight = '17px';
 
-            body.appendChild(modalBackdrop);
-        }
-    }, [])
+    //         body.appendChild(modalBackdrop);
+    //     }
+    // }, [])
 
     const handleCloseModal = () => {
-        var body = document.querySelector<HTMLBodyElement>('body');
+        setShowModal(false)
+        // var body = document.querySelector<HTMLBodyElement>('body');
 
-        if (body) {
-            body.classList.remove('modal-open');
-            body.style.overflow = '';
-            body.style.paddingRight = '';
+        // if (body) {
+        //     body.classList.remove('modal-open');
+        //     body.style.overflow = '';
+        //     body.style.paddingRight = '';
 
-            var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
+        //     var existingBackdrop = document.querySelectorAll('.modal-backdrop.fade.show');
 
-            if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
+        //     if (existingBackdrop) existingBackdrop.forEach(it => it.remove());
 
-            setShowModal(false)
-        }
+        //     setShowModal(false)
+        // }
     }
 
     return (
@@ -79,7 +81,7 @@ const FormBody = ({ handleCloseModal, refetch, id_orders }: FormBodyProps) => {
 
     const [edit] = useBulkEditClientOrderMutation()
 
-    const { data: dataTeamMember } = useGetTeamMemberQuery({ isHidden: true })
+    const { data: dataTeamMember } = useGetTeamMemberListQuery({ isHidden: true })
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         // @ts-ignore
@@ -131,9 +133,10 @@ const FormBody = ({ handleCloseModal, refetch, id_orders }: FormBodyProps) => {
                         label={"Select agent"}
                         name={'id_agent'}
                     />
-                    <button type="submit" className="btn btn-primary">
+                    <Button type="submit" color="primary" value='Modifier' />
+                    {/* <button type="submit" className="btn btn-primary">
                         Modifier
-                    </button>
+                    </button> */}
                 </form>
             </div>
         </div>
