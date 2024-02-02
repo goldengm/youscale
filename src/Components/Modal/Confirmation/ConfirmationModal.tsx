@@ -367,7 +367,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
                   { [styles.saveBtn]: true }
                 )}
                 onClick={onSubmitHandle}
-              //className={styles.saveBtn}
+                //className={styles.saveBtn}
               >
                 Enregistrer
               </button>
@@ -467,16 +467,16 @@ const ProductLayout = ({
     setSelectedProduct(
       editData
         ? editData
-          ?.filter((dt) => dt.Product.variant?.length === 0)
-          .map((dt) => {
-            return {
-              label: dt.Product.name,
-              value: dt.Product.id ? String(dt.Product.id) : "",
-              quantity: dt.quantity,
-              variant: dt.variant,
-              allVariant: dt.Product.variant,
-            };
-          })
+            ?.filter((dt) => dt.Product.variant?.length === 0)
+            .map((dt) => {
+              return {
+                label: dt.Product.name,
+                value: dt.Product.id ? String(dt.Product.id) : "",
+                quantity: dt.quantity,
+                variant: dt.variant,
+                allVariant: dt.Product.variant,
+              };
+            })
         : []
     );
   }, [id]);
@@ -695,7 +695,7 @@ const FormBody = ({
           <form
             // ref={formRef}
             onSubmit={handleSubmit(onSubmit)}
-            onChange={() => { }}
+            onChange={() => {}}
           >
             <div className="row">
               <div className="col">
@@ -872,7 +872,7 @@ const FormBody = ({
                     alignItems: "center",
                     marginTop: 5,
                   }}
-                //className="col"
+                  //className="col"
                 >
                   {currentOrder.order[0].isSendLivo === "not_send" ? (
                     <TbPointFilled size={40} color={"gray"} />
