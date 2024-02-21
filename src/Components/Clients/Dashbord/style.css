@@ -58,6 +58,10 @@
     background: #b4936f !important;
 }
 
+.bg-confirme {
+    background: #0080ff !important;
+}
+
 .bg-cancelled {
     background: #E53935 !important;
 }
