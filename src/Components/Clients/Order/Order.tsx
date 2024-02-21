@@ -175,7 +175,7 @@ export default function Order({ client }: Props): JSX.Element {
       usedate: Number(usingDate),
       datefrom: date?.[0],
       dateto: date?.[1],
-      search: undefined,
+      search: OrderQueryData?.search,
       status: status,
       id_product_array: product !== "0" ? product : undefined,
       id_team: idTeam !== -1 ? idTeam : undefined,
