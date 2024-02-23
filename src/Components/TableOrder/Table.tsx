@@ -321,7 +321,7 @@ export const Table = ({
           data?.data.map((dt, index) => (
             <Row
               RefetchStatusData={RefetchStatusData}
-              key={dt.id}
+              key={dt.Order_id}
               handleCheckRow={handleCheckRow}
               row={dt}
               setIdOrders={setIdOrders}
