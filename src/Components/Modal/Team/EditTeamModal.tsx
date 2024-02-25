@@ -219,9 +219,14 @@ const EditTeamModal: React.FC<Props> = ({
 }): JSX.Element | null => {
   const [editData, setEditData] = useState<GetTeamMemberModel>();
 
-  const { data, isLoading } = useGetOneTeamMemberQuery({
-    id: dataEdit?.id,
-  });
+  const { data, isLoading } = useGetOneTeamMemberQuery(
+    {
+      id: dataEdit?.id,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   useEffect(() => {
     setEditData(data?.data || undefined);
