@@ -224,6 +224,7 @@ const EditTeamModal: React.FC<Props> = ({
       id: dataEdit?.id,
     },
     {
+      refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
     }
   );
