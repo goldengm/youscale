@@ -219,7 +219,7 @@ const EditTeamModal: React.FC<Props> = ({
 }): JSX.Element | null => {
   const [editData, setEditData] = useState<GetTeamMemberModel>();
 
-  const { data, isLoading } = useGetOneTeamMemberQuery(
+  const { data, refetch: refetchOneTeamMember, isLoading } = useGetOneTeamMemberQuery(
     {
       id: dataEdit?.id,
     },
@@ -274,7 +274,10 @@ const EditTeamModal: React.FC<Props> = ({
 
           {editData && (
             <FormBody
-              refetch={refetch}
+              refetch={() => {
+                refetch()
+                refetchOneTeamMember()
+              }}
               handleClose={handleClose}
               dataEdit={editData}
             />
