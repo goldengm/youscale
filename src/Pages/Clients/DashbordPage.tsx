@@ -34,19 +34,15 @@ export default function DashbordPage(): JSX.Element {
   useEffect(() => { refetch() }, [])
 
   useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1] })
+    setOrderQueryData({ 
+      usedate: Number(usingDate), 
+      datefrom: date?.[0], 
+      dateto: date?.[1],
+      id_product_array: product || undefined,
+      id_team: idTeam !== -1 ? idTeam : undefined
+    })
     refetch()
-  }, [date, usingDate])
-
-  useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_product_array: product })
-    refetch()
-  }, [product])
-
-  useEffect(() => {
-    setOrderQueryData({ usedate: Number(usingDate), datefrom: date?.[0], dateto: date?.[1], id_team: idTeam !== -1 ? idTeam : undefined })
-    refetch()
-  }, [idTeam])
+  }, [date, usingDate, product, idTeam])
 
   return !data ? <div className='global-loader'>
     <RotatingLines
