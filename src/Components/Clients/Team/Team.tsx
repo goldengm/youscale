@@ -172,17 +172,7 @@ export default function Team({ client }: Props): JSX.Element {
       id_team: idTeam ?? undefined,
     });
     refetchTeamData();
-  }, [date, usingDate]);
-
-  useEffect(() => {
-    setOrderQueryData({
-      usedate: Number(usingDate),
-      datefrom: date?.[0],
-      dateto: date?.[1],
-      id_team: idTeam ?? undefined,
-    });
-    refetchTeamData();
-  }, [idTeam]);
+  }, [date, usingDate, idTeam]);
 
   const [showAddTeamModal, setShowAddTeamModal] = useState<boolean>(false);
   const [showEditTeamModal, setShowEditTeamModal] = useState<boolean>(false);

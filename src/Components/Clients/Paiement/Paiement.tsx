@@ -144,19 +144,10 @@ export default function Paiement({ client }: Props) {
       usedate: Number(usingDate),
       datefrom: date?.[0],
       dateto: date?.[1],
+      id_product_array: product || undefined,
     });
     refetch();
-  }, [date, usingDate]);
-
-  useEffect(() => {
-    setOrderQueryData({
-      usedate: Number(usingDate),
-      datefrom: date?.[0],
-      dateto: date?.[1],
-      id_product_array: product !== "0" ? product : undefined,
-    });
-    refetch();
-  }, [product]);
+  }, [date, usingDate, product]);
 
   return (
     <Main
