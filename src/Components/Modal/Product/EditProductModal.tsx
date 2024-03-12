@@ -12,6 +12,7 @@ import { Spinner4Bar } from "../../Loader";
 import styles from "./product.module.css";
 import * as yup from "yup";
 import { Button } from "../../../common";
+import { IoRemoveCircle } from "react-icons/io5";
 
 type SelectType = {
   label: string;
@@ -221,11 +222,25 @@ const AddVariant = ({
     setVariantList((prev) => [...prev, variant]);
   };
 
+  const handleRemoveVariant = (value: string) => {
+    setVariantList((prev) => prev.filter((item) => item !== value));
+  };
+
   return (
     <div className={`mt-3 ${styles.variantBox}`}>
       <ul className={styles.variantList}>
         {variantList.map((variant, index) => (
-          <li>{variant}</li>
+          <li key={variant}>
+            <div className={styles["variant"]}>
+              <span>{variant}</span>
+              <Button
+                type="button"
+                color="warning"
+                onClick={() => handleRemoveVariant(variant)}
+                value={<IoRemoveCircle />}
+              />
+            </div>
+          </li>
         ))}
       </ul>
       <CustumInput
