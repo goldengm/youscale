@@ -45,7 +45,7 @@ export default function AddProductOrderModal({
     }[] = [];
 
     for (let i = 0; i < data.length; i++) {
-      if (!data[i].isDeleted && data[i].variant.length == 0)
+      if (!data[i].isDeleted)
         objArr.push({
           label: data[i].name,
           value: String(data[i].id),
@@ -77,8 +77,7 @@ export default function AddProductOrderModal({
   useEffect(() => {
     setSelectedProduct(
       editData
-        ? editData
-            ?.filter((dt) => dt.Product.variant?.length === 0)
+        ? editData            
             .map((dt) => {
               return {
                 label: dt.Product.name,
@@ -214,7 +213,7 @@ export default function AddProductOrderModal({
 
       {selectedProduct.map((dt, index) => (
         <ProductOrderCard
-          key={index}
+          key={dt.label}
           dt={dt}
           index={index}
           selectedProduct={selectedProduct}
