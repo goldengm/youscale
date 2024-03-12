@@ -4,7 +4,7 @@ import cx from "classnames";
 
 interface ButtonProps {
   onClick?: (...args: any[]) => any;
-  value?: string;
+  value?: string | ReactNode;
   color: "primary" | "secondary" | "warning" | "danger";
   type?: "button" | "submit" | "reset" | undefined;
   icon?: ReactNode | undefined;
