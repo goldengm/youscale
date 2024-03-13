@@ -81,7 +81,6 @@ const EditProductModal: React.FC<Props> = ({
         </button>
         <div className={styles.main} ref={ref}>
           <p className={styles.title}>Modifier un produit</p>
-
           <FormBody refetch={refetch} item={item} handleClose={handleClose} />
         </div>
       </div>
@@ -133,7 +132,13 @@ const FormBody = ({ refetch, item, handleClose }: FormBodyProps) => {
   };
 
   const switchShowVariant = () => {
-    setShowVariant(!showVariant);
+    setShowVariant((prevVariant) => {
+      // when disable variant, also remove variantList
+      if (prevVariant) {
+        setVariantList([]);
+      }
+      return !prevVariant;
+    });
   };
 
   return (
