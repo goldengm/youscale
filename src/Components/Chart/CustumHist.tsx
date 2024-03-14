@@ -10,7 +10,6 @@ interface CustomHistProps {
 }
 
 function CustomHist({ data, options }: CustomHistProps) {
-
   return (
     <React.Fragment>
       <Bar data={data} options={options} />
