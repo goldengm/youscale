@@ -6,6 +6,9 @@ import { CustomPie, CustomLine } from '../../Chart'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
 import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientApi';
 import { driver } from "driver.js";
+import { Bar } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
+
 import styles from './style.module.css'
 import "driver.js/dist/driver.css";
 import 'reactjs-popup/dist/index.css';
@@ -152,7 +155,7 @@ export default function Dashbord({ data, setUsingDate, setDate, showDateFilter, 
                         </div>
                         <div className="row">
                             <BestSellingProductCard data={data.bestSellingProduct} />
-                            <BestCityCardComponent data={data.bestCity} />
+                            {/* <BestCityCardComponent data={data.bestCity} /> */}
                             <Ads />
                         </div>
                     </div>
@@ -598,21 +601,69 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
 }
 
 interface BestSellingProductProps {
-    data: BestSellingProduct[]
+    data: {
+        labels: string[],
+        datasets: any[]
+    }
 }
 const BestSellingProductCard = ({ data }: BestSellingProductProps): JSX.Element => {
+    const [datasets, setDatasets] = useState<any>({
+        labels: data.labels,
+        datasets: data.datasets.filter(set => set.label === "Performance")
+    })
     return (
-        <div className="col-xl-3 col-xxl-4">
+        <div className="col-xl-9">
             <div className="card">
                 <div className="card-header border-0 pb-0">
                     <div>
                         <h4 className="card-title mb-2">meilleur produit vendu</h4>
                     </div>
+                    <div className="card-tabs mt-3 mt-sm-0">
+                        <ul className="nav nav-tabs" role="tablist">
+                            <li className="nav-item">
+                                <a
+                                className="nav-link active"
+                                data-bs-toggle="tab"
+                                href="#Order"
+                                role="tab"
+                                onClick={() => setDatasets({
+                                    labels: data.labels,
+                                    datasets: data.datasets.filter(set => set.label === "Performance")
+                                })}
+                                >
+                                Performance
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a
+                                className="nav-link"
+                                data-bs-toggle="tab"
+                                href="#Rate"
+                                role="tab"
+                                onClick={() => setDatasets({
+                                    labels: data.labels,
+                                    datasets: data.datasets.filter(set => set.label === "Rate")
+                                })}
+                                >
+                                Rate
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div className="card-body">
-                    {data && data.map((product, index) => <BestSellingCard key={index} price={product.price} count={product.count} price_product={product.price_product} name={product.name} />)}
+                    <ProductCharts data={datasets} options={{
+                        responsive: true,
+                        plugins: {
+                        legend: { position: "bottom" },
+                        title: {
+                            display: false,
+                        },
+                        },
+                    }} />
                 </div>
-            </div>
+            </div>Performance
+
         </div>
     )
 }
@@ -654,6 +705,7 @@ const BestCityCardComponent = ({ data }: BestCityCardProps): JSX.Element => {
     )
 }
 
+
 interface BestCitiesProps {
     city: string,
     order: number
@@ -667,4 +719,17 @@ const BestCityCard = ({ city, order }: BestCitiesProps): JSX.Element => {
             </span>
         </div>
     )
+}
+
+Chart.register(...registerables);
+
+interface ProductChartProps {
+  data: any,
+  options: any
+}
+
+function ProductCharts({ data, options }: ProductChartProps) {
+  return (
+    <Bar data={data} options={options} />
+  )
 }
