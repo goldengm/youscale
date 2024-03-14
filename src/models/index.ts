@@ -789,10 +789,8 @@ export interface TeamDashbordQueryModel {
 }
 
 export interface BestSellingProduct {
-    name: string;
-    price: number;
-    count: number;
-    price_product: number;
+    labels: string[]
+    datasets: any[]
 }
 
 export interface CityUser {
@@ -859,7 +857,7 @@ export interface DashbordModel {
     rateOfConfirmed: number;
     rateOfDelivred: number;
     earningNet: number;
-    bestSellingProduct: BestSellingProduct[];
+    bestSellingProduct: BestSellingProduct;
     bestCity: BestCity[];
     orderReport: OrderReport;
     orderStatistic: orderStatistic;
