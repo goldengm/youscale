@@ -790,6 +790,7 @@ export interface TeamDashbordQueryModel {
 
 export interface BestSellingProduct {
     labels: string[]
+    earnings: (number | null)[]
     datasets: any[]
 }
 
