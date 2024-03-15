@@ -229,7 +229,7 @@ const FormBody = ({ refetch, handleCloseModal, dataEdit }: FormBodyProps) => {
     const { data: ProductData } = useGetProductQuery({ isHidden: false })
     const { data: PageData } = useGetPageQuery()
 
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs, any, Inputs>({
         // @ts-ignore
         resolver: yupResolver(schema),
     });

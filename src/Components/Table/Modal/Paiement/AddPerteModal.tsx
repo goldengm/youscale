@@ -141,7 +141,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
     handleSubmit,
     formState: { errors },
     getValues,
-  } = useForm<Inputs>({
+  } = useForm<Inputs, any, Inputs>({
     // @ts-ignore
     resolver: yupResolver(schema),
   });

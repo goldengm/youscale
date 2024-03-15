@@ -80,7 +80,7 @@ interface FormBodyProps {
 
 const FormBody = ({ refetch, handleClose }: FormBodyProps) => {
 
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm<Inputs, any, Inputs>({
         // @ts-ignore
         resolver: yupResolver(schema),
     });

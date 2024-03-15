@@ -71,7 +71,7 @@ interface FormBodyProps {
 const FormBody = ({ handleCloseModal, refetch }: FormBodyProps) => {
     const [addStatus] = useAddStatusMutation()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs, any, Inputs>({
         // @ts-ignore
         resolver: yupResolver(schema)
     });
