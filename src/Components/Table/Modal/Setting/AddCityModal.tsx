@@ -98,7 +98,7 @@ const FormBody = ({ refetch, handleCloseModal }: FormBodyProps) => {
     const { data: shippingData } = useGetShippingQuery()
     const [addCity] = useAddCityMutation()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs, any, Inputs>({
         // @ts-ignore
         resolver: yupResolver(schema),
     });

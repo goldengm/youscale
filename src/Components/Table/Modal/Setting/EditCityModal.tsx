@@ -96,7 +96,7 @@ const FormBody = ({ refetch, handleCloseModal, item }: FormBodyProps) => {
 
     const [patchCity] = usePatchCityMutation()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs, any, Inputs>({
         // @ts-ignore
         resolver: yupResolver(schema),
     });

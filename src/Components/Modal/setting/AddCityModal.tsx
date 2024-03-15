@@ -69,7 +69,7 @@ export default function AddCityModal({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<Inputs, any, Inputs>({
     // @ts-ignore
     resolver: yupResolver(schema),
   });

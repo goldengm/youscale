@@ -265,7 +265,7 @@ const FormBody = ({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<Inputs>({
+  } = useForm<Inputs, any, Inputs>({
     // @ts-ignore
     resolver: yupResolver(schema),
   });

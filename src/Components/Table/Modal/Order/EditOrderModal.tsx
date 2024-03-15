@@ -100,7 +100,7 @@ const FormBody = ({ dataEdit, handleCloseModal, refetch, id_order }: FormBodyPro
 
   const { data: StatusData, refetch: RefetchStatus } = useGetStatusQuery({})
 
-  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+  const { register, handleSubmit, formState: { errors } } = useForm<Inputs, any, Inputs>({
     // @ts-ignore
     resolver: yupResolver(schema),
   });
