@@ -605,7 +605,7 @@ interface BestSellingProductProps {
     data: {
         labels: string[],
         datasets: any[],
-        earnings: (string | null)[],
+        earnings: (number | null)[],
     }
 }
 const BestSellingProductCard = ({ data }: BestSellingProductProps): JSX.Element => {
