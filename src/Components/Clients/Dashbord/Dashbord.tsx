@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../Main'
-import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestSellingProduct, BestCity, Cient } from '../../../models'
+import { DashbordModel, orderStatistic, OrderReport, CostReport, RateReport, reportEarningNet, BestCity, Cient } from '../../../models'
 import { BottomRightStaticBtn } from '../../Tutorial'
 import { CustomPie, CustomLine } from '../../Chart'
 import { useGetAdsQuery } from '../../../services/api/ClientApi/ClientAdsApi'
@@ -8,6 +8,7 @@ import { usePatchClientMutation } from '../../../services/api/ClientApi/ClientAp
 import { driver } from "driver.js";
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import styles from './style.module.css'
 import "driver.js/dist/driver.css";
@@ -603,10 +604,12 @@ const Report = ({ dataOrder, dataCost, dataRate, dataEarningNet }: ReportProps):
 interface BestSellingProductProps {
     data: {
         labels: string[],
-        datasets: any[]
+        datasets: any[],
+        earnings: (string | null)[],
     }
 }
 const BestSellingProductCard = ({ data }: BestSellingProductProps): JSX.Element => {
+    const intl = new Intl.NumberFormat('en-US', {})
     const [datasets, setDatasets] = useState<any>({
         labels: data.labels,
         datasets: data.datasets.filter(set => set.label === "Performance")
@@ -652,15 +655,40 @@ const BestSellingProductCard = ({ data }: BestSellingProductProps): JSX.Element 
                     </div>
                 </div>
                 <div className="card-body">
-                    <ProductCharts data={datasets} options={{
-                        responsive: true,
-                        plugins: {
-                        legend: { position: "bottom" },
-                        title: {
-                            display: false,
-                        },
-                        },
-                    }} />
+                    <ProductCharts 
+                        data={datasets} 
+                        options={{
+                            responsive: true,
+                            layout: {
+                                padding: {
+                                    top: 30
+                                }
+                            },
+                            plugins: {
+                                legend: { position: "bottom" },
+                                title: {
+                                    display: false,
+                                },
+                                datalabels: {
+                                    labels: {
+                                        title: {
+                                          font: {
+                                            weight: 'bold',
+                                            size: 16
+                                          },
+                                          color: "green"
+                                        },
+                                    },
+                                    anchor: "end",
+                                    align: "top",
+                                    formatter: function(value: any, context: any) {
+                                        const earning = data.earnings[context.dataIndex]
+                                        return !earning ? earning : intl.format(Number(earning));
+                                    },
+                                }
+                            },
+                        }} 
+                    />
                 </div>
             </div>Performance
 
@@ -730,6 +758,8 @@ interface ProductChartProps {
 
 function ProductCharts({ data, options }: ProductChartProps) {
   return (
-    <Bar data={data} options={options} />
+    <Bar data={data} options={options} plugins={[
+        ChartDataLabels
+    ]} />
   )
 }
