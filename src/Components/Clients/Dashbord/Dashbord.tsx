@@ -615,7 +615,7 @@ const BestSellingProductCard = ({ data }: BestSellingProductProps): JSX.Element 
         datasets: data.datasets.filter(set => set.label === "Performance")
     })
     return (
-        <div className="col-xl-9">
+        <div className="col-xl-9 col-xxl-8">
             <div className="card">
                 <div className="card-header border-0 pb-0">
                     <div>
